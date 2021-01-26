@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugindata owner="com.ajr.framework.AJRFoundation" version="1">
+    <extension-point name="value_transformer" class="AJRFoundation.AJRValueTransformers" registrySelector="registerValueTransformer:properties:">
+        <attribute name="class" type="class" required="YES" />
+        <attribute name="name" type="string" required="YES" />
+    </extension-point>
+    
+    <value_transformer class="AJRFoundation.AJRNullArrayTransformer" name="AJRNullArrayTransformer" />
+    <value_transformer class="AJRFoundation.AJRNullTransformer" name="AJRNullTransformer" />
+</plugindata>

@@ -1,0 +1,274 @@
+//
+//  XMLDTD.swift
+//  radar
+//
+//  Created by Alex Raftis on 8/3/18.
+//
+
+#if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
+
+import Foundation
+import radar_core
+import libxml2
+
+open class XMLDTD : XMLNode, XMLNodeWithChildren {
+    
+    // MARK: - Properties
+    
+    internal var entityDeclarations = OrderedDictionary<String, XMLDTDNode>()
+    internal var notationDeclarations = OrderedDictionary<String, XMLDTDNode>()
+    internal var elementDeclarations = OrderedDictionary<String, XMLDTDNode>()
+    internal var attributeDeclarations = OrderedDictionary<String, OrderedDictionary<String, XMLDTDNode>>()
+
+    public var publicID : String?
+    public var systemID : String?
+
+    // MARK: - Creation
+    
+    public convenience init(contentsOf url : URL, options: XMLNode.Options) throws {
+        let data = try Data(contentsOf: url, options: .mappedIfSafe)
+        try self.init(withData:data, options:options)
+    }
+    
+    internal init(withXMLNode xmlNode:xmlDtdPtr, options: XMLNode.Options) throws {
+        super.init(kind: .DTDKind, options: options)
+
+        if let name = xmlNode.pointee.name {
+            self.name = String(xml:name)
+        }
+        
+        var node = xmlNode.pointee.children
+        while node != nil {
+            if let child = try XMLDTDNode.node(withXMLNode:node!) {
+                addChild(child)
+            }
+            node = node?.pointee.next
+        }
+        
+        if let systemID = xmlNode.pointee.SystemID {
+            self.systemID = String(xml:systemID)
+        }
+        if let externalID = xmlNode.pointee.ExternalID {
+            self.publicID = String(xml: externalID)
+        }
+    }
+    
+    public convenience init(withData data: Data, options: XMLNode.Options) throws {
+        if let dtd = try XMLParseDTDNode(from: data) {
+            try self.init(withXMLNode:dtd, options:options)
+        } else {
+            throw XMLError.invalidDTD("Unable to parse DTD")
+        }
+    }
+    
+    public required init(kind: Kind, options: Options) {
+        super.init(kind: kind, options: options)
+    }
+    
+    // MARK: - Children
+    
+    public var _children : [XMLNode]?
+    public func manipulateChildren(_ block: (inout [XMLNode]?) -> Void) {
+        block(&_children)
+    }
+    
+    public func insertChild(_ child: XMLNode, at index: Int) -> Void {
+        manipulateChildren { (children) in
+            if children == nil {
+                children = [XMLNode]()
+            }
+            children?.insert(child, at: index)
+            child.parent = self
+        }
+
+        if let dtdChild = child as? XMLDTDNode {
+            if dtdChild.dtdKind >= .entityGeneral && dtdChild.dtdKind <= .entityPredefined {
+                entityDeclarations[child.name!] = dtdChild
+            } else if dtdChild.dtdKind >= .attributeCDATA && dtdChild.dtdKind <= .attributeNotation {
+                let node = child as! XMLDTDAttributeDeclarationNode
+                var elementChildren = attributeDeclarations[node.elementName!]
+                if elementChildren == nil {
+                    elementChildren = OrderedDictionary<String, XMLDTDNode>()
+                    attributeDeclarations[node.elementName!] = elementChildren
+                }
+                elementChildren![node.name!] = dtdChild
+                attributeDeclarations[node.elementName!] = elementChildren
+            } else if dtdChild.dtdKind >= .elementDeclarationUndefined && dtdChild.dtdKind <= .elementDeclarationElement {
+                elementDeclarations[child.name!] = dtdChild
+            }
+        }
+    }
+    
+    private func detach(child: XMLNode) -> Void {
+        child.detach()
+        if let dtdChild = child as? XMLDTDNode {
+            // Just try to remove from any / all of our indexes
+            if let name = dtdChild.name {
+                if dtdChild.dtdKind >= .entityGeneral && dtdChild.dtdKind <= .entityPredefined {
+                    entityDeclarations.removeValue(forKey: name)
+                } else if dtdChild.dtdKind >= .attributeCDATA && dtdChild.dtdKind <= .attributeNotation {
+                    attributeDeclarations.removeValue(forKey:name)
+                } else if dtdChild.dtdKind >= .elementDeclarationUndefined && dtdChild.dtdKind <= .elementDeclarationElement {
+                    elementDeclarations.removeValue(forKey:name)
+                } else {
+                    notationDeclarations.removeValue(forKey: name)
+                }
+            }
+        }
+    }
+
+    // MARK: - AJRXMLNode
+    
+    public override func xmlString(options: XMLNode.Options = []) -> String {
+        var string = ""
+        if let name = self.name {
+            string += "<!DOCTYPE "
+            string += name
+            if let publicID = publicID {
+                string += " PUBLIC \""
+                string += XMLEscapedString(publicID, document: self.rootDocument, kind: .DTDKind)
+                string += "\""
+                if let systemID = systemID {
+                    string += " \""
+                    string += XMLEscapedString(systemID, document: self.rootDocument, kind: .DTDKind)
+                    string += "\""
+                }
+            } else if let systemID = self.systemID {
+                string += " SYSTEM \""
+                string += XMLEscapedString(systemID, document: self.rootDocument, kind: .DTDKind)
+                string += "\""
+            }
+            if let currentChildren = _children {
+                if currentChildren.count > 0 {
+                    string += " [\n"
+                    for child in currentChildren {
+                        string += "    "
+                        string += child.xmlString(options: options)
+                        string += "\n"
+                    }
+                    string += "]"
+                }
+            }
+            string += ">"
+        } else {
+            if let currentChildren = _children {
+                for child in currentChildren {
+                    if let dtdNode = child as? XMLDTDNode {
+                        string += "    "
+                        string += dtdNode.xmlString(options: options)
+                        string += "\n"
+                    }
+                }
+            }
+        }
+        return string;
+    }
+    
+    // MARK: - Accessors
+    
+    public func entityDeclaration(forName name: String) -> XMLDTDNode? {
+        return entityDeclarations[name]
+    }
+    
+    public func notationDeclaration(forName name: String) -> XMLDTDNode? {
+        return notationDeclarations[name]
+    }
+    
+    public func elementDeclaration(forName name: String) -> XMLDTDNode? {
+        return elementDeclarations[name]
+    }
+    
+    public func attributeDeclaration(forName name: String, elementName: String) -> XMLDTDNode? {
+        return attributeDeclarations[elementName]?[name]
+    }
+    
+    private static var predefinedEntities : [String:XMLDTDNode] {
+        var entities = [String:XMLDTDNode]()
+        var node : XMLDTDNode
+        
+        node = XMLDTDNode(kind: .DTDKind, options: .none)
+        node.dtdKind = .entityPredefined
+        node.name = "amp"
+        node.stringValue = "&"
+        entities[node.name!] = node
+        
+        node = XMLDTDNode(kind: .DTDKind, options: .none)
+        node.dtdKind = .entityPredefined
+        node.name = "lt"
+        node.stringValue = "<"
+        entities[node.name!] = node
+        
+        node = XMLDTDNode(kind: .DTDKind, options: .none)
+        node.dtdKind = .entityPredefined
+        node.name = "gt"
+        node.stringValue = ">"
+        entities[node.name!] = node
+
+        node = XMLDTDNode(kind: .DTDKind, options: .none)
+        node.dtdKind = .entityPredefined
+        node.name = "apos"
+        node.stringValue = "'"
+        entities[node.name!] = node
+        
+        node = XMLDTDNode(kind: .DTDKind, options: .none)
+        node.dtdKind = .entityPredefined
+        node.name = "quot"
+        node.stringValue = "\""
+        entities[node.name!] = node
+        
+        return entities
+    }
+    
+    public class func predefinedEntityDeclaration(forName name: String) -> XMLDTDNode? {
+        return XMLDTD.predefinedEntities[name]
+    }
+    
+    // MARK: - Equatable
+    
+    /*
+     private var _children : [XMLNode]?
+    internal var entityDeclarations = OrderedDictionary<String, XMLDTDNode>()
+    internal var notationDeclarations = OrderedDictionary<String, XMLDTDNode>()
+    internal var elementDeclarations = OrderedDictionary<String, XMLDTDNode>()
+    internal var attributeDeclarations = OrderedDictionary<String, OrderedDictionary<String, XMLDTDNode>>()
+
+    public var publicID : String?
+    public var systemID : String?
+*/
+    public override func equal(toNode other: XMLNode) -> Bool {
+        if let typed = other as? XMLDTD {
+            return (super.equal(toNode: other)
+                && Equal(_children, typed._children)
+                && Equal(entityDeclarations, typed.entityDeclarations)
+                && Equal(notationDeclarations, typed.notationDeclarations)
+                && Equal(elementDeclarations, typed.elementDeclarations)
+                && Equal(attributeDeclarations, typed.attributeDeclarations)
+                && Equal(publicID, typed.publicID)
+                && Equal(systemID, typed.systemID)
+            )
+        }
+        return false
+    }
+    
+    public static func == (lhs: XMLDTD, rhs: XMLDTD) -> Bool {
+        return lhs.untypedEqual(to:rhs)
+    }
+    
+    // MARK: - Copying
+    
+    public override func copy() -> Any {
+        let copy = super.copy() as! XMLDTD
+        copy.children = copyChildren() // Convenience provided by XMLNodeWithChildren
+        copy.entityDeclarations = entityDeclarations.copy() as! OrderedDictionary<String, XMLDTDNode>
+        copy.notationDeclarations = notationDeclarations.copy() as! OrderedDictionary<String, XMLDTDNode>
+        copy.elementDeclarations = elementDeclarations.copy() as! OrderedDictionary<String, XMLDTDNode>
+        copy.attributeDeclarations = attributeDeclarations.copy() as! OrderedDictionary<String, OrderedDictionary<String, XMLDTDNode>>
+        copy.publicID = publicID
+        copy.systemID = systemID
+        
+        return copy
+    }
+    
+}
+
+#endif

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugindata owner="com.ajr.framework.AJRFoundation" version="1">
+    <extension-point name="ajrconstant" class="AJRConstant" registrySelector="registerConstant:properties:">
+        <attribute name="class" type="class" required="YES" />
+        <attribute name="preferredToken" type="string" />
+        <element name="token" key="tokens" type="array">
+            <attribute name="name" type="string" />
+        </element>
+    </extension-point>
+    
+    <ajrconstant class="AJRPIConstant">
+        <token name="π" />
+        <token name="pi" />
+    </ajrconstant>
+    <ajrconstant class="AJREConstant">
+        <token name="e" />
+    </ajrconstant>
+    <ajrconstant class="AJRTrueConstant">
+        <token name="true" />
+        <token name="yes" />
+    </ajrconstant>
+    <ajrconstant class="AJRFalseConstant">
+        <token name="false" />
+        <token name="no" />
+    </ajrconstant>
+    <ajrconstant class="AJRNilConstant">
+        <token name="nil" />
+        <token name="null" />
+    </ajrconstant>
+</plugindata>

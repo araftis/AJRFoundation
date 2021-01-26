@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugindata owner="com.ajr.framework.AJRFoundation" version="1">
+    <!-- Note: This is going ot have errors, so that we can test the error handling pathways when parsing these documents. -->
+    <extension-point name="ajr_good_test_sans_class">
+        <attribute name="testString" type="string" />
+        <attribute name="testInteger" type="integer" />
+        <attribute name="testFloat" type="float" />
+        <attribute name="testBOOL" type="boolean" />
+        <attribute name="testRequired" type="string" required="YES" />
+        <attribute name="testRequiredWithDefault" type="string" required="YES" defaultValue="default" />
+        <attribute name="test-bundle" type="bundle" />
+        <attribute name="test-class" type="class" />
+        <element name="test-array" key="testArray" type="array">
+            <attribute name="testString" type="string" />
+        </element>
+        <element name="test-set" key="testSet" type="set">
+            <attribute name="testString" type="string" />
+        </element>
+        <element name="test-child" key="testChild" required="YES">
+            <attribute name="testString" type="string"/>
+            <attribute name="testInteger" type="integer"/>
+        </element>
+        <element name="test-child-2">
+            <attribute name="test-string" type="string"/>
+            <attribute name="test-integer" type="integer"/>
+        </element>
+    </extension-point>
+    <extension-point name="ajr_good_test_with_class_sans_selector" class="AJRGoodClass">
+        <attribute name="class" type="class" />
+    </extension-point>
+    <extension-point name="ajr_good_test_with_class_sans_selector_with_fails" class="AJRGoodClass">
+        <attribute name="class" type="class" />
+        <element></element>
+        <element name="test-set" type="set">
+            <attribute name="test-string" type="string"/>
+        </element>
+        <scoobie></scoobie>
+    </extension-point>
+    <extension-point name="ajr_good_test_with_class_with_selector" class="AJRGoodClassWithSelector" registrySelector="registerExtension:withProperties:">
+    </extension-point>
+    <extension-point name="ajr_bad_class" class="AJRBadClass">
+        <attribute name="test-string" type="string" />
+    </extension-point>
+    <!-- An extension point with no name, in order to produce an error. -->
+    <extension-point>
+    </extension-point>
+    <extension-point name="point-with-registry-no-class" registrySelector="registerSomethingUseful:">
+    </extension-point>
+
+    <!-- This one's repeated in order to generate a warning. -->
+    <extension-point name="ajr_duplicated">
+        <attribute name="thor" type="bifrost" />
+    </extension-point>
+    <extension-point name="ajr_duplicated">
+    </extension-point>
+
+    <!-- References a non-existant class. -->
+    <extension-point name="ajr_non_existant_class" class="AJRThisClassDoesntExist">
+    </extension-point>
+    
+    <!-- Has bad attributes. The bad attributes will cause the extension to not be registered. -->
+    <extension-point name="ajr_bad_attributes">
+        <attribute />
+        <attribute name="missingType" />
+    </extension-point>
+    
+    <!-- A good extension for ajr_good_test_with_class_sans_selector -->
+    <ajr_good_test_sans_class name="ajr_extension_good" testString="string" testInteger="1" testFloat="3.14159" testBOOL="YES" testRequired="required" test-bundle="com.apple.Foundation" test-class="AJRNotAnObjectClass">
+        <test-array testString="one" />
+        <test-array testString="two" />
+        <test-array testString="three" />
+        <test-array testString="four" />
+        <test-set testString="uno" />
+        <test-set testString="dos" />
+        <test-set testString="tres" />
+        <test-set testString="quatro" />
+        <test-child testString="string" testInteger="2" />
+        <test-child-2 test-string="string" test-integer="2" />
+    </ajr_good_test_sans_class>
+
+    <!-- Test with just a class defined. -->
+    <ajr_good_test_sans_class class="AJRGoodClass" testRequired="required">
+        <test-child testString="string" testInteger="2" />
+    </ajr_good_test_sans_class>
+
+    <!-- Test some additional errors. -->
+    <ajr_good_test_sans_class name="ajr_extension_good_but_missing" unknown-attribute-name="mommy">
+        <test-undefined-element></test-undefined-element>
+    </ajr_good_test_sans_class>
+    
+    <!-- Should produce a warning about a bad type -->
+    <ajr_duplicated name="weapon" thor="mjolnir" />
+
+    <ajr_good_test_with_class_sans_selector class="_BAD_CLASS_">
+    </ajr_good_test_with_class_sans_selector>
+    
+    <ajr_late_defined_extension name="late" test-string="We loaded!">
+    </ajr_late_defined_extension>
+    
+    <ajr_late_undefined_extension name="undefinedLate" test-string="We loaded!">
+    </ajr_late_undefined_extension>
+    
+    <extension-point name="ajr_late_defined_extension">
+        <attribute name="test-string" type="string" />
+    </extension-point>
+</plugindata>

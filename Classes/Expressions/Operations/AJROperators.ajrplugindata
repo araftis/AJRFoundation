@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugindata owner="com.ajr.framework.AJRFoundation" version="1">
+    <extension-point name="ajroperator" class="AJROperator" registrySelector="registerOperator:properties:">
+        <attribute name="class" type="class" />
+        <attribute name="precedence" type="string" />
+        <attribute name="preferredToken" type="string" />
+        <element name="operator" key="operators" type="array" required="YES">
+            <attribute name="name" type="string" required="YES" />
+        </element>
+    </extension-point>
+    
+    <ajroperator class="AJRAddOperator">
+        <operator name="+" />
+    </ajroperator>
+    <ajroperator class="AJRAndOperator">
+        <operator name="&amp;&amp;" />
+        <operator name="and" />
+        <operator name="∧" />
+    </ajroperator>
+    <ajroperator class="AJRDivideOperator" precedence="high">
+        <operator name="/" />
+        <operator name="÷" />
+    </ajroperator>
+    <ajroperator class="AJREqualsOperator">
+        <operator name="==" />
+        <operator name="=" />
+    </ajroperator>
+    <ajroperator class="AJRExclusiveOrOperator">
+        <operator name="xor" />
+        <operator name="^^" />
+        <operator name="⊻" />
+    </ajroperator>
+    <ajroperator class="AJRExponentOperator" precedence="higher">
+        <operator name="^" />
+    </ajroperator>
+    <ajroperator class="AJRGreaterThanOperator">
+        <operator name="&gt;" />
+    </ajroperator>
+    <ajroperator class="AJRGreatorThanOrEqualToOperator">
+        <operator name="&gt;=" />
+        <operator name="≥" />
+    </ajroperator>
+    <ajroperator class="AJRIntersectOperator">
+        <operator name="∩" />
+        <operator name="intersect" />
+    </ajroperator>
+    <ajroperator class="AJRLessThanOperator">
+        <operator name="&lt;" />
+    </ajroperator>
+    <ajroperator class="AJRLessThanOrEqualToOperator">
+        <operator name="&lt;=" />
+        <operator name="≤" />
+    </ajroperator>
+    <ajroperator class="AJRModulusOperator" precedence="high">
+        <operator name="mod" />
+    </ajroperator>
+    <ajroperator class="AJRMultiplyOperator" precedence="high">
+        <operator name="*" />
+        <operator name="×" />
+        <operator name="·" />
+    </ajroperator>
+    <ajroperator class="AJRNotEqualsOperator">
+        <operator name="!=" />
+        <operator name="&lt;&gt;" />
+        <operator name="≠" />
+    </ajroperator>
+    <ajroperator class="AJRNotOperator" precedence="unary">
+        <operator name="!" />
+        <operator name="¬" />
+    </ajroperator>
+    <ajroperator class="AJROrOperator">
+        <operator name="||" />
+        <operator name="or" />
+        <operator name="∨" />
+    </ajroperator>
+    <ajroperator class="AJRSubtractOperator">
+        <operator name="-" />
+    </ajroperator>
+    <ajroperator class="AJRUnionOperator">
+        <operator name="∪" />
+        <operator name="union" />
+    </ajroperator>
+</plugindata>

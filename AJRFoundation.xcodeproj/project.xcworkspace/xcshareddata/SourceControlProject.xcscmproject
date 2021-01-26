@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>IDESourceControlProjectIsFavoriteKey</key>
+    <false/>
+    <key>IDESourceControlProjectNameKey</key>
+    <string>AJRFoundation</string>
+    <key>IDESourceControlProjectPathKey</key>
+    <string>New Source/Frameworks/AJRFoundation/AJRFoundation.xcodeproj/project.xcworkspace</string>
+    <key>IDESourceControlProjectWCConfigurationsKey</key>
+    <array>
+        <dict>
+            <key>IDESourceControlWCCRepositoryIndentifierKey</key>
+            <string>45985F3B-F04B-4F8D-8935-6BA2DFAC97B6</string>
+            <key>IDESourceControlWorkingCopyOriginKey</key>
+            <string>http://araftis@src.apple.com/svn/devtech/Users/araftis/Source/TRUNK</string>
+            <key>IDESourceControlWorkingCopyRelativeInstallLocationKey</key>
+            <string>New Source</string>
+        </dict>
+    </array>
+</dict>
+</plist>

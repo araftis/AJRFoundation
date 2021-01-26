@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugindata owner="com.ajr.framework.AJRFoundation" version="1">
+    <extension-point name="ajr_good_test_sans_class_in_error_file">
+</plugindata>

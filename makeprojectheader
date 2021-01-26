@@ -1,0 +1,25 @@
+#!/bin/csh -f
+
+set names = ( $cwd:t AJRPhoneFoundation )
+
+foreach name ( $names )
+    set header = $name.h
+    set define = __${name}_h__
+
+    echo -n "Creating $header..."
+        rm -f $header
+        touch $header
+        
+        echo "#ifndef $define" >> $header
+        echo "#define $define" >> $header
+        echo "" >> $header
+
+        echo "#import <Foundation/Foundation.h>" >> $header
+        echo "" >> $header
+    
+        find Classes -name "*[^P].h" -print | awk -F/ '{printf("%s\n", $NF);}' | sort | awk '{printf("#import <'$name'/%s>\n", $1);}' >> $header
+    
+        echo "" >> $header
+        echo "#endif $define" >> $header
+    echo "done."
+end

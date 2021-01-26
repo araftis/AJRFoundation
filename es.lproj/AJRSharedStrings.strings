@@ -1,0 +1,18 @@
+/* 
+   AJRSharedStrings.strings
+   AJRFoundation
+
+   Created by A.J. Raftis on 8/21/09.
+   Copyright 2009 A.J. Raftis. All rights reserved.
+ */
+"Error" = "Error";
+"Warning" = "Aviso";
+"Info" = "Información";
+"Quit Application" = "Salir de la aplicación";
+
+/* Common buttons in dialog panels */
+"Cancel" = "Cancelar";
+"Choose" = "Escojer";
+"Yes" = "Sí";
+"No" = "No";
+"OK" = "OK";
