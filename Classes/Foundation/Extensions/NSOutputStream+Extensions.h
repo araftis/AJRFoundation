@@ -20,11 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) NSStringEncoding encoding;
 
 /*! Returns the data of a memory stream. Returns nil if this isn't a memory stream. */
-- (nullable NSData *)ajr_data;
+@property (nonatomic,nullable,readonly) NSData *ajr_data;
 /*! Returns the memory stream's data as a string using the supplied encoding.
  @param encoding The desired string encoding.
  */
-- (nullable NSString *)ajr_dataAsStringUsingEncoding:(NSStringEncoding)encoding;
+- (nullable NSString *)ajr_dataAsStringUsingEncoding:(NSStringEncoding)encoding NS_SWIFT_NAME(ajr_dataAsString(using:));
 
 /*! Writes the endian BOM when using unicode string encoding. You should call this once, first, if writing to a unicode string encoding above UTF8. */
 - (NSInteger)writeUnicodeBOM;
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSInteger)writeCFormat:(const char *)cFormat arguments:(va_list)args;
 - (NSInteger)writeCFormat:(const char *)cFormat, ...;
 - (NSInteger)writeData:(NSData *)data;
-- (NSInteger)writeString:(NSString *)string;
+- (NSInteger)writeString:(NSString *)string NS_SWIFT_NAME(write(string:));
 - (NSInteger)writeFormat:(NSString *)format arguments:(va_list)args;
 - (NSInteger)writeFormat:(NSString *)format, ...;
 

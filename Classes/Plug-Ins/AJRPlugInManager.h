@@ -24,7 +24,7 @@ extern void AJRRegisterPluinTransformer(NSString *type, AJRPlugInValueTransforme
 /*! Does the initial setup of the plugin manager. */
 + (void)initializePlugInManager;
 
-@property (nonatomic,class,readonly) AJRPlugInManager *sharedPlugInManager;
+@property (nonatomic,class,readonly) AJRPlugInManager *sharedPlugInManager NS_SWIFT_NAME(shared);
 
 - (void)registerExtensionPoint:(NSString *)factoryClassName
                       withName:(NSString *)name
