@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^AJRObserverBlock)(id object, NSString *keyPath, NSDictionary<NSKeyValueChangeKey, id> * _Nullable change);
 
-@protocol AJRInvaliation <NSObject>
+@protocol AJRInvalidation <NSObject>
 
 - (void)invalidate;
 
@@ -45,7 +45,7 @@ typedef void (^AJRObserverBlock)(id object, NSString *keyPath, NSDictionary<NSKe
 
 #pragma mark - Observation
 
-- (id <AJRInvaliation>)addObserver:(id)object forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options block:(AJRObserverBlock)observer;
+- (id <AJRInvalidation>)addObserver:(id)object forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options block:(AJRObserverBlock)observer;
 
 @end
 
