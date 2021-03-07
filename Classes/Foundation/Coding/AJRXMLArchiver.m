@@ -8,10 +8,12 @@
 
 #import "AJRXMLArchiver.h"
 
+#import "AJRLogging.h"
 #import "AJRXMLCoder.h"
 #import "AJRXMLCoding.h"
 #import "AJRXMLOutputStream.h"
 #import "AJRObjectID.h"
+#import "NSData+Extensions.h"
 
 typedef void (^AJRXMLEncodingBlock)(void);
 
@@ -373,6 +375,19 @@ typedef void (^AJRXMLObjectEncoder)(void);
         [self encodeUInteger:range.location forKey:@"location"];
         [self encodeUInteger:range.length forKey:@"length"];
     }];
+}
+
+- (void)encodeURL:(NSURL *)url forKey:(NSString *)key {
+    [_outputStream addAttribute:key withValue:url.absoluteString];
+}
+
+- (void)encodeURLBookmark:(NSURL *)url forKey:(NSString *)key {
+    NSData *data = [url bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
+    if (data) {
+        [self _encodeObject:data forKey:key];
+    } else {
+        AJRLog(AJRXMLCodingLogDomain, AJRLogLevelError, @"Failed to encode URL as bookmark. This will likely result in an incomplete archive: %@", url);
+    }
 }
 
 @end

@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const AJRXMLCodingException;
 extern NSString * const AJRXMLCodingErrorDomain;
+extern NSString * const AJRXMLCodingLogDomain;
 
 typedef void (^AJRXMLUnarchiverFinalizer)(void);
 typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _Nullable * _Nullable error);
@@ -58,6 +59,8 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 - (void)encodeText:(NSString *)text;
 - (void)encodeText:(NSString *)text forKey:(NSString *)key;
 - (void)encodeComment:(NSString *)text;
+- (void)encodeURL:(NSURL *)url forKey:(NSString *)key;
+- (void)encodeURLBookmark:(NSURL *)url forKey:(NSString *)key;
 
 - (void)finalizeDecodeWithBlock:(AJRXMLUnarchiverFinalizer)finalizer;
 - (void)decodeObjectForKey:(NSString *)key setter:(nullable void (^)(id _Nullable object))setter;
@@ -81,6 +84,8 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 // Additional conveniences that produce slightly nicer results than the default implementations
 - (void)decodeGroupForKey:(NSString *)key usingBlock:(void (^)(void))block setter:(nullable void (^)(void))setter;
 - (void)decodeTextUsingSetter:(void (^)(NSString *))setter;
+- (void)decodeURLForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter;
+- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter;
 
 @end
 

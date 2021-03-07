@@ -15,6 +15,7 @@
 
 NSString * const AJRXMLCodingException = @"AJRXMLCodingException";
 NSString * const AJRXMLCodingErrorDomain = @"AJRXMLCodingErrorDomain";
+NSString * const AJRXMLCodingLogDomain = @"AJRXMLCodingLogDomain";
 
 @implementation NSObject (AJRXMLCoding)
 
@@ -139,6 +140,12 @@ NSString * const AJRXMLCodingErrorDomain = @"AJRXMLCodingErrorDomain";
 - (void)encodeRange:(NSRange)range forKey:(NSString *)key {
 }
 
+- (void)encodeURL:(NSURL *)url forKey:(NSString *)key {
+}
+
+- (void)encodeURLBookmark:(NSURL *)url forKey:(NSString *)key {
+}
+
 //- (void)encodeArray:(NSArray *)array forKey:(NSString *)key objectEncoder:(void (^)(id object))objectEncoder {
 //}
 //
@@ -208,6 +215,9 @@ NSString * const AJRXMLCodingErrorDomain = @"AJRXMLCodingErrorDomain";
 }
 
 - (void)decodeRangeForKey:(NSString *)key setter:(void (^)(NSRange range))setter {
+}
+
+- (void)decodeURLForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
 }
 
 - (void)finalizeDecodeWithBlock:(AJRXMLUnarchiverFinalizer)finalizer {

@@ -84,6 +84,14 @@
 		FA0CDEED2360EF0E00BC4DA9 /* NSObject+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0CDEEC2360EF0E00BC4DA9 /* NSObject+ExtensionsTests.m */; };
 		FA0CDEEF236128D500BC4DA9 /* NSRange+ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0CDEEE236128D500BC4DA9 /* NSRange+ExtensionsTests.swift */; };
 		FA0CDEF12361299000BC4DA9 /* NSRunLoop+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0CDEF02361299000BC4DA9 /* NSRunLoop+ExtensionsTests.m */; };
+		FA0F560425E477DD00DD0F3D /* AJREditableObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0F560025E477DD00DD0F3D /* AJREditableObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA0F560525E477DD00DD0F3D /* AJREditableObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0F560025E477DD00DD0F3D /* AJREditableObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA0F560625E477DD00DD0F3D /* AJREditingContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0F560125E477DD00DD0F3D /* AJREditingContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA0F560725E477DD00DD0F3D /* AJREditingContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0F560125E477DD00DD0F3D /* AJREditingContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA0F560825E477DD00DD0F3D /* AJREditingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0F560225E477DD00DD0F3D /* AJREditingContext.m */; };
+		FA0F560925E477DD00DD0F3D /* AJREditingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0F560225E477DD00DD0F3D /* AJREditingContext.m */; };
+		FA0F560A25E477DD00DD0F3D /* AJREditableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0F560325E477DD00DD0F3D /* AJREditableObject.m */; };
+		FA0F560B25E477DD00DD0F3D /* AJREditableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0F560325E477DD00DD0F3D /* AJREditableObject.m */; };
 		FA15800E0EB529DC0094664B /* AJRTimeFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA15800C0EB529DC0094664B /* AJRTimeFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA15800F0EB529DC0094664B /* AJRTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA15800D0EB529DC0094664B /* AJRTimeFormatter.m */; };
 		FA1584150EB7A7950094664B /* AJRFileFinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FA1584130EB7A7950094664B /* AJRFileFinder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -923,6 +931,10 @@
 		FA0CDEEC2360EF0E00BC4DA9 /* NSObject+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FA0CDEEE236128D500BC4DA9 /* NSRange+ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+ExtensionsTests.swift"; sourceTree = "<group>"; };
 		FA0CDEF02361299000BC4DA9 /* NSRunLoop+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSRunLoop+ExtensionsTests.m"; sourceTree = "<group>"; };
+		FA0F560025E477DD00DD0F3D /* AJREditableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJREditableObject.h; sourceTree = "<group>"; };
+		FA0F560125E477DD00DD0F3D /* AJREditingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJREditingContext.h; sourceTree = "<group>"; };
+		FA0F560225E477DD00DD0F3D /* AJREditingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJREditingContext.m; sourceTree = "<group>"; };
+		FA0F560325E477DD00DD0F3D /* AJREditableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJREditableObject.m; sourceTree = "<group>"; };
 		FA15800C0EB529DC0094664B /* AJRTimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRTimeFormatter.h; sourceTree = "<group>"; };
 		FA15800D0EB529DC0094664B /* AJRTimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRTimeFormatter.m; sourceTree = "<group>"; };
 		FA1584130EB7A7950094664B /* AJRFileFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFileFinder.h; sourceTree = "<group>"; };
@@ -1420,6 +1432,7 @@
 			children = (
 				FAC4DF230ED49CD300897E9B /* Activities */,
 				FA27FB6913D655CD006BAE89 /* Command Line */,
+				FA0F55FF25E477C900DD0F3D /* Editing */,
 				FA94DDA11118D7DD00FFC2D8 /* Expressions */,
 				FA4FD4230E8BEBBF00F05C19 /* Foundation */,
 				FAAD99D813F449AC00917C90 /* Logging */,
@@ -1448,6 +1461,17 @@
 				FA09AEBC217D501B0095FBC5 /* NSUnit+Extensions.m */,
 			);
 			path = Measurements;
+			sourceTree = "<group>";
+		};
+		FA0F55FF25E477C900DD0F3D /* Editing */ = {
+			isa = PBXGroup;
+			children = (
+				FA0F560025E477DD00DD0F3D /* AJREditableObject.h */,
+				FA0F560325E477DD00DD0F3D /* AJREditableObject.m */,
+				FA0F560125E477DD00DD0F3D /* AJREditingContext.h */,
+				FA0F560225E477DD00DD0F3D /* AJREditingContext.m */,
+			);
+			path = Editing;
 			sourceTree = "<group>";
 		};
 		FA206FE5195251F80065A290 /* Coding */ = {
@@ -2112,6 +2136,7 @@
 				FAA75F862343020A00523F91 /* NSDictionary+ExtensionsP.h in Headers */,
 				FA4FD5900E8BEBBF00F05C19 /* NSDate+Extensions.h in Headers */,
 				FA4FD5920E8BEBBF00F05C19 /* NSDictionary+Extensions.h in Headers */,
+				FA0F560425E477DD00DD0F3D /* AJREditableObject.h in Headers */,
 				FA4FD5940E8BEBBF00F05C19 /* NSMutableString+Extensions.h in Headers */,
 				FA6FFEB72203DF500083357D /* AJRSemaphores.h in Headers */,
 				FA4FD5980E8BEBBF00F05C19 /* NSNumber+Extensions.h in Headers */,
@@ -2198,6 +2223,7 @@
 				FA48B62B111CA45400D5D69A /* AJROperatorExpression.h in Headers */,
 				FA48B667111CB1C400D5D69A /* AJRUnionOperator.h in Headers */,
 				FAF5065E22E82DBE000799FB /* AJRDebug.h in Headers */,
+				FA0F560625E477DD00DD0F3D /* AJREditingContext.h in Headers */,
 				FA42F79D20CF75A4001AF25E /* AJRFoundationPrivate.h in Headers */,
 				FA48B671111CB45800D5D69A /* AJRIntersectOperator.h in Headers */,
 				FA48B683111CD98E00D5D69A /* AJRFunction.h in Headers */,
@@ -2252,6 +2278,7 @@
 				FAA75F872343020B00523F91 /* NSDictionary+ExtensionsP.h in Headers */,
 				FA2AC66B196616360052EB20 /* AJRFoundation.h in Headers */,
 				FA2AC670196616370052EB20 /* AJRActivity.h in Headers */,
+				FA0F560525E477DD00DD0F3D /* AJREditableObject.h in Headers */,
 				FA2AC671196616370052EB20 /* AJRMain.h in Headers */,
 				FA2AC673196616370052EB20 /* AJRServerProtocols.h in Headers */,
 				FA2AC674196616370052EB20 /* AJRConstantExpression.h in Headers */,
@@ -2349,6 +2376,7 @@
 				FA2AC6C51966163C0052EB20 /* NSCoder+Extensions.h in Headers */,
 				FA2AC6C61966163D0052EB20 /* NSData+Base64.h in Headers */,
 				FA2AC6C71966163D0052EB20 /* NSData+Extensions.h in Headers */,
+				FA0F560725E477DD00DD0F3D /* AJREditingContext.h in Headers */,
 				FA5FAA152368CEBD0027F178 /* NSSet+ExtensionsP.h in Headers */,
 				FA4AEBD020AA805900875127 /* NSCharacterSet+Extensions.h in Headers */,
 				FA2AC6C81966163D0052EB20 /* NSData+UU.h in Headers */,
@@ -2628,6 +2656,7 @@
 				FA6FFEB42203CE910083357D /* AJRSemaphores.swift in Sources */,
 				FA2AC6F819661FCE0052EB20 /* NSObject+Extensions_MRR.m in Sources */,
 				FA8925AF21FAB88D00246D46 /* AJRPathObserver.m in Sources */,
+				FA0F560825E477DD00DD0F3D /* AJREditingContext.m in Sources */,
 				FA1584160EB7A7950094664B /* AJRFileFinder.m in Sources */,
 				FAFE4B150EC5032B00AE17D0 /* NSMutableArray+Extensions.m in Sources */,
 				FAFE4B5D0EC504C000AE17D0 /* NSRunLoop+Extensions.m in Sources */,
@@ -2724,6 +2753,7 @@
 				FA48B672111CB45800D5D69A /* AJRIntersectOperator.m in Sources */,
 				FA471ED1195C986A009A6455 /* NSInputStream+Extensions.m in Sources */,
 				FA07C8C0220FBE060077A0B5 /* AJRFunctions.swift in Sources */,
+				FA0F560A25E477DD00DD0F3D /* AJREditableObject.m in Sources */,
 				FA48B684111CD98E00D5D69A /* AJRFunction.m in Sources */,
 				FA48B692111CDD7500D5D69A /* AJRBasicMathFunctions.m in Sources */,
 				FA48B7051120A4E900D5D69A /* AJRExpressionFunctionStackFrame.m in Sources */,
@@ -2784,6 +2814,7 @@
 				FA2AC5EF196615F10052EB20 /* AJRConstantExpression.m in Sources */,
 				FA2AC5F0196615F10052EB20 /* AJRExpression.m in Sources */,
 				FA59A992228CD77D007FFB4F /* AJRTimeIntervalFormatter.m in Sources */,
+				FA0F560925E477DD00DD0F3D /* AJREditingContext.m in Sources */,
 				FA6FFE9C2202CE070083357D /* Dispatch+Extensions.swift in Sources */,
 				FA2AC5F1196615F10052EB20 /* AJRFunctionExpression.m in Sources */,
 				FADDA135229BB71800257007 /* XMLNode+Extensions.swift in Sources */,
@@ -2857,6 +2888,7 @@
 				FA2AC61C196615F20052EB20 /* AJRDelegateProxy.m in Sources */,
 				FAA75F7723385FF200523F91 /* NSNumber+XMLCoding.m in Sources */,
 				FA2AC61D196615F20052EB20 /* AJRFileFinder.m in Sources */,
+				FA0F560B25E477DD00DD0F3D /* AJREditableObject.m in Sources */,
 				FACEC3F622CB0358008AA6DB /* NSRange+Extensions.swift in Sources */,
 				FA2AC61E196615F20052EB20 /* AJRFractionFormatter.m in Sources */,
 				FA5EFBD820DF7BCB006C48B0 /* AJRPlugInManager.m in Sources */,

@@ -16,6 +16,8 @@
 #import <AJRFoundation/AJRConversions.h>
 #import <AJRFoundation/AJRDelegateProxy.h>
 #import <AJRFoundation/AJRDivideOperator.h>
+#import <AJRFoundation/AJREditableObject.h>
+#import <AJRFoundation/AJREditingContext.h>
 #import <AJRFoundation/AJREqualsOperator.h>
 #import <AJRFoundation/AJRExclusiveOrOperator.h>
 #import <AJRFoundation/AJRExponentOperator.h>

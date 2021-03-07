@@ -598,6 +598,46 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     }];
 }
 
+- (void)decodeURLForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
+    [[_stack lastObject] setSetter:^BOOL(id rawValue, NSError **error) {
+        NSString *string = AJRObjectIfKindOfClass(rawValue, NSString);
+        if (string != nil) {
+            NSURL *url = [NSURL URLWithString:rawValue];
+            if (url != nil) {
+                return [self callBlock:^{
+                    if (setter != NULL) {
+                        setter(url);
+                    }
+                } catchingExceptionUsingError:error];
+            }
+        }
+        NSError *localError = [NSError errorWithDomain:AJRXMLCodingErrorDomain format:@"Unable to decode value for URL: %@", rawValue];
+        AJRSetOutParameter(error, localError);
+        return NO;
+    } forKey:key];
+}
+
+- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
+    [[_stack lastObject] setSetter:^BOOL(id rawValue, NSError **error) {
+        // Maybe we have a bookmark...
+        NSData *data = AJRObjectIfKindOfClass(rawValue, NSData);
+        NSError *localError = nil;
+        if (data != nil) {
+            NSURL *url = [NSURL URLByResolvingBookmarkData:data options:NSURLBookmarkResolutionWithSecurityScope relativeToURL:nil bookmarkDataIsStale:NULL error:&localError];
+            if (url != nil) {
+                return [self callBlock:^{
+                    if (setter != NULL) {
+                        setter(url);
+                    }
+                } catchingExceptionUsingError:error];
+            }
+        }
+        localError = [NSError errorWithDomain:AJRXMLCodingErrorDomain format:@"Unable to decode value for URL: %@", rawValue];
+        AJRSetOutParameter(error, localError);
+        return NO;
+    } forKey:key];
+}
+
 #pragma mark - NSXMLParserDelegate
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(nullable NSString *)namespaceURI qualifiedName:(nullable NSString *)qName attributes:(NSDictionary<NSString *, NSString *> *)attributeDict {

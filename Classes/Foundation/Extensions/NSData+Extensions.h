@@ -2,7 +2,7 @@
 
 #import <AJRFoundation/AJRXMLCoding.h>
 
-@interface NSData (Extensions) <AJRXMLEncoding>
+@interface NSData (Extensions) <AJRXMLEncoding, AJRXMLCoding>
 
 - (void)ajr_dump;
 - (void)ajr_dumpToStream:(NSFileHandle *)stream;
