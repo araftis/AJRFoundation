@@ -220,6 +220,9 @@ NSString * const AJRXMLCodingLogDomain = @"AJRXMLCodingLogDomain";
 - (void)decodeURLForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
 }
 
+- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
+}
+
 - (void)finalizeDecodeWithBlock:(AJRXMLUnarchiverFinalizer)finalizer {
 }
 
