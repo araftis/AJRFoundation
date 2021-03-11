@@ -17,9 +17,9 @@ extern NSString * const AJRXMLDecodingLoggingDomain;
 
 + (nullable Class)classForXMLName:(NSString *)name;
 
-+ (nullable id)unarchivedObjectWithStream:(NSInputStream *)stream topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error;
-+ (nullable id)unarchivedObjectWithData:(NSData *)data topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error;
-+ (nullable id)unarchivedObjectWithURL:(NSURL *)url topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error;
++ (nullable id)unarchivedObjectWithStream:(NSInputStream *)stream topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
++ (nullable id)unarchivedObjectWithData:(NSData *)data topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
++ (nullable id)unarchivedObjectWithURL:(NSURL *)url topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
 + (nullable id)unarchivedObjectWithStream:(NSInputStream *)stream error:(NSError * _Nullable * _Nullable)error;
 + (nullable id)unarchivedObjectWithData:(NSData *)data error:(NSError * _Nullable * _Nullable)error;
 + (nullable id)unarchivedObjectWithURL:(NSURL *)url error:(NSError * _Nullable * _Nullable)error;
