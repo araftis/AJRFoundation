@@ -510,6 +510,10 @@
 		FA7742FA2357D6F20041824C /* AJRStreamUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7742F62357D6F20041824C /* AJRStreamUtilities.m */; };
 		FA7742FC2357EE7A0041824C /* NSInputStream+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7742FB2357EE7A0041824C /* NSInputStream+ExtensionsTests.m */; };
 		FA85C23520B62C8D00A5EE38 /* AJRFunctionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA85C23420B62C8D00A5EE38 /* AJRFunctionsTests.m */; };
+		FA8884AF26014C5A00DFE50B /* BinaryInteger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8884AE26014C5A00DFE50B /* BinaryInteger+Extensions.swift */; };
+		FA8884B026014C5A00DFE50B /* BinaryInteger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8884AE26014C5A00DFE50B /* BinaryInteger+Extensions.swift */; };
+		FA8884B826014C9400DFE50B /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8884B726014C9400DFE50B /* Data+Extensions.swift */; };
+		FA8884B926014C9400DFE50B /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8884B726014C9400DFE50B /* Data+Extensions.swift */; };
 		FA890FDB221FE68A0012B0F2 /* AJRPropertyListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA890FDA221FE68A0012B0F2 /* AJRPropertyListProvider.swift */; };
 		FA890FDC221FE68A0012B0F2 /* AJRPropertyListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA890FDA221FE68A0012B0F2 /* AJRPropertyListProvider.swift */; };
 		FA890FE0222008680012B0F2 /* AJRWebSearchProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA890FDF222008680012B0F2 /* AJRWebSearchProvider.swift */; };
@@ -1133,6 +1137,8 @@
 		FA7742FB2357EE7A0041824C /* NSInputStream+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSInputStream+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FA7AE4B517A2DCF600BAFA98 /* AJRTestFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AJRTestFoundation.framework; path = "../../../Library/Developer/Xcode/DerivedData/Frameworks-eufqtctxzzcxnedoxvszksdqyqbx/Build/Products/Debug/AJRTestFoundation.framework"; sourceTree = "<group>"; };
 		FA85C23420B62C8D00A5EE38 /* AJRFunctionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRFunctionsTests.m; sourceTree = "<group>"; };
+		FA8884AE26014C5A00DFE50B /* BinaryInteger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BinaryInteger+Extensions.swift"; sourceTree = "<group>"; };
+		FA8884B726014C9400DFE50B /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		FA890FDA221FE68A0012B0F2 /* AJRPropertyListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRPropertyListProvider.swift; sourceTree = "<group>"; };
 		FA890FDF222008680012B0F2 /* AJRWebSearchProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRWebSearchProvider.swift; sourceTree = "<group>"; };
 		FA8925AB21FAB88D00246D46 /* AJRPathObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRPathObserver.h; sourceTree = "<group>"; };
@@ -1945,7 +1951,9 @@
 				FA2FF98A20942562001518D6 /* AJRCollection.h */,
 				FA2FF98B20942562001518D6 /* AJRCollection.m */,
 				FA6FFE94220276F40083357D /* Array+Extensions.swift */,
+				FA8884AE26014C5A00DFE50B /* BinaryInteger+Extensions.swift */,
 				FA6FFE8E220274A80083357D /* Collection+Extensions.swift */,
+				FA8884B726014C9400DFE50B /* Data+Extensions.swift */,
 				FA6FFE91220276A60083357D /* Dictionary+Extensions.swift */,
 				FA6FFE9A2202CE070083357D /* Dispatch+Extensions.swift */,
 				FA4FD43D0E8BEBBF00F05C19 /* NSArray+Extensions.h */,
@@ -2705,6 +2713,7 @@
 				FA2ED04B0FF2C92700CCAD09 /* AJRDelegateProxy.m in Sources */,
 				FA07C8A4220EB9DB0077A0B5 /* NSCoder+Extensions.swift in Sources */,
 				FAA53500103F3CCE008C0DF7 /* AJRTranslator.m in Sources */,
+				FA8884AF26014C5A00DFE50B /* BinaryInteger+Extensions.swift in Sources */,
 				FABCE5B610D6D0E9009DF59C /* NSCoder+Extensions.m in Sources */,
 				FA5FAA3223695AB80027F178 /* NSURLQueryItem+Extensions.m in Sources */,
 				FA0587D5192FEB57002913B6 /* NSOutputStream+Extensions.m in Sources */,
@@ -2791,6 +2800,7 @@
 				FA6FFEBA220560A10083357D /* String+Extensions.swift in Sources */,
 				FAA3263D1405C21800A620E8 /* AJRFractionFormatter.m in Sources */,
 				FAD16A851422ABD400FCEB04 /* NSUserDefaults+Extensions.m in Sources */,
+				FA8884B826014C9400DFE50B /* Data+Extensions.swift in Sources */,
 				FABE1F4A152F94DF006D3FCA /* AJRPlugInManager.m in Sources */,
 				FABE1F4E152F95CE006D3FCA /* AJRPlugInExtensionPoint.m in Sources */,
 				FAB312DF152F9AFA00D5C72A /* AJRPlugInExtension.m in Sources */,
@@ -2936,6 +2946,7 @@
 				FA2AC641196615F20052EB20 /* NSData+Extensions.m in Sources */,
 				FA2AC642196615F20052EB20 /* NSData+UU.m in Sources */,
 				FADDA12E229BB6DB00257007 /* XMLElement.swift in Sources */,
+				FA8884B026014C5A00DFE50B /* BinaryInteger+Extensions.swift in Sources */,
 				FA5B950520C9C96E00B01849 /* AJRPlugInElement.m in Sources */,
 				FA2AC643196615F20052EB20 /* NSDate+Extensions.m in Sources */,
 				FA2AC644196615F20052EB20 /* NSDictionary+Extensions.m in Sources */,
@@ -2966,6 +2977,7 @@
 				FA2AC657196615F20052EB20 /* NSString+Extensions.m in Sources */,
 				FAB7DE93255216BD00FAD684 /* OrderedDictionary.swift in Sources */,
 				FA09AEC0217D555D0095FBC5 /* NSUnit+Extensions.m in Sources */,
+				FA8884B926014C9400DFE50B /* Data+Extensions.swift in Sources */,
 				FA2AC65A196615F20052EB20 /* NSURL+Extensions.m in Sources */,
 				FA2AC65B196615F20052EB20 /* NSURLRequest+Extensions.m in Sources */,
 				FA2AC65C196615F20052EB20 /* NSUserDefaults+Extensions.m in Sources */,
