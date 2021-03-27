@@ -1,9 +1,3 @@
-//
-//  AJRPropertyEnumerator.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/10/18.
-//
 
 #import <Foundation/Foundation.h>
 

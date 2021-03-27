@@ -1,9 +1,3 @@
-//
-//  XMLNodeExtensions.swift
-//  radar-core
-//
-//  Created by Alex Raftis on 9/6/18.
-//
 
 import Foundation
 

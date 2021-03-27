@@ -1,9 +1,3 @@
-//
-//  AJRPlugInManagerTest.m
-//  AJRFoundation Tests
-//
-//  Created by A.J. Raftis on 6/6/18.
-//
 
 #import <XCTest/XCTest.h>
 

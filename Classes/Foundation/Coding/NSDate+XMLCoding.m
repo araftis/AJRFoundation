@@ -1,9 +1,3 @@
-//
-//  NSDate+XMLCoding.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 1/15/21.
-//
 
 #import "NSDate+XMLCoding.h"
 

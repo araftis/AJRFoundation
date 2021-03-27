@@ -1,9 +1,3 @@
-//
-//  XMLElementExtensions.swift
-//  radar-core
-//
-//  Created by Alex Raftis on 8/22/18.
-//
 
 import Foundation
 

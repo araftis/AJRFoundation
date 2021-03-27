@@ -1,4 +1,3 @@
-/* NSRunLoop+Extensions.m created by alex on Fri 06-Nov-1998 */
 
 #import "NSRunLoop+Extensions.h"
 

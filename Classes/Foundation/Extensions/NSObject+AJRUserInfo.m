@@ -1,4 +1,3 @@
-/* NSObject-UserInfo.m created by alex on Thu 17-Jul-1997 */
 
 #import <AJRFoundation/NSObject+AJRUserInfo.h>
 

@@ -1,4 +1,3 @@
-/* AJRServerProtocols.h created by tsng on Wed 06-Jan-1999 */
 
 #import <Foundation/Foundation.h>
 

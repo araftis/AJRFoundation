@@ -1,10 +1,3 @@
-//
-//  AJRDelegateProxy.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/24/09.
-//  Copyright 2009 A.J. Raftis. All rights reserved.
-//
 
 #import "AJRDelegateProxy.h"
 

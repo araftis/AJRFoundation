@@ -1,10 +1,3 @@
-//
-//  AJRXMLBuilder.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 5/16/14.
-//
-//
 
 import Foundation
 

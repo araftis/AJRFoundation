@@ -1,9 +1,3 @@
-//
-//  NSCharacterSet+Extensions.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 5/14/18.
-//
 
 #import <Foundation/Foundation.h>
 

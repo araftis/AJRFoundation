@@ -1,9 +1,3 @@
-//
-//  AJRFoundationPrivate.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/11/18.
-//
 
 #ifndef AJRFoundationPrivate_h
 #define AJRFoundationPrivate_h

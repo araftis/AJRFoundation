@@ -1,4 +1,3 @@
-/* AJRMutableCaseInsensitiveDictionary.m created by alex on Thu 28-Oct-1999 */
 
 #import "AJRMutableCaseInsensitiveDictionary.h"
 

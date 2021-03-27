@@ -399,7 +399,6 @@
 		FA4FD59C0E8BEBBF00F05C19 /* NSString+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA4FD44B0E8BEBBF00F05C19 /* NSString+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA4FD59D0E8BEBBF00F05C19 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4FD44C0E8BEBBF00F05C19 /* NSString+Extensions.m */; };
 		FA4FDDC80E8BFA5100F05C19 /* AJRFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = FA4FDDC70E8BFA5100F05C19 /* AJRFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FA53B77617A2D87F0009D370 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADE913F178C713600D62668 /* XCTest.framework */; };
 		FA53B77C17A2D87F0009D370 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA53B77A17A2D87F0009D370 /* InfoPlist.strings */; };
 		FA53B78A17A2D8E70009D370 /* AJRExpressionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA64F6731562D218004DFF35 /* AJRExpressionTests.m */; };
 		FA53B79117A2D91E0009D370 /* AJRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* AJRFoundation.framework */; };
@@ -539,7 +538,6 @@
 		FA904BB120CCE26200DB89F2 /* AJRMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FA904BAE20CCE26200DB89F2 /* AJRMutableOrderedDictionary.m */; };
 		FA904BB220CCE26200DB89F2 /* AJRMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FA904BAE20CCE26200DB89F2 /* AJRMutableOrderedDictionary.m */; };
 		FA904BC320CD115E00DB89F2 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA904BC220CD115E00DB89F2 /* libxml2.tbd */; };
-		FA904BC520CD116D00DB89F2 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA904BC420CD116D00DB89F2 /* libxml2.tbd */; };
 		FA90916419526D9B0050F57C /* AJRObjectID.h in Headers */ = {isa = PBXBuildFile; fileRef = FA90916219526D9B0050F57C /* AJRObjectID.h */; };
 		FA90916519526D9B0050F57C /* AJRObjectID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA90916319526D9B0050F57C /* AJRObjectID.m */; };
 		FA920F94236AAAE300C95857 /* NSScanner+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA920F93236AAAE300C95857 /* NSScanner+ExtensionsTests.m */; };
@@ -955,6 +953,9 @@
 		FA27FB6C13D6561F006BAE89 /* AJRServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRServer.h; sourceTree = "<group>"; usesTabs = 1; };
 		FA27FB6D13D6561F006BAE89 /* AJRServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRServer.m; sourceTree = "<group>"; usesTabs = 1; };
 		FA27FB7213D65715006BAE89 /* AJRServerProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRServerProtocols.h; sourceTree = "<group>"; };
+		FA2876D3260D73B600F5BBE8 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		FA2876D4260D73B700F5BBE8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		FA2876DB260D7C0500F5BBE8 /* Tools */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Tools; sourceTree = "<group>"; };
 		FA2A14CA1CA4AD9F0024AEC2 /* AJRConstants.ajrplugindata */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; path = AJRConstants.ajrplugindata; sourceTree = "<group>"; };
 		FA2AC5CE196615000052EB20 /* AJRFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AJRFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA2AC6F419661A340052EB20 /* AJRFoundationOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundationOS.h; sourceTree = "<group>"; };
@@ -1053,7 +1054,6 @@
 		FA5B94EF20C87FDC00B01849 /* AJRPlugInManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRPlugInManagerTests.m; sourceTree = "<group>"; };
 		FA5B950020C9C96E00B01849 /* AJRPlugInElement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRPlugInElement.h; sourceTree = "<group>"; };
 		FA5B950120C9C96E00B01849 /* AJRPlugInElement.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRPlugInElement.m; sourceTree = "<group>"; };
-		FA5B950920C9D91400B01849 /* CopyAndValidatePlugInData */ = {isa = PBXFileReference; lastKnownFileType = text.script.csh; path = CopyAndValidatePlugInData; sourceTree = "<group>"; };
 		FA5B950E20CA3FFA00B01849 /* AJRPlugInManagerTestBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AJRPlugInManagerTestBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA5B951020CA3FFB00B01849 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA5B951420CA402F00B01849 /* AJRPlugInManagerTestBundle.ajrplugindata */ = {isa = PBXFileReference; explicitFileType = text.xml; path = AJRPlugInManagerTestBundle.ajrplugindata; sourceTree = "<group>"; };
@@ -1101,7 +1101,6 @@
 		FA64F67F1562D218004DFF35 /* NSPropertyList+ExtensionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPropertyList+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FA64F6831562D218004DFF35 /* NSURL+ExtensionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FA64F6B21562F069004DFF35 /* AJRFormatTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRFormatTests.m; sourceTree = "<group>"; };
-		FA679B66237B7D0A009FA2E8 /* CopyAndValidatePlugInDataBad */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.csh; path = CopyAndValidatePlugInDataBad; sourceTree = "<group>"; };
 		FA679B68237B7D88009FA2E8 /* AJRPlugInManagerTestBundleWithError.ajrplugindatabad */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; path = AJRPlugInManagerTestBundleWithError.ajrplugindatabad; sourceTree = "<group>"; };
 		FA679B6C237B8C76009FA2E8 /* AJRDelegateProxyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRDelegateProxyTests.m; sourceTree = "<group>"; };
 		FA679B6E237B937B009FA2E8 /* AJRFractionFormatterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRFractionFormatterTests.m; sourceTree = "<group>"; };
@@ -1135,7 +1134,6 @@
 		FA7742F52357D6F20041824C /* AJRStreamUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRStreamUtilities.h; sourceTree = "<group>"; };
 		FA7742F62357D6F20041824C /* AJRStreamUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRStreamUtilities.m; sourceTree = "<group>"; };
 		FA7742FB2357EE7A0041824C /* NSInputStream+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSInputStream+ExtensionsTests.m"; sourceTree = "<group>"; };
-		FA7AE4B517A2DCF600BAFA98 /* AJRTestFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AJRTestFoundation.framework; path = "../../../Library/Developer/Xcode/DerivedData/Frameworks-eufqtctxzzcxnedoxvszksdqyqbx/Build/Products/Debug/AJRTestFoundation.framework"; sourceTree = "<group>"; };
 		FA85C23420B62C8D00A5EE38 /* AJRFunctionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRFunctionsTests.m; sourceTree = "<group>"; };
 		FA8884AE26014C5A00DFE50B /* BinaryInteger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BinaryInteger+Extensions.swift"; sourceTree = "<group>"; };
 		FA8884B726014C9400DFE50B /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
@@ -1155,7 +1153,6 @@
 		FA904BAD20CCE26200DB89F2 /* AJRMutableOrderedDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRMutableOrderedDictionary.h; sourceTree = "<group>"; };
 		FA904BAE20CCE26200DB89F2 /* AJRMutableOrderedDictionary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRMutableOrderedDictionary.m; sourceTree = "<group>"; };
 		FA904BC220CD115E00DB89F2 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		FA904BC420CD116D00DB89F2 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/usr/lib/libxml2.tbd; sourceTree = DEVELOPER_DIR; };
 		FA90916219526D9B0050F57C /* AJRObjectID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRObjectID.h; sourceTree = "<group>"; };
 		FA90916319526D9B0050F57C /* AJRObjectID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRObjectID.m; sourceTree = "<group>"; };
 		FA920F93236AAAE300C95857 /* NSScanner+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+ExtensionsTests.m"; sourceTree = "<group>"; };
@@ -1198,7 +1195,6 @@
 		FA94E0701118EE6000FFC2D8 /* AJRDivideOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRDivideOperator.m; sourceTree = "<group>"; };
 		FA99DF880EFCCD5200E4A979 /* NSXMLElement+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSXMLElement+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
 		FA99DF890EFCCD5200E4A979 /* NSXMLElement+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSXMLElement+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
-		FA9A64492092972300D6BBED /* AJRTestFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AJRTestFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAA133E3237FDBF000F0DF60 /* AJRFileFinderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRFileFinderTests.m; sourceTree = "<group>"; };
 		FAA133E5238E103500F0DF60 /* Collection+ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+ExtensionsTests.swift"; sourceTree = "<group>"; };
 		FAA133E7238E168700F0DF60 /* Dictionary+ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+ExtensionsTests.swift"; sourceTree = "<group>"; };
@@ -1312,7 +1308,6 @@
 		FADDA133229BB71800257007 /* XMLElement+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLElement+Extensions.swift"; sourceTree = "<group>"; };
 		FADDA18C22A3555100257007 /* AJRValueTransformers.ajrplugindata */ = {isa = PBXFileReference; explicitFileType = text.xml; path = AJRValueTransformers.ajrplugindata; sourceTree = "<group>"; };
 		FADDA18F22A355D000257007 /* AJRValueTransformers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRValueTransformers.swift; sourceTree = "<group>"; };
-		FADE913F178C713600D62668 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = ../../../../../Applications/Xcode.app/Contents/Developer/Library/Frameworks/XCTest.framework; sourceTree = SOURCE_ROOT; };
 		FADEADCF1966223D00BF6EB9 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		FADEADD11966234000BF6EB9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		FADEADD31966234800BF6EB9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -1363,7 +1358,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAB8A22323485F5C00FB789F /* libiconv.tbd in Frameworks */,
-				FA904BC520CD116D00DB89F2 /* libxml2.tbd in Frameworks */,
 				FADEADD81966241200BF6EB9 /* MobileCoreServices.framework in Frameworks */,
 				FADEADD41966234800BF6EB9 /* Foundation.framework in Frameworks */,
 				FADEADD21966234000BF6EB9 /* CFNetwork.framework in Frameworks */,
@@ -1377,7 +1371,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA53B79117A2D91E0009D370 /* AJRFoundation.framework in Frameworks */,
-				FA53B77617A2D87F0009D370 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1406,6 +1399,8 @@
 		0867D691FE84028FC02AAC07 /* AJRFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				FA2876D3260D73B600F5BBE8 /* LICENSE.md */,
+				FA2876D4260D73B700F5BBE8 /* README.md */,
 				FA4FDDC70E8BFA5100F05C19 /* AJRFoundation.h */,
 				FA42F79C20CF75A4001AF25E /* AJRFoundationPrivate.h */,
 				32DBCF5E0370ADEE00C91783 /* AJRFoundation_Prefix.pch */,
@@ -1415,7 +1410,7 @@
 				32C88DFF0371C24200C91783 /* Cocoa */,
 				FA63592D1582D9D600A06ABF /* Cocoa Touch */,
 				089C1665FE841158C02AAC07 /* Resources */,
-				FA5B950820C9D8F200B01849 /* Tools */,
+				FA2876DB260D7C0500F5BBE8 /* Tools */,
 				FA53B77717A2D87F0009D370 /* AJRFoundation Tests */,
 				FA64F6571562D14E004DFF35 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -1715,15 +1710,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		FA5B950820C9D8F200B01849 /* Tools */ = {
-			isa = PBXGroup;
-			children = (
-				FA5B950920C9D91400B01849 /* CopyAndValidatePlugInData */,
-				FA679B66237B7D0A009FA2E8 /* CopyAndValidatePlugInDataBad */,
-			);
-			path = Tools;
-			sourceTree = "<group>";
-		};
 		FA5B950F20CA3FFB00B01849 /* AJRPlugInManagerTestBundle */ = {
 			isa = PBXGroup;
 			children = (
@@ -1782,12 +1768,8 @@
 			children = (
 				FAB8A22123485F5000FB789F /* libiconv.tbd */,
 				FA904BC220CD115E00DB89F2 /* libxml2.tbd */,
-				FA904BC420CD116D00DB89F2 /* libxml2.tbd */,
-				FA9A64492092972300D6BBED /* AJRTestFoundation.framework */,
 				FAA34DCD196639DC0025E01D /* Mac OS X */,
 				FAA34DCC196639D80025E01D /* iOS */,
-				FA7AE4B517A2DCF600BAFA98 /* AJRTestFoundation.framework */,
-				FADE913F178C713600D62668 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

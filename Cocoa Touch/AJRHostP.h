@@ -1,9 +1,3 @@
-//
-//  AJRHostP.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 4/27/18.
-//
 
 #ifndef AJRHostP_h
 #define AJRHostP_h

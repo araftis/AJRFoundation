@@ -1,4 +1,3 @@
-/* AJRMethodEnumerator.m created by alex on Wed 23-Aug-2000 */
 
 #import "AJRMethodEnumerator.h"
 

@@ -1,9 +1,3 @@
-//
-//  AJRMutableCountedDictionary.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 5/15/19.
-//
 
 #import "AJRMutableCountedDictionary.h"
 

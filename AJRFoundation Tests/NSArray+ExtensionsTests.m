@@ -1,10 +1,3 @@
-//
-//  NSArray+ExtensionsTest.m
-//  AJRFoundation
-//
-//  Created by Scottie on 6/17/09.
-//  Copyright 2009 A.J. Raftis. All rights reserved.
-//
 
 #import <XCTest/XCTest.h>
 #import <AJRFoundation/AJRFoundation.h>

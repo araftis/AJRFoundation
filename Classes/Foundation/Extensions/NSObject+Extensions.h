@@ -1,10 +1,3 @@
-//
-//  NSObject+Extensions.h
-//  Web Tool
-//
-//  Created by A.J. Raftis on 4/12/07.
-//  Copyright 2007 A.J. Raftis. All rights reserved.
-//
 
 #import <AJRFoundation/NSObject+Extensions.h>
 

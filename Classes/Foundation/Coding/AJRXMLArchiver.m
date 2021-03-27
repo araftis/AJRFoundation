@@ -1,10 +1,3 @@
-//
-//  AJRXMLArchiver.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/18/14.
-//
-//
 
 #import "AJRXMLArchiver.h"
 

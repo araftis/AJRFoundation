@@ -1,9 +1,3 @@
-//
-//  AJRFileFinderTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 11/15/19.
-//
 
 #import <XCTest/XCTest.h>
 

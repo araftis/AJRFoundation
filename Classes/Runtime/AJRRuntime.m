@@ -1,9 +1,3 @@
-//
-//  AJRRuntime.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/10/18.
-//
 
 #import "AJRRuntime.h"
 

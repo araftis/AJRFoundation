@@ -67,7 +67,7 @@ public struct OrderedSet<E: Hashable>: Equatable, Collection {
         return inserted
     }
 
-    /*!
+    /**
      Adds all of the elements in collection to the set.
      */
     @inlinable public mutating func append<S>(contentsOf newElements: S) where Element == S.Element, S : Sequence {

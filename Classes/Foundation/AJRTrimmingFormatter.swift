@@ -1,10 +1,3 @@
-//
-//  AJRTrimmingFormatter.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/27/07.
-//  Copyright 2007 A.J. Raftis. All rights reserved.
-//
 
 import Foundation
 

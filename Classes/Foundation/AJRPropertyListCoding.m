@@ -1,9 +1,3 @@
-//
-//  AJRPropertyListCoding.c
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 5/13/18.
-//
 
 #import "AJRPropertyListCoding.h"
 

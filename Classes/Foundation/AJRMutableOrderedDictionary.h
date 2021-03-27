@@ -1,9 +1,3 @@
-//
-//  AJRMutableOrderedDictionary.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/9/18.
-//
 
 #import <Foundation/Foundation.h>
 

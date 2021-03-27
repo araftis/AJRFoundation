@@ -1,9 +1,3 @@
-//
-//  NSThread+Extensions.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 1/25/19.
-//
 
 #import "NSThread+Extensions.h"
 

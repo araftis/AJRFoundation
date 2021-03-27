@@ -1,9 +1,3 @@
-//
-//  AJRPlugInElement.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/7/18.
-//
 
 #import <AJRFoundation/AJRPlugInExtensionPoint.h>
 

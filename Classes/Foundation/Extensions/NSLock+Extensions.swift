@@ -1,9 +1,3 @@
-//
-//  NSLock+Extensions.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 6/23/19.
-//
 
 import Foundation
 

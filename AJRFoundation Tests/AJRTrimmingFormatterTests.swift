@@ -1,9 +1,3 @@
-//
-//  AJRTrimmingFormatterTests.swift
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 9/14/19.
-//
 
 import XCTest
 

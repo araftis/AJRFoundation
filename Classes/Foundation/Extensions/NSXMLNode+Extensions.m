@@ -1,10 +1,3 @@
-//
-//  NSXMLNode+Extensions.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 4/10/09.
-//  Copyright 2009 A.J. Raftis. All rights reserved.
-//
 
 #import "NSXMLNode+Extensions.h"
 

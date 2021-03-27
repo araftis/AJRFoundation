@@ -1,10 +1,3 @@
-//
-//  AJRHostTest.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/11/12.
-//
-//
 
 #import <XCTest/XCTest.h>
 

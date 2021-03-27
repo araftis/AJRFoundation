@@ -1,9 +1,3 @@
-//
-//  AJRDelegateProxyTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 11/12/19.
-//
 
 #import <XCTest/XCTest.h>
 

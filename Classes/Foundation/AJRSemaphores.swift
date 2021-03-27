@@ -1,9 +1,3 @@
-//
-//  AJRCountdownSemaphore.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 1/31/19.
-//
 
 import Foundation
 

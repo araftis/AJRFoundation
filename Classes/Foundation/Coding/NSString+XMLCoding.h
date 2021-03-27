@@ -1,9 +1,3 @@
-//
-//  NSString+XMLCoding.h
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 9/22/19.
-//
 
 #import <AJRFoundation/AJRXMLCoding.h>
 

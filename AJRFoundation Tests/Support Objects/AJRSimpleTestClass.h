@@ -1,9 +1,3 @@
-//
-//  AJRSimpleTestClass.h
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 10/29/19.
-//
 
 #import <AJRFoundation/AJRFoundation.h>
 

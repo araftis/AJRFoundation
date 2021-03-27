@@ -1,10 +1,3 @@
-//
-//  NSDateTest.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 1/15/09.
-//  Copyright 2009 A.J. Raftis. All rights reserved.
-//
 
 #import <XCTest/XCTest.h>
 

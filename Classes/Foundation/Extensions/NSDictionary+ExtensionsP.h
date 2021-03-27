@@ -1,9 +1,3 @@
-//
-//  NSDictionary+ExtensionsP.h
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 9/30/19.
-//
 
 #ifndef NSDictionary_ExtensionsP_h
 #define NSDictionary_ExtensionsP_h

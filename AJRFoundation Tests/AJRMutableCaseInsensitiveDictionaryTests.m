@@ -1,9 +1,3 @@
-//
-//  AJRMutableCaseInsensitiveDictionaryTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 11/5/19.
-//
 
 #import <XCTest/XCTest.h>
 

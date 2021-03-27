@@ -1,9 +1,3 @@
-//
-//  NSScanner+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 10/30/19.
-//
 
 #import <XCTest/XCTest.h>
 

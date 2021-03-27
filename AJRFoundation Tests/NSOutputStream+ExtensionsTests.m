@@ -1,9 +1,3 @@
-//
-//  NSOutputStreamTest.m
-//  AJRFoundation Tests
-//
-//  Created by A.J. Raftis on 6/3/18.
-//
 
 #import <AJRFoundation/AJRFoundation.h>
 #import <XCTest/XCTest.h>

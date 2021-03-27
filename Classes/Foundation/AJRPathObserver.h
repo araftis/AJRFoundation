@@ -1,9 +1,3 @@
-//
-//  AJRPathObserver.h
-//
-//  Created by A.J. Raftis on 2/10/12.
-//  Copyright (c) 2012 A.J. Raftis. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 

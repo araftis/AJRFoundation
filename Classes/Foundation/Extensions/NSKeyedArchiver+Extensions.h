@@ -1,9 +1,3 @@
-//
-//  NSKeyedArchiver+Extensions.h
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 12/17/20.
-//
 
 #import <Foundation/Foundation.h>
 

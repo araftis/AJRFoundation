@@ -1,9 +1,3 @@
-//
-//  UserDefaults+ExtensionsTests.swift
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 11/5/19.
-//
 
 import XCTest
 

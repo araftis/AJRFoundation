@@ -1,10 +1,3 @@
-//
-//  AJRTranslator.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 8/21/09.
-//  Copyright 2009 A.J. Raftis. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 

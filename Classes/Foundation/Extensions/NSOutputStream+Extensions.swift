@@ -1,9 +1,3 @@
-//
-//  NSOutputStream+Extensions.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 1/31/21.
-//
 
 import Foundation
 

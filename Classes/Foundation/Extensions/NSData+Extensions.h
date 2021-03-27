@@ -1,4 +1,3 @@
-/* NSData-Extensions.h created by alex on Fri 05-Nov-1999 */
 
 #import <AJRFoundation/AJRXMLCoding.h>
 

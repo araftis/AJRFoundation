@@ -1,9 +1,3 @@
-//
-//  AJRTimeIntervalFormatter+Extensions.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 7/7/19.
-//
 
 import Foundation
 

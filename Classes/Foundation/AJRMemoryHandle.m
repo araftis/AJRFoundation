@@ -1,4 +1,3 @@
-/* AJRMemoryHandle.m created by alex on Thu 21-Oct-1999 */
 
 #import "AJRMemoryHandle.h"
 

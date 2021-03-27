@@ -1,10 +1,3 @@
-//
-//  NSError+Extensions.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 5/23/12.
-//
-//
 
 #import "NSError+Extensions.h"
 

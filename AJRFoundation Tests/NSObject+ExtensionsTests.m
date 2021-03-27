@@ -1,9 +1,3 @@
-//
-//  NSObject+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 10/23/19.
-//
 
 #import <XCTest/XCTest.h>
 

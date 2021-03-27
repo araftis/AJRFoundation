@@ -1,9 +1,3 @@
-//
-//  Collection+Extensions.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 1/30/19.
-//
 
 import Foundation
 

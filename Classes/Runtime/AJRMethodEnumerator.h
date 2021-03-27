@@ -1,4 +1,3 @@
-/* AJRMethodEnumerator.h created by alex on Wed 23-Aug-2000 */
 #ifndef __AJR_METHOD_ENUMERATOR_H__
 #define __AJR_METHOD_ENUMERATOR_H__
 

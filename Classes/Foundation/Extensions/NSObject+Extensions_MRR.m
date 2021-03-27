@@ -1,10 +1,3 @@
-//
-//  NSObject+Extensions_MRR.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 7/3/14.
-//
-//
 
 #import "NSObject+Extensions.h"
 

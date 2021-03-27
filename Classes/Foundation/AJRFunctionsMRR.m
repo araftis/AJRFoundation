@@ -1,9 +1,3 @@
-//
-//  AJRFunctionsMRR.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 9/2/19.
-//
 
 #import "AJRFunctions.h"
 

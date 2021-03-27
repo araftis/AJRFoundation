@@ -1,10 +1,3 @@
-//
-//  NSSet+Extensions.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 8/12/11.
-//  Copyright (c) 2011 A.J. Raftis. All rights reserved.
-//
 
 #import <AJRFoundation/AJRXMLCoding.h>
 #import <AJRFoundation/AJRCollection.h>

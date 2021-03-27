@@ -1,9 +1,3 @@
-//
-//  AJRStreamUtilities.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 10/16/19.
-//
 
 #import "AJRStreamUtilities.h"
 

@@ -1,9 +1,3 @@
-//
-//  AJRDebug.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 7/23/19.
-//
 
 #import "AJRDebug.h"
 

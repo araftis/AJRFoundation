@@ -1,10 +1,3 @@
-//
-//  NSSet+Extensions.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 8/12/11.
-//  Copyright (c) 2011 A.J. Raftis. All rights reserved.
-//
 
 #import "NSSet+ExtensionsP.h"
 

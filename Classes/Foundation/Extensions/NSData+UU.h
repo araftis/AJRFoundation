@@ -1,4 +1,3 @@
-/* NSData-UU.h created by alex on Wed 05-Feb-1997 */
 
 #import <Foundation/Foundation.h>
 

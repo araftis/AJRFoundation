@@ -1,9 +1,3 @@
-//
-//  XMLDTD.swift
-//  radar
-//
-//  Created by Alex Raftis on 8/3/18.
-//
 
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 

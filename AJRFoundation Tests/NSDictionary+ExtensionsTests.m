@@ -1,9 +1,3 @@
-//
-//  NSDictionary+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 9/28/19.
-//
 
 #import <XCTest/XCTest.h>
 

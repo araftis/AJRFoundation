@@ -1,10 +1,3 @@
-//
-//  NSDate+Extensions.h
-//  Mobile PIM
-//
-//  Created by A.J. Raftis on 9/12/08.
-//  Copyright 2008 A.J. Raftis. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 

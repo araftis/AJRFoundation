@@ -1,9 +1,3 @@
-//
-//  Dictionary+ExtensionsTests.swift
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 11/26/19.
-//
 
 import XCTest
 

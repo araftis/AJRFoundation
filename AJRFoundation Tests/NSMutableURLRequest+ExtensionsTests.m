@@ -1,9 +1,3 @@
-//
-//  NSMutableURLRequest+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by A.J. Raftis on 10/23/19.
-//
 
 #import <XCTest/XCTest.h>
 

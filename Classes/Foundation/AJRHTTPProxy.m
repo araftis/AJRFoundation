@@ -1,10 +1,3 @@
-//
-//  AJRURLProxy.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 1/29/09.
-//  Copyright 2009 A.J. Raftis. All rights reserved.
-//
 
 #import "AJRHTTPProxy.h"
 

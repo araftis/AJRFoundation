@@ -1,10 +1,3 @@
-//
-//  NSXMLElement+Extensions.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 12/19/08.
-//  Copyright 2008 A.J. Raftis. All rights reserved.
-//
 
 #import "NSXMLElement+Extensions.h"
 

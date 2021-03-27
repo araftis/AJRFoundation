@@ -1,4 +1,3 @@
-/* AJRClassEnumerator.h created by alex on Sat 19-Aug-2000 */
 
 #import <Foundation/Foundation.h>
 

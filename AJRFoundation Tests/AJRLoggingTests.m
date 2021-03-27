@@ -1,10 +1,3 @@
-//
-//  AJRLogTest.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 7/12/12.
-//
-//
 
 #import <XCTest/XCTest.h>
 

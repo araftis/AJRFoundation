@@ -1,9 +1,3 @@
-//
-//  AJRPropertyListCoding.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 5/12/18.
-//
 
 #ifndef AJRPropertyListCoding_h
 #define AJRPropertyListCoding_h

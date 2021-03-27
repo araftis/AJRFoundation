@@ -1,4 +1,3 @@
-/* NSHost-Socks.m created by alex on Sat 03-Jan-1998 */
 
 #import "NSHost+Extensions.h"
 

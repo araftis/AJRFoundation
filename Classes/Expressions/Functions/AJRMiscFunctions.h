@@ -1,9 +1,3 @@
-//
-//  AJRMiscFunctions.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 4/28/18.
-//
 
 #import <AJRFoundation/AJRFunction.h>
 

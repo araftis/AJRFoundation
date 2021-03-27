@@ -1,4 +1,3 @@
-/* NSFileHandle+Extensions.h created by alex on Mon 07-Oct-1996 */
 
 #import <Foundation/Foundation.h>
 

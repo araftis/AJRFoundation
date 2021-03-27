@@ -1,9 +1,3 @@
-//
-//  AJRFileOutputStreamTest.m
-//  AJRFoundation Tests
-//
-//  Created by A.J. Raftis on 6/4/18.
-//
 
 #import <XCTest/XCTest.h>
 

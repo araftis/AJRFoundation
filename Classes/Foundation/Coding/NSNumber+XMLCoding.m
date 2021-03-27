@@ -1,9 +1,3 @@
-//
-//  NSNumber+XMLCoding.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 9/22/19.
-//
 
 #import "AJRXMLArchiver.h"
 #import "AJRXMLCoder.h"

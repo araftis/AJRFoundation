@@ -1,9 +1,3 @@
-//
-//  NSPointerArray+Extensions.h
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 12/6/19.
-//
 
 #import <AppKit/AppKit.h>
 

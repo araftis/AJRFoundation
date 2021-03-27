@@ -1,10 +1,3 @@
-//
-//  NSCoder+Extensions.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 12/14/09.
-//  Copyright 2009 A.J. Raftis. All rights reserved.
-//
 
 #import <AJRFoundation/AJRFoundationOS.h>
 

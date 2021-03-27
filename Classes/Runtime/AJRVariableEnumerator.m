@@ -1,9 +1,3 @@
-//
-//  AJRVariableEnumerator.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/11/18.
-//
 
 #import "AJRVariableEnumerator.h"
 

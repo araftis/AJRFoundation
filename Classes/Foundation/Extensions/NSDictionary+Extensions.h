@@ -1,10 +1,3 @@
-//
-//  NSDictionary+Extensions.h
-//  Store Monitor
-//
-//  Created by A.J. Raftis on 8/21/08.
-//  Copyright 2008 A.J. Raftis. All rights reserved.
-//
 
 #import <AJRFoundation/AJRFoundationOS.h>
 #import <AJRFoundation/AJRXMLCoding.h>

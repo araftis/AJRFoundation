@@ -1,4 +1,3 @@
-/* NSData-UU.m created by alex on Wed 05-Feb-1997 */
 
 #import <AJRFoundation/NSData+UU.h>
 
@@ -24,7 +23,7 @@ NSInteger AJRDecodeUUECString(const char *characters, char *decoded, NSError **e
 //                             0000000000111111111122222222223333333333444444444455555555556666
 //                             0123456789012345678901234567890123456789012345678901234567890123
 //                             ----------------------------------------------------------------
-//                               0000000000000000111111111111111122222222222222223333333333333333
+//                             0000000000000000111111111111111122222222222222223333333333333333
 //                             0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
 const static char *alphabet = "`!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_ ";
 const static char decodeAlphabet[] = {

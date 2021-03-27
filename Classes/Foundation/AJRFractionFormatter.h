@@ -1,10 +1,3 @@
-//
-//  AJRFractionFormatter.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 8/24/11.
-//  Copyright (c) 2011 A.J. Raftis. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 

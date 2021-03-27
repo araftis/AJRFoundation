@@ -1,9 +1,3 @@
-//
-//  NSCoder+Extensions.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 2/8/19.
-//
 
 import Foundation
 

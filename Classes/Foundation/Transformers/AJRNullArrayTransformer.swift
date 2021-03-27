@@ -1,9 +1,3 @@
-//
-//  AJRNullArrayTransformer.swift
-//
-//  Created by A.J. Raftis on 1/2/12.
-//  Copyright (c) 2012 A.J. Raftis. All rights reserved.
-//
 
 @objcMembers
 open class AJRNullArrayTransformer : ValueTransformer {

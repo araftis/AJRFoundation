@@ -1,9 +1,3 @@
-//
-//  AJRTranslator.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 2/7/19.
-//
 
 import Foundation
 

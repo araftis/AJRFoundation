@@ -1,10 +1,3 @@
-//
-//  AJRConversions.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 5/4/09.
-//  Copyright 2009 A.J. Raftis. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 

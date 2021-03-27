@@ -1,9 +1,3 @@
-//
-//  AJRSemaphores.h
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 1/31/19.
-//
 
 #ifndef AJRSemaphores_h
 #define AJRSemaphores_h

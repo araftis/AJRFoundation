@@ -1,10 +1,3 @@
-//
-//  AJRHost.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/8/12.
-//
-//
 
 #import <Foundation/Foundation.h>
 

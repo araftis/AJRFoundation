@@ -1,9 +1,3 @@
-//
-//  AJRUnitsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 10/21/18.
-//
 
 #import <XCTest/XCTest.h>
 

@@ -1,9 +1,3 @@
-//
-//  NSKeyedUnarchiver+Extensions.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 12/17/20.
-//
 
 #import "NSKeyedUnarchiver+Extensions.h"
 

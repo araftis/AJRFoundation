@@ -1,9 +1,3 @@
-//
-//  XMLNodeWithChildren.swift
-//  radar-core
-//
-//  Created by Alex Raftis on 8/9/18.
-//
 
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 

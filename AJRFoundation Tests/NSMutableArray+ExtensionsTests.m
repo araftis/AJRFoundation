@@ -1,9 +1,3 @@
-//
-//  NSMutableArray+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 10/17/19.
-//
 
 #import <XCTest/XCTest.h>
 

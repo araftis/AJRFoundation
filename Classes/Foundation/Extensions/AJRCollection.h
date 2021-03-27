@@ -1,9 +1,3 @@
-//
-//  AJRCollection.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 4/27/18.
-//
 
 #import <Foundation/Foundation.h>
 

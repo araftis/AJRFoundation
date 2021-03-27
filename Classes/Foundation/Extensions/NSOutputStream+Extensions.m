@@ -1,10 +1,3 @@
-//
-//  NSOutputStream+Extensions.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 5/23/14.
-//
-//
 
 #import "NSOutputStream+Extensions.h"
 

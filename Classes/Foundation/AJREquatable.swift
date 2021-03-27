@@ -1,9 +1,3 @@
-//
-//  AJREquatable.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 7/15/19.
-//
 
 import Foundation
 

@@ -1,10 +1,3 @@
-//
-//  AJROrderedCompletionQueue.m
-//  Subtitler
-//
-//  Created by A.J. Raftis on 12/27/14.
-//  Copyright (c) 2014 A.J. Raftis. All rights reserved.
-//
 
 #import "AJROrderedCompletionQueue.h"
 

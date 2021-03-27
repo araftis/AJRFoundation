@@ -1,9 +1,3 @@
-//
-//  NSInputStream+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 10/16/19.
-//
 
 #import <XCTest/XCTest.h>
 

@@ -1,4 +1,3 @@
-/* AJRClassEnumerator.m created by alex on Sat 19-Aug-2000 */
 
 #import "AJRClassEnumerator.h"
 

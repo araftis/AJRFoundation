@@ -1,9 +1,3 @@
-//
-//  XMLElement.swift
-//  radar
-//
-//  Created by Alex Raftis on 8/2/18.
-//
 
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 

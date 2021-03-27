@@ -1,9 +1,3 @@
-//
-//  NSMutableSet+Extensions.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 7/16/19.
-//
 
 #import "NSMutableSet+Extensions.h"
 

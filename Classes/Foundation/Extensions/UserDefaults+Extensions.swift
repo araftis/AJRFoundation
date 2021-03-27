@@ -1,10 +1,3 @@
-//
-//  UserDefaults.swift
-//  UserDefaults
-//
-//  Created by A.J. Raftis on 11/10/16.
-//  Copyright © 2016 A.J. Raftis. All rights reserved.
-//
 
 import Foundation
 

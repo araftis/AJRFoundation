@@ -1,9 +1,3 @@
-//
-//  NSNumber+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 10/22/19.
-//
 
 #import <XCTest/XCTest.h>
 

@@ -1,9 +1,3 @@
-//
-//  NSXMLElement+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 10/29/19.
-//
 
 #import <XCTest/XCTest.h>
 

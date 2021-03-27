@@ -1,4 +1,3 @@
-/* NSData-Extensions.m created by alex on Fri 05-Nov-1999 */
 
 #import "NSData+Extensions.h"
 

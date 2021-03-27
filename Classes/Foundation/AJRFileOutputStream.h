@@ -1,9 +1,3 @@
-//
-//  AJRFileOutputStream.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/4/18.
-//
 
 #import <Foundation/Foundation.h>
 

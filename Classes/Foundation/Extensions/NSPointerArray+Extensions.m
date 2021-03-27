@@ -1,9 +1,3 @@
-//
-//  NSPointerArray+Extensions.m
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 12/6/19.
-//
 
 #import "NSPointerArray+Extensions.h"
 

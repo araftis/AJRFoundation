@@ -1,9 +1,3 @@
-//
-//  ArrayTests.swift
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 2/11/19.
-//
 
 import XCTest
 

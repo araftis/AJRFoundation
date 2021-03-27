@@ -1,10 +1,3 @@
-//
-//  NSInputStream+Extensions.m
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/26/14.
-//
-//
 
 #import "NSInputStream+Extensions.h"
 

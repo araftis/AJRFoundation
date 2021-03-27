@@ -1,4 +1,3 @@
-/* NSMutableArray+Extensions.h created by mtownsen on Fri 01-Oct-1999 */
 
 #import <Foundation/Foundation.h>
 

@@ -1,9 +1,3 @@
-//
-//  Array+Extensions.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 1/30/19.
-//
 
 import Foundation
 
@@ -248,3 +242,48 @@ public extension Array where Element : Comparable {
     }
 
 }
+
+public extension Array where Element: BinaryInteger {
+
+    /**
+     Returns the greatest common denominator of all integers in the array.
+     */
+    var gcd : Element {
+        if self.count == 0 {
+            return 0
+        }
+        if self.count == 1 {
+            return self[0]
+        }
+        var gcd = self[0].gcd(self[1])
+        if self.count == 2 {
+            return gcd
+        }
+
+        for index in stride(from: 2, to: self.count, by: 1) {
+            gcd = gcd.gcd(self[index])
+        }
+
+        return gcd
+    }
+
+    /**
+     An array of distances between all elements contained in the array.
+
+     So, say you have an array: [1, 5 15, 30], this would return [4, 14, 29, 10, 25, 5].
+     */
+    var allDistances : [Element] {
+        var found = [Element]()
+
+        for x in stride(from: 0, to: count, by: 1) {
+            for y in stride(from: 0, to: count, by: 1) {
+                if x != y {
+                    found.append((self[x] - self[y]).abs)
+                }
+            }
+        }
+        return found.uniqueObjects
+    }
+
+}
+

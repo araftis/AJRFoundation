@@ -1,9 +1,3 @@
-//
-//  NSPointerArray+ExtensionsTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 1/9/20.
-//
 
 #import <XCTest/XCTest.h>
 

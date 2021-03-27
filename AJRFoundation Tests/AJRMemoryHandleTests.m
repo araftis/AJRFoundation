@@ -1,9 +1,3 @@
-//
-//  AJRMemoryHandleTests.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 1/24/20.
-//
 
 #import <XCTest/XCTest.h>
 

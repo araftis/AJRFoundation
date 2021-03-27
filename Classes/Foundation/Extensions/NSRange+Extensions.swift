@@ -1,9 +1,3 @@
-//
-//  NSRange+Extensions.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 7/1/19.
-//
 
 import Foundation
 

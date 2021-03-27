@@ -1,9 +1,3 @@
-//
-//  NSUnit+Extensions.h
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 10/21/18.
-//
 
 #import <Foundation/Foundation.h>
 

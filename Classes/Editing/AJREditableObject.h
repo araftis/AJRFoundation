@@ -1,10 +1,3 @@
-//
-//  EditableObject.h
-//  iTunes Movie Importer
-//
-//  Created by A.J. Raftis on 2/12/10.
-//  Copyright 2010 A.J. Raftis. All rights reserved.
-//
 
 #import <Cocoa/Cocoa.h>
 

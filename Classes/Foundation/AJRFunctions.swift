@@ -1,9 +1,3 @@
-//
-//  AJRFunctions.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 2/9/19.
-//
 
 import Foundation
 

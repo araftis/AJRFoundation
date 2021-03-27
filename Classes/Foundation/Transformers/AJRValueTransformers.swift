@@ -1,9 +1,3 @@
-//
-//  AJRValueTransformers.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 6/1/19.
-//
 
 import Foundation
 

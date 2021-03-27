@@ -1,9 +1,3 @@
-//
-//  NSURLQueryItem+Extensions.h
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 10/29/19.
-//
 
 #import <Foundation/Foundation.h>
 

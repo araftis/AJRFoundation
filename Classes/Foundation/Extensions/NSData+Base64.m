@@ -1,4 +1,3 @@
-/* NSData-Base64.m created by alex on Wed 05-Feb-1997 */
 
 #import <AJRFoundation/NSData+Base64.h>
 

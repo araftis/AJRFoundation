@@ -1,9 +1,3 @@
-//
-//  AJRXMLErrorDecodeObject.m
-//  AJRFoundation Tests
-//
-//  Created by AJ Raftis on 9/30/19.
-//
 
 #import "AJRXMLErrorDecodeObject.h"
 

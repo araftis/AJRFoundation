@@ -1,10 +1,3 @@
-//
-//  AJRXMLOutputStream.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 5/23/14.
-//
-//
 
 #import <Foundation/Foundation.h>
 

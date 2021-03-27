@@ -1,9 +1,3 @@
-//
-//  AJRLogging.swift
-//  AJRFoundation
-//
-//  Created by AJ Raftis on 1/29/19.
-//
 
 import Foundation
 

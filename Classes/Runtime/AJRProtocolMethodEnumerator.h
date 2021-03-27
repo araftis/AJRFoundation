@@ -1,9 +1,3 @@
-//
-//  AJRProtocolMethodEnumerator.h
-//  AJRFoundation
-//
-//  Created by A.J. Raftis on 6/11/18.
-//
 
 #import <Foundation/Foundation.h>
 

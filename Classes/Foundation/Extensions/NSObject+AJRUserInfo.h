@@ -1,4 +1,3 @@
-/* NSObject-UserInfo.h created by alex on Thu 17-Jul-1997 */
 
 #import <Foundation/Foundation.h>
 
