@@ -13,7 +13,7 @@ echo "    )" >> "$temp"
 source "$temp"
 rm -f "$temp"
 
-while $#files > 0
+while ( $#files > 0 )
     set file = "$files[1]"
     echo -n "Processing $file..."
     set line = `head -1 "$file"`
@@ -31,19 +31,35 @@ while $#files > 0
     tail +6 LICENSE.md >> "$temp"
     echo "*/" >> "$temp"
 
-    # If the first line is /* and the second line is the name of the file, we assume it's out copyright / license.
+    set copyIfNeeded = false
+    # If the first line is /* and the second line is the name of the file, we assume it's our copyright / license.
     if ( "$line" == "/*" ) then
         if ( "$possibleFile" == "$file:t" ) then
             echo -n "Replacing License..."
+            set line = `grep -n "*/" "$file" | sed 's/:\*\///g' | head -1`
+            set line = `expr $line + 1`
+            tail +$line "$file" >> "$temp"
+            set copyIfNeeded = true
         else
             echo -n "Skipping License..."
         endif
     else
         echo -n "Adding License..."
         cat "$file" >> "$temp"
+        set copyIfNeeded = true
     endif
 
-    cat "$temp"
+    if ( $copyIfNeeded == "true" ) then
+        diff -q "$file" "$temp" >& /dev/null
+        set result = $status
+        if ( $result == 0 ) then
+            echo -n "Same..."
+        else
+            echo -n "Copying..."
+            cp "$temp" "$file"
+        endif
+    endif
+    
     rm -f "$temp"
 
     echo "done."

@@ -27,7 +27,7 @@ Generally speaking, as this framework moves into the modern world:
         3. Files should indent with 4 spaces. Many files still use tabs. These will eventually get updated.
         4. Variable names should use camel-case.
         5. Private variables should have _ in front, as should Obj-C ivars. This will happen automatically if you use properties.
-        6. Terse if not always better. Swift, especially, allows some really terse code. This doesn't necessarily provide any performance boosts, and can make the code difficult to read.
+        6. Terse is not always better. Swift, especially, allows some really terse code. This doesn't necessarily provide any performance boosts, and can make the code difficult to read.
         7. Excessive comments aren't necessary, but are appreciated when working with complicated algorithms. You can see when I had to "think" alot about a piece of code, because it'll have more comments.
         8. Try to use proper header docs, and try to keep it up-to-date.
         9. Do you best to keep code coverage and unit testing as high as possible. Make sure to unit test failure cases.
