@@ -886,7 +886,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		089C1667FE841158C02AAC07 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		089C1667FE841158C02AAC07 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* AJRFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundation_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* AJRFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AJRFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA0587CD192FE402002913B6 /* AJRXMLOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRXMLOutputStream.h; sourceTree = "<group>"; };
@@ -1208,7 +1208,7 @@
 		FAA37F340E9D2946004AEECF /* AJRGate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRGate.m; sourceTree = "<group>"; };
 		FAA534FD103F3CCE008C0DF7 /* AJRTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRTranslator.h; sourceTree = "<group>"; };
 		FAA534FE103F3CCE008C0DF7 /* AJRTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRTranslator.m; sourceTree = "<group>"; };
-		FAA53507103F3D61008C0DF7 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRSharedStrings.strings; sourceTree = "<group>"; };
+		FAA53507103F3D61008C0DF7 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRSharedStrings.strings; sourceTree = "<group>"; };
 		FAA535A3103F465A008C0DF7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRSharedStrings.strings; sourceTree = "<group>"; };
 		FAA75F6D23384BFB00523F91 /* NSString+XMLCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLCoding.h"; sourceTree = "<group>"; };
 		FAA75F6E23384BFB00523F91 /* NSString+XMLCoding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLCoding.m"; sourceTree = "<group>"; };

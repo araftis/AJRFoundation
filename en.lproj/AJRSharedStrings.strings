@@ -28,3 +28,15 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
+"Error" = "Error";
+"Warning" = "Warning";
+"Info" = "Info";
+"Quit Application" = "Quit Application";
+
+/* Common buttons in dialog panels */
+"Cancel" = "Cancel";
+"Choose" = "Choose";
+"Yes" = "Yes";
+"No" = "No";
+"OK" = "OK";
