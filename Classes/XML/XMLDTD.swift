@@ -32,9 +32,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 import libxml2
 
+@objcMembers
+@objc(NSXMLDTD)
 open class XMLDTD : XMLNode, XMLNodeWithChildren {
     
     // MARK: - Properties
@@ -262,31 +263,31 @@ open class XMLDTD : XMLNode, XMLNodeWithChildren {
     public override func equal(toNode other: XMLNode) -> Bool {
         if let typed = other as? XMLDTD {
             return (super.equal(toNode: other)
-                && Equal(_children, typed._children)
-                && Equal(entityDeclarations, typed.entityDeclarations)
-                && Equal(notationDeclarations, typed.notationDeclarations)
-                && Equal(elementDeclarations, typed.elementDeclarations)
-                && Equal(attributeDeclarations, typed.attributeDeclarations)
-                && Equal(publicID, typed.publicID)
-                && Equal(systemID, typed.systemID)
+                && AJRAnyEquals(_children, typed._children)
+                && AJRAnyEquals(entityDeclarations, typed.entityDeclarations)
+                && AJRAnyEquals(notationDeclarations, typed.notationDeclarations)
+                && AJRAnyEquals(elementDeclarations, typed.elementDeclarations)
+                && AJRAnyEquals(attributeDeclarations, typed.attributeDeclarations)
+                && AJRAnyEquals(publicID, typed.publicID)
+                && AJRAnyEquals(systemID, typed.systemID)
             )
         }
         return false
     }
     
     public static func == (lhs: XMLDTD, rhs: XMLDTD) -> Bool {
-        return lhs.untypedEqual(to:rhs)
+        return lhs.isEqual(to:rhs)
     }
     
     // MARK: - Copying
     
-    public override func copy() -> Any {
+    public override func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy() as! XMLDTD
         copy.children = copyChildren() // Convenience provided by XMLNodeWithChildren
-        copy.entityDeclarations = entityDeclarations.copy() as! OrderedDictionary<String, XMLDTDNode>
-        copy.notationDeclarations = notationDeclarations.copy() as! OrderedDictionary<String, XMLDTDNode>
-        copy.elementDeclarations = elementDeclarations.copy() as! OrderedDictionary<String, XMLDTDNode>
-        copy.attributeDeclarations = attributeDeclarations.copy() as! OrderedDictionary<String, OrderedDictionary<String, XMLDTDNode>>
+        copy.entityDeclarations = entityDeclarations
+        copy.notationDeclarations = notationDeclarations
+        copy.elementDeclarations = elementDeclarations
+        copy.attributeDeclarations = attributeDeclarations
         copy.publicID = publicID
         copy.systemID = systemID
         

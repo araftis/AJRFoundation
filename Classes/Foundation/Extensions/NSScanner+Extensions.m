@@ -283,7 +283,7 @@ static NSCharacterSet *_ajrOctalDigitSet = nil;
 }
 
 - (BOOL)scanRect:(CGRect *)rectOut {
-    CGRect rect;
+    CGRect rect = CGRectZero;
     BOOL result = ([self scanString:@"{" intoString:NULL] &&
                    [self scanPoint:&rect.origin] &&
                    [self scanString:@"," intoString:NULL] &&

@@ -70,6 +70,26 @@ public struct OrderedDictionary<Key: Hashable, Value> {
         return nil
     }
 
+    @discardableResult
+    public mutating func updateValue(_ value: Value, forKey key: Key, newKey: Key) -> Value? {
+        // If there is already a value for this key, replace and return the old value.
+        if let oldValue = dict[key] {
+            dict[newKey] = value
+            if key != newKey {
+                dict[key] = nil
+            }
+            if let index = array.firstIndex(of: key) {
+                array[index] = newKey
+            }
+            return oldValue
+        }
+
+        // Otherwise, create a new entry.
+        dict[newKey] = value
+        array.append(newKey)
+        return nil
+    }
+
     /// Removes the given key and its associated value from the dictionary.
     ///
     /// If the key is found in the dictionary, this method returns the key's

@@ -32,7 +32,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 
 protocol XMLNodeWithChildren {
     
@@ -98,7 +97,7 @@ extension XMLNodeWithChildren {
     public func index(ofChild child: XMLNode) -> Int? {
         var index : Int? = nil
         manipulateChildren { (children) in
-            index = children?.index(where: { $0 === child })
+            index = children?.firstIndex(where: { $0 === child })
         }
         return index
     }

@@ -32,7 +32,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 import libxml2
 
 internal protocol XMLParserDelegate {
@@ -91,7 +90,7 @@ internal var XMLParserErrorHandler : xmlTextReaderErrorFunc = { (arg, messageIn,
     if severity == XML_PARSER_SEVERITY_ERROR {
         reader?.parser(reader:locator!, parseErrorOccurred: message!)
     } else {
-        RadarCore.log.warn(message!)
+        AJRLog.warning(message!)
     }
 }
 

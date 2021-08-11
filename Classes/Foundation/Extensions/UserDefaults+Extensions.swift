@@ -242,7 +242,12 @@ extension URL : AJRCustomPropertyListConvertible {
         var result : URL? = nil
         if let value = propertyListValue as? Data {
             var isStale = false
-            if let url = try? URL(resolvingBookmarkData: value, options: [.withSecurityScope], relativeTo: nil, bookmarkDataIsStale: &isStale) {
+            #if os(iOS) || os(tvOS) || os(watchOS)
+            let options : BookmarkResolutionOptions = []
+            #else
+            let options : BookmarkResolutionOptions = [.withSecurityScope]
+            #endif
+            if let url = try? URL(resolvingBookmarkData: value, options: options, relativeTo: nil, bookmarkDataIsStale: &isStale) {
                 result = url
             }
         } else if let value = propertyListValue as? String {
@@ -252,7 +257,12 @@ extension URL : AJRCustomPropertyListConvertible {
     }
     
     public var propertyListValue: Any {
-        if isFileURL, let data = (try? self.bookmarkData(options: [.withSecurityScope], includingResourceValuesForKeys: nil, relativeTo: nil)) as Data? {
+        #if os(iOS) || os(tvOS) || os(watchOS)
+        let options : BookmarkCreationOptions = []
+        #else
+        let options : BookmarkCreationOptions = [.withSecurityScope]
+        #endif
+        if isFileURL, let data = (try? self.bookmarkData(options: options, includingResourceValuesForKeys: nil, relativeTo: nil)) as Data? {
             return data
         }
         return absoluteString

@@ -36,7 +36,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  @copyright Copyright (c) 2001 A.J. Raftis. All rights reserved.
  */
 
-#import <Foundation/Foundation.h>
+#import <AJRFoundation/AJRFoundationOS.h>
 
 @class AJRActivity;
 @protocol AJRActivityDelegate;

@@ -157,7 +157,7 @@ static mode_t AJRGetUMask(void) {
 #pragma mark - OS Version Workarounds
 
 - (BOOL)ajr_truncateAtOffset:(unsigned long long)offset error:(out NSError **)error {
-	if (@available(macOS 10.15, *)) {
+	if (@available(macOS 10.15, iOS 13.0, *)) {
 		return [self truncateAtOffset:offset error:error];
 	} else {
 		NSError *localError = nil;
@@ -171,7 +171,7 @@ static mode_t AJRGetUMask(void) {
 }
 
 - (BOOL)ajr_writeData:(NSData *)data error:(out NSError **)error {
-	if (@available(macOS 10.15, *)) {
+	if (@available(macOS 10.15, iOS 13.0, *)) {
 		return [self writeData:data error:error];
 	} else {
 		NSError *localError = nil;
@@ -185,7 +185,7 @@ static mode_t AJRGetUMask(void) {
 }
 
 - (BOOL)ajr_seekToEndReturningOffset:(out unsigned long long *_Nullable)offsetInFile error:(out NSError **)error {
-	if (@available(macOS 10.15, *)) {
+	if (@available(macOS 10.15, iOS 13.0, *)) {
 		return [self seekToEndReturningOffset:offsetInFile error:error];
 	} else {
 		NSError *localError = nil;
@@ -200,7 +200,7 @@ static mode_t AJRGetUMask(void) {
 }
 
 - (BOOL)ajr_seekToOffset:(unsigned long long)offset error:(out NSError **)error {
-	if (@available(macOS 10.15, *)) {
+	if (@available(macOS 10.15, iOS 13.0, *)) {
 		return [self seekToOffset:offset error:error];
 	} else {
 		NSError *localError = nil;
@@ -480,7 +480,7 @@ static mode_t AJRGetUMask(void) {
 
 - (BOOL)removeBytesInRange:(NSRange)range error:(out NSError **)error {
     unsigned char buffer[BUFFERSIZE];
-    NSUInteger readLength;
+	NSUInteger readLength = 0;
     NSUInteger position = range.location;
     unsigned long long fileLength;
 	NSError *localError = nil;
@@ -545,7 +545,7 @@ static mode_t AJRGetUMask(void) {
 			unsigned char buffer[BUFFERSIZE];
 			long long shift = dataLength - range.length;
 			long long position = fileLength - BUFFERSIZE;
-			size_t tempLength;
+			size_t tempLength = 0;
 			size_t readLength = BUFFERSIZE;
 			do {
 				if (position < range.location + dataLength) {

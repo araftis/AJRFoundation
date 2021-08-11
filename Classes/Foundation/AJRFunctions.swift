@@ -110,3 +110,8 @@ public func AJRDateFromString(_ string : String, _ calendar: Calendar?) throws -
     throw error!
 }
 
+infix operator ^^
+
+public func ^^ (_ lhs: Bool, _ rhs: Bool) -> Bool {
+    return (lhs && !rhs) || (!lhs && rhs)
+}

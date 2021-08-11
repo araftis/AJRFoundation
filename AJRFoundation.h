@@ -67,6 +67,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <AJRFoundation/AJRGreaterThanOperator.h>
 #import <AJRFoundation/AJRGreatorThanOrEqualToOperator.h>
 #import <AJRFoundation/AJRHost.h>
+#import <AJRFoundation/AJRHTTPProxy.h>
 #import <AJRFoundation/AJRIntersectOperator.h>
 #import <AJRFoundation/AJRKeyExpression.h>
 #import <AJRFoundation/AJRLessThanOperator.h>
@@ -84,11 +85,15 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <AJRFoundation/AJRMultiplyOperator.h>
 #import <AJRFoundation/AJRNotEqualsOperator.h>
 #import <AJRFoundation/AJRNotOperator.h>
+#import <AJRFoundation/AJRObjectID.h>
 #import <AJRFoundation/AJROperator.h>
 #import <AJRFoundation/AJROperatorExpression.h>
 #import <AJRFoundation/AJROrderedCompletionQueue.h>
 #import <AJRFoundation/AJROrOperator.h>
+#ifdef AJRFoundation_MacOSX
+// Path observation doesn't work on iOS.
 #import <AJRFoundation/AJRPathObserver.h>
+#endif
 #import <AJRFoundation/AJRPlugInAttribute.h>
 #import <AJRFoundation/AJRPlugInElement.h>
 #import <AJRFoundation/AJRPlugInManager.h>

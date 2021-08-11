@@ -32,9 +32,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 import libxml2
 
+@objcMembers
+@objc(NSXMLDTDNode)
 public class XMLDTDNode : XMLNode {
 
     // MARK: - Enumerations
@@ -245,7 +246,7 @@ public class XMLDTDNode : XMLNode {
         } else if xmlNode.pointee.type == XML_ENTITY_DECL {
             node = entityDeclarationNode(withXMLNode: xmlNode)
         } else {
-            RadarCore.log.warn("we should handle: \(xmlNode.pointee.type)")
+            AJRLog.warning("we should handle: \(xmlNode.pointee.type)")
         }
         
         return node
@@ -332,21 +333,21 @@ public class XMLDTDNode : XMLNode {
     public override func equal(toNode other: XMLNode) -> Bool {
         if let typed = other as? XMLDTDNode {
             return (super.equal(toNode: other)
-                && Equal(dtdKind, typed.dtdKind)
-                && Equal(publicID, typed.publicID)
-                && Equal(systemID, typed.systemID)
+                && AJRAnyEquals(dtdKind, typed.dtdKind)
+                && AJRAnyEquals(publicID, typed.publicID)
+                && AJRAnyEquals(systemID, typed.systemID)
             )
         }
         return false
     }
     
     public static func == (lhs: XMLDTDNode, rhs: XMLDTDNode) -> Bool {
-        return lhs.untypedEqual(to:rhs)
+        return lhs.isEqual(to:rhs)
     }
     
     // MARK: - Copying
     
-    public override func copy() -> Any {
+    public override func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy() as! XMLDTDNode
         copy.dtdKind = dtdKind
         copy.publicID = publicID

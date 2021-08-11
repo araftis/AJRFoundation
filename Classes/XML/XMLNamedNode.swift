@@ -32,8 +32,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 
+@objcMembers
+@objc(NSXMLNamedNode)
 public class XMLNamedNode : XMLNode {
     
     internal var prefixIndex: String.Index? = nil
@@ -133,16 +134,16 @@ public class XMLNamedNode : XMLNode {
     // MARK: - Equatable
     
     public override func equal(toNode other: XMLNode) -> Bool {
-        return super.equal(toNode: other) && Equal(stringValue, other.stringValue)
+        return super.equal(toNode: other) && AJRAnyEquals(stringValue, other.stringValue)
     }
     
     public static func == (lhs: XMLNamedNode, rhs: XMLNamedNode) -> Bool {
-        return lhs.untypedEqual(to:rhs)
+        return lhs.isEqual(to:rhs)
     }
     
     // MARK: - Copying
     
-    public override func copy() -> Any {
+    public override func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy() as! XMLNamedNode
         copy.stringValue = stringValue
         return copy 

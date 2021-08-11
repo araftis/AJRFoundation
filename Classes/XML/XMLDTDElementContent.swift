@@ -32,9 +32,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 import libxml2
 
+@objcMembers
+@objc(NSXMLDTDElementContent)
 public class XMLDTDElementContent : XMLNode {
     
     // MARK: - Enumerations
@@ -89,7 +90,7 @@ public class XMLDTDElementContent : XMLNode {
                     child.detach()
                 }
             }
-            if let newChildren = children {
+            if let newChildren = newValue {
                 if _children != nil {
                     _children!.removeAll()
                 }
@@ -170,7 +171,7 @@ public class XMLDTDElementContent : XMLNode {
         if let child = child as? XMLDTDElementContent {
             return child
         }
-        RadarCore.log.warn("Attempt to add a child to a a XMLDTDElementContent that isn't an XMLDTDElementContent: \(child)")
+        AJRLog.warning("Attempt to add a child to a a XMLDTDElementContent that isn't an XMLDTDElementContent: \(child)")
         return nil
     }
     
@@ -284,21 +285,21 @@ public class XMLDTDElementContent : XMLNode {
     public override func equal(toNode other: XMLNode) -> Bool {
         if let typed = other as? XMLDTDElementContent {
             return (super.equal(toNode: other)
-                && Equal(occurance, typed.occurance)
-                && Equal(elementType, typed.elementType)
-                && Equal(_children, typed._children)
+                && AJRAnyEquals(occurance, typed.occurance)
+                && AJRAnyEquals(elementType, typed.elementType)
+                && AJRAnyEquals(_children, typed._children)
             )
         }
         return false
     }
     
     public static func == (lhs: XMLDTDElementContent, rhs: XMLDTDElementContent) -> Bool {
-        return lhs.untypedEqual(to:rhs)
+        return lhs.isEqual(to:rhs)
     }
     
     // MARK: - Copying
     
-    public override func copy() -> Any {
+    public override func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy() as! XMLDTDElementContent
         if let children = _children {
             copy._children = children.map { return $0.copy() as! XMLDTDElementContent }

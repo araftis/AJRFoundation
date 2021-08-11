@@ -39,6 +39,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJRPlugInExtensionPoint.h"
 #import "NSMutableDictionary+Extensions.h"
 #import "NSObject+AJRUserInfo.h"
+#import <AJRFoundation/AJRFoundation-Swift.h>
 
 #import <objc/runtime.h>
 

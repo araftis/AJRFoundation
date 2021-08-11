@@ -405,7 +405,12 @@ typedef void (^AJRXMLObjectEncoder)(void);
 }
 
 - (void)encodeURLBookmark:(NSURL *)url forKey:(NSString *)key {
-    NSData *data = [url bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
+#if defined(AJRFoundation_iOS)
+    NSURLBookmarkCreationOptions options = 0;
+#else
+    NSURLBookmarkCreationOptions options = NSURLBookmarkCreationWithSecurityScope;
+#endif
+    NSData *data = [url bookmarkDataWithOptions:options includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
     if (data) {
         [self _encodeObject:data forKey:key];
     } else {

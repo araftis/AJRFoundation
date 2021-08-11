@@ -31,8 +31,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "NSPointerArray+Extensions.h"
 
-#import <AppKit/AppKit.h>
-
 @implementation NSPointerArray (Extensions)
 
 - (void)addObject:(id)object {

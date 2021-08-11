@@ -33,6 +33,8 @@ import Foundation
 
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
+@objcMembers
+@objc(NSXMLDTDAttributeDeclarationNode)
 public class XMLDTDAttributeDeclarationNode : XMLDTDNode {
     
     var enumerations = [String]()
@@ -61,7 +63,7 @@ public class XMLDTDAttributeDeclarationNode : XMLDTDNode {
     }
     
     func remove(enumeration: String) -> Void {
-        if let index = enumerations.index(of:enumeration) {
+        if let index = enumerations.firstIndex(of:enumeration) {
             remove(enumerationAt: index)
         }
     }
@@ -144,21 +146,21 @@ public class XMLDTDAttributeDeclarationNode : XMLDTDNode {
     public override func equal(toNode other: XMLNode) -> Bool {
         if let typed = other as? XMLDTDAttributeDeclarationNode {
             return (super.equal(toNode: other)
-                && Equal(enumerations, typed.enumerations)
-                && Equal(elementName, typed.elementName)
-                && Equal(defaultUsage, typed.defaultUsage)
+                && AJRAnyEquals(enumerations, typed.enumerations)
+                && AJRAnyEquals(elementName, typed.elementName)
+                && AJRAnyEquals(defaultUsage, typed.defaultUsage)
             )
         }
         return false
     }
     
     public static func == (lhs: XMLDTDAttributeDeclarationNode, rhs: XMLDTDAttributeDeclarationNode) -> Bool {
-        return lhs.untypedEqual(to:rhs)
+        return lhs.isEqual(to:rhs)
     }
     
     // MARK: - Copying
     
-    public override func copy() -> Any {
+    public override func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy() as! XMLDTDAttributeDeclarationNode
         copy.enumerations = enumerations
         copy.elementName = elementName

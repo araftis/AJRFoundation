@@ -256,7 +256,7 @@ NSNumberFormatter *AJRXMLCoderGetFloatFormatter(void) {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         formatter = [[NSNumberFormatter alloc] init];
-        formatter.format = @"0.#####";
+        formatter.positiveFormat = @"0.#####";
         formatter.negativeFormat = @"-0.#####";
         formatter.locale = NSLocale.systemLocale;
     });
@@ -268,7 +268,7 @@ NSNumberFormatter *AJRXMLCoderGetDoubleFormatter(void) {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         formatter = [[NSNumberFormatter alloc] init];
-        formatter.format = @"0.##########";
+        formatter.positiveFormat = @"0.##########";
         formatter.negativeFormat = @"-0.##########";
         formatter.locale = NSLocale.systemLocale;
     });

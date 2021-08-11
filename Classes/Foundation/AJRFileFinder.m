@@ -139,6 +139,10 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
 #pragma mark - Global Properties
 
 + (NSString *)developerPath {
+#if defined(AJRFoundation_iOS)
+    // iOS will never have a developer path (well, at least for now).
+    return nil;
+#else
     static NSString *developerPath = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -155,6 +159,7 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
         }
     });
     return developerPath;
+#endif
 }
 
 #pragma mark - Utilities

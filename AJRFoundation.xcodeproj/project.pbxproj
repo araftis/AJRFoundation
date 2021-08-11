@@ -107,6 +107,13 @@
 		FA27FB7013D6561F006BAE89 /* AJRServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FA27FB6C13D6561F006BAE89 /* AJRServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA27FB7113D6561F006BAE89 /* AJRServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA27FB6D13D6561F006BAE89 /* AJRServer.m */; };
 		FA27FB7313D65715006BAE89 /* AJRServerProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = FA27FB7213D65715006BAE89 /* AJRServerProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA29F6E92631206C002B953A /* AJRUnitsFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA09AEAE217D49760095FBC5 /* AJRUnitsFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA29F6F626312084002B953A /* NSPointerArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6A98AA239AF21E0096806F /* NSPointerArray+Extensions.m */; };
+		FA29F6FD26312087002B953A /* NSPointerArray+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA6A98A9239AF21E0096806F /* NSPointerArray+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA29F70A263120A8002B953A /* NSUnit+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA09AEBB217D501B0095FBC5 /* NSUnit+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA29F7182631287E002B953A /* HTMLEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29F7172631287E002B953A /* HTMLEntities.swift */; };
+		FA29F7192631287E002B953A /* HTMLEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29F7172631287E002B953A /* HTMLEntities.swift */; };
+		FA29F72C2631291D002B953A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADEADCF1966223D00BF6EB9 /* CoreServices.framework */; };
 		FA2A14CB1CA4AD9F0024AEC2 /* AJRConstants.ajrplugindata in Resources */ = {isa = PBXBuildFile; fileRef = FA2A14CA1CA4AD9F0024AEC2 /* AJRConstants.ajrplugindata */; };
 		FA2AC5EC196615F10052EB20 /* AJRActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC4DF250ED49D1C00897E9B /* AJRActivity.m */; };
 		FA2AC5ED196615F10052EB20 /* AJRMain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA27FB6B13D6561F006BAE89 /* AJRMain.m */; };
@@ -151,7 +158,7 @@
 		FA2AC615196615F20052EB20 /* AJRExpressionToken.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94DDA71118D89100FFC2D8 /* AJRExpressionToken.m */; };
 		FA2AC617196615F20052EB20 /* AJRAutoreleasedMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4FD4250E8BEBBF00F05C19 /* AJRAutoreleasedMemory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FA2AC619196615F20052EB20 /* AJRCaseInsensitiveString.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6F16AA13E1C62E00A2C1E4 /* AJRCaseInsensitiveString.m */; };
-		FA2AC61A196615F20052EB20 /* AJRClassEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD8CE1813F9DE5B00E20911 /* AJRClassEnumerator.m */; };
+		FA2AC61A196615F20052EB20 /* AJRClassEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD8CE1813F9DE5B00E20911 /* AJRClassEnumerator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FA2AC61B196615F20052EB20 /* AJRConversions.m in Sources */ = {isa = PBXBuildFile; fileRef = FACCF4760FAFA1B0004A40FA /* AJRConversions.m */; };
 		FA2AC61C196615F20052EB20 /* AJRDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2ED0490FF2C92700CCAD09 /* AJRDelegateProxy.m */; };
 		FA2AC61D196615F20052EB20 /* AJRFileFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1584140EB7A7950094664B /* AJRFileFinder.m */; };
@@ -518,9 +525,7 @@
 		FA890FE0222008680012B0F2 /* AJRWebSearchProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA890FDF222008680012B0F2 /* AJRWebSearchProvider.swift */; };
 		FA890FE1222008680012B0F2 /* AJRWebSearchProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA890FDF222008680012B0F2 /* AJRWebSearchProvider.swift */; };
 		FA8925AD21FAB88D00246D46 /* AJRPathObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = FA8925AB21FAB88D00246D46 /* AJRPathObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FA8925AE21FAB88D00246D46 /* AJRPathObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = FA8925AB21FAB88D00246D46 /* AJRPathObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA8925AF21FAB88D00246D46 /* AJRPathObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8925AC21FAB88D00246D46 /* AJRPathObserver.m */; };
-		FA8925B021FAB88D00246D46 /* AJRPathObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8925AC21FAB88D00246D46 /* AJRPathObserver.m */; };
 		FA8BBA1D0EE4677B00C92598 /* NSBundle+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA8BBA1B0EE4677B00C92598 /* NSBundle+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA8BBA1E0EE4677B00C92598 /* NSBundle+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */; };
 		FA8E370725C5182400EB554F /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E370625C5182400EB554F /* Sequence+Extensions.swift */; };
@@ -538,7 +543,7 @@
 		FA904BB120CCE26200DB89F2 /* AJRMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FA904BAE20CCE26200DB89F2 /* AJRMutableOrderedDictionary.m */; };
 		FA904BB220CCE26200DB89F2 /* AJRMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FA904BAE20CCE26200DB89F2 /* AJRMutableOrderedDictionary.m */; };
 		FA904BC320CD115E00DB89F2 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA904BC220CD115E00DB89F2 /* libxml2.tbd */; };
-		FA90916419526D9B0050F57C /* AJRObjectID.h in Headers */ = {isa = PBXBuildFile; fileRef = FA90916219526D9B0050F57C /* AJRObjectID.h */; };
+		FA90916419526D9B0050F57C /* AJRObjectID.h in Headers */ = {isa = PBXBuildFile; fileRef = FA90916219526D9B0050F57C /* AJRObjectID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA90916519526D9B0050F57C /* AJRObjectID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA90916319526D9B0050F57C /* AJRObjectID.m */; };
 		FA920F94236AAAE300C95857 /* NSScanner+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA920F93236AAAE300C95857 /* NSScanner+ExtensionsTests.m */; };
 		FA931247234E935A0033529C /* NSString+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA931246234E935A0033529C /* NSString+ExtensionsTests.m */; };
@@ -747,7 +752,6 @@
 		FADEADD21966234000BF6EB9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADEADD11966234000BF6EB9 /* CFNetwork.framework */; };
 		FADEADD41966234800BF6EB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADEADD31966234800BF6EB9 /* Foundation.framework */; };
 		FADEADD61966235200BF6EB9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADEADD51966235200BF6EB9 /* SystemConfiguration.framework */; };
-		FADEADD81966241200BF6EB9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADEADD71966241200BF6EB9 /* MobileCoreServices.framework */; };
 		FADEADDA1966241A00BF6EB9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FADEADD91966241A00BF6EB9 /* libz.dylib */; };
 		FADEADDB19662D9F00BF6EB9 /* AJRDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA64F66E1562D217004DFF35 /* AJRDictionaryTests.m */; };
 		FADEADDC19662DA400BF6EB9 /* AJRFractionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA64F6701562D218004DFF35 /* AJRFractionTests.m */; };
@@ -956,6 +960,7 @@
 		FA2876D3260D73B600F5BBE8 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		FA2876D4260D73B700F5BBE8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		FA2876DB260D7C0500F5BBE8 /* Tools */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Tools; sourceTree = "<group>"; };
+		FA29F7172631287E002B953A /* HTMLEntities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLEntities.swift; sourceTree = "<group>"; };
 		FA2A14CA1CA4AD9F0024AEC2 /* AJRConstants.ajrplugindata */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; path = AJRConstants.ajrplugindata; sourceTree = "<group>"; };
 		FA2AC5CE196615000052EB20 /* AJRFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AJRFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA2AC6F419661A340052EB20 /* AJRFoundationOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundationOS.h; sourceTree = "<group>"; };
@@ -1358,7 +1363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAB8A22323485F5C00FB789F /* libiconv.tbd in Frameworks */,
-				FADEADD81966241200BF6EB9 /* MobileCoreServices.framework in Frameworks */,
+				FA29F72C2631291D002B953A /* CoreServices.framework in Frameworks */,
 				FADEADD41966234800BF6EB9 /* Foundation.framework in Frameworks */,
 				FADEADD21966234000BF6EB9 /* CFNetwork.framework in Frameworks */,
 				FADEADD61966235200BF6EB9 /* SystemConfiguration.framework in Frameworks */,
@@ -2069,6 +2074,7 @@
 			isa = PBXGroup;
 			children = (
 				FADDA131229BB71100257007 /* Extensions */,
+				FA29F7172631287E002B953A /* HTMLEntities.swift */,
 				FADDA110229BB6DB00257007 /* XMLDocument.swift */,
 				FADDA111229BB6DB00257007 /* XMLDTDAttributeDeclarationNode.swift */,
 				FADDA112229BB6DB00257007 /* XMLDTDNode.swift */,
@@ -2274,6 +2280,7 @@
 				FA2AC674196616370052EB20 /* AJRConstantExpression.h in Headers */,
 				FA2AC675196616370052EB20 /* AJRExpression.h in Headers */,
 				FA2AC676196616370052EB20 /* AJRFunctionExpression.h in Headers */,
+				FA29F6FD26312087002B953A /* NSPointerArray+Extensions.h in Headers */,
 				FA2AC677196616370052EB20 /* AJRKeyExpression.h in Headers */,
 				FA2AC678196616370052EB20 /* AJROperatorExpression.h in Headers */,
 				FA2AC679196616370052EB20 /* AJRSimpleExpression.h in Headers */,
@@ -2295,6 +2302,7 @@
 				FA8F1EB620C6075400D62576 /* AJRFileOutputStream.h in Headers */,
 				FA2AC684196616370052EB20 /* AJRAndOperator.h in Headers */,
 				FAD091F320CE42AE004320F5 /* AJRPropertyEnumerator.h in Headers */,
+				FA29F70A263120A8002B953A /* NSUnit+Extensions.h in Headers */,
 				FA2AC685196616370052EB20 /* AJRDivideOperator.h in Headers */,
 				FA2AC686196616370052EB20 /* AJREqualsOperator.h in Headers */,
 				FA2AC687196616370052EB20 /* AJRExclusiveOrOperator.h in Headers */,
@@ -2366,6 +2374,7 @@
 				FA2AC6C51966163C0052EB20 /* NSCoder+Extensions.h in Headers */,
 				FA2AC6C61966163D0052EB20 /* NSData+Base64.h in Headers */,
 				FA2AC6C71966163D0052EB20 /* NSData+Extensions.h in Headers */,
+				FA29F6E92631206C002B953A /* AJRUnitsFormatter.h in Headers */,
 				FA0F560725E477DD00DD0F3D /* AJREditingContext.h in Headers */,
 				FA5FAA152368CEBD0027F178 /* NSSet+ExtensionsP.h in Headers */,
 				FA4AEBD020AA805900875127 /* NSCharacterSet+Extensions.h in Headers */,
@@ -2397,7 +2406,6 @@
 				FA2AC6E1196616410052EB20 /* NSURLRequest+Extensions.h in Headers */,
 				FA2FF996209570DA001518D6 /* AJRMiscFunctions.h in Headers */,
 				FA2AC6E2196616410052EB20 /* NSUserDefaults+Extensions.h in Headers */,
-				FA8925AE21FAB88D00246D46 /* AJRPathObserver.h in Headers */,
 				FA2AC6EF196616430052EB20 /* AJRLogging.h in Headers */,
 				FA2AC6F2196616440052EB20 /* AJRHost.h in Headers */,
 				FACEC48022DE8483008AA6DB /* NSMutableSet+Extensions.h in Headers */,
@@ -2715,6 +2723,7 @@
 				FA94E0501118EA9B00FFC2D8 /* AJRGreaterThanOperator.m in Sources */,
 				FADDA121229BB6DB00257007 /* XMLDTDElementContent.swift in Sources */,
 				FA94E0541118EAD600FFC2D8 /* AJRGreatorThanOrEqualToOperator.m in Sources */,
+				FA29F7182631287E002B953A /* HTMLEntities.swift in Sources */,
 				FADDA136229BB71800257007 /* XMLElement+Extensions.swift in Sources */,
 				FA94E05C1118EB6000FFC2D8 /* AJRAddOperator.m in Sources */,
 				FA94E0661118ED3100FFC2D8 /* AJRSubtractOperator.m in Sources */,
@@ -2824,7 +2833,6 @@
 				FA2AC5FB196615F20052EB20 /* AJRBasicMathFunctions.m in Sources */,
 				FAD0920320CF108E004320F5 /* AJRVariableEnumerator.m in Sources */,
 				FA2AC6F919661FCE0052EB20 /* NSObject+Extensions_MRR.m in Sources */,
-				FA8925B021FAB88D00246D46 /* AJRPathObserver.m in Sources */,
 				FACEC48222DE8483008AA6DB /* NSMutableSet+Extensions.m in Sources */,
 				FA2AC5FC196615F20052EB20 /* AJRLogicFunctions.m in Sources */,
 				FA6FFE93220276A60083357D /* Dictionary+Extensions.swift in Sources */,
@@ -2855,6 +2863,7 @@
 				FA2AC60C196615F20052EB20 /* AJRNotOperator.m in Sources */,
 				FADDA11E229BB6DB00257007 /* XMLDTDAttributeDeclarationNode.swift in Sources */,
 				FABD164A25C78E91000294E3 /* NSOutputStream+Extensions.swift in Sources */,
+				FA29F7192631287E002B953A /* HTMLEntities.swift in Sources */,
 				FA6FFE96220276F40083357D /* Array+Extensions.swift in Sources */,
 				FA8F1EB820C6075400D62576 /* AJRFileOutputStream.m in Sources */,
 				FA2AC60D196615F20052EB20 /* AJROperator.m in Sources */,
@@ -2891,6 +2900,7 @@
 				FA2AC621196615F20052EB20 /* AJRGate.m in Sources */,
 				FA2AC622196615F20052EB20 /* AJRHTTPProxy.m in Sources */,
 				FA890FE1222008680012B0F2 /* AJRWebSearchProvider.swift in Sources */,
+				FA29F6F626312084002B953A /* NSPointerArray+Extensions.m in Sources */,
 				FA5EFBD620DF7BCB006C48B0 /* AJRPlugInExtensionPoint.m in Sources */,
 				FA2AC625196615F20052EB20 /* AJRMemoryHandle.m in Sources */,
 				FA2AC626196615F20052EB20 /* AJRMethodEnumerator.m in Sources */,

@@ -32,9 +32,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 import libxml2
 
+@objcMembers
+@objc(NSXMLElement)
 public class XMLElement : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     
     private var _attributes = OrderedDictionary<String, XMLNode>()
@@ -98,7 +99,7 @@ public class XMLElement : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
                         element?.addAttribute(XMLNode.attribute(withName: attributeName, stringValue: reader.value) as! XMLNode)
                     }
                 } else {
-                    RadarCore.log.warn("Hum, didn't handle node type \(attributeNodeType) when parsing attributes.")
+                    AJRLog.warning("Hum, didn't handle node type \(attributeNodeType) when parsing attributes.")
                 }
             }
             if isEmpty {
@@ -110,8 +111,8 @@ public class XMLElement : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     private func processElementClose(byName name: String) throws -> Void {
         // Nothing to really do here, really. We should just pop the last node. That being said, let's do a little validation.
         let currentNode = elementStack?.last
-        if !Equal(name, currentNode?.name) {
-            RadarCore.log.warn("Found close tag for \(name), but expected to be closing: \(currentNode?.name ?? "UNKNOWN")")
+        if !AJRAnyEquals(name, currentNode?.name) {
+            AJRLog.warning("Found close tag for \(name), but expected to be closing: \(currentNode?.name ?? "UNKNOWN")")
         } else {
             currentNode?.normalizeAdjacentTextNodesPreservingCDATA(true)
             elementStack?.removeLast()
@@ -241,13 +242,13 @@ public class XMLElement : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     
     public func elements(forName name: String) -> [XMLElement]? {
         return _children?.filter { (object) -> Bool in
-                return object.kind == .element && Equal(object.name, name)
+                return object.kind == .element && AJRAnyEquals(object.name, name)
             } as! [XMLElement]?
     }
 
     public func elements(forLocalName localName: String, url: String?) -> [XMLElement]? {
         return _children?.filter { (object) -> Bool in
-                return object.kind == .element && Equal(XMLNode.localName(forName: object.name!), localName)
+                return object.kind == .element && AJRAnyEquals(XMLNode.localName(forName: object.name!), localName)
             } as! [XMLElement]?
     }
     
@@ -299,15 +300,15 @@ public class XMLElement : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     
     public func attribute(forLocalName localName: String, uri: String?) -> XMLNode? {
         if let attributes = self.attributes {
-            return attributes.find(predicate: { (value) -> Bool in
-                return Equal(XMLNode.localName(forName: value.name!), localName) && Equal(value.uri, uri)
+            return attributes.first(where: { (value) -> Bool in
+                return AJRAnyEquals(XMLNode.localName(forName: value.name!), localName) && AJRAnyEquals(value.uri, uri)
             })
         }
         return nil
     }
     
     @discardableResult public func replaceAttribute(_ attribute: XMLNode, with newAttribute: XMLNode) -> XMLNode? {
-        return _attributes.updateValue(forKey: attribute.name!, withNewKey: newAttribute.name!, andValue: newAttribute)
+        return _attributes.updateValue(newAttribute, forKey: attribute.name!, newKey: newAttribute.name!)
     }
     
     // MARK: - Namespaces
@@ -482,25 +483,25 @@ public class XMLElement : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     public override func equal(toNode other: XMLNode) -> Bool {
         if let typed = other as? XMLElement {
             return (super.equal(toNode: other)
-                && Equal(_children, typed._children)
-                && Equal(_attributes, typed._attributes)
-                && Equal(_namespaces, typed._namespaces)
+                && AJRAnyEquals(_children, typed._children)
+                && AJRAnyEquals(_attributes, typed._attributes)
+                && AJRAnyEquals(_namespaces, typed._namespaces)
             )
         }
         return false
     }
     
     public static func == (lhs: XMLElement, rhs: XMLElement) -> Bool {
-        return lhs.untypedEqual(to:rhs)
+        return lhs.isEqual(to:rhs)
     }
     
     // MARK: - Copying
     
-    public override func copy() -> Any {
+    public override func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy() as! XMLElement
         copy.children = copyChildren() // Convenience provided by XMLNodeWithChildren
-        copy._attributes = _attributes.copy() as! OrderedDictionary<String, XMLNode>
-        copy._namespaces = _namespaces.copy() as! OrderedDictionary<String, XMLNode>
+        copy._attributes = _attributes
+        copy._namespaces = _namespaces
         return copy
     }
     

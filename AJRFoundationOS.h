@@ -41,6 +41,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define AJRFoundation_iOS
 #import <AJRFoundation/AJRHost.h>
 #import <CoreGraphics/CoreGraphics.h>
-#import <MobileCoreServices/MobileCoreServices.h>
+#import <CoreServices/CoreServices.h>
 #define NSHost AJRHost
 #endif

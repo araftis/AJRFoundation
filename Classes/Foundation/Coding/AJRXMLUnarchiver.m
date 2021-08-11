@@ -646,7 +646,12 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         NSData *data = AJRObjectIfKindOfClass(rawValue, NSData);
         NSError *localError = nil;
         if (data != nil) {
-            NSURL *url = [NSURL URLByResolvingBookmarkData:data options:NSURLBookmarkResolutionWithSecurityScope relativeToURL:nil bookmarkDataIsStale:NULL error:&localError];
+#if defined(AJRFoundation_iOS)
+            NSURLBookmarkResolutionOptions options = 0;
+#else
+            NSURLBookmarkResolutionOptions options = NSURLBookmarkResolutionWithSecurityScope;
+#endif
+            NSURL *url = [NSURL URLByResolvingBookmarkData:data options:options relativeToURL:nil bookmarkDataIsStale:NULL error:&localError];
             if (url != nil) {
                 return [self callBlock:^{
                     if (setter != NULL) {

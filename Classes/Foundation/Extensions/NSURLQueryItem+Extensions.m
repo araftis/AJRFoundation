@@ -31,8 +31,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "NSURLQueryItem+Extensions.h"
 
-#import <AppKit/AppKit.h>
-
 @implementation NSURLQueryItem (Extensions)
 
 + (NSArray<NSURLQueryItem *> *)queryItemsFromDictionary:(NSDictionary<NSString *, NSString *> *)items {

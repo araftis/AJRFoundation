@@ -129,7 +129,7 @@ extension XMLNode.Kind : CustomStringConvertible {
             return "elementDeclaration"
         case .notationDeclaration:
             return "notationDeclaration"
-        #if os (Linux)
+        #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
         case .elementDeclarationContent:
             return "elementDeclarationContent"
         #endif

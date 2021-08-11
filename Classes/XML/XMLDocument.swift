@@ -32,9 +32,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 import libxml2
 
+@objcMembers
+@objc(NSXMLDocument)
 open class XMLDocument : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     
     public enum DocumentKind : Int {
@@ -139,7 +140,7 @@ open class XMLDocument : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
                         element.addAttribute(node)
                     }
                 } else {
-                    RadarCore.log.warn("Hum, didn't handle node type \(attributeNodeType) when parsing attributes.")
+                    AJRLog.warning("Hum, didn't handle node type \(attributeNodeType) when parsing attributes.")
                 }
             }
             if isEmpty {
@@ -159,8 +160,8 @@ open class XMLDocument : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     private func processElementClose(byName name:String?) throws -> Void {
         // Nothing to really do here, really. We should just pop the last node. That being said, let's do a little validation.
         if let currentNode = elementStack?.last {
-            if !Equal(name, currentNode.name) {
-                RadarCore.log.warn("Found close tag for \(name ?? "*UNKNOWN*"), but expected to be closing: \(currentNode.name ?? "*UNKNOWN*").")
+            if !AJRAnyEquals(name, currentNode.name) {
+                AJRLog.warning("Found close tag for \(name ?? "*UNKNOWN*"), but expected to be closing: \(currentNode.name ?? "*UNKNOWN*").")
             } else {
                 currentNode.normalizeAdjacentTextNodesPreservingCDATA(true)
                 elementStack?.removeLast()
@@ -355,7 +356,14 @@ open class XMLDocument : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
         try self.init(data:data, options:mask)
         baseURL = url
     }
-    
+
+    @objc(initWithContentsOfURL:options:error:)
+    public convenience init(contentsOf url: URL, options: NSXMLNodeOptions) throws {
+        let data = try Data(contentsOf: url)
+        try self.init(data: data, options: XMLNode.Options(rawValue: options))
+        baseURL = url
+    }
+
     public init(data: Data, options mask: XMLNode.Options = []) throws {
         super.init(kind: .document, options: mask)
         try parse(data:data)
@@ -536,26 +544,26 @@ open class XMLDocument : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     open override func equal(toNode other: XMLNode) -> Bool {
         if let typed = other as? XMLDocument {
             return (super.equal(toNode: other)
-                && Equal(characterEncoding, typed.characterEncoding)
-                && Equal(isStandalone, typed.isStandalone)
-                && Equal(_documentContentKind, typed._documentContentKind)
-                && Equal(mimeType, typed.mimeType)
-                && Equal(version, typed.version)
-                && Equal(baseURL, typed.baseURL)
-                && Equal(_children, typed._children)
-                && Equal(_dtds, typed._dtds)
+                && AJRAnyEquals(characterEncoding, typed.characterEncoding)
+                && AJRAnyEquals(isStandalone, typed.isStandalone)
+                && AJRAnyEquals(_documentContentKind, typed._documentContentKind)
+                && AJRAnyEquals(mimeType, typed.mimeType)
+                && AJRAnyEquals(version, typed.version)
+                && AJRAnyEquals(baseURL, typed.baseURL)
+                && AJRAnyEquals(_children, typed._children)
+                && AJRAnyEquals(_dtds, typed._dtds)
             )
         }
         return false
     }
     
-    open static func == (lhs: XMLDocument, rhs: XMLDocument) -> Bool {
-        return lhs.untypedEqual(to:rhs)
+    public static func == (lhs: XMLDocument, rhs: XMLDocument) -> Bool {
+        return lhs.isEqual(to:rhs)
     }
     
     // MARK: - Copying
     
-    open override func copy() -> Any {
+    open override func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy() as! XMLDocument
         copy.characterEncoding = characterEncoding
         copy.isStandalone = isStandalone

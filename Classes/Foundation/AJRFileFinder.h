@@ -142,7 +142,7 @@ typedef NS_OPTIONS(uint32_t, AJRDeveloperSDK) {
 
 #pragma mark - Global Properties
 
-@property (nonatomic,class,readonly) NSString *developerPath;
+@property (nonatomic,class,readonly,nullable) NSString *developerPath;
 
 #pragma mark - Searching
  

@@ -33,6 +33,7 @@ import Foundation
 
 // NOTE: This uses fully qualified names, because if we decide to support iOS, then I have an implementation of these classes that use libxml2 under the hood, but that means that the code below would wind up extending our local implementations, rather than the Foundation implementations.
 
+#if os(macOS)
 public extension Foundation.XMLElement {
     
     func replaceAttribute(_ attribute: Foundation.XMLNode, with newAttribute: Foundation.XMLNode) {
@@ -51,3 +52,4 @@ public extension Foundation.XMLElement {
     }
     
 }
+#endif

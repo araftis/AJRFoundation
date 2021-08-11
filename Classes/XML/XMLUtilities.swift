@@ -32,7 +32,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 import libxml2
 
 public enum XMLError : Error {
@@ -50,7 +49,7 @@ public enum XMLError : Error {
 
 internal extension String {
     
-    internal init?(xml:UnsafePointer<xmlChar>) {
+    init?(xml:UnsafePointer<xmlChar>) {
         var castedXML : UnsafePointer<Int8>? = nil
         xml.withMemoryRebound(to: Int8.self, capacity: 20) { input in
             castedXML = input

@@ -35,8 +35,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJRFunctions.h"
 #import "AJRMutableCountedDictionary.h"
 
+#if !defined(AJRFoundation_iOS)
 #import <objc/objc-class.h>
 #import <objc/objc-runtime.h>
+#else
+#import <objc/runtime.h>
+#endif
 
 static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToIgnoreByClass = nil;
 static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByClass = nil;

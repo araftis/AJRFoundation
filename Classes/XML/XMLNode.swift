@@ -32,32 +32,103 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if os(Linux) || os(iOS) || os(tvOS) || os(watchOS)
 
 import Foundation
-import radar_core
 
-open class XMLNode: CustomStringConvertible, Equatable, Copying, UntypedEquatable {
+// For Obj-C Support
+public typealias NSXMLNodeOptions = UInt
+
+public let NSXMLNodeIsCDATA = UInt(XMLNode.Options.nodeIsCDATA.rawValue)
+public let NSXMLNodeExpandEmptyElement
+ = UInt(XMLNode.Options.nodeExpandEmptyElement.rawValue)
+public let NSXMLNodeCompactEmptyElement
+ = UInt(XMLNode.Options.nodeCompactEmptyElement.rawValue)
+public let NSXMLNodeUseSingleQuotes
+ = UInt(XMLNode.Options.nodeUseSingleQuotes.rawValue)
+public let NSXMLNodeUseDoubleQuotes
+ = UInt(XMLNode.Options.nodeUseDoubleQuotes.rawValue)
+public let NSXMLNodeNeverEscapeContents = UInt(XMLNode.Options.nodeNeverEscapeContents.rawValue)
+public let NSXMLDocumentTidyHTML
+ = UInt(XMLNode.Options.documentTidyHTML.rawValue)
+public let NSXMLDocumentTidyXML
+ = UInt(XMLNode.Options.documentTidyXML.rawValue)
+public let NSXMLNodeDocumentInjectHTMLDocType = UInt(XMLNode.Options.documentInjectHTMLDocType.rawValue)
+public let NSXMLDocumentValidate
+ = UInt(XMLNode.Options.documentValidate.rawValue)
+public let NSXMLNodeLoadExternalEntitiesAlways
+ = UInt(XMLNode.Options.nodeLoadExternalEntitiesAlways.rawValue)
+public let NSXMLNodeLoadExternalEntitiesSameOriginOnly
+ = UInt(XMLNode.Options.nodeLoadExternalEntitiesSameOriginOnly.rawValue)
+public let NSXMLNodeLoadExternalEntitiesNever
+ = UInt(XMLNode.Options.nodeLoadExternalEntitiesNever.rawValue)
+public let NSXMLDocumentXInclude
+ = UInt(XMLNode.Options.documentXInclude.rawValue)
+public let NSXMLNodePrettyPrint
+ = UInt(XMLNode.Options.nodePrettyPrint.rawValue)
+public let NSXMLDocumentIncludeContentTypeDeclaration
+ = UInt(XMLNode.Options.documentIncludeContentTypeDeclaration.rawValue)
+public let NSXMLNodePreserveNamespaceOrder
+ = UInt(XMLNode.Options.nodePreserveNamespaceOrder.rawValue)
+public let NSXMLNodePreserveAttributeOrder
+ = UInt(XMLNode.Options.nodePreserveAttributeOrder.rawValue)
+public let NSXMLNodePreserveEntities
+ = UInt(XMLNode.Options.nodePreserveEntities.rawValue)
+public let NSXMLNodePreservePrefixes
+ = UInt(XMLNode.Options.nodePreservePrefixes.rawValue)
+public let NSXMLNodePreserveCDATA
+ = UInt(XMLNode.Options.nodePreserveCDATA.rawValue)
+public let NSXMLNodePreserveWhitespace
+ = UInt(XMLNode.Options.nodePreserveWhitespace.rawValue)
+public let NSXMLNodePreserveDTD
+ = UInt(XMLNode.Options.nodePreserveDTD.rawValue)
+public let NSXMLNodePreserveCharacterReferences
+ = UInt(XMLNode.Options.nodePreserveCharacterReferences.rawValue)
+public let NSXMLNodePromoteSignificantWhitespace = UInt(XMLNode.Options.nodePromoteSignificantWhitespace.rawValue)
+public let NSXMLNodePreserveEmptyElements
+ = UInt(XMLNode.Options.nodePreserveEmptyElements.rawValue)
+public let NSXMLNodePreserveQuotes
+ = UInt(XMLNode.Options.nodePreserveQuotes.rawValue)
+public let NSXMLNodePreserveAll = UInt(XMLNode.Options.nodePreserveAll.rawValue)
+
+@objcMembers
+@objc(NSXMLNode)
+open class XMLNode: NSObject, NSCopying, AJREquatable {
+
+    @objc
     public enum Kind : UInt {
         
+        @objc(NSXMLInvalidKind)
         case invalid
+        @objc(NSXMLDocumentKind)
         case document
+        @objc(NSXMLElementKind)
         case element
+        @objc(NSXMLAttributeKind)
         case attribute
+        @objc(NSXMLNamespaceKind)
         case namespace
+        @objc(NSXMLProcessingInstructionKind)
         case processingInstruction
+        @objc(NSXMLCommentKind)
         case comment
+        @objc(NSXMLTextKind)
         case text
+        @objc(NSXMLDTDKnd)
         case DTDKind
+        @objc(NSXMLEntityDeclarationKind)
         case entityDeclaration
+        @objc(NSXMLAttributeDeclarationKind)
         case attributeDeclaration
+        @objc(NSXMLElementDeclaractionKind)
         case elementDeclaration
+        @objc(NSXMLNotationDeclarationKind)
         case notationDeclaration
         
         case elementDeclarationContent
     }
-    
-    public struct Options : OptionSet {
-        public let rawValue: Int
 
-        public static let none = Options(rawValue: 0)
+    public struct Options : OptionSet {
+        public let rawValue: UInt
+
+        public static let none: Options = []
 
         // Init
         public static let nodeIsCDATA                            = Options(rawValue: 1 << 0)
@@ -112,7 +183,7 @@ open class XMLNode: CustomStringConvertible, Equatable, Copying, UntypedEquatabl
                                                                     .nodePreserveCharacterReferences,
                                                                     Options(rawValue:0xFFF00000)] // high 12 bits
         
-        public init(rawValue: Int) { self.rawValue = rawValue }
+        public init(rawValue: UInt) { self.rawValue = rawValue }
     }
     
     public internal(set) var parent : XMLNode? = nil
@@ -290,7 +361,7 @@ open class XMLNode: CustomStringConvertible, Equatable, Copying, UntypedEquatabl
     
     // MARK: - Output
     
-    public var description : String { return xmlString(options: [.none]) }
+    public override var description : String { return xmlString(options: [.none]) }
     
     public func xmlString(options: XMLNode.Options = []) -> String {
         var result = ""
@@ -315,18 +386,25 @@ open class XMLNode: CustomStringConvertible, Equatable, Copying, UntypedEquatabl
     public func canonicalXMLString(preservingComments comments: Bool) -> String {
         return xmlString(options:.nodePreserveAll)
     }
+
+    // MARK: - Query
+
+    @objc(nodesForXPath:error:)
+    public func nodes(xPath: String) throws -> [XMLNode] {
+        return []
+    }
     
     // MARK: - Equatable
     
     public func equal(toNode other: XMLNode) -> Bool {
-        return (Equal(name, other.name)
-            && Equal(uri, other.uri)
-            && Equal(kind, other.kind)
-            && Equal(objectValue, other.objectValue)
+        return (AJRAnyEquals(name, other.name)
+            && AJRAnyEquals(uri, other.uri)
+            && AJRAnyEquals(kind, other.kind)
+            && AJRAnyEquals(objectValue, other.objectValue)
         )
     }
     
-    public func untypedEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any) -> Bool {
         if Self.self == type(of:other) {
             return equal(toNode: other as! XMLNode)
         }
@@ -334,16 +412,16 @@ open class XMLNode: CustomStringConvertible, Equatable, Copying, UntypedEquatabl
     }
     
     public static func == (lhs: XMLNode, rhs: XMLNode) -> Bool {
-        return lhs.untypedEqual(to:rhs)
+        return lhs.isEqual(to:rhs)
     }
     
     // MARK: - Copying
     
-    public func copy() -> Any {
+    public func copy(with zone: NSZone? = nil) -> Any {
         let copy = Self.init(kind: kind, options: options)
         copy.uri = uri
         copy.name = name
-        if let objectValue = objectValue as? Copying {
+        if let objectValue = objectValue as? NSCopying {
             copy.objectValue = objectValue.copy()
         } else {
             copy.objectValue = objectValue
