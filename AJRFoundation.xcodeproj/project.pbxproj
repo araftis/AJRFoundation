@@ -1444,7 +1444,6 @@
 				FAAD99D813F449AC00917C90 /* Logging */,
 				FABE1F46152F9487006D3FCA /* Plug-Ins */,
 				FAD091EF20CE426B004320F5 /* Runtime */,
-				FA8FAD8A0EE60778004B4567 /* Third Party */,
 				FADDA10F229BB6DB00257007 /* XML */,
 			);
 			path = Classes;
@@ -1777,13 +1776,6 @@
 				FAA34DCC196639D80025E01D /* iOS */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		FA8FAD8A0EE60778004B4567 /* Third Party */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Third Party";
 			sourceTree = "<group>";
 		};
 		FA94DDA11118D7DD00FFC2D8 /* Expressions */ = {

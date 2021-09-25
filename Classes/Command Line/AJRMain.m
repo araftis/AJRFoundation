@@ -82,10 +82,6 @@ static void _ajrMainHandlerRoutine(int signalRaised) {
     [ajrMain _processSignal:signalRaised];
 }
 
-void AJRMainRun() {
-    [ajrMain run];
-}
-
 static void _attachStreams(void) {
     AJRStdErr = [NSFileHandle fileHandleWithStandardError];
     AJRStdOut = [NSFileHandle fileHandleWithStandardOutput];
