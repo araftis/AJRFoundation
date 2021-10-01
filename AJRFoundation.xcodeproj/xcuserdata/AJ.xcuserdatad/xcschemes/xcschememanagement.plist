@@ -22,12 +22,12 @@
 		<key>AJRPlugInManagerTestBundle.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>14</integer>
 		</dict>
 		<key>Documentation.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>13</integer>
 		</dict>
 	</dict>
 </dict>
