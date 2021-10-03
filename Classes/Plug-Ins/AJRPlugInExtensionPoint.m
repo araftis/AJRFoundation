@@ -36,9 +36,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJRPlugInElement.h"
 #import "AJRPlugInExtension.h"
 
+#import <objc/runtime.h>
+
 typedef void (*AJRRegistryIMP)(id class, SEL _cmd);
 typedef void (*AJRRegistryClassIMP)(id class, SEL _cmd, Class extension);
 typedef void (*AJRRegistryPropertiesIMP)(id class, SEL _cmd, NSDictionary *properties);
+typedef void (*AJRRegistryNameAndPropertiesIMP)(id class, SEL _cmd, NSString *name, NSDictionary *properties);
 typedef void (*AJRRegistryClassAndPropertiesIMP)(id class, SEL _cmd, Class extension, NSDictionary *properties);
 
 @interface AJRPlugInExtensionPoint ()
@@ -93,9 +96,22 @@ typedef void (*AJRRegistryClassAndPropertiesIMP)(id class, SEL _cmd, Class exten
                 warn = YES;
             }
         } else if (!class && properties) {
-            AJRRegistryPropertiesIMP implementation = (AJRRegistryPropertiesIMP)[[self extensionPointClass] methodForSelector:[self registrySelector]];
-            if (implementation) {
-                implementation([self extensionPointClass], [self registrySelector], properties);
+			Method method = class_getClassMethod([self extensionPointClass], [self registrySelector]);
+            if (method) {
+				switch (method_getNumberOfArguments(method)) {
+					case 3: {
+						AJRRegistryPropertiesIMP implementation = (AJRRegistryPropertiesIMP)[[self extensionPointClass] methodForSelector:[self registrySelector]];
+						implementation([self extensionPointClass], [self registrySelector], properties);
+						break;
+					}
+					case 4: {
+						AJRRegistryNameAndPropertiesIMP implementation = (AJRRegistryNameAndPropertiesIMP)[[self extensionPointClass] methodForSelector:[self registrySelector]];
+						implementation([self extensionPointClass], [self registrySelector], properties[@"name"], properties);
+						break;
+					}
+					default:
+						AJRLogWarning(@"Factory registry method is expected to have one or two arguments, but has %d instead.", method_getNumberOfArguments(method) - 2);
+				}
             } else {
                 warn = YES;
             }

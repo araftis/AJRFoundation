@@ -122,6 +122,7 @@ static void AJRLog_fvp(NSString *domain, AJRLogLevel level, NSString *format, va
         if (!_logIsOpen) {
             setlogmask(LOG_UPTO(_globalLogLevel));
             openlog([[[NSProcessInfo processInfo] processName] UTF8String], LOG_NDELAY, LOG_USER);
+            _logIsOpen = YES;
         }
         
         formattedString = AJRFormatv(format, ap);
