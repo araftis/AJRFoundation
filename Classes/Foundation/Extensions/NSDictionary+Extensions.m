@@ -1,33 +1,33 @@
 /*
-NSDictionary+Extensions.m
-AJRFoundation
+ NSDictionary+Extensions.m
+ AJRFoundation
 
-Copyright © 2021, AJ Raftis and AJRFoundation authors
-All rights reserved.
+ Copyright © 2021, AJ Raftis and AJRFoundation authors
+ All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
 
-* Redistributions of source code must retain the above copyright notice, this 
-  list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, 
-  this list of conditions and the following disclaimer in the documentation 
-  and/or other materials provided with the distribution.
-* Neither the name of AJRFoundation nor the names of its contributors may be 
-  used to endorse or promote products derived from this software without 
-  specific prior written permission.
+ * Redistributions of source code must retain the above copyright notice, this
+ list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
+ * Neither the name of AJRFoundation nor the names of its contributors may be
+ used to endorse or promote products derived from this software without
+ specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-DISCLAIMED. IN NO EVENT SHALL AJ RAFTIS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL AJ RAFTIS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #import "NSDictionary+ExtensionsP.h"
 
@@ -36,6 +36,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJRLogging.h"
 #import "NSArray+Extensions.h"
 #import "NSMutableDictionary+Extensions.h"
+#import "NSObject+Extensions.h"
 #import "NSString+Extensions.h"
 
 #import <objc/runtime.h>
@@ -46,68 +47,68 @@ typedef id KeyType;
 @implementation AJRXMLDictionaryPlaceholder
 
 - (id)initWithFinalClass:(Class)finalClass {
-	if ((self = [super init])) {
-		_finalClass = finalClass;
-		_max = 16;
-		_index = 0;
-		_objects = (id __strong *)NSZoneCalloc(NULL, _max, sizeof(id));
-		_keys = (id __strong *)NSZoneCalloc(NULL, _max, sizeof(id));
-	}
-	return self;
+    if ((self = [super init])) {
+        _finalClass = finalClass;
+        _max = 16;
+        _index = 0;
+        _objects = (id __strong *)NSZoneCalloc(NULL, _max, sizeof(id));
+        _keys = (id __strong *)NSZoneCalloc(NULL, _max, sizeof(id));
+    }
+    return self;
 }
 
 - (void)dealloc {
-	// Make sure these are freed. They usually are down in the finalizeXMLDecoding method, but if an error occurred, they could be sticking around.
-	for (NSInteger x = 0; x < _index; x++) {
-		_keys[x] = nil;
-		_objects[x] = nil;
-	}
-	_index = 0;
-	NSZoneFree(NULL, _keys);
-	NSZoneFree(NULL, _objects);
+    // Make sure these are freed. They usually are down in the finalizeXMLDecoding method, but if an error occurred, they could be sticking around.
+    for (NSInteger x = 0; x < _index; x++) {
+        _keys[x] = nil;
+        _objects[x] = nil;
+    }
+    _index = 0;
+    NSZoneFree(NULL, _keys);
+    NSZoneFree(NULL, _objects);
 }
 
 - (void)appendKey:(id)key andObject:(id)object {
-	if (_index >= _max) {
-		NSInteger oldMax = _max;
-		if (_max < 256) {
-			_max = _max + _max;
-		} else {
-			_max += 128;
-		}
-		_keys = (id __strong *)NSZoneRealloc(NULL, _keys, _max * sizeof(id));
-		_objects = (id __strong *)NSZoneRealloc(NULL, _objects, _max * sizeof(id));
-		// Make sure to zero these, or we're going to crash when ARC tries to release a random pointer.
-		memset(_keys + oldMax, 0, sizeof(id) * (_max - oldMax));
-		memset(_objects + oldMax, 0, sizeof(id) * (_max - oldMax));
-	}
-	_keys[_index] = key;
-	_objects[_index] = object;
-	//AJRPrintf(@"%d: key: %@, object: %@\n", (int)_index, key, object);
-	_index += 1;
-	_key = nil;
+    if (_index >= _max) {
+        NSInteger oldMax = _max;
+        if (_max < 256) {
+            _max = _max + _max;
+        } else {
+            _max += 128;
+        }
+        _keys = (id __strong *)NSZoneRealloc(NULL, _keys, _max * sizeof(id));
+        _objects = (id __strong *)NSZoneRealloc(NULL, _objects, _max * sizeof(id));
+        // Make sure to zero these, or we're going to crash when ARC tries to release a random pointer.
+        memset(_keys + oldMax, 0, sizeof(id) * (_max - oldMax));
+        memset(_objects + oldMax, 0, sizeof(id) * (_max - oldMax));
+    }
+    _keys[_index] = key;
+    _objects[_index] = object;
+    //AJRPrintf(@"%d: key: %@, object: %@\n", (int)_index, key, object);
+    _index += 1;
+    _key = nil;
 }
 
 - (void)decodeWithXMLCoder:(AJRXMLCoder *)coder {
-	[coder decodeGroupForKey:@"entry" usingBlock:^{
-		[coder decodeObjectForKey:@"key" setter:^(id object) {
-			self->_key = object;
-		}];
-		[coder decodeObjectForKey:@"object" setter:^(id object) {
-			[self appendKey:self->_key andObject:object];
-		}];
-	} setter:NULL];
+    [coder decodeGroupForKey:@"entry" usingBlock:^{
+        [coder decodeObjectForKey:@"key" setter:^(id object) {
+            self->_key = object;
+        }];
+        [coder decodeObjectForKey:@"object" setter:^(id object) {
+            [self appendKey:self->_key andObject:object];
+        }];
+    } setter:NULL];
 }
 
 - (id)finalizeXMLDecodingWithError:(NSError * _Nullable * _Nullable)error {
-	NSDictionary *result = [[_finalClass alloc] initWithObjects:_objects forKeys:_keys count:_index];
-	// For now, give up ownership of the objects immediately. This can help with tracking down bugs.
-	for (NSInteger x = 0; x < _index; x++) {
-		_keys[x] = nil;
-		_objects[x] = nil;
-	}
-	_index = 0;
-	return result;
+    NSDictionary *result = [[_finalClass alloc] initWithObjects:_objects forKeys:_keys count:_index];
+    // For now, give up ownership of the objects immediately. This can help with tracking down bugs.
+    for (NSInteger x = 0; x < _index; x++) {
+        _keys[x] = nil;
+        _objects[x] = nil;
+    }
+    _index = 0;
+    return result;
 }
 
 @end
@@ -122,14 +123,14 @@ static AJRSetObjectForKeyIMP originalSetObjectForKey = NULL;
 #if defined (AJR_DEBUG) || defined (AJR_UNIT_TESTING)
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-		Method method1 = class_getInstanceMethod(objc_getClass("__NSDictionaryM"), @selector(setObject:forKey:));
-		if (method1) {
-			Method method2 = class_getInstanceMethod(self, @selector(setObject:forKey:));
-			if (method2) {
-				originalSetObjectForKey = (AJRSetObjectForKeyIMP)method_getImplementation(method1);
-				method_setImplementation(method1, method_getImplementation(method2));
-			}
-		}
+        Method method1 = class_getInstanceMethod(objc_getClass("__NSDictionaryM"), @selector(setObject:forKey:));
+        if (method1) {
+            Method method2 = class_getInstanceMethod(self, @selector(setObject:forKey:));
+            if (method2) {
+                originalSetObjectForKey = (AJRSetObjectForKeyIMP)method_getImplementation(method1);
+                method_setImplementation(method1, method_getImplementation(method2));
+            }
+        }
 
         //AJRSwizzleMethods2(objc_getClass("__NSDictionaryM"), @selector(setObject:forKey:), self, @selector(ajr_setObject:forKey:));
     });
@@ -144,7 +145,7 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
     if (object == nil || key == nil) {
         _AJRSetObjectNilObjectOrKey(self, object, key);
     }
-	originalSetObjectForKey(self, _cmd, object, key);
+    originalSetObjectForKey(self, _cmd, object, key);
 }
 
 @end
@@ -217,20 +218,20 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
 - (id)arrayForKey:(NSString *)key defaultValue:(id)defaultValue {
     id value = [self objectForKey:key];
     if (value == nil) value = defaultValue;
-	if (value != nil && ![value isKindOfClass:[NSArray class]]) {
-		AJRLog(nil, AJRLogLevelWarning, @"Expected array value for key \"%@\" wasn't an array, but a %C.", key, value);
-		value = defaultValue;
-	}
+    if (value != nil && ![value isKindOfClass:[NSArray class]]) {
+        AJRLog(nil, AJRLogLevelWarning, @"Expected array value for key \"%@\" wasn't an array, but a %C.", key, value);
+        value = defaultValue;
+    }
     return value;
 }
 
 - (id)arrayForKeyPath:(NSString *)key defaultValue:(id)defaultValue {
     id value = [self valueForKeyPath:key];
     if (value == nil) value = defaultValue;
-	if (value != nil && ![value isKindOfClass:[NSArray class]]) {
-		AJRLog(nil, AJRLogLevelWarning, @"Expected array value for key \"%@\" wasn't an array, but a %C.", key, value);
-		value = defaultValue;
-	}
+    if (value != nil && ![value isKindOfClass:[NSArray class]]) {
+        AJRLog(nil, AJRLogLevelWarning, @"Expected array value for key \"%@\" wasn't an array, but a %C.", key, value);
+        value = defaultValue;
+    }
     return value;
 }
 
@@ -241,46 +242,46 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
 - (id)dictionaryForKey:(NSString *)key defaultValue:(id)defaultValue {
     id value = [self objectForKey:key];
     if (value == nil) value = defaultValue;
-	if (value != nil && ![value isKindOfClass:[NSDictionary class]]) {
-		AJRLog(nil, AJRLogLevelWarning, @"Expected dictionary value for key \"%@\" wasn't a dictionary, but a %C.", key, value);
-		value = defaultValue;
-	}
+    if (value != nil && ![value isKindOfClass:[NSDictionary class]]) {
+        AJRLog(nil, AJRLogLevelWarning, @"Expected dictionary value for key \"%@\" wasn't a dictionary, but a %C.", key, value);
+        value = defaultValue;
+    }
     return value;
 }
 
 - (id)dictionaryForKeyPath:(NSString *)key defaultValue:(id)defaultValue {
     id value = [self valueForKeyPath:key];
     if (value == nil) value = defaultValue;
-	if (value != nil && ![value isKindOfClass:[NSDictionary class]]) {
-		AJRLog(nil, AJRLogLevelWarning, @"Expected dictionary value for key \"%@\" wasn't a dictionary, but a %C.", key, value);
-		value = defaultValue;
-	}
+    if (value != nil && ![value isKindOfClass:[NSDictionary class]]) {
+        AJRLog(nil, AJRLogLevelWarning, @"Expected dictionary value for key \"%@\" wasn't a dictionary, but a %C.", key, value);
+        value = defaultValue;
+    }
     return value;
 }
 
 - (NSString *)stringForKey:(NSString *)key defaultValue:(NSString *)defaultValue {
-	return [self objectForKey:key] ?: defaultValue;
+    return [self objectForKey:key] ?: defaultValue;
 }
 
 - (NSString *)stringForKeyPath:(NSString *)key defaultValue:(NSString *)defaultValue {
-	return [self valueForKeyPath:key] ?: defaultValue;
+    return [self valueForKeyPath:key] ?: defaultValue;
 }
 
 - (NSTimeInterval)timeIntervalForKey:(NSString *)key defaultValue:(NSTimeInterval)defaultValue {
     NSString *value = [self objectForKey:key];
     if (!value) return defaultValue;
-	if ([value isKindOfClass:[NSNumber class]]) {
-		return value.doubleValue;
-	}
-	return [value description].timeIntervalValue;
+    if ([value isKindOfClass:[NSNumber class]]) {
+        return value.doubleValue;
+    }
+    return [value description].timeIntervalValue;
 }
 
 - (NSTimeInterval)timeIntervalForKeyPath:(NSString *)key defaultValue:(NSTimeInterval)defaultValue {
     NSString *value = [self valueForKeyPath:key];
     if (!value) return defaultValue;
-	if ([value isKindOfClass:[NSNumber class]]) {
-		return value.doubleValue;
-	}
+    if ([value isKindOfClass:[NSNumber class]]) {
+        return value.doubleValue;
+    }
     return [[value description] timeIntervalValue];
 }
 
@@ -299,18 +300,18 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
 - (NSNumber *)numberForKey:(NSString *)key defaultValue:(NSNumber *)defaultValue {
     NSString *value = [self objectForKey:key];
     if (!value) return defaultValue;
-	if ([value isKindOfClass:[NSNumber class]]) {
-		return (NSNumber *)value;
-	}
+    if ([value isKindOfClass:[NSNumber class]]) {
+        return (NSNumber *)value;
+    }
     return [value numberValue];
 }
 
 - (NSNumber *)numberForKeyPath:(NSString *)key defaultValue:(NSNumber *)defaultValue {
     NSString *value = [self valueForKeyPath:key];
     if (!value) return defaultValue;
-	if ([value isKindOfClass:[NSNumber class]]) {
-		return (NSNumber *)value;
-	}
+    if ([value isKindOfClass:[NSNumber class]]) {
+        return (NSNumber *)value;
+    }
     return [value numberValue];
 }
 
@@ -511,20 +512,20 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
 
 - (NSCharacterSet *)characterSetForKey:(NSString *)key defaultValue:(NSCharacterSet *)defaultValue {
     id raw = [self objectForKey:key];
-	if (!raw) return defaultValue;
-	if ([raw isKindOfClass:[NSCharacterSet class]]) {
-		return (NSCharacterSet *)raw;
-	}
-	return [NSCharacterSet characterSetWithCharactersInString:[raw description]];
+    if (!raw) return defaultValue;
+    if ([raw isKindOfClass:[NSCharacterSet class]]) {
+        return (NSCharacterSet *)raw;
+    }
+    return [NSCharacterSet characterSetWithCharactersInString:[raw description]];
 }
 
 - (NSCharacterSet *)characterSetForKeyPath:(NSString *)key defaultValue:(NSCharacterSet *)defaultValue {
     id raw = [self valueForKeyPath:key];
-	if (!raw) return defaultValue;
-	if ([raw isKindOfClass:[NSCharacterSet class]]) {
-		return (NSCharacterSet *)raw;
-	}
-	return [NSCharacterSet characterSetWithCharactersInString:[raw description]];
+    if (!raw) return defaultValue;
+    if ([raw isKindOfClass:[NSCharacterSet class]]) {
+        return (NSCharacterSet *)raw;
+    }
+    return [NSCharacterSet characterSetWithCharactersInString:[raw description]];
 }
 
 - (NSDictionary *)subdictionaryForKeys:(NSArray *)keys {
@@ -535,7 +536,7 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
     NSMutableDictionary *returnDictionary = [NSMutableDictionary dictionaryWithCapacity:[keys count]];
     
     for (NSString *key in keys) {
-		[returnDictionary setObjectIfNotNil:[self objectForKey:key] ?: missingValue forKey:key];
+        [returnDictionary setObjectIfNotNil:[self objectForKey:key] ?: missingValue forKey:key];
     }
     
     return returnDictionary;
@@ -571,24 +572,34 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
 #pragma mark - AJRXMLCoding
 
 + (id)instantiateWithXMLCoder:(AJRXMLCoder *)coder {
-	return [[AJRXMLDictionaryPlaceholder alloc] initWithFinalClass:[self ajr_classForXMLArchiving]];
+    return [[AJRXMLDictionaryPlaceholder alloc] initWithFinalClass:[self ajr_classForXMLArchiving]];
 }
 
 - (void)encodeWithXMLCoder:(AJRXMLCoder *)coder {
-	[self enumerateKeysAndObjectsUsingBlock:^(id key, id object, BOOL *stop) {
-		[coder encodeGroupForKey:@"entry" usingBlock:^{
-			[coder encodeObject:key forKey:@"key"];
-			[coder encodeObject:object forKey:@"object"];
-		}];
-	}];
+    [self enumerateKeysAndObjectsUsingBlock:^(id key, id object, BOOL *stop) {
+        [coder encodeGroupForKey:@"entry" usingBlock:^{
+            [coder encodeObject:key forKey:@"key"];
+            [coder encodeObject:object forKey:@"object"];
+        }];
+    }];
 }
 
 + (NSString *)ajr_nameForXMLArchiving {
-	return @"dictionary";
+    return @"dictionary";
 }
 
 + (Class)ajr_classForXMLArchiving {
     return [NSDictionary class];
+}
+
+#pragma mark - Invalidation
+
+- (void)invalidateObjects {
+    for (id <AJRInvalidation> object in self.objectEnumerator) {
+        if ([object conformsToProtocol:@protocol(AJRInvalidation)]) {
+            [object invalidate];
+        }
+    }
 }
 
 @end

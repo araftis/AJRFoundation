@@ -449,5 +449,14 @@ const NSComparator AJRSimpleCompare = ^NSComparisonResult(id first, id second) {
     return string;
 }
 
+#pragma mark - Invalidation Conveniences
+
+- (void)invalidateObjects {
+    for (id <AJRInvalidation> object in self) {
+        if ([object conformsToProtocol:@protocol(AJRInvalidation)]) {
+            [object invalidate];
+        }
+    }
+}
 
 @end

@@ -39,7 +39,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <objc/runtime.h>
 #import <AJRFoundation/AJRFoundation.h>
 
-@interface AJRObjectObserver : NSObject
+@interface AJRObjectObserver : NSObject <AJRInvalidation>
 
 @property (nonatomic,weak) id observedObject;
 @property (nonatomic,strong) NSString *keyPath;
@@ -63,8 +63,17 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return self;
 }
 
+- (void)invalidate {
+    if (_observedObject != nil) {
+        [_observedObject removeObserver:self forKeyPath:_keyPath];
+        _keyPath = nil;
+        _block = nil;
+        _observedObject = nil;
+    }
+}
+
 - (void)dealloc {
-    [_observedObject removeObserver:self forKeyPath:_keyPath];
+    [self invalidate];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -104,7 +113,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return selfImp != superImp;
 }
 
-- (id)addObserver:(id)object forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options block:(AJRObserverBlock)block {
+- (id <AJRInvalidation>)addObserver:(id)object forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options block:(AJRObserverBlock)block {
     return [[AJRObjectObserver alloc] initWithObservedObject:self keyPath:keyPath options:options block:block];
 }
 

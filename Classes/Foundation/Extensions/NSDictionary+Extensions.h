@@ -104,6 +104,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id)objectForKey:(id)childKey inDictionaryForKey:(KeyType<NSCopying>)topKey;
 
+#pragma mark - Invalidation
+
+/**
+ @discussion Enumerates all objects in the receiver and calls -[AJRInvalidation invalidate] if the object responds to the AJRInvalidation protocol.
+ */
+- (void)invalidateObjects;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -153,6 +153,13 @@ extern const NSComparator AJRSimpleCompare;
  */
 - (NSString *)componentsJoinedByString:(NSString *)separator twoValueSeparator:(nullable NSString *)twoValueSeparator finalSeparator:(nullable NSString *)finalSeparator;
 
+#pragma mark - Invalidation Conveniences
+
+/**
+ @discussion Calls -[AJRInvalidation invalidate] on all objects in the receiver.
+ */
+- (void)invalidateObjects;
+
 @end
 
 NS_ASSUME_NONNULL_END
