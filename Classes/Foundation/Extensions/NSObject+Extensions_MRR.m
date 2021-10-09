@@ -49,7 +49,9 @@ typedef id (*AJRTwoArgSelector)(id, SEL, id, id);
 
 - (id)ajr_performSelector:(SEL)selector withObject:(id)object {
     AJROneArgSelector imp = (AJROneArgSelector)class_getMethodImplementation([self class], selector);
-    return imp ? imp(self, selector, object) : nil;
+    [object retain];
+    id value =  imp ? imp(self, selector, object) : nil;
+    return value;
 }
 
 - (id)ajr_performSelector:(SEL)selector withObject:(id)object withObject:(id)object2 {

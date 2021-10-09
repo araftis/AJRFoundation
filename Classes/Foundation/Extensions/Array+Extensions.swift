@@ -94,6 +94,21 @@ public extension Array {
         return index
     }
     
+    /**
+     Returns an array containing all object for `indexes`.
+     
+     - parameter indexes: An index set with all the indexes for the objects you want returned.
+     
+     - returns: A subarray with the objects referenced by  `indexes`.
+     */
+    subscript(_ indexes: IndexSet) -> [Element] {
+        var found = Array<Element>()
+        for index in indexes {
+            found.append(self[index])
+        }
+        return found
+    }
+    
 }
 
 public extension Array where Element : AnyObject {
@@ -112,6 +127,23 @@ public extension Array where Element : AnyObject {
             }
         }
         return nil
+    }
+    
+    /**
+     For each object in `other`, it finds the index of the corresponding object in the receiver. If no object is found, nothing is inserted into the return value. As such, this method cannot be reliably used to determine if objects are all in the receiver, as you'll know how many objects were not found, but not which ones they were. Still, this can be useful if you're not worried about know exactly which objects were missing.
+     
+     - parameter other: The array object who's indexes you want to know.
+     
+     - returns: An IndexSet containing the indexes of the input `other`.
+     */
+    func indexes(ofObjectsIdenticalTo other: [Element]) -> IndexSet {
+        var indexes = IndexSet()
+        for object in other {
+            if let index = index(ofObjectIdenticalTo: object) {
+                indexes.insert(index)
+            }
+        }
+        return indexes
     }
     
 }
@@ -317,3 +349,26 @@ public extension Array where Element: BinaryInteger {
 
 }
 
+public extension Array where Element : NSObject {
+    
+    func nextTitle(forKey key: String, basename: String) -> String {
+        // This wouldn't always be particularly efficient, but it's code that's not generally called a lot, and when it is called, it won't really be called on huge lists.
+        var names = Set<String>()
+        
+        for object in self {
+            if let title = object.value(forKey: key) as? String {
+                names.insert(title)
+            }
+        }
+        
+        var index = 1
+        repeat {
+            let test = "\(basename) \(index)"
+            if !names.contains(test) {
+                return test;
+            }
+            index += 1
+        } while true
+    }
+    
+}
