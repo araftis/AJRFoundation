@@ -49,7 +49,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 + (instancetype)classEnumerator {
-    return [[self alloc] init];
+    return [[[self alloc] init] autorelease];
 }
 
 - (instancetype)init {
