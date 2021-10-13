@@ -372,3 +372,13 @@ public extension Array where Element : NSObject {
     }
     
 }
+
+public extension Array where Element == AJRInvalidation {
+    
+    func invalidateObjects() -> Void {
+        for object in self {
+            object.invalidate()
+        }
+    }
+    
+}

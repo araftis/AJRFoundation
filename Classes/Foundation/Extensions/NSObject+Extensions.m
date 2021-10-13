@@ -59,6 +59,16 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         _options = options;
         _block = block;
         [_observedObject addObserver:self forKeyPath:keyPath options:options context:NULL];
+        
+        if ([_keyPath isEqualToString:@"codeDefinitions"]) {
+            AJRObserverBlock testBlock = _block;
+            AJRForceRetain(testBlock);
+            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
+                AJRPrintf(@"fire!\n");
+                testBlock(self->_observedObject, self->_keyPath, nil);
+            }];
+            [timer fire];
+        }
     }
     return self;
 }
@@ -77,7 +87,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    AJRPrintf(@"change: %@\n", self);
     _block(object, keyPath, change);
+}
+
+- (NSString *)description {
+    return AJRFormat(@"<%C: %p, object: %@, keyPath: %@, block: %@>\n", self, self, _observedObject, _keyPath, _block);
 }
 
 @end

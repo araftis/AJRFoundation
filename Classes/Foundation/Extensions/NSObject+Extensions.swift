@@ -39,5 +39,5 @@ public extension NSObject {
             return "\(Self.self): 0x\(String(unsafeBitCast(self, to:Int.self), radix:16))"
         }
     }
-    
+ 
 }
