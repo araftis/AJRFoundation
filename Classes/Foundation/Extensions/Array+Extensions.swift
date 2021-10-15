@@ -46,6 +46,18 @@ public extension Array where Element : Equatable {
             }
         }
     }
+
+    /**
+     Removes all the elements contained in `indexes`. If your objects are also Hashable, there's a more efficient version of this method.
+
+     - parameter indexes: The indexes of objects to remove.
+     */
+
+    mutating func remove(at indexes: IndexSet) -> Void {
+        for index : Int in indexes.reversed() {
+            remove(at: index)
+        }
+    }
     
 }
 
@@ -166,7 +178,48 @@ public extension Array where Element : Hashable {
         }
         return unique
     }
-    
+
+    var unorderedUniqueObjects : Set<Element> {
+        var set = Set<Element>()
+        for object in self {
+            set.insert(object)
+        }
+        return set
+    }
+
+    /**
+     Removes all the elements contained in `indexes`.
+
+     - parameter indexes: The indexes of objects to remove.
+     */
+    mutating func remove(at indexes: IndexSet) -> Void {
+        var others = Set<Element>()
+        for index in indexes {
+            others.insert(self[index])
+        }
+        removeAll(in: others)
+    }
+
+    /**
+     Removes all the elements in `others` from the receiver. This must first build a set of the objects to be removed, so it can be more efficient to call the set version, if you have a set of the object's available.
+
+     - parameter others: The objects to remove.
+     */
+    mutating func removeAll(in others: [Element]) -> Void {
+        removeAll(in: unorderedUniqueObjects)
+    }
+
+    /**
+     Removes all the elements in `others` from the receiver.
+
+     - parameter others: The objects to remove.
+     */
+    mutating func removeAll(in others: Set<Element>) -> Void {
+        removeAll { element in
+            return others.contains(element)
+        }
+    }
+
 }
 
 /**

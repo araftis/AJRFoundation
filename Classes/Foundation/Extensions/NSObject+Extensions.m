@@ -59,16 +59,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         _options = options;
         _block = block;
         [_observedObject addObserver:self forKeyPath:keyPath options:options context:NULL];
-        
-        if ([_keyPath isEqualToString:@"codeDefinitions"]) {
-            AJRObserverBlock testBlock = _block;
-            AJRForceRetain(testBlock);
-            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
-                AJRPrintf(@"fire!\n");
-                testBlock(self->_observedObject, self->_keyPath, nil);
-            }];
-            [timer fire];
-        }
     }
     return self;
 }

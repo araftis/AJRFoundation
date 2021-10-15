@@ -31,6 +31,57 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
+/**
+ This is a dupicate of an Obj-C class, because the Obj-C class is failing under some circumstances when bridging to Swift.
+ */
+
+//private typealias AJRObserverBlock = (Any?, String?, [NSKeyValueChangeKey:Any]?) -> Void
+
+private class AJRObjectObserver : NSObject, AJRInvalidation {
+
+    weak var observedObject : AnyObject?
+    var keyPath : String
+    var options : NSKeyValueObservingOptions
+    var block : AJRObserverBlock
+
+    init(observedObject: AnyObject, keyPath: String, options: NSKeyValueObservingOptions, block: @escaping AJRObserverBlock) {
+        self.observedObject = observedObject
+        self.keyPath = keyPath
+        self.options = options
+        self.block = block
+
+        super.init()
+
+        self.observedObject?.addObserver(self, forKeyPath: keyPath, options: options, context:nil)
+    }
+
+    func invalidate() -> Void {
+        print("invalidate")
+        if let observedObject = observedObject {
+            observedObject.removeObserver(self, forKeyPath: keyPath)
+            self.observedObject = nil
+        }
+    }
+
+    deinit {
+        print("deinit")
+        self.invalidate()
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        print("change: \(keyPath!)")
+        block(object, keyPath, change)
+    }
+
+    override var description : String {
+        if let observedObject = observedObject {
+            return "<\(self.descriptionPrefix): object: \(observedObject), keyPath: \(keyPath), block: \(String(describing: block))>"
+        }
+        return "<\(self.descriptionPrefix), object: <invalidated>, keyPath: \(keyPath), block: \(String(describing: block))>"
+    }
+
+}
+
 @objc
 public extension NSObject {
     
@@ -39,5 +90,9 @@ public extension NSObject {
             return "\(Self.self): 0x\(String(unsafeBitCast(self, to:Int.self), radix:16))"
         }
     }
- 
+
+    func add(observer: AnyObject, forKeyPath keyPath: String, options: NSKeyValueObservingOptions, block: @escaping AJRObserverBlock) -> AJRInvalidation {
+        return AJRObjectObserver(observedObject: self, keyPath: keyPath, options: options, block: block)
+    }
+
 }

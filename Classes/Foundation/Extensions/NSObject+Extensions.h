@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class AJRTranslator;
 
-typedef void (^AJRObserverBlock)(id object, NSString *keyPath, NSDictionary<NSKeyValueChangeKey, id> * _Nullable change);
+typedef void (^AJRObserverBlock)(id _Nullable object, NSString * _Nullable keyPath, NSDictionary<NSKeyValueChangeKey, id> * _Nullable change);
 
 @protocol AJRInvalidation <NSObject>
 
