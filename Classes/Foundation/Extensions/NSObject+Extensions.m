@@ -77,7 +77,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    AJRPrintf(@"change: %@\n", self);
     _block(object, keyPath, change);
 }
 
