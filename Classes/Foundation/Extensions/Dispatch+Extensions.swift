@@ -52,8 +52,8 @@ public extension DispatchQueue {
 
 public extension DispatchTime {
     
-    init(seconds: Double) {
-        self.init(uptimeNanoseconds: UInt64(seconds * Double(NSEC_PER_SEC)))
+    init(secondsFromNow seconds: Double) {
+        self.init(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + UInt64(seconds * Double(NSEC_PER_SEC)))
     }
     
 }

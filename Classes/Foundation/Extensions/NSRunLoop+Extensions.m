@@ -81,23 +81,21 @@ static CFRunLoopSourceContext AJRRunLoopSourceContextWithPerformFunction(void (*
 }
 
 static void emptySignal(void *info) {
-    /// This signale does nothing other than wake up the blocking thread
+    // This signale does nothing other than wake up the blocking thread
 }
 
 - (void)spinRunLoopInMode:(NSRunLoopMode)mode whileBlockExecutesConcurrently:(void (^)(void))block {
     CFRunLoopSourceContext signalContext = AJRRunLoopSourceContextWithPerformFunction(emptySignal);
-    CFRunLoopSourceRef signalSource = CFRunLoopSourceCreate(NULL, 50, &signalContext); /// NSTask uses a similar techique and passes 50 for the mode, which seems completely arbitrary.
+    CFRunLoopSourceRef signalSource = CFRunLoopSourceCreate(NULL, 50, &signalContext);
     CFRunLoopRef cfRunLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
     CFStringRef cfRunLoopMode = CFBridgingRetain(mode);
     CFRunLoopAddSource(cfRunLoop, signalSource, cfRunLoopMode);
     
-    //__block int32_t signal = 0;
     __block _Atomic(int32_t) signal = 0;
     int32_t initialGeneration = signal;
     AJRAsyncPerformBlock(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         block();
         atomic_fetch_add(&signal, 1);
-        //OSAtomicIncrement32Barrier(&signal);
         CFRunLoopSourceSignal(signalSource);
         CFRunLoopWakeUp(cfRunLoop);
     });
@@ -106,8 +104,7 @@ static void emptySignal(void *info) {
             CFRunLoopRunInMode(cfRunLoopMode, 60 * 60 * 5, TRUE);
         }
     } while (atomic_fetch_add(&signal, 0) == initialGeneration);
-    //} while (OSAtomicAdd32Barrier(0, (int32_t *)&signal) == initialGeneration);
-    
+
     CFRunLoopRemoveSource(cfRunLoop, signalSource, cfRunLoopMode);
     CFRunLoopSourceInvalidate(signalSource);
     CFRelease(signalSource);

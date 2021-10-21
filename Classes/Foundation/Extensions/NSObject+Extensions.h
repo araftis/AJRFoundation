@@ -70,6 +70,10 @@ typedef void (^AJRObserverBlock)(id _Nullable object, NSString * _Nullable keyPa
 
 - (id <AJRInvalidation>)addObserver:(id)object forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options block:(AJRObserverBlock)observer;
 
+#pragma mark - Debugging
+
+- (BOOL)ajr_shouldLogObservances;
+
 @end
 
 @interface NSObject (AJRFoundationExtensionsMRR)
