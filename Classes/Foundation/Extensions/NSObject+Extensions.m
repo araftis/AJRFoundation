@@ -48,6 +48,14 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation _AJRDebugKeyContainer
 
+- (id)init {
+    if ((self = [super init])) {
+        _stackTraces = [NSMutableArray array];
+        _count = 0;
+    }
+    return self;
+}
+
 @end
 
 @interface _AJRDebugContainer : NSObject
@@ -84,12 +92,11 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         return NSNotFound;
     }
     container.count -= 1;
+    [container.stackTraces removeLastObject];
     NSInteger newCount = container.count;
     if (container.count == 0) {
         // Don't keep these around when we increment back to 0. If it turns out we do them them to live around, we can revisit this decision.
         _keys[key] = nil;
-    } else {
-        [container.stackTraces removeLastObject];
     }
     return newCount;
 }
@@ -352,8 +359,8 @@ void AJRDebugKVOChangeDuringChange(_AJRDebugContainer *container, NSString *key)
 }
 
 - (void)ajr_didChangeValueForKey:(NSString *)key {
-    BOOL decrement = NO;
-    if ([self ajr_shouldKVOLogKey:key forClass:self.class]) {
+    BOOL decrement = [self ajr_shouldKVOLogKey:key forClass:self.class];
+    if (decrement) {
         id value = [self valueForKey:key];
         if (value == nil) {
             AJRPrintf(@"didChangeValueForKey: <%C: %p>, keyPath: %@, value: *nil*\n", self, self, key);
