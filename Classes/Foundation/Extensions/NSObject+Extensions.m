@@ -39,6 +39,63 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <objc/runtime.h>
 #import <AJRFoundation/AJRFoundation.h>
 
+@interface _AJRDebugKeyContainer : NSObject
+
+@property (nonatomic,strong) NSMutableArray<NSArray<NSString *> *> *stackTraces;
+@property (nonatomic,assign) NSInteger count;
+
+@end
+
+@implementation _AJRDebugKeyContainer
+
+@end
+
+@interface _AJRDebugContainer : NSObject
+
+@property (nonatomic,weak) id object;
+@property (nonatomic,strong) NSMutableDictionary<NSString *, _AJRDebugKeyContainer *> *keys;
+
+@end
+
+@implementation _AJRDebugContainer
+
+- (id)init {
+    if ((self = [super init])) {
+        _keys = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
+- (NSInteger)incrementCounterForKey:(NSString *)key {
+    _AJRDebugKeyContainer *container = _keys[key];
+    if (container == nil) {
+        container = [[_AJRDebugKeyContainer alloc] init];
+        _keys[key] = container;
+    }
+    container.count += 1;
+    [container.stackTraces addObject:NSThread.callStackSymbols];
+    return container.count;
+}
+
+- (NSInteger)decrementCounterForKey:(NSString *)key {
+    _AJRDebugKeyContainer *container = _keys[key];
+    if (container == nil || container.count == 0) {
+        AJRLogError(@"Tried to decrement the KVO debug counter for key \"%@\" on \"%@\" when it had never been incremented.", key, _object);
+        return NSNotFound;
+    }
+    container.count -= 1;
+    NSInteger newCount = container.count;
+    if (container.count == 0) {
+        // Don't keep these around when we increment back to 0. If it turns out we do them them to live around, we can revisit this decision.
+        _keys[key] = nil;
+    } else {
+        [container.stackTraces removeLastObject];
+    }
+    return newCount;
+}
+
+@end
+
 @interface NSObject (ObservancesDebug)
 
 - (void)ajr_addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(nullable void *)context;
@@ -169,7 +226,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             if (class == Nil) {
                 AJRLogWarning(@"DebugObservances: No class named: \"%@\".", subparts[0]);
             } else {
-                NSString *key = subparts.count == 2 ? subparts[1] : @"*ALL*";
+                NSString *key = subparts.count == 2 ? subparts[1] : @"ALL";
                 NSMutableSet *set = debugDictionary[class];
                 if (set == nil) {
                     set = [NSMutableSet set];
@@ -220,6 +277,7 @@ static NSMutableDictionary<Class, NSMutableSet<NSString *> *> *_observancesDebug
 }
 
 static NSMutableDictionary<Class, NSMutableSet<NSString *> *> *_KVODebug = nil;
+static NSMutableDictionary<NSValue *, _AJRDebugContainer *> *_KVODebugInfo = nil;
 
 - (BOOL)ajr_shouldKVOLogKey:(NSString *)key forClass:(Class)class {
     static dispatch_once_t onceToken;
@@ -234,20 +292,79 @@ static NSMutableDictionary<Class, NSMutableSet<NSString *> *> *_KVODebug = nil;
     return NO;
 }
 
-- (void)ajr_willChangeValueForKey:(NSString *)keyPath {
-    if ([self ajr_shouldKVOLogKey:keyPath forClass:self.class]) {
-        id value = [self valueForKey:keyPath];
-        AJRPrintf(@"willChangeValueForKey: <%C: %p>, keyPath: %@, value: <%C: %p>\n", self, self, keyPath, value, value);
-    }
-    [self ajr_willChangeValueForKey:keyPath];
+- (NSMutableDictionary<NSValue *, _AJRDebugContainer *> *)ajr_debugKVOInfo {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _KVODebugInfo = [NSMutableDictionary dictionary];
+    });
+    return _KVODebugInfo;
 }
 
-- (void)ajr_didChangeValueForKey:(NSString *)keyPath {
-    if ([self ajr_shouldKVOLogKey:keyPath forClass:self.class]) {
-        id value = [self valueForKey:keyPath];
-        AJRPrintf(@"didChangeValueForKey: <%C: %p>, keyPath: %@, value: <%C: %p>\n", self, self, keyPath, value, value);
+- (NSValue *)ajr_kvoDebugKey {
+    NSValue *key = objc_getAssociatedObject(self, _cmd);
+    if (key == nil) {
+        key = [NSValue valueWithPointer:(__bridge const void * _Nullable)self];
+        objc_setAssociatedObject(self, _cmd, key, OBJC_ASSOCIATION_RETAIN);
     }
-    [self ajr_didChangeValueForKey:keyPath];
+    return key;
+}
+
+- (_AJRDebugContainer *)ajr_debugKVOContainer {
+    NSValue *key = [self ajr_kvoDebugKey];
+    NSMutableDictionary<NSValue *, _AJRDebugContainer *> *info = [self ajr_debugKVOInfo];
+    _AJRDebugContainer *container = info[key];
+    if (container == nil) {
+        container = [[_AJRDebugContainer alloc] init];
+        container.object = self;
+        info[key] = container;
+    }
+    return container;
+}
+
+- (NSInteger)ajr_incrementCounterForKey:(NSString *)key {
+    return [[self ajr_debugKVOContainer] incrementCounterForKey:key];
+}
+
+- (NSInteger)ajr_decrementCounterForKey:(NSString *)key {
+    return [[self ajr_debugKVOContainer] decrementCounterForKey:key];
+}
+
+void AJRDebugKVOChangeDuringChange(_AJRDebugContainer *container, NSString *key) {
+    NSMutableString *string = [AJRFormat(@"The object <%C: %p> has detected that willChangeValueForKey: was called while a change to the key \"%@\" was already in progress. This can lead to strange behavior, and should be remedied. If you'd like to break on this warning, set a break point on the function \"AJRDebugKVOChangeDuringChange()\".\n\nHere are the stack traces which modified the value:", container.object, container.object, key) mutableCopy];
+    _AJRDebugKeyContainer *keyContainer = [container keys][key];
+    for (NSInteger x = 0; x < keyContainer.count; x++) {
+        [string appendFormat:@"\n\n%@", [keyContainer.stackTraces[x] description]];
+    }
+    AJRLogError(@"%@", string);
+}
+
+- (void)ajr_willChangeValueForKey:(NSString *)key {
+    if ([self ajr_shouldKVOLogKey:key forClass:self.class]) {
+        id value = [self valueForKey:key];
+        AJRPrintf(@"willChangeValueForKey: <%C: %p>, keyPath: %@, value: <%C: %p>\n", self, self, key, value, value);
+        NSInteger count = [self ajr_incrementCounterForKey:key];
+        if (count > 1) {
+            // We somehow managed to enter a state where we're changing the key while we were already changing the key. This can lead to some strange results.
+            AJRDebugKVOChangeDuringChange([self ajr_debugKVOContainer], key);
+        }
+    }
+    [self ajr_willChangeValueForKey:key];
+}
+
+- (void)ajr_didChangeValueForKey:(NSString *)key {
+    BOOL decrement = NO;
+    if ([self ajr_shouldKVOLogKey:key forClass:self.class]) {
+        id value = [self valueForKey:key];
+        if (value == nil) {
+            AJRPrintf(@"didChangeValueForKey: <%C: %p>, keyPath: %@, value: *nil*\n", self, self, key);
+        } else {
+            AJRPrintf(@"didChangeValueForKey: <%C: %p>, keyPath: %@, value: <%C: %p>\n", self, self, key, value, value);
+        }
+    }
+    [self ajr_didChangeValueForKey:key];
+    if (decrement) {
+        [self ajr_decrementCounterForKey:key];
+    }
 }
 
 @end

@@ -84,5 +84,23 @@ typedef void (^AJRObserverBlock)(id _Nullable object, NSString * _Nullable keyPa
 
 @end
 
+/*!
+ This function is declared public, so that you can break on it in the event that you're encountering certain KVO issues. Specifically, this is designed to catch the situation where you're changing a value (you've called <pre>willChangeValueForKey:</pre>), and then you call willChangeValueForKey: before having called <pre>didChangeValueForKey:</pre>. When this happens you can get some strange behavior, especialy "spurious" exceptions from the KVO subsystem.
+ 
+ To use this, do the following:
+ 
+ <OL>
+ <LI>In your runtime environent, create a new environment variable: <code>DebugKVO</code>.
+ <LI>Set this value to [&lt;class_name&gt;:&lt;key&gt;]
+ </OL>
+ 
+ You can monitor more than one object by supplying multiple class/key pairs by separating multiple declarations by a semicolon. You should have no extranous white space. You can monitor all keys on a class by specifying the key <pre>ALL</pre>.
+ 
+ NOTE: This will slow your code down, so you really only want to monitor classes and keys that are causing problems. The keys you need to monitor should be fairly obvious based off the exceptions thrown by Foundation. When you're no longer having issues, disable the environment variable, as this will disable installing this check.
+ 
+ Actually calling this function will just log a warning to the console, but since you can't provide the correct parameters to the function, never call it directly.
+ */
+extern void AJRDebugKVOChangeDuringChange(id, NSString *);
+
 NS_ASSUME_NONNULL_END
 
