@@ -314,6 +314,12 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         for (Class runtimeClass in [AJRClassEnumerator classEnumerator]) {
             Method imp = class_getClassMethod(runtimeClass, @selector(ajr_nameForXMLArchiving));
             if (imp != base) {
+                //AJRPrintf(@"class: %s (%p [%p]/%p [%p])\n", class_getName(runtimeClass), base, method_getImplementation(base), imp, method_getImplementation(imp));
+                if (strncmp(class_getName(runtimeClass), "Web", 3) == 0) {
+                    // So, oddly, and only sometimes, Web* classes are causing an allocation error when we try to call ajr_nameForXMLArchiving. Not good, but what can we do? This is a hacky workaround, but it's got us running.
+                    // TODO: Figure out why this crashes Papel, but not AI Explorer.
+                    continue;
+                }
                 NSString *name = [runtimeClass ajr_nameForXMLArchiving];
                 if (name != nil) {
                     work[name] = runtimeClass;
