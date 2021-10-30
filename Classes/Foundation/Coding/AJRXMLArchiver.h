@@ -50,4 +50,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/*
+ NOTE: These just declare conformance, since all of this objects will encode.b
+ */
+@interface NSArray (AJRXMLCodingExtensions) <AJRXMLCoding>
+@end
+
+@interface NSMutableArray (AJRXMLCodingExtensions) <AJRXMLCoding>
+@end
+
+@interface NSDictionary (AJRXMLCodingExtensions) <AJRXMLCoding>
+@end
+
+@interface NSMutableDictionary (AJRXMLCodingExtensions) <AJRXMLCoding>
+@end
+
+@interface NSSet (AJRXMLCodingExtensions) <AJRXMLCoding>
+@end
+
+@interface NSMutableSet (AJRXMLCodingExtensions) <AJRXMLCoding>
+@end
+
 NS_ASSUME_NONNULL_END
