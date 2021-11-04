@@ -256,7 +256,6 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
 - (void)addBytes:(const uint8_t *)bytes length:(NSUInteger)length {
     if (_prettyOutput) {
         NSInteger allowed = ((100 - ([_stack count] - 2) * _indentSize) / 4) * 3;
-        AJRPrintf(@"stack: %ld, allowed: %ld\n", _stack.count - 2, allowed);
         if (allowed < 12) {
             // This happens when we start to indent really deeply. When that happens, we'll always go ahead and output at least 10 characters.
             allowed = 12;
