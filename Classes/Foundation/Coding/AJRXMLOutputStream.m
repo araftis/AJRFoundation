@@ -31,6 +31,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "AJRXMLOutputStream.h"
 
+#import "AJRFunctions.h"
 #import "NSData+Base64.h"
 #import "NSOutputStream+Extensions.h"
 
@@ -255,15 +256,17 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
 - (void)addBytes:(const uint8_t *)bytes length:(NSUInteger)length {
     if (_prettyOutput) {
         NSInteger allowed = ((100 - ([_stack count] - 2) * _indentSize) / 4) * 3;
-        if (allowed < 10) {
+        AJRPrintf(@"stack: %ld, allowed: %ld\n", _stack.count - 2, allowed);
+        if (allowed < 12) {
             // This happens when we start to indent really deeply. When that happens, we'll always go ahead and output at least 10 characters.
-            allowed = 10;
+            allowed = 12;
         }
         for (NSInteger x = 0; x < length; x += allowed) {
             if (x != 0) {
                 [_outputStream writeCString:"\n"];
                 [_outputStream writeIndent:[_stack count] - 2 width:_indentSize];
             }
+            // D'oh. When we're controlling the line breaks, we have to make sure we enumerate the output in sets of 3 bytes.
             [_outputStream writeString:AJRBase64EncodedString(bytes, length, (NSRange){x, allowed - 1}, AJRBase64NoLineBreak)];
         }
 //        for (NSInteger x = 0; x < length; x++) {

@@ -813,7 +813,11 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
-    _error = parseError;
+    if (parseError.code != NSXMLParserDelegateAbortedParseError) {
+        // When we abort the parse, we'll already have the error.
+        _error = parseError;
+    }
+    AJRLog(AJRXMLCodingLogDomain, AJRLogLevelError, @"Error occurred while parsing XML: line: %d, column: %d: (%ld) %@", parser.lineNumber, parser.columnNumber, _error.code, _error.localizedDescription);
     [parser abortParsing];
 }
 
