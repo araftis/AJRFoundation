@@ -255,6 +255,10 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
 - (void)addBytes:(const uint8_t *)bytes length:(NSUInteger)length {
     if (_prettyOutput) {
         NSInteger allowed = ((100 - ([_stack count] - 2) * _indentSize) / 4) * 3;
+        if (allowed < 10) {
+            // This happens when we start to indent really deeply. When that happens, we'll always go ahead and output at least 10 characters.
+            allowed = 10;
+        }
         for (NSInteger x = 0; x < length; x += allowed) {
             if (x != 0) {
                 [_outputStream writeCString:"\n"];

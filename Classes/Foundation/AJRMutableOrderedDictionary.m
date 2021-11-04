@@ -99,4 +99,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return nil;
 }
 
++ (NSString *)ajr_nameForXMLArchiving {
+    return @"mutable-ordered-dictionary";
+}
+
 @end

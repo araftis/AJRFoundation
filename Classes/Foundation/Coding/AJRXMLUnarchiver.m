@@ -322,6 +322,14 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
                 }
                 NSString *name = [runtimeClass ajr_nameForXMLArchiving];
                 if (name != nil) {
+                    if (work[name] != nil) {
+                        // Ignore system classes. They make for a lot of noise.
+                        NSString *path = [[NSBundle bundleForClass:runtimeClass] bundlePath];
+                        if (![path hasPrefix:@"/System"]
+                            && ![path hasPrefix:@"/usr"]) {
+                            AJRLog(AJRXMLCodingLogDomain, AJRLogLevelWarning, @"Class %C has already registered the xml name \"%@\", but %C is also trying to do this. This is likely going to cause problems in your document.", work[name], name, runtimeClass);
+                        }
+                    }
                     work[name] = runtimeClass;
                 }
             }

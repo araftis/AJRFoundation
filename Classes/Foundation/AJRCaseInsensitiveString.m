@@ -117,4 +117,11 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return new;
 }
 
+#pragma mark - AJRXMLCoding
+
+/// We override this, so that we'd re-create the correct string class, but we don't need to do anything else.
++ (NSString *)ajr_nameForXMLArchiving {
+    return @"ciString";
+}
+
 @end

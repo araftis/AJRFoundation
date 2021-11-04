@@ -157,6 +157,20 @@ public extension Array where Element : AnyObject {
         }
         return indexes
     }
+
+    mutating func remove(identicalTo object: Element) -> Void {
+        if let index = index(ofObjectIdenticalTo: object) {
+            remove(at: index)
+        }
+    }
+
+    mutating func remove(identicalIn objects: [Element]) -> Void {
+        for object in objects {
+            if let index = index(ofObjectIdenticalTo: object) {
+                remove(at: index)
+            }
+        }
+    }
     
 }
 

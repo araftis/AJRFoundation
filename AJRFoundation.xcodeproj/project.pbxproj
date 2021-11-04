@@ -622,6 +622,8 @@
 		FAA75F872343020B00523F91 /* NSDictionary+ExtensionsP.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA75F852343020400523F91 /* NSDictionary+ExtensionsP.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FAA75F89234459C600523F91 /* NSError+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA75F88234459C600523F91 /* NSError+ExtensionsTests.m */; };
 		FAA75F8B23445BF500523F91 /* NSFileHandle+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA75F8A23445BF500523F91 /* NSFileHandle+ExtensionsTests.m */; };
+		FAA82A4F27338ACC009CAB51 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA82A4E27338ACC009CAB51 /* Set+Extensions.swift */; };
+		FAA82A5027338ACC009CAB51 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA82A4E27338ACC009CAB51 /* Set+Extensions.swift */; };
 		FAAD99DB13F449E000917C90 /* AJRLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = FAAD99D913F449E000917C90 /* AJRLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FAAD99DC13F449E000917C90 /* AJRLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAD99DA13F449E000917C90 /* AJRLogging.m */; };
 		FAB312DE152F9AFA00D5C72A /* AJRPlugInExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = FAB312DC152F9AFA00D5C72A /* AJRPlugInExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1124,7 +1126,7 @@
 		FA6F16A113E1C41F00A2C1E4 /* NSAttributedString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
 		FA6F16A213E1C41F00A2C1E4 /* NSAttributedString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA6F16A513E1C58400A2C1E4 /* AJRMutableCaseInsensitiveDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRMutableCaseInsensitiveDictionary.h; sourceTree = "<group>"; };
-		FA6F16A613E1C58400A2C1E4 /* AJRMutableCaseInsensitiveDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRMutableCaseInsensitiveDictionary.m; sourceTree = "<group>"; usesTabs = 1; };
+		FA6F16A613E1C58400A2C1E4 /* AJRMutableCaseInsensitiveDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRMutableCaseInsensitiveDictionary.m; sourceTree = "<group>"; usesTabs = 0; };
 		FA6F16A913E1C62D00A2C1E4 /* AJRCaseInsensitiveString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRCaseInsensitiveString.h; sourceTree = "<group>"; };
 		FA6F16AA13E1C62E00A2C1E4 /* AJRCaseInsensitiveString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRCaseInsensitiveString.m; sourceTree = "<group>"; };
 		FA6FFE8022010F500083357D /* AJRLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRLogging.swift; sourceTree = "<group>"; };
@@ -1232,6 +1234,7 @@
 		FAA75F852343020400523F91 /* NSDictionary+ExtensionsP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+ExtensionsP.h"; sourceTree = "<group>"; };
 		FAA75F88234459C600523F91 /* NSError+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSError+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FAA75F8A23445BF500523F91 /* NSFileHandle+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileHandle+ExtensionsTests.m"; sourceTree = "<group>"; };
+		FAA82A4E27338ACC009CAB51 /* Set+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extensions.swift"; sourceTree = "<group>"; };
 		FAAD99D913F449E000917C90 /* AJRLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRLogging.h; sourceTree = "<group>"; };
 		FAAD99DA13F449E000917C90 /* AJRLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRLogging.m; sourceTree = "<group>"; usesTabs = 0; };
 		FAB312DC152F9AFA00D5C72A /* AJRPlugInExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRPlugInExtension.h; sourceTree = "<group>"; };
@@ -1948,6 +1951,7 @@
 				FA4AEBCE20AA805900875127 /* NSCharacterSet+Extensions.m */,
 				FABCE5B310D6D0E9009DF59C /* NSCoder+Extensions.h */,
 				FABCE5B410D6D0E9009DF59C /* NSCoder+Extensions.m */,
+				FA07C8A3220EB9DB0077A0B5 /* NSCoder+Extensions.swift */,
 				FA08C0540F1C0BB80035E05E /* NSData+Base64.h */,
 				FA08C0550F1C0BB80035E05E /* NSData+Base64.m */,
 				FA08C0560F1C0BB80035E05E /* NSData+Extensions.h */,
@@ -1957,8 +1961,8 @@
 				FA4FD43F0E8BEBBF00F05C19 /* NSDate+Extensions.h */,
 				FA4FD4400E8BEBBF00F05C19 /* NSDate+Extensions.m */,
 				FA4FD4410E8BEBBF00F05C19 /* NSDictionary+Extensions.h */,
-				FAA75F852343020400523F91 /* NSDictionary+ExtensionsP.h */,
 				FA4FD4420E8BEBBF00F05C19 /* NSDictionary+Extensions.m */,
+				FAA75F852343020400523F91 /* NSDictionary+ExtensionsP.h */,
 				FA76E1EB156D8D0C00A9C014 /* NSError+Extensions.h */,
 				FA76E1EC156D8D0C00A9C014 /* NSError+Extensions.m */,
 				FAEEBB920EEEF0720070D9DC /* NSFileHandle+Extensions.h */,
@@ -1970,11 +1974,11 @@
 				FA3DE2710F14010E00C0E2C2 /* NSHost+Extensions.m */,
 				FA471ECE195C986A009A6455 /* NSInputStream+Extensions.h */,
 				FA471ECF195C986A009A6455 /* NSInputStream+Extensions.m */,
-				FA1CD5F522BEFBBC00BF363A /* NSKeyValueChangeKey+Extensions.swift */,
 				FA2C1703258C63FA007FD1B2 /* NSKeyedArchiver+Extensions.h */,
 				FA2C1704258C63FA007FD1B2 /* NSKeyedArchiver+Extensions.m */,
 				FA2C170F258C6409007FD1B2 /* NSKeyedUnarchiver+Extensions.h */,
 				FA2C1710258C6409007FD1B2 /* NSKeyedUnarchiver+Extensions.m */,
+				FA1CD5F522BEFBBC00BF363A /* NSKeyValueChangeKey+Extensions.swift */,
 				FAC351DC22C003990070C5C9 /* NSLock+Extensions.swift */,
 				FAFE4B120EC5032B00AE17D0 /* NSMutableArray+Extensions.h */,
 				FAFE4B130EC5032B00AE17D0 /* NSMutableArray+Extensions.m */,
@@ -1986,7 +1990,6 @@
 				FA4FD4440E8BEBBF00F05C19 /* NSMutableString+Extensions.m */,
 				FA08C1650F1D184C0035E05E /* NSMutableURLRequest+Extensions.h */,
 				FA08C1660F1D184C0035E05E /* NSMutableURLRequest+Extensions.m */,
-				FA07C8A3220EB9DB0077A0B5 /* NSCoder+Extensions.swift */,
 				FA4FD4470E8BEBBF00F05C19 /* NSNumber+Extensions.h */,
 				FA4FD4480E8BEBBF00F05C19 /* NSNumber+Extensions.m */,
 				FAEEBB9B0EEEF19C0070D9DC /* NSObject+AJRUserInfo.h */,
@@ -2006,8 +2009,8 @@
 				FA4FD4490E8BEBBF00F05C19 /* NSScanner+Extensions.h */,
 				FA4FD44A0E8BEBBF00F05C19 /* NSScanner+Extensions.m */,
 				FA092A9F13F63B3C00689484 /* NSSet+Extensions.h */,
-				FA5FAA132368CEB90027F178 /* NSSet+ExtensionsP.h */,
 				FA092AA013F63B3C00689484 /* NSSet+Extensions.m */,
+				FA5FAA132368CEB90027F178 /* NSSet+ExtensionsP.h */,
 				FA4FD44B0E8BEBBF00F05C19 /* NSString+Extensions.h */,
 				FA4FD44C0E8BEBBF00F05C19 /* NSString+Extensions.m */,
 				FACDA26C21FC15E60008753B /* NSThread+Extensions.h */,
@@ -2025,6 +2028,7 @@
 				FADD85000F8FFFE300C1C7E7 /* NSXMLNode+Extensions.h */,
 				FADD85010F8FFFE300C1C7E7 /* NSXMLNode+Extensions.m */,
 				FA8E370625C5182400EB554F /* Sequence+Extensions.swift */,
+				FAA82A4E27338ACC009CAB51 /* Set+Extensions.swift */,
 				FA6FFEB9220560A10083357D /* String+Extensions.swift */,
 				FA76ABD0221D4B77008FA786 /* URL+Extensions.swift */,
 				FA07C858220D111E0077A0B5 /* UserDefaults+Extensions.swift */,
@@ -2630,6 +2634,7 @@
 				FA4FD58D0E8BEBBF00F05C19 /* AJRUnicode.m in Sources */,
 				FA4FD58F0E8BEBBF00F05C19 /* NSArray+Extensions.m in Sources */,
 				FA4FD5910E8BEBBF00F05C19 /* NSDate+Extensions.m in Sources */,
+				FAA82A4F27338ACC009CAB51 /* Set+Extensions.swift in Sources */,
 				FA4FD5930E8BEBBF00F05C19 /* NSDictionary+Extensions.m in Sources */,
 				FA4FD5950E8BEBBF00F05C19 /* NSMutableString+Extensions.m in Sources */,
 				FACDA27021FC15E60008753B /* NSThread+Extensions.m in Sources */,
@@ -2851,6 +2856,7 @@
 				FA59A998228CEF11007FFB4F /* AJRMutableCountedDictionary.m in Sources */,
 				FA2AC607196615F20052EB20 /* AJRLessThanOperator.m in Sources */,
 				FA2AC608196615F20052EB20 /* AJRLessThanOrEqualToOperator.m in Sources */,
+				FAA82A5027338ACC009CAB51 /* Set+Extensions.swift in Sources */,
 				FAD38A4325B2773600383EA3 /* NSDate+XMLCoding.m in Sources */,
 				FA2AC609196615F20052EB20 /* AJRModulusOperator.m in Sources */,
 				FA5FAA1B2368D0550027F178 /* AJRXMLCollectionPlaceholder.m in Sources */,

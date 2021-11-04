@@ -98,4 +98,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return [_keys countForObject:key];
 }
 
++ (NSString *)ajr_nameForXMLArchiving {
+    return @"mutable-counted-dictionary";
+}
+
 @end

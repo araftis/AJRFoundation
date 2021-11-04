@@ -209,8 +209,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 + (BOOL)overridesSelector:(SEL)selector {
-    IMP selfImp = [self instanceMethodForSelector:selector];
-    IMP superImp = [[self superclass] instanceMethodForSelector:selector];
+    IMP selfImp = [self methodForSelector:selector];
+    IMP superImp = [self.superclass methodForSelector:selector];
     
     return selfImp != superImp;
 }
