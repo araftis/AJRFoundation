@@ -400,8 +400,10 @@ extern id _Nullable AJRObjectFromEncodedData(NSData *data, NSError * _Nullable *
 #define AJR_IS_BIG_ENDIAN ((*(uint16_t *)"\0\xff" < 0x100) != 0)
 #define AJRUTF32StringEncodingMatchingArchitecture (AJR_IS_BIG_ENDIAN ? NSUTF32BigEndianStringEncoding : NSUTF32LittleEndianStringEncoding)
 
+/**
+ For an array allocated with [], this returns it's count.
+ */
 #define AJRCountOf(stackarray) (sizeof(stackarray)/sizeof(stackarray[0]))
-
 
 #pragma mark - Dispatch
 

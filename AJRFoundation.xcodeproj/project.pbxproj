@@ -178,7 +178,6 @@
 		FA2AC62C196615F20052EB20 /* AJRUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4FD43C0E8BEBBF00F05C19 /* AJRUnicode.m */; };
 		FA2AC62D196615F20052EB20 /* AJRUniqueObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFE4BD50EC50C3D00AE17D0 /* AJRUniqueObject.m */; };
 		FA2AC630196615F20052EB20 /* AJRXMLCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0587E2193037A3002913B6 /* AJRXMLCoder.m */; };
-		FA2AC631196615F20052EB20 /* AJRObjectID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA90916319526D9B0050F57C /* AJRObjectID.m */; };
 		FA2AC632196615F20052EB20 /* AJRXMLOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0587CE192FE402002913B6 /* AJRXMLOutputStream.m */; };
 		FA2AC633196615F20052EB20 /* AJRXMLArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = FA206FE9195253210065A290 /* AJRXMLArchiver.m */; };
 		FA2AC634196615F20052EB20 /* AJRXMLUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = FA206FED195253350065A290 /* AJRXMLUnarchiver.m */; };
@@ -276,7 +275,6 @@
 		FA2AC6B21966163A0052EB20 /* AJRUniqueObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FAFE4BD40EC50C3D00AE17D0 /* AJRUniqueObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA2AC6B51966163A0052EB20 /* AJRXMLCoder.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0587E1193037A3002913B6 /* AJRXMLCoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA2AC6B61966163B0052EB20 /* AJRXMLCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FA206FE61952526E0065A290 /* AJRXMLCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FA2AC6B71966163B0052EB20 /* AJRObjectID.h in Headers */ = {isa = PBXBuildFile; fileRef = FA90916219526D9B0050F57C /* AJRObjectID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA2AC6B81966163B0052EB20 /* AJRXMLOutputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0587CD192FE402002913B6 /* AJRXMLOutputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA2AC6B91966163B0052EB20 /* AJRXMLArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FA206FE8195253210065A290 /* AJRXMLArchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA2AC6BA1966163B0052EB20 /* AJRXMLUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FA206FEC195253350065A290 /* AJRXMLUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -545,8 +543,6 @@
 		FA904BB120CCE26200DB89F2 /* AJRMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FA904BAE20CCE26200DB89F2 /* AJRMutableOrderedDictionary.m */; };
 		FA904BB220CCE26200DB89F2 /* AJRMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FA904BAE20CCE26200DB89F2 /* AJRMutableOrderedDictionary.m */; };
 		FA904BC320CD115E00DB89F2 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA904BC220CD115E00DB89F2 /* libxml2.tbd */; };
-		FA90916419526D9B0050F57C /* AJRObjectID.h in Headers */ = {isa = PBXBuildFile; fileRef = FA90916219526D9B0050F57C /* AJRObjectID.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FA90916519526D9B0050F57C /* AJRObjectID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA90916319526D9B0050F57C /* AJRObjectID.m */; };
 		FA920F94236AAAE300C95857 /* NSScanner+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA920F93236AAAE300C95857 /* NSScanner+ExtensionsTests.m */; };
 		FA931247234E935A0033529C /* NSString+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA931246234E935A0033529C /* NSString+ExtensionsTests.m */; };
 		FA94E0081118E8C200FFC2D8 /* AJRExpressionToken.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94DDA71118D89100FFC2D8 /* AJRExpressionToken.m */; };
@@ -1046,7 +1042,7 @@
 		FA4FD4490E8BEBBF00F05C19 /* NSScanner+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
 		FA4FD44A0E8BEBBF00F05C19 /* NSScanner+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA4FD44B0E8BEBBF00F05C19 /* NSString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
-		FA4FD44C0E8BEBBF00F05C19 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
+		FA4FD44C0E8BEBBF00F05C19 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA4FDDC70E8BFA5100F05C19 /* AJRFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundation.h; sourceTree = "<group>"; };
 		FA53B77517A2D87F0009D370 /* AJRFoundation Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AJRFoundation Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA53B77917A2D87F0009D370 /* AJRFoundation Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AJRFoundation Tests-Info.plist"; sourceTree = "<group>"; };
@@ -1163,8 +1159,6 @@
 		FA904BAD20CCE26200DB89F2 /* AJRMutableOrderedDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRMutableOrderedDictionary.h; sourceTree = "<group>"; };
 		FA904BAE20CCE26200DB89F2 /* AJRMutableOrderedDictionary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRMutableOrderedDictionary.m; sourceTree = "<group>"; };
 		FA904BC220CD115E00DB89F2 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		FA90916219526D9B0050F57C /* AJRObjectID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRObjectID.h; sourceTree = "<group>"; };
-		FA90916319526D9B0050F57C /* AJRObjectID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRObjectID.m; sourceTree = "<group>"; };
 		FA920F93236AAAE300C95857 /* NSScanner+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FA931246234E935A0033529C /* NSString+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FA94DDA21118D7FB00FFC2D8 /* AJRExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRExpression.h; sourceTree = "<group>"; };
@@ -1491,8 +1485,6 @@
 				FA0587E1193037A3002913B6 /* AJRXMLCoder.h */,
 				FA0587E2193037A3002913B6 /* AJRXMLCoder.m */,
 				FA206FE61952526E0065A290 /* AJRXMLCoding.h */,
-				FA90916219526D9B0050F57C /* AJRObjectID.h */,
-				FA90916319526D9B0050F57C /* AJRObjectID.m */,
 				FA0587CD192FE402002913B6 /* AJRXMLOutputStream.h */,
 				FA0587CE192FE402002913B6 /* AJRXMLOutputStream.m */,
 				FA206FE8195253210065A290 /* AJRXMLArchiver.h */,
@@ -2212,7 +2204,6 @@
 				FAF7FDCC111B554200FDEE7E /* AJRConstant.h in Headers */,
 				FAF7FE26111B5BD500FDEE7E /* AJRExclusiveOrOperator.h in Headers */,
 				FAF7FE38111B5F6200FDEE7E /* AJRConstantExpression.h in Headers */,
-				FA90916419526D9B0050F57C /* AJRObjectID.h in Headers */,
 				FA206FEE195253350065A290 /* AJRXMLUnarchiver.h in Headers */,
 				FA2C1705258C63FA007FD1B2 /* NSKeyedArchiver+Extensions.h in Headers */,
 				FAA75F6F23384BFB00523F91 /* NSString+XMLCoding.h in Headers */,
@@ -2362,7 +2353,6 @@
 				FA2AC6B51966163A0052EB20 /* AJRXMLCoder.h in Headers */,
 				FAD0921320CF2DE2004320F5 /* AJRProtocolPropertyEnumerator.h in Headers */,
 				FA2AC6B61966163B0052EB20 /* AJRXMLCoding.h in Headers */,
-				FA2AC6B71966163B0052EB20 /* AJRObjectID.h in Headers */,
 				FA2AC6B81966163B0052EB20 /* AJRXMLOutputStream.h in Headers */,
 				FA2AC6B91966163B0052EB20 /* AJRXMLArchiver.h in Headers */,
 				FA2AC6BA1966163B0052EB20 /* AJRXMLUnarchiver.h in Headers */,
@@ -2681,7 +2671,6 @@
 				FA3DF3330F16678700C0E2C2 /* NSURL+Extensions.m in Sources */,
 				FA6FFE92220276A60083357D /* Dictionary+Extensions.swift in Sources */,
 				FA6FFE8122010F500083357D /* AJRLogging.swift in Sources */,
-				FA90916519526D9B0050F57C /* AJRObjectID.m in Sources */,
 				FA08C05B0F1C0BB80035E05E /* NSData+Base64.m in Sources */,
 				FA08C05D0F1C0BB80035E05E /* NSData+Extensions.m in Sources */,
 				FA08C05F0F1C0BB80035E05E /* NSData+UU.m in Sources */,
@@ -2919,7 +2908,6 @@
 				FA2AC630196615F20052EB20 /* AJRXMLCoder.m in Sources */,
 				FA904BB220CCE26200DB89F2 /* AJRMutableOrderedDictionary.m in Sources */,
 				FADDA19122A355D000257007 /* AJRValueTransformers.swift in Sources */,
-				FA2AC631196615F20052EB20 /* AJRObjectID.m in Sources */,
 				FA2AC632196615F20052EB20 /* AJRXMLOutputStream.m in Sources */,
 				FA07C8C1220FBE060077A0B5 /* AJRFunctions.swift in Sources */,
 				FA07C8CD220FC8A20077A0B5 /* NSObject+Extensions.swift in Sources */,

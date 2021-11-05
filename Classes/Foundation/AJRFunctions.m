@@ -741,7 +741,7 @@ BOOL AJRRangeIntersect(NSRange a, NSRange b) {
 #pragma mark - Unique ID
 
 NSString *AJRSemiuniqueIdentifier(void) {
-    return [NSString randomStringUsingPattern:@"$$$$-$$$$-$$$$"];
+    return [NSString randomStringUsingPattern:@"$$$-$$-$$$"];
 }
 
 #pragma mark - Assertions

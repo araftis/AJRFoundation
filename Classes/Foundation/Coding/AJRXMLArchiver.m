@@ -35,7 +35,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJRXMLCoder.h"
 #import "AJRXMLCoding.h"
 #import "AJRXMLOutputStream.h"
-#import "AJRObjectID.h"
+#import "AJRFunctions.h"
 #import "NSData+Extensions.h"
 
 typedef void (^AJRXMLEncodingBlock)(void);
@@ -181,7 +181,7 @@ typedef void (^AJRXMLObjectEncoder)(void);
     NSString *identifier = [_objectIDsByObject objectForKey:object];
     if (identifier == nil) {
         do {
-            identifier = AJRRandomObjectIDString();
+            identifier = AJRSemiuniqueIdentifier();
         } while ([_objectsByObjectIDs objectForKey:identifier] != nil);
         [_objectsByObjectIDs setObject:object forKey:identifier];
         [_objectIDsByObject setObject:identifier forKey:object];
@@ -198,7 +198,7 @@ typedef void (^AJRXMLObjectEncoder)(void);
     [_scopes removeLastObject];
 }
 
-- (void)_encodeObject:(id <AJRXMLCoding>)object forKey:(NSString *)keyIn {
+- (void)_encodeObject:(id <AJRXMLCoding>)object forKey:(NSString *)keyIn forceReference:(BOOL)flag {
     [self beginScopeForKey:keyIn scope:^{
         NSString *key = keyIn ?: [(NSObject *)object ajr_nameForXMLArchiving];
         BOOL generatedID = NO;
@@ -231,7 +231,7 @@ typedef void (^AJRXMLObjectEncoder)(void);
 
 - (void)encodeRootObject:(id <AJRXMLCoding>)object forKey:(NSString *)key {
     [_outputStream begin];
-    [self _encodeObject:object forKey:key];
+    [self _encodeObject:object forKey:key forceReference:NO];
     [_outputStream finish];
 }
 
@@ -241,7 +241,17 @@ typedef void (^AJRXMLObjectEncoder)(void);
 
 - (void)encodeObject:(id <AJRXMLCoding>)object forKey:(NSString *)key {
     [[self currentScope] addObjectEncoder:^{
-        [self _encodeObject:object forKey:key];
+        [self _encodeObject:object forKey:key forceReference:NO];
+    }];
+}
+
+- (void)encodeObjectReference:(id)object {
+    [self encodeObjectReference:object forKey:[object ajr_nameForXMLArchiving]];
+}
+
+- (void)encodeObjectReference:(nullable id)object forKey:(NSString *)key {
+    [[self currentScope] addObjectEncoder:^{
+        [self _encodeObject:object forKey:key forceReference:YES];
     }];
 }
 
@@ -412,7 +422,7 @@ typedef void (^AJRXMLObjectEncoder)(void);
 #endif
     NSData *data = [url bookmarkDataWithOptions:options includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
     if (data) {
-        [self _encodeObject:data forKey:key];
+        [self _encodeObject:data forKey:key forceReference:NO];
     } else {
         AJRLog(AJRXMLCodingLogDomain, AJRLogLevelError, @"Failed to encode URL as bookmark. This will likely result in an incomplete archive: %@", url);
     }

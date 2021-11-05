@@ -48,6 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)archiveRootObject:(id <AJRXMLCoding>)rootObject toOutputStream:(NSOutputStream *)outputStream error:(NSError **)error;
 + (nullable NSData *)archivedDataWithRootObject:(id <AJRXMLCoding>)rootObject;
 
+- (void)encodeObjectReference:(id)object;
+- (void)encodeObjectReference:(nullable id)object forKey:(NSString *)key;
+
 @end
 
 /*
