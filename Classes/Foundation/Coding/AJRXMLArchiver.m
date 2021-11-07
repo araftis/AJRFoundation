@@ -87,6 +87,8 @@ typedef void (^AJRXMLObjectEncoder)(void);
     AJRXMLOutputStream *_outputStream;
     NSMutableArray *_scopes;
     NSMapTable *_objectIDsByObject;
+    NSHashTable *_forcedObjectRefs;
+    NSHashTable *_encodedObjects;
     NSMapTable *_objectsByObjectIDs;
 }
 
@@ -99,6 +101,8 @@ typedef void (^AJRXMLObjectEncoder)(void);
         _scopes = [[NSMutableArray alloc] init];
         _objectIDsByObject = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPointerPersonality valueOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPersonality capacity:100];
         _objectsByObjectIDs = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPersonality valueOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPersonality capacity:100];
+        _forcedObjectRefs = [[NSHashTable alloc] initWithOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPointerPersonality capacity:100];
+        _encodedObjects = [[NSHashTable alloc] initWithOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPointerPersonality capacity:100];
     }
     return self;
 }
@@ -210,19 +214,45 @@ typedef void (^AJRXMLObjectEncoder)(void);
             objectIdentifier = [self identifierForObject:object generated:&generatedID];
         }
         [self->_outputStream push:key scope:^{
-            if (generatedID) {
-                if ([self->_scopes count] == 1) {
-                    // This is the root element, so add our special name space information
-                    [self encodeString:@"http://www.raftis.net/~aj" forKey:@"xmlns:nil"];
-                    [self encodeString:@"http://www.raftis.net/~aj" forKey:@"xmlns:ajr"];
+            if (object != nil && flag) {
+                // Doing this this way will generate some duplicated code, but interwaving the logic gets a little hairy to read.
+                if (generatedID && self->_scopes.count == 1) {
+                    AJRLog(AJRXMLCodingLogDomain, AJRLogLevelError, @"Attemping to encode the root object by ref, which is going to cause problems. Your archive is likely to be corrupt.");
                 }
-                [self encodeString:objectIdentifier forKey:@"ajr:id"];
-                if (needsClassName) {
-                    [self encodeString:NSStringFromClass([(id)object ajr_classForXMLArchiving]) forKey:@"ajr:class"];
+                if (objectIdentifier != nil) {
+                    BOOL first = NO;
+                    if (![self->_encodedObjects containsObject:object]) {
+                        // Let's note which objects were were asked to encode by ref, but only if we haven't yet encoded it.
+                        [self->_forcedObjectRefs addObject:object];
+                        first = YES;
+                    }
+                    // And then we'll write the object ref.
+                    [self encodeString:objectIdentifier forKey:@"ajr:ref"];
+                    if (first) {
+                        // This is necessary on the very first forced reference, because we'll need it in order to alloc the object.
+                        [self encodeString:NSStringFromClass([(id)object ajr_classForXMLArchiving]) forKey:@"ajr:class"];
+                    }
                 }
-                [object encodeWithXMLCoder:self];
-            } else if (objectIdentifier) {
-                [self encodeString:objectIdentifier forKey:@"ajr:ref"];
+            } else {
+                if (generatedID || [self->_forcedObjectRefs containsObject:object]) {
+                    // If we either generated the ID (outputting the object for the first time), or if we previously outputted is as a forced ref, then we're going to write the actual object.
+                    if ([self->_scopes count] == 1) {
+                        // This is the root element, so add our special name space information
+                        [self encodeString:@"http://www.raftis.net/~aj" forKey:@"xmlns:nil"];
+                        [self encodeString:@"http://www.raftis.net/~aj" forKey:@"xmlns:ajr"];
+                    }
+                    [self encodeString:objectIdentifier forKey:@"ajr:id"];
+                    if (needsClassName) {
+                        [self encodeString:NSStringFromClass([(id)object ajr_classForXMLArchiving]) forKey:@"ajr:class"];
+                    }
+                    [object encodeWithXMLCoder:self];
+                    // And we're going to remove it from the dictionary of forced refs. This will allow us to emit warnings if we never actually archive the object.
+                    [self->_forcedObjectRefs removeObject:object];
+                    // And add it to the set of objects we've encoded.
+                    [self->_encodedObjects addObject:object];
+                } else if (objectIdentifier) {
+                    [self encodeString:objectIdentifier forKey:@"ajr:ref"];
+                }
             }
             [[self currentScope] encodeObjects];
         }];

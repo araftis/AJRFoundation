@@ -59,6 +59,8 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 
 - (void)encodeObject:(id)object;
 - (void)encodeObject:(nullable id)object forKey:(NSString *)key;
+- (void)encodeObjectReference:(id)object;
+- (void)encodeObjectReference:(nullable id)object forKey:(NSString *)key;
 - (void)encodeBool:(BOOL)number forKey:(NSString *)key;
 - (void)encodeInteger:(NSInteger)number forKey:(NSString *)key;
 - (void)encodeInt:(int)number forKey:(NSString *)key;

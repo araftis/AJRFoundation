@@ -300,7 +300,8 @@ static NSString * const AJRXMLTextKeySentinel = @"__TEXT__";
     NSMutableDictionary *_objectIDsToObjects;
     NSMutableArray<AJRXMLUnarchiverFrame *> *_stack;
     NSError *_error;
-    NSMutableDictionary<NSString *, id> *_objectsByID;
+    NSMutableDictionary<NSString *, id> *_objectsByID; // Tracks all objects by their ID.
+    NSMutableDictionary<NSString *, id> *_forwardObjectsByID; // Tracks forward declared objects by their ID up until they're initialized.
     id<AJRXMLCoding> _rootObject;
 }
 
@@ -394,6 +395,7 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         _parser.delegate = self;
         _stack = [NSMutableArray array];
         _objectsByID = [NSMutableDictionary dictionary];
+        _forwardObjectsByID = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -419,7 +421,11 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     NSError *localError = nil;
     BOOL success = [_parser parse];
 
-    if (!success) {
+    // Let's see if we have any foward instantiations that were' handled
+    if (_forwardObjectsByID.count > 0) {
+        success = NO;
+        localError = [NSError errorWithDomain:AJRXMLCodingErrorDomain format:@"Some objects that were forward declared were never instantiated. This happens when an archive writes out an object reference without later writing the actual object, and results in the corruption of the archive. The following object IDs were never instantiated: %@", [[_forwardObjectsByID allKeys] componentsJoinedByString:@", "]];
+    } else if (!success) {
         localError = [_parser parserError];
     }
     
@@ -682,7 +688,31 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
 
 #pragma mark - NSXMLParserDelegate
 
+- (nullable Class)resolveClassForAttributeValue:(nullable NSString *)possibleClassName orElementName:(nullable NSString *)elementName error:(NSError * _Nullable * _Nullable)error {
+    Class objectClass = Nil;
+    NSError *localError = nil;
+
+    if (possibleClassName != nil) {
+        objectClass = NSClassFromString(possibleClassName);
+        if (objectClass == nil) {
+            localError = [NSError errorWithDomain:AJRXMLCodingErrorDomain format:@"Unknown class: \"%@\"", possibleClassName];
+        }
+    }
+    if (objectClass == Nil) {
+        objectClass = [self.class classForXMLName:elementName] ?: NSObject.class;
+//        if (objectClass == Nil) {
+//            localError = [NSError errorWithDomain:AJRXMLCodingErrorDomain format:@"No mapping from element name \"%@\" to a class.", elementName];
+//        }
+    }
+    if (localError != nil) {
+        AJRLog(nil, AJRLogLevelWarning, @"%@", localError.localizedDescription);
+    }
+    return AJRAssertOrPropagateError(objectClass, error, localError);
+}
+
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(nullable NSString *)namespaceURI qualifiedName:(nullable NSString *)qName attributes:(NSDictionary<NSString *, NSString *> *)attributeDict {
+    NSError *localError = nil; // An error we can use in various places below.
+
     // We'll do a real quick short circuit here.
     if ([elementName hasPrefix:@"nil:"]) {
         if (elementName.length > 4) {
@@ -701,39 +731,28 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     NSString *referenceID = [attributeDict objectForKey:@"ajr:ref"];
     id<AJRXMLCoding> object = nil;
     
-    if (_stack.count == 0) {
-        if (_topLevelClass != nil) {
-            objectClass = _topLevelClass;
-        } else {
-            NSString *possibleClassName = attributeDict[@"ajr:class"];
-            if (possibleClassName) {
-                objectClass = NSClassFromString(possibleClassName);
-                if (objectClass == nil) {
-                    AJRLog(nil, AJRLogLevelWarning, @"Unknown class: \"%@\"", possibleClassName);
-                    objectClass = [NSObject class];
-                }
-            } else {
-                objectClass = [[self class] classForXMLName:elementName] ?: [NSObject class];
-            }
-        }
+    if (_stack.count == 0 && _topLevelClass != Nil) {
+        objectClass = _topLevelClass;
     } else {
-        NSString *possibleClassName = attributeDict[@"ajr:class"];
-        if (possibleClassName) {
-            objectClass = NSClassFromString(possibleClassName);
-            if (objectClass == nil) {
-                AJRLog(nil, AJRLogLevelWarning, @"Unknown class: \"%@\"", possibleClassName);
-            }
-        }
-        if (objectClass == Nil) {
-            objectClass = [[self class] classForXMLName:elementName] ?: [NSObject class];
-        }
+        objectClass = [self resolveClassForAttributeValue:attributeDict[@"ajr:class"] orElementName:elementName error:&localError];
+    }
+    if (objectClass == nil) {
+        // We failed to find a class. There's no way we can unarchive in this situation, so abort.
+        _error = localError;
+        [parser abortParsing];
+        return;
     }
 
     if (referenceID != nil) {
         // Now look up the object.
         object = _objectsByID[referenceID];
-        // If the object is nil, we haven't yet decoded the object, which is an error.
-        if (object == nil) {
+        if (object == nil && objectClass != Nil) {
+            // This means we have a placeholder reference, so we need to instantiate the class for later initialization.
+            object = [objectClass instantiateWithXMLCoder:self];
+            _objectsByID[referenceID] = object;
+            _forwardObjectsByID[referenceID] = object;
+        } else if (object == nil) {
+            // This means we had an unresolved reference, which generally means our archice is corrupt.
             _error = [NSError errorWithDomain:NSXMLParserErrorDomain format:@"Found an object reference \"%@\", but it does not point to a decoded object.", referenceID];
             [parser abortParsing];
             return;
@@ -741,9 +760,13 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     } else if ([_stack.lastObject isGroupKey:elementName]) {
         object = [[AJRXMLDecoderGroup alloc] initWithGroupDecoders:_stack.lastObject.keysToGroupDecoders];
     } else {
-        // The object is new, so instantiate one.
-        object = [objectClass instantiateWithXMLCoder:self];
-        _objectsByID[objectID] = object;
+        // See if we've forward instantiated the object
+        object = _forwardObjectsByID[objectID];
+        if (object == nil) {
+            // Nope, so the object is new, so instantiate one.
+            object = [objectClass instantiateWithXMLCoder:self];
+            _objectsByID[objectID] = object;
+        }
     }
 
     // Create a stack frame for the object. We do this whether or not it's a reference or a new object, because we'll deal with associated the object into it's place in the object graph in the close element code below.
@@ -756,6 +779,12 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
 
     // If the element isn't a reference, we have to decode it.
     if (referenceID == nil) {
+        if (objectID != nil) {
+            // Since we're now instantiating the object, let's remove it from the forward instantiations, should it be there.
+            // NOTE: objectID can be nil for special XML nodes, like groups. For example, these are used for the "entry" node of an encoded dictionary.
+            [_forwardObjectsByID removeObjectForKey:objectID];
+        }
+
         // Call decodeWithXMLCoder. This allows the object to register all the "setter" handlers it'll need.
         [object decodeWithXMLCoder:self];
         
