@@ -620,6 +620,8 @@
 		FAA75F8B23445BF500523F91 /* NSFileHandle+ExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA75F8A23445BF500523F91 /* NSFileHandle+ExtensionsTests.m */; };
 		FAA82A4F27338ACC009CAB51 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA82A4E27338ACC009CAB51 /* Set+Extensions.swift */; };
 		FAA82A5027338ACC009CAB51 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA82A4E27338ACC009CAB51 /* Set+Extensions.swift */; };
+		FAA82A522738D714009CAB51 /* AJRXMLCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA82A512738D714009CAB51 /* AJRXMLCoder.swift */; };
+		FAA82A532738D714009CAB51 /* AJRXMLCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA82A512738D714009CAB51 /* AJRXMLCoder.swift */; };
 		FAAD99DB13F449E000917C90 /* AJRLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = FAAD99D913F449E000917C90 /* AJRLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FAAD99DC13F449E000917C90 /* AJRLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAD99DA13F449E000917C90 /* AJRLogging.m */; };
 		FAB312DE152F9AFA00D5C72A /* AJRPlugInExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = FAB312DC152F9AFA00D5C72A /* AJRPlugInExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1229,6 +1231,7 @@
 		FAA75F88234459C600523F91 /* NSError+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSError+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FAA75F8A23445BF500523F91 /* NSFileHandle+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileHandle+ExtensionsTests.m"; sourceTree = "<group>"; };
 		FAA82A4E27338ACC009CAB51 /* Set+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extensions.swift"; sourceTree = "<group>"; };
+		FAA82A512738D714009CAB51 /* AJRXMLCoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRXMLCoder.swift; sourceTree = "<group>"; };
 		FAAD99D913F449E000917C90 /* AJRLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRLogging.h; sourceTree = "<group>"; };
 		FAAD99DA13F449E000917C90 /* AJRLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRLogging.m; sourceTree = "<group>"; usesTabs = 0; };
 		FAB312DC152F9AFA00D5C72A /* AJRPlugInExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRPlugInExtension.h; sourceTree = "<group>"; };
@@ -1484,6 +1487,7 @@
 			children = (
 				FA0587E1193037A3002913B6 /* AJRXMLCoder.h */,
 				FA0587E2193037A3002913B6 /* AJRXMLCoder.m */,
+				FAA82A512738D714009CAB51 /* AJRXMLCoder.swift */,
 				FA206FE61952526E0065A290 /* AJRXMLCoding.h */,
 				FA0587CD192FE402002913B6 /* AJRXMLOutputStream.h */,
 				FA0587CE192FE402002913B6 /* AJRXMLOutputStream.m */,
@@ -2777,6 +2781,7 @@
 				FA092AA213F63B3C00689484 /* NSSet+Extensions.m in Sources */,
 				FAD8CE1613F9DD9900E20911 /* AJRMethodEnumerator.m in Sources */,
 				FAD8CE1A13F9DE5B00E20911 /* AJRClassEnumerator.m in Sources */,
+				FAA82A522738D714009CAB51 /* AJRXMLCoder.swift in Sources */,
 				FA57AFB1231E0E4C0020C1E5 /* AJRFunctionsMRR.m in Sources */,
 				FADDA134229BB71800257007 /* XMLNode+Extensions.swift in Sources */,
 				FA6FFEBA220560A10083357D /* String+Extensions.swift in Sources */,
@@ -2819,6 +2824,7 @@
 				FA2AC5F7196615F20052EB20 /* AJRConstant.m in Sources */,
 				FA2AC5F8196615F20052EB20 /* AJRMathConstants.m in Sources */,
 				FACDA27121FC15E60008753B /* NSThread+Extensions.m in Sources */,
+				FAA82A532738D714009CAB51 /* AJRXMLCoder.swift in Sources */,
 				FA2AC5F9196615F20052EB20 /* AJRCollectionFunctions.m in Sources */,
 				FA2AC5FA196615F20052EB20 /* AJRFunction.m in Sources */,
 				FA2AC5FB196615F20052EB20 /* AJRBasicMathFunctions.m in Sources */,
