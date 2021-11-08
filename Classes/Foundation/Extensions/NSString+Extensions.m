@@ -74,12 +74,12 @@
 
 - (NSString *)canonicalizedPath {
     NSString *path = self;
-    
+
     if (![path isAbsolutePath]) {
         path = [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingPathComponent:path];
     }
     path = [path stringByStandardizingPath];
-    
+
     return path;
 }
 
@@ -125,17 +125,17 @@
     if ([self length] > 1) {
         return [NSString stringWithFormat:@"%@%@", [[self substringToIndex:1] capitalizedString], [self substringFromIndex:1]];
     }
-    
+
     return [self capitalizedString];
 }
 
 - (NSString *)titlecaseString COMMON_DIGEST_FOR_OPENSSL {
     NSMutableString *newString = [self mutableCopy];
-    
+
     [newString enumerateSubstringsInRange:(NSRange){0, [newString length]} options:NSStringEnumerationByWords usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
         [newString replaceCharactersInRange:substringRange withString:[[substring lowercaseString] capitalizedString]];
     }];
-    
+
     return newString;
 }
 
@@ -148,11 +148,11 @@
     const wchar_t *buffer = (wchar_t *)data.bytes;
     NSInteger length = data.length / 4;
     NSString *newString = nil;
-    
+
     if (data != nil && data.length > 0) {
         wchar_t *outputBuffer = NSZoneMalloc(NULL, sizeof(wchar_t) * length);
         NSInteger y = 0;
-        
+
         for (NSInteger x = 0; x < length; x++) {
             wchar_t c = buffer[x];
             if ([set longCharacterIsMember:c]) {
@@ -166,14 +166,14 @@
         newString = [[NSString alloc] initWithBytes:outputBuffer length:y * sizeof(wchar_t) encoding:AJRUTF32StringEncodingMatchingArchitecture];
         NSZoneFree(NULL, outputBuffer);
     }
-    
+
     return newString ?: @"";
 }
 
 - (NSString*)stringByDeletingTrailingCharactersInSet:(NSCharacterSet *)characterSet {
     NSString *substring = self;
     NSRange characterRange;
-    
+
     while (1) {
         characterRange = [substring rangeOfCharacterFromSet:characterSet options:NSBackwardsSearch];
         if (characterRange.length && characterRange.location + characterRange.length == [substring length]) {
@@ -189,7 +189,7 @@
 - (NSString *)stringByDeletingLeadingCharactersInSet:(NSCharacterSet *)characterSet {
     NSScanner *scanner = [NSScanner scannerWithString:self];
     [scanner setCharactersToBeSkipped:nil];
-    
+
     if ([scanner scanCharactersFromSet:characterSet intoString:NULL]) {
         return [self substringFromIndex:[scanner scanLocation]];
     } else {
@@ -201,7 +201,7 @@
     if ([self hasPrefix:other]) {
         return [self substringFromIndex:[other length]];
     }
-    
+
     return self;
 }
 
@@ -209,7 +209,7 @@
     if ([self hasSuffix:other]) {
         return [self substringToIndex:self.length - other.length];
     }
-    
+
     return self;
 }
 
@@ -228,7 +228,7 @@
     });
     NSRange subrange = NSMakeRange(0, width);
     NSString *substring = [line substringWithRange:subrange];
-    
+
     if (!flag && [line hasPrefix:@"http://"]) {
         subrange = [line rangeOfCharacterFromSet:splitCharacterSet];
         if (subrange.length) {
@@ -239,11 +239,11 @@
             return [line length];
         }
     }
-    
+
     subrange = [substring rangeOfCharacterFromSet:splitCharacterSet options:NSBackwardsSearch];
     if (subrange.location != NSNotFound) {
         width = subrange.location + subrange.length;
-        
+
         if (!flag) {
             NSRange one = [substring rangeOfString:@"<" options:NSBackwardsSearch];
             if (one.location != NSNotFound && one.location > width) {
@@ -256,7 +256,7 @@
                 }
             }
         }
-        
+
         return width;
     } else {
         return width;
@@ -272,16 +272,16 @@
     NSMutableString *newString = [NSMutableString string];
     NSInteger i;
     NSInteger count = [lines count];
-    
+
     for (i = 0; i < count; i++) {
         NSString *line = [lines objectAtIndex:i];
-        
+
         if (![line length] && i + 1 < count) {
             [newString appendString:separator];
         }
         while ([line length] > width) {
             NSInteger splitPoint = [self splitPointForLine:line width:width splitURLs:flag];
-            
+
             [newString appendString:[[line substringToIndex:splitPoint] stringByDeletingTrailingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
             line = [[line substringFromIndex:splitPoint] stringByDeletingLeadingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             [newString appendString:separator];
@@ -335,7 +335,7 @@
 
 - (BOOL)hasCaseInsensitivePrefix:(NSString *)prefix {
     NSRange range = prefix.fullRange;
-    
+
     return range.length <= self.length ? [self compare:prefix options:NSCaseInsensitiveSearch range:range] == NSOrderedSame : NO;
 }
 
@@ -347,7 +347,7 @@
     } else {
         range.location = self.length - range.length;
     }
-    
+
     return [self compare:suffix options:NSCaseInsensitiveSearch range:range] == NSOrderedSame;
 }
 
@@ -373,11 +373,11 @@
     NSRange range;
     NSMutableString *work;
     NSInteger length;
-    
+
     if ([self length] == 0) {
         return self;
     }
-    
+
     work = [self mutableCopy];
     [work replaceHTMLSpecialCharactersWithEntityNames];
     length = work.length;
@@ -387,7 +387,7 @@
         range.location = range.location + 8;
         range.length = length - range.location;
     }
-    
+
     return work;
 }
 
@@ -442,12 +442,12 @@
 - (id)initWithRawBytes:(const uint8_t *)bytes length:(NSUInteger)length {
     unichar *buffer;
     NSInteger x;
-    
+
     buffer = (unichar *)NSZoneMalloc(nil, sizeof(unichar) * length);
     for (x = 0; x < length; x++) {
         buffer[x] = bytes[x];
     }
-    
+
     return [self initWithCharactersNoCopy:buffer length:length freeWhenDone:YES];
 }
 
@@ -467,23 +467,23 @@
     NSError *localError;
     NSData *data = [[NSData alloc] initWithContentsOfURL:url options:0 error:&localError];
     NSString *returnValue = nil;
-    
+
     if (data != nil) {
         returnValue = [self initWithRawBytes:[data bytes] length:[data length]];
     }
-    
+
     return AJRAssertOrPropagateError(returnValue, error, localError);
 }
 
 - (NSData *)rawData {
     unsigned char *buffer;
     NSInteger x, max = [self length];
-    
+
     buffer = (unsigned char *)NSZoneMalloc(nil, sizeof(unsigned char) * max);
     for (x = 0; x < max; x++) {
         buffer[x] = (unsigned char)[self characterAtIndex:x];
     }
-    
+
     return [[NSData allocWithZone:nil] initWithBytesNoCopy:buffer length:max freeWhenDone:YES];
 }
 
@@ -500,20 +500,20 @@
     DWORD bufferLength;
     DWORD dwFormatFlags;
     NSString *errorMessage = nil;
-    
+
     dwFormatFlags = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM;
-    
+
     // If errorCode is in the network range, load the message source.
-    
+
     if ((errorCode >= NERR_BASE) && (errorCode <= MAX_NERR)) {
         module = LoadLibraryEx(TEXT("netmsg.dll"), NULL, LOAD_LIBRARY_AJR_DATAFILE);
         if (module != NULL) {
             dwFormatFlags |= FORMAT_MESSAGE_FROM_HMODULE;
         }
     }
-    
+
     // Call FormatMessage() to allow for message text to be acquired from the system or from the supplied module handle.
-    
+
     if ((bufferLength = FormatMessageA(dwFormatFlags,
                                        module, // module to get message from (NULL == system)
                                        errorCode,
@@ -523,18 +523,18 @@
                                        NULL))) {
         // Output message string on stderr.
         errorMessage = [NSString stringWithCString:messageBuffer length:bufferLength];
-        
+
         // Free the buffer allocated by the system.
         LocalFree(messageBuffer);
     } else {
         errorMessage = [NSString stringWithCString:strerror(errorCode)];
     }
-    
+
     // If we loaded a message source, unload it.
     if (module != NULL) {
         FreeLibrary(module);
     }
-    
+
     return errorMessage;
 #else
     return [NSString stringWithCString:(const char *)strerror(errorCode) encoding:NSUTF8StringEncoding];
@@ -624,7 +624,7 @@ static unichar _AJRRandomCharacterForType(AJRCharacterType type) {
 
 + (NSString *)randomStringOfLength:(NSInteger)length {
     unichar buffer[length];
-    
+
     for (NSInteger x = 0; x < length; x++) {
         buffer[x] = _AJRRandomCharacterForType(AJRCharacterTypeAlphanumeric);
     }
@@ -705,7 +705,7 @@ static inline NSInteger _AJRHexValueFromCharacter(unichar character) {
     } else if (character >= 'a' && character <= 'f') {
         nibble = (character - 'a') + 10;
     }
-    
+
     return nibble;
 }
 
@@ -734,7 +734,7 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
             break;
         }
     }
-    
+
     return returnValue;
 }
 
@@ -773,7 +773,7 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
     } else {
         returnValue = [NSDate timeIntervalForTimePeriodString:self defaultValue:0.0];
     }
-    
+
     return returnValue;
 }
 
@@ -818,10 +818,10 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
     BOOL exponentNegative = NO;
     NSInteger exponent = 0;
     NSUInteger places = 0;
-    
+
     for (x = 0; x < length; x++) {
         unichar digit = [self characterAtIndex:x];
-        
+
         if (starting) {
             if (digit == '-') {
                 if (negative) {
@@ -833,7 +833,7 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
                 starting = NO;
             }
         }
-        
+
         if (!starting) {
             if (digit == '.') {
                 if (scanningFraction || scanningExponent) {
@@ -858,7 +858,7 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
             }
         }
     }
-    
+
     // If we never started, then we have no number.
     if (!starting) {
         if (exponent > 0 || places > 0) {
@@ -887,7 +887,7 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
                || [self caseInsensitiveCompare:@"no"] == NSOrderedSame) {
         return [NSNumber numberWithBool:NO];
     }
-    
+
     return nil;
 }
 
@@ -1080,7 +1080,7 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
     char *output = (char *)malloc(33);
     CC_LONG length = (CC_LONG)strlen(utf8String);
     CC_MD5_CTX c;
-    
+
     CC_MD5_Init(&c);
     while (length > 0) {
         if (length > 512) {
@@ -1100,7 +1100,7 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
     for (int n = 0; n < 16; ++n) {
         snprintf(&(output[n*2]), 16*2, "%02x", (unsigned int)digest[n]);
     }
-    
+
     return [NSString stringWithCString:output encoding:NSASCIIStringEncoding];
 }
 #pragma clang diagnostic pop

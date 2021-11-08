@@ -464,14 +464,14 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
     id value = [self objectForKey:key];
     if (!value) return defaultValue;
     return [value boolValue];
-    
+
 }
 
 - (BOOL)boolForKeyPath:(NSString *)key defaultValue:(BOOL)defaultValue {
     NSString *value = [self valueForKeyPath:key];
     if (!value) return defaultValue;
     return [value boolValue];
-    
+
 }
 
 - (float)floatForKey:(NSString *)key defaultValue:(float)defaultValue {
@@ -534,11 +534,11 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
 
 - (NSDictionary *)subdictionaryForKeys:(NSArray *)keys missingValue:(id)missingValue {
     NSMutableDictionary *returnDictionary = [NSMutableDictionary dictionaryWithCapacity:[keys count]];
-    
+
     for (NSString *key in keys) {
         [returnDictionary setObjectIfNotNil:[self objectForKey:key] ?: missingValue forKey:key];
     }
-    
+
     return returnDictionary;
 }
 
@@ -546,10 +546,10 @@ static void _AJRSetObjectNilObjectOrKey(id self, id object, id key) {
     if (!fromDictionary) {
         return self;
     }
-    
+
     NSMutableDictionary *mutableDictionary = [self mutableCopy];
     [mutableDictionary addEntriesFromDictionary:fromDictionary];
-    
+
     return mutableDictionary;
 }
 
