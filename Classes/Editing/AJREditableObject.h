@@ -31,6 +31,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol AJREditObserver
 
 - (void)object:(id)object didEditKey:(NSString *)key withChange:(NSDictionary *)change;
@@ -72,7 +74,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
  @result The set of properties to ignore. May be nil.
  */
-@property (nonatomic,class,readonly) NSSet<NSString *> *propertiesToIgnore;
+@property (nullable,nonatomic,class,readonly) NSSet<NSString *> *propertiesToIgnore;
 /*!
  Overridden by some subclasses to populate additional properties for observation. Generally needed by Swift objects, which don't necessarily follow Obj-C rules for properties.
  */
@@ -103,3 +105,5 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (Class)classForCopy;
 
 @end
+
+NS_ASSUME_NONNULL_END
