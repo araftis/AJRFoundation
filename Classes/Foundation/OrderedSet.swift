@@ -89,11 +89,37 @@ public struct OrderedSet<E: Hashable>: Equatable, Collection {
         set.remove(lastElement)
         return lastElement
     }
+    
+    @discardableResult
+    public mutating func remove(_ element: Element) -> Element? {
+        if let removed = set.remove(element) {
+            array.remove(element: element)
+            return removed
+        }
+        return nil
+    }
+    
+    public mutating func remove<S>(contentsOf other: S) where Element == S.Element, S : Sequence {
+        for element in other {
+            self.remove(element)
+        }
+    }
 
     /// Remove all elements.
     public mutating func removeAll(keepingCapacity keepCapacity: Bool) {
         array.removeAll(keepingCapacity: keepCapacity)
         set.removeAll(keepingCapacity: keepCapacity)
+    }
+    
+    /// Finds the intersection of the receiver with the contents of Sequence.
+    public mutating func formIntersection<S>(_ other: S) where Element == S.Element, S : Sequence {
+        var toRemove = Set<Element>()
+        for element in self {
+            if !other.contains(element) {
+                toRemove.insert(element)
+            }
+        }
+        self.remove(contentsOf: toRemove)
     }
 }
 

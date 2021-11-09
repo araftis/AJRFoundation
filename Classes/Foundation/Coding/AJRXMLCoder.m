@@ -89,7 +89,13 @@ NSString * const AJRXMLCodingLogDomain = @"AJRXMLCodingLogDomain";
 - (void)encodeObject:(id)object {
 }
 
+- (void)encodeObjectReference:(id)object {
+}
+
 - (void)encodeObject:(id)object forKey:(NSString *)key {
+}
+
+- (void)encodeObjectReference:(id)object forKey:(NSString *)key {
 }
 
 - (void)encodeBool:(BOOL)number forKey:(NSString *)key {
