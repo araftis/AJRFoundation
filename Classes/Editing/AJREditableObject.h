@@ -104,6 +104,16 @@ NS_ASSUME_NONNULL_BEGIN
 /*!Allows a subclass to substitute a different class during copy. Normally, this would have to be a subclass, or bad might happen. */
 - (Class)classForCopy;
 
+#pragma mark - Undo Management
+
+/*!
+ This is used as part of undo management, and will be called when the receiver should undo a change. Normally this just called setValue:forKey: on the receiver, but if your object needs to do something special, you can override this method. If you do override, and wind up doing nothing, then you should generally call super.
+ 
+ @param value The old value that should be reset.
+ @param key The key of the property to reset.
+ */
+- (void)undoValue:(id)value forKey:(NSString *)key;
+
 @end
 
 NS_ASSUME_NONNULL_END

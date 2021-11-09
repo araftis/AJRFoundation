@@ -38,6 +38,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @protocol AJREditingContextDelegate <NSObject>
 
 @optional - (void)editingContext:(AJREditingContext *)editingContext didObserveEditsForKeys:(NSSet *)keys onObject:(id)object;
+@optional - (BOOL)editingContext:(AJREditingContext *)editingContext shouldRegisterUndoOfValue:(id)value forKey:(NSString *)key onObject:(id)object;
 
 @end
 

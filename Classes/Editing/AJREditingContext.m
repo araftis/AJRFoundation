@@ -47,6 +47,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     NSMutableDictionary *_recentlyEditedObjects;
 
     BOOL _delegateRespondsToDidObserveEdit;
+    BOOL _delegateRespondsToShouldRegisterUndo;
 }
 
 #pragma mark Creation
@@ -95,6 +96,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)setDelegate:(id <AJREditingContextDelegate>)delegate {
     _delegate = delegate;
     _delegateRespondsToDidObserveEdit = [_delegate respondsToSelector:@selector(editingContext:didObserveEditsForKeys:onObject:)];
+    _delegateRespondsToShouldRegisterUndo = [_delegate respondsToSelector:@selector(editingContext:shouldRegisterUndoOfValue:forKey:onObject:)];
 }
 
 #pragma mark Object Management
@@ -184,12 +186,14 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         [self didChangeValueForKey:@"editedObjects"];
     }
 
-    if (_undoManager && key != nil) { // Only changes with keys can be undone.
+    if ((_undoManager || _delegateRespondsToShouldRegisterUndo) && key != nil) { // Only changes with keys can be undone.
         id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
 
         if (oldValue == (id)[NSNull null]) oldValue = nil;
 
-        [[_undoManager prepareWithInvocationTarget:object] undoValue:oldValue forKey:key];
+        if (!_delegateRespondsToShouldRegisterUndo || [_delegate editingContext:self shouldRegisterUndoOfValue:oldValue forKey:key onObject:object]) {
+            [[_undoManager prepareWithInvocationTarget:object] undoValue:oldValue forKey:key];
+        }
     }
 }
 
