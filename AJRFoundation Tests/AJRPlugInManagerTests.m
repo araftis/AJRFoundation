@@ -146,7 +146,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert(AJREqual([extension valueForKey:@"testBOOL"], @YES), @"Expected YES, got %@", [extension valueForKey:@"testBOOL"]);
     XCTAssert(AJREqual([extension valueForKey:@"testRequired"], @"required"), @"Expected \"required\", got \"%@\"", [extension valueForKey:@"testRequired"]);
     XCTAssert(AJREqual([extension valueForKey:@"testRequiredWithDefault"], @"default"), @"Expected \"default\", got \"%@\"", [extension valueForKey:@"testRequiredWithDefault"]);
-    XCTAssert([[extension valueForKey:@"testArray"] count] == 4, @"Expected 4 objects in testArray, got %d", (int)[extension valueForKey:@"test-array"]);
+    XCTAssert([[extension valueForKey:@"testArray"] count] == 4, @"Expected 4 objects in testArray, got %ld", [[extension valueForKey:@"test-array"] count]);
     NSBundle *referencedBundle = [extension valueForKey:@"test-bundle"];
     XCTAssert([[referencedBundle bundleIdentifier] isEqualToString:@"com.apple.Foundation"]);
 

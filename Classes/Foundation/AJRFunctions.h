@@ -89,6 +89,8 @@ extern NSString * _Nullable AJRGetEnvironmentVariable(NSString *variable);
  */
 extern NSString *AJRFindExecutable(NSString *executableName);
 
+#pragma mark - Geometry String Conversion
+
 extern NSString *AJRStringFromRect(CGRect rect);
 extern NSString *AJRStringFromSize(CGSize rect);
 extern NSString *AJRStringFromPoint(CGPoint rect);
@@ -102,6 +104,28 @@ extern NSString* AJRBadObjectVersionException;
 #define AJRMethodName() [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
 
 #define AJRBadObjectVersionFormat @"Class %@: Unable to unarchive due to old version.", NSStringFromClass([self class])
+
+#pragma mark - Name Manipulation
+
+/**
+ This returns a "name" that can be used for things like a variable name. For example, if you input AJRMyClass, this woudld return myClass. You can pass in the Swift module name, but the "." will be replaced with "_".
+
+ @param className This input class name.
+
+ @return The name of the class, suitable for using as a variable name.
+ */
+extern NSString *AJRVariableNameFromClassName(NSString *className);
+
+/**
+ Get's `class`'s name and calls `AJRVariableNameFromClassName()`. Note that this will strip off the Swift module name from the class.
+
+ @param class The class who's name is to be converted to a variable name.α
+
+ @return The name of the class, suitable for using as a variable name.
+ */
+extern NSString *AJRVariableNameFromClass(Class class);
+
+#pragma mark - Dates
 
 extern NSDate *AJRDateFromMonthDayAndYear(NSCalendar * _Nullable calendar, NSInteger month, NSInteger day, NSInteger year);
 extern NSInteger AJRYearDerivedFromYearWithoutCentury(NSInteger inputYear, NSInteger currentYear);

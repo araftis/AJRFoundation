@@ -122,7 +122,7 @@ class UserDefaults_ExtensionsTests: XCTestCase {
             fail = true
             UserDefaults[.intDefault] = 3
             AJRLogSetOutputStream(nil, .warning)
-            XCTAssert(output.ajr_dataAsString(usingEncoding: String.Encoding.utf8.rawValue)?.contains("Testing if we fail") ?? false)
+            XCTAssert(output.ajr_dataAsString(using: String.Encoding.utf8.rawValue)?.contains("Testing if we fail") ?? false)
             UserDefaults[.intDefault] = nil
             AJRUserDefaultsKey<Int>.removeObserver(observerToken)
         }

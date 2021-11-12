@@ -32,6 +32,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <XCTest/XCTest.h>
 
 #import <AJRFoundation/AJRFoundation.h>
+#import <AJRFoundation/AJRFoundation-Swift.h>
 
 @interface AJRSimpleObjectForCopyTest1 : NSObject <NSCoding>
 
@@ -131,19 +132,20 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     _selectedTitle = selectedTitle;
 }
 
-- (void)testBindings {
-    NSArray *content = @[[[NSObject alloc] init], [[NSObject alloc] init], [[NSObject alloc] init], [[NSObject alloc] init]];
-    NSArrayController *controller = [[NSArrayController alloc] initWithContent:content];
-    
-    [self bind:@"selectedTitle" toObject:controller withKeyPath:@"selection.description" options:nil];
-    
-    controller.selectedObjects = @[content[0]];
-    XCTAssert([self selectionTypeForBinding:@"selectedTitle"] == AJRBindingSelectionTypeSingle);
-    controller.selectedObjects = @[];
-    XCTAssert([self selectionTypeForBinding:@"selectedTitle"] == AJRBindingSelectionTypeNone);
-    controller.selectedObjects = @[content[0], content[1]];
-    XCTAssert([self selectionTypeForBinding:@"selectedTitle"] == AJRBindingSelectionTypeMultiple);
-}
+// TODO: Move these to AJRInterface.
+//- (void)testBindings {
+//    NSArray *content = @[[[NSObject alloc] init], [[NSObject alloc] init], [[NSObject alloc] init], [[NSObject alloc] init]];
+//    NSArrayController *controller = [[NSArrayController alloc] initWithContent:content];
+//
+//    [self bind:@"selectedTitle" toObject:controller withKeyPath:@"selection.description" options:nil];
+//
+//    controller.selectedObjects = @[content[0]];
+//    XCTAssert([self selectionTypeForBinding:@"selectedTitle"] == AJRBindingSelectionTypeSingle);
+//    controller.selectedObjects = @[];
+//    XCTAssert([self selectionTypeForBinding:@"selectedTitle"] == AJRBindingSelectionTypeNone);
+//    controller.selectedObjects = @[content[0], content[1]];
+//    XCTAssert([self selectionTypeForBinding:@"selectedTitle"] == AJRBindingSelectionTypeMultiple);
+//}
 
 - (void)testSwiftConveniences {
     NSObject *object = [[NSObject alloc] init];

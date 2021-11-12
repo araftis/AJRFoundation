@@ -477,4 +477,13 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert([output isKindOfClass:[AJRTestCompareObjectSubclass class]]);
 }
 
+- (void)testVariableName {
+    XCTAssert([AJRVariableNameFromClassName(@"AJRTestClass") isEqualToString:@"testClass"]);
+    XCTAssert([AJRVariableNameFromClassName(@"TestClass") isEqualToString:@"testClass"]);
+    XCTAssert([AJRVariableNameFromClassName(@"testClass") isEqualToString:@"testClass"]);
+    XCTAssert([AJRVariableNameFromClassName(@"Package.AJRTestClass") isEqualToString:@"package_testClass"]);
+    XCTAssert([AJRVariableNameFromClassName(@"Package.") isEqualToString:@"package"]);
+    XCTAssert([AJRVariableNameFromClassName(@".") isEqualToString:@""]);
+}
+
 @end

@@ -480,7 +480,7 @@
 		FA6A98AC239AF21E0096806F /* NSPointerArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6A98AA239AF21E0096806F /* NSPointerArray+Extensions.m */; };
 		FA6A98AE239AFC650096806F /* AJRActivityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6A98AD239AFC650096806F /* AJRActivityTests.m */; };
 		FA6A98B0239AFE920096806F /* AJRAutoreleasedMemoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6A98AF239AFE920096806F /* AJRAutoreleasedMemoryTests.m */; };
-		FA6A98B2239B02B00096806F /* AJRFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A98B1239B02B00096806F /* AJRFunctionsTests.swift */; };
+		FA6A98B2239B02B00096806F /* AJRFunctionsTestsSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A98B1239B02B00096806F /* AJRFunctionsTestsSwift.swift */; };
 		FA6A98B4239B0E330096806F /* AJRGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A98B3239B0E330096806F /* AJRGateTests.swift */; };
 		FA6A98B6239B17480096806F /* AJRGateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6A98B5239B17480096806F /* AJRGateTests.m */; };
 		FA6F16A313E1C41F00A2C1E4 /* NSAttributedString+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA6F16A113E1C41F00A2C1E4 /* NSAttributedString+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1118,7 +1118,7 @@
 		FA6A98AA239AF21E0096806F /* NSPointerArray+Extensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+Extensions.m"; sourceTree = "<group>"; };
 		FA6A98AD239AFC650096806F /* AJRActivityTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRActivityTests.m; sourceTree = "<group>"; };
 		FA6A98AF239AFE920096806F /* AJRAutoreleasedMemoryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRAutoreleasedMemoryTests.m; sourceTree = "<group>"; };
-		FA6A98B1239B02B00096806F /* AJRFunctionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRFunctionsTests.swift; sourceTree = "<group>"; };
+		FA6A98B1239B02B00096806F /* AJRFunctionsTestsSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRFunctionsTestsSwift.swift; sourceTree = "<group>"; };
 		FA6A98B3239B0E330096806F /* AJRGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRGateTests.swift; sourceTree = "<group>"; };
 		FA6A98B5239B17480096806F /* AJRGateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRGateTests.m; sourceTree = "<group>"; };
 		FA6F16A113E1C41F00A2C1E4 /* NSAttributedString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
@@ -1634,7 +1634,7 @@
 				FA64F6701562D218004DFF35 /* AJRFractionTests.m */,
 				FA679B6E237B937B009FA2E8 /* AJRFractionFormatterTests.m */,
 				FA85C23420B62C8D00A5EE38 /* AJRFunctionsTests.m */,
-				FA6A98B1239B02B00096806F /* AJRFunctionsTests.swift */,
+				FA6A98B1239B02B00096806F /* AJRFunctionsTestsSwift.swift */,
 				FA6A98B3239B0E330096806F /* AJRGateTests.swift */,
 				FA6A98B5239B17480096806F /* AJRGateTests.m */,
 				FAD888BF1586ACFC004C0BF7 /* AJRHostTests.m */,
@@ -3038,7 +3038,7 @@
 				FAA75F79233E87FC00523F91 /* NSAttributedString+ExtensionsTests.m in Sources */,
 				FA0587D8192FEF93002913B6 /* AJRXMLStreamTest.m in Sources */,
 				FADEADDF19662DA400BF6EB9 /* AJRLoggingTests.m in Sources */,
-				FA6A98B2239B02B00096806F /* AJRFunctionsTests.swift in Sources */,
+				FA6A98B2239B02B00096806F /* AJRFunctionsTestsSwift.swift in Sources */,
 				FA09AEC2217D5BE80095FBC5 /* AJRUnitsTests.m in Sources */,
 				FAA75F7B233EA67E00523F91 /* NSBundle+ExtensionsTests.m in Sources */,
 				FA7742FC2357EE7A0041824C /* NSInputStream+ExtensionsTests.m in Sources */,
@@ -3527,7 +3527,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = AJRPlugInManagerTestBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ajr.app.AJRPlugInManagerTestBundle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3562,7 +3561,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = AJRPlugInManagerTestBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ajr.app.AJRPlugInManagerTestBundle;
 				PRODUCT_NAME = "$(TARGET_NAME)";

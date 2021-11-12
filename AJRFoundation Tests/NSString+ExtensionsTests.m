@@ -523,8 +523,12 @@ static NSStringEncoding encodings[] = {
 
 - (void)testCryptography {
     XCTAssert([[@"Raftis" stringByCryptingWithSalt:@"AJ"] isEqualToString:@"AJfpQoRn4PhGs"]);
+    // Even though deprecated, we still test.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
     XCTAssert([@"Raftis".md5Hash isEqualToString:@"90913c9912aa305a48c00a7fecedb271"]);
     XCTAssert([longString.md5Hash isEqualToString:@"d66d580ba973f037112d18253b4e0e9e"]);
+#pragma clang diagnostic pop
 }
 
 @end

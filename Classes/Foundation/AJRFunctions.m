@@ -34,7 +34,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJRFileFinder.h"
 #import "AJRFormat.h"
 #import "AJRLogging.h"
+#import "AJRRuntime.h"
 #import "AJRUnicode.h"
+#import "NSCharacterSet+Extensions.h"
 #import "NSDate+Extensions.h"
 #import "NSError+Extensions.h"
 #import "NSScanner+Extensions.h"
@@ -179,6 +181,52 @@ CGPoint AJRPointFromString(NSString *string) {
 }
 
 NSString *AJRBadObjectVersionException = @"AJRBadObjectVersionException";
+
+#pragma mark - Name Manipulation
+
+NSString *AJRVariableNameFromClassName(NSString *className) {
+    NSString *packageName = nil;
+    NSRange range;
+
+    if ((range = [className rangeOfString:@"."]).location != NSNotFound) {
+        packageName = AJRVariableNameFromClassName([className substringToIndex:range.location]);
+        className = [className substringFromIndex:range.location + range.length];
+    }
+
+    NSMutableString *string = [className mutableCopy];
+    NSCharacterSet *swiftIdentifier = [NSCharacterSet ajr_swiftIdentifierCharacterSet];
+
+    // A bit heavy handed. We could make this smarted.
+    while ((range = [string rangeOfCharacterFromSet:[swiftIdentifier invertedSet]]).location != NSNotFound) {
+        [string replaceCharactersInRange:range withString:@"_"];
+    }
+
+    NSInteger index = 0;
+    NSInteger length = [string length];
+    NSCharacterSet *capitals = [NSCharacterSet uppercaseLetterCharacterSet];
+    for (index = 0; index < length && [capitals characterIsMember:[string characterAtIndex:index]]; index++) {
+    }
+
+    if (index > 0 && index != length) {
+        [string deleteCharactersInRange:(NSRange){0, index - 1}];
+        [string replaceCharactersInRange:(NSRange){0, 1} withString:[[string substringToIndex:1] lowercaseString]];
+    }
+
+    if (packageName != nil) {
+        if ([string length] > 0) {
+            [string insertString:@"_" atIndex:0];
+        }
+        [string insertString:packageName atIndex:0];
+    }
+
+    return [string copy];
+}
+
+extern NSString *AJRVariableNameFromClass(Class class) {
+    return AJRVariableNameFromClassName(AJRStringFromClassSansModule(class));
+}
+
+#pragma mark - Dates
 
 static NSError *_AJRBoundMonthDayYear(NSCalendar *calendar, NSInteger month, NSInteger day, NSInteger year) {
     NSInteger daysInMonth = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:AJRDateFromMonthDayAndYear(calendar, month, 1, year)].length;

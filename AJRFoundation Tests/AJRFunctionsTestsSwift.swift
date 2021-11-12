@@ -33,7 +33,7 @@ import XCTest
 
 import AJRFoundation
 
-class AJRFunctionsTests: XCTestCase {
+class AJRFunctionsTestsSwift: XCTestCase {
 
     func testClamp() {
         XCTAssert(AJRClamp(50, min: 0, max: 100) == 50)

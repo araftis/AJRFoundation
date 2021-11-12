@@ -82,7 +82,7 @@ class AJRGateTests: XCTestCase {
         
         XCTAssert(gate.waiting == 0)
         
-        if let string = output.ajr_dataAsString(usingEncoding: String.Encoding.utf8.rawValue) {
+        if let string = output.ajr_dataAsString(using: String.Encoding.utf8.rawValue) {
             for x in 1...3 {
                 XCTAssert(string.contains("thread \(x) will wait"))
                 XCTAssert(string.contains("thread \(x) will exit"))
