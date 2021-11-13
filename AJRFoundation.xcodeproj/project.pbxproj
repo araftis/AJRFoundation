@@ -33,6 +33,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		210F8F8E273F381E004A939D /* AJRCountedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210F8F8D273F381E004A939D /* AJRCountedSet.swift */; };
 		21FCD9D2270CE7DA0049E558 /* NSFileWrapper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */; };
 		21FCD9D3270CE7DA0049E558 /* NSFileWrapper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
@@ -893,6 +894,7 @@
 
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		210F8F8D273F381E004A939D /* AJRCountedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRCountedSet.swift; sourceTree = "<group>"; };
 		21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFileWrapper+Extensions.swift"; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* AJRFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundation_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* AJRFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AJRFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1552,6 +1554,7 @@
 				FA6F16AA13E1C62E00A2C1E4 /* AJRCaseInsensitiveString.m */,
 				FACCF4750FAFA1B0004A40FA /* AJRConversions.h */,
 				FACCF4760FAFA1B0004A40FA /* AJRConversions.m */,
+				210F8F8D273F381E004A939D /* AJRCountedSet.swift */,
 				FA2ED0480FF2C92700CCAD09 /* AJRDelegateProxy.h */,
 				FA2ED0490FF2C92700CCAD09 /* AJRDelegateProxy.m */,
 				FAF5065C22E82DBE000799FB /* AJRDebug.h */,
@@ -2704,6 +2707,7 @@
 				FA0587D5192FEB57002913B6 /* NSOutputStream+Extensions.m in Sources */,
 				FA94E0081118E8C200FFC2D8 /* AJRExpressionToken.m in Sources */,
 				FA09AEBE217D501B0095FBC5 /* NSUnit+Extensions.m in Sources */,
+				210F8F8E273F381E004A939D /* AJRCountedSet.swift in Sources */,
 				FA94E00A1118E8C400FFC2D8 /* AJRExpressionStackFrame.m in Sources */,
 				FA94E00C1118E8C600FFC2D8 /* AJRNotEqualsOperator.m in Sources */,
 				FA94E00E1118E8C700FFC2D8 /* AJREqualsOperator.m in Sources */,
