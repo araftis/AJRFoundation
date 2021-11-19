@@ -140,10 +140,10 @@
 }
 
 - (NSString *)stringContainingOnlyCharactersInSet:(NSCharacterSet *)set {
-    return [self stringByReplacingCharactersInSet:[set invertedSet] withCharacter:0];
+    return [self ajr_stringByReplacingCharactersInSet:[set invertedSet] withCharacter:0];
 }
 
-- (NSString *)stringByReplacingCharactersInSet:(NSCharacterSet *)set withCharacter:(wchar_t)character {
+- (NSString *)ajr_stringByReplacingCharactersInSet:(NSCharacterSet *)set withCharacter:(wchar_t)character {
     NSData *data = [self dataUsingEncoding:AJRUTF32StringEncodingMatchingArchitecture];
     const wchar_t *buffer = (wchar_t *)data.bytes;
     NSInteger length = data.length / 4;

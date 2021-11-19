@@ -107,6 +107,9 @@ Reads one unicode character in the streams inputEncoding setting into `character
 
 @end
 
+/// Indicates that indents should be written using the tab character.
+extern const NSInteger AJRWidthTab;
+
 @protocol AJRByteWriterMethods
 
 - (BOOL)writeBytes:(const void *)bytes length:(size_t)length error:(out NSError * _Nullable * _Nullable)error;
@@ -132,6 +135,8 @@ Reads one unicode character in the streams inputEncoding setting into `character
 
 - (BOOL)writeString:(NSString *)value error:(out NSError * _Nullable * _Nullable)error;
 - (BOOL)writeString:(NSString *)value bytesWritten:(nullable size_t *)bytesWritten error:(out NSError * _Nullable * _Nullable)error;
+- (BOOL)writeIndent:(NSInteger)indent error:(out NSError * _Nullable * _Nullable)error;
+- (BOOL)writeIndent:(NSInteger)indent width:(NSInteger)width error:(out NSError * _Nullable * _Nullable)error;
 - (BOOL)writeCString:(nullable const char *)string error:(out NSError * _Nullable * _Nullable)error;
 - (BOOL)writeCString:(nullable const char *)string bytesWritten:(nullable size_t *)bytesWritten error:(out NSError * _Nullable * _Nullable)error;
 
@@ -197,6 +202,18 @@ extern BOOL AJRWriteInteger(id <AJRByteWriter> writer, NSInteger value, AJREndia
 extern BOOL AJRWriteUInteger(id <AJRByteWriter> writer, NSUInteger value, AJREndianness endianness, NSError *_Nullable *_Nullable error);
 
 extern BOOL AJRWriteString(id <AJRByteWriter> writer, NSString *string, size_t * _Nullable bytesWritten, NSError * _Nullable * _Nullable error);
+
+/**
+ Writes indentation out to stream. Note that this doesn't actually care if it's at the start of new line, it just writes the indent. The indent will normally be spaces of with `width`, where `indent` is the number of space to write. However, if `width == AJRWidthTab` then, the tab character is written `indent` times instead.
+ 
+ @param writer The byte writer object.
+ @param indent The number of indents to write.
+ @param width The width of the tab. If equal to `AJRWidthTab`, then the tab character is used in lieu of spaces.
+ @param error A pointer to an error that will be initialized if an error occurred. When calling from Swift, the error will be thrown instead.
+ 
+ @returns `YES` on successfully writing to the stream, or `NO`, and `error` will be initialized with the error that caused the failure.
+ */
+extern BOOL AJRWriteIndent(id <AJRByteWriter> writer, NSInteger indent, NSInteger width, NSError **error);
 
 /*!
  Writes a null terminate C string. Note that the string is written regardless of the file's encoding. This method litterally just writes the bytes in the C string out to the file. If you pass in NULL, just \0, the null terminator is written.

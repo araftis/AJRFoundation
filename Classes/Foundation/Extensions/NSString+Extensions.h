@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @returns A string only contain characters in set and character.
  */
-- (NSString *)stringByReplacingCharactersInSet:(NSCharacterSet *)set withCharacter:(wchar_t)character;
+- (NSString *)ajr_stringByReplacingCharactersInSet:(NSCharacterSet *)set withCharacter:(wchar_t)character;
 
 #pragma mark - Words
 

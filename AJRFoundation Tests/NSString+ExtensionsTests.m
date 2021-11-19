@@ -59,7 +59,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     output = [@"ABCDEFG" stringContainingOnlyCharactersInSet:set];
     XCTAssert(output != nil && [output isEqualToString:@"ABCDEFG"]);
 
-    output = [@"ABCDEFGabcdefgABCDEFG" stringByReplacingCharactersInSet:[set invertedSet] withCharacter:0x2370];
+    output = [@"ABCDEFGabcdefgABCDEFG" ajr_stringByReplacingCharactersInSet:[set invertedSet] withCharacter:0x2370];
     XCTAssert(output != nil && [output isEqualToString:@"ABCDEFG⍰⍰⍰⍰⍰⍰⍰ABCDEFG"]);
 }
 

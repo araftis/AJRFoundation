@@ -31,6 +31,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "AJRStreamUtilities.h"
 
+#import "AJRFormat.h"
 #import "AJRFunctions.h"
 #import "AJRLogging.h"
 #import "AJRRuntime.h"
@@ -38,6 +39,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <iconv.h>
 #import <objc/runtime.h>
+
+const NSInteger AJRWidthTab = 0;
 
 AJREndianness AJRGetCurrentArchitectureEndianness(void) {
     return AJR_IS_BIG_ENDIAN ? AJREndiannessBig : AJREndiannessLittle;
@@ -604,6 +607,12 @@ void AJRAddWriterConveniencesToWriter(Class class) {
     _AJRAddMethod(class, @selector(writeCString:error:), ^(id <AJRByteWriter> self, const char *string, NSError **error) {
         return AJRWriteCString(self, string, NULL, error);
     }, AJRMethodSignature(@encode(BOOL), @encode(const char *), @encode(NSError * _Nullable __autoreleasing *)));
+    _AJRAddMethod(class, @selector(writeIndent:error:), ^(id <AJRByteWriter> self, NSInteger indent, NSError **error) {
+        return AJRWriteIndent(self, indent, 3, error);
+    }, AJRMethodSignature(@encode(BOOL), @encode(NSInteger), @encode(NSError * _Nullable __autoreleasing *)));
+    _AJRAddMethod(class, @selector(writeIndent:width:error:), ^(id <AJRByteWriter> self, NSInteger indent, NSInteger width, NSError **error) {
+        AJRWriteIndent(self, indent, width, error);
+    }, AJRMethodSignature(@encode(BOOL), @encode(NSInteger), @encode(NSInteger), @encode(NSError * _Nullable __autoreleasing *)));
 }
 
 BOOL AJRWriteCharacter(id <AJRByteWriter> writer, uint32_t characterIn, size_t *bytesWrittenOut, NSError **error) {
@@ -698,6 +707,50 @@ BOOL AJRWriteUInteger(id <AJRByteWriter> writer, NSUInteger value, AJREndianness
 BOOL AJRWriteString(id <AJRByteWriter> writer, NSString *string, size_t *bytesWritten, NSError **error) {
     NSData *data = [string dataUsingEncoding:writer.encoding];
     return [writer writeBytes:data.bytes length:data.length bytesWritten:bytesWritten error:error];
+}
+
+static char _spaces[] = "                                                                                                                                                                                                        ";
+static char _tabs[] = "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+
+BOOL AJRWriteIndent(id <AJRByteWriter> writer, NSInteger indent, NSInteger width, NSError **error) {
+    BOOL written = YES;
+    
+    if (width == 0) {
+        NSInteger tabsCount = AJRCountOf(_tabs);
+        NSInteger blockSize = (indent / tabsCount) * tabsCount;
+        NSInteger remainder = indent % tabsCount;
+
+        for (NSInteger x = 0; x < indent; x += blockSize) {
+            if (written) {
+                written = [writer writeBytes:_tabs length:blockSize bytesWritten:NULL error:error];
+            }
+        }
+        if (written && remainder > 0) {
+            written = [writer writeBytes:_tabs length:remainder bytesWritten:NULL error:error];
+        }
+    } else {
+        NSInteger spaces = indent * width;
+        if (spaces > 0 && spaces < AJRCountOf(_spaces)) {
+            // We'll almost always enter this loop, unless we're really, deeply indented.
+            written = [writer writeBytes:_spaces length:spaces bytesWritten:NULL error:error];
+        } else {
+            // But just in case...
+            NSInteger blockSize = (spaces / AJRCountOf(_spaces)) * AJRCountOf(_spaces);
+            NSInteger remainder = (spaces % AJRCountOf(_spaces));
+
+            for (NSInteger x = 0; x < spaces; x += blockSize) {
+                if (written) {
+                    // Don't write if one write fails
+                    written = [writer writeBytes:_spaces length:blockSize bytesWritten:NULL error:error];
+                }
+            }
+            if (written && remainder > 0) {
+                written = [writer writeBytes:_spaces length:remainder bytesWritten:NULL error:error];
+            }
+        }
+    }
+    
+    return written;
 }
 
 BOOL AJRWriteCString(id <AJRByteWriter> writer, const char *string, size_t *bytesWritten, NSError **error) {
