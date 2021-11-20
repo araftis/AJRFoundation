@@ -56,7 +56,7 @@ private class AJRObjectObserver : NSObject, AJRInvalidation {
     }
 
     func invalidate() -> Void {
-        print("invalidate")
+        //print("invalidate")
         if let observedObject = observedObject {
             observedObject.removeObserver(self, forKeyPath: keyPath)
             self.observedObject = nil
@@ -64,12 +64,12 @@ private class AJRObjectObserver : NSObject, AJRInvalidation {
     }
 
     deinit {
-        print("deinit")
+        //print("deinit")
         self.invalidate()
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        print("change: \(keyPath!)")
+        //print("change: \(keyPath!)")
         block(object, keyPath, change)
     }
 
