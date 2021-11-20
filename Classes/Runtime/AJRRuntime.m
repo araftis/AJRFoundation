@@ -603,8 +603,9 @@ const char *AJRPrimitiveMethodSignatureWithTypes(const char *firstEncodedType, .
     }
     va_end(args);
     
-    void *buffer = [AJRAutoreleasedMemory autoreleasedMemoryWithCapacity:data.length];
+    char *buffer = [AJRAutoreleasedMemory autoreleasedMemoryWithCapacity:data.length + 1];
     memcpy(buffer, data.bytes, data.length);
+    buffer[data.length - 1] = '\0';
     return buffer;
 }
 

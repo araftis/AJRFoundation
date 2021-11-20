@@ -56,17 +56,18 @@ static NSString * const expectedResult = @"    <-- tabs\n"
     [outputStream open];
     
     NSInteger bytesWritten = 0;
+    NSError *localError = nil;
     bytesWritten = [outputStream writeUnicodeBOM];
     XCTAssert(bytesWritten >= 0);
-    bytesWritten = [outputStream writeIndent:1 width:4];
+    XCTAssert([outputStream writeIndent:1 width:4 error:&localError]);
+    XCTAssert(localError == nil, @"Expected no error.");
+    [outputStream writeString:@"<-- tabs\n"];
+    bytesWritten = [outputStream writeIndent:30 width:4 error:NULL];
     XCTAssert(bytesWritten > 0, "wrote: %d", (int)bytesWritten);
     [outputStream writeString:@"<-- tabs\n"];
-    bytesWritten = [outputStream writeIndent:30 width:4];
+    bytesWritten = [outputStream writeString:@"test\n" error:NULL];
     XCTAssert(bytesWritten > 0, "wrote: %d", (int)bytesWritten);
-    [outputStream writeString:@"<-- tabs\n"];
-    bytesWritten = [outputStream writeCString:"test\n"];
-    XCTAssert(bytesWritten > 0, "wrote: %d", (int)bytesWritten);
-    bytesWritten = [outputStream writeCFormat:"test: %d\n", 1];
+    bytesWritten = [outputStream writeFormat:@"test: %d\n", 1];
     XCTAssert(bytesWritten > 0, "wrote: %d", (int)bytesWritten);
     bytesWritten = [outputStream writeString:@"test\n"];
     XCTAssert(bytesWritten > 0, "wrote: %d", (int)bytesWritten);
@@ -84,7 +85,7 @@ static NSString * const expectedResult = @"    <-- tabs\n"
     
     AJRPrintf(@"===== Test with encoding: %lu =====\n", (unsigned long)encoding);
     AJRPrintf(@"%@\n", result);
-    XCTAssert([result isEqualToString:expectedResult]);
+    XCTAssert([result isEqualToString:expectedResult], @"Expected: %@, got: %@", expectedResult, result);
     if (![result isEqualToString:expectedResult]) {
         AJRPrintf(@"encoding: %lu, detected: %lu\n", encoding, detected);
         [[result dataUsingEncoding:NSUTF8StringEncoding] writeToFile:@"/tmp/1.txt" atomically:NO];

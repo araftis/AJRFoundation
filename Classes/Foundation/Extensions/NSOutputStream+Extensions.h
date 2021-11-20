@@ -51,9 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! Writes the endian BOM when using unicode string encoding. You should call this once, first, if writing to a unicode string encoding above UTF8. */
 - (NSInteger)writeUnicodeBOM;
-- (NSInteger)writeIndent:(NSInteger)indent width:(NSInteger)indentWidth;
 /*! Writes a C-String to the output file. Note that the string is written litterally, so the expectation is that the string should not contain anything other than basic ASCII characters, although you could safely write a C String pre-encoded to the stream's encoding. */
-- (NSInteger)writeCString:(const char *)cString;
+- (NSInteger)writeCString:(const char *)cString API_DEPRECATED("Use -writeCString:error:.", macos(10.4, 10.15), ios(2.0, 13.0));
 - (NSInteger)writeCFormat:(const char *)cFormat arguments:(va_list)args;
 - (NSInteger)writeCFormat:(const char *)cFormat, ...;
 - (NSInteger)writeData:(NSData *)data;

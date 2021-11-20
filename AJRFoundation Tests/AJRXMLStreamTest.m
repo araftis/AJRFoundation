@@ -159,8 +159,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [stream setDelegate:self];
     [stream open];
     for (NSInteger x = 0; x < 10000; x++) {
-        [stream writeCString:" "];
-        [stream writeCString:""];
+        [stream writeCString:" " error:NULL];
+        [stream writeCString:"" error:NULL];
     }
     [stream close];
 

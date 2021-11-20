@@ -127,35 +127,35 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
 #pragma mark - Elements
 
 - (void)_outputCStringAttribute:(const char *)key withCStringValue:(const char *)value {
-    [_outputStream writeCString:" "];
-    [_outputStream writeCString:key];
-    [_outputStream writeCString:"=\""];
-    [_outputStream writeCString:value];
-    [_outputStream writeCString:"\""];
+    [_outputStream writeString:@" " error:NULL];
+    [_outputStream writeString:[NSString stringWithCString:key encoding:NSASCIIStringEncoding] error:NULL];
+    [_outputStream writeString:@"=\"" error:NULL];
+    [_outputStream writeString:[NSString stringWithCString:value encoding:NSASCIIStringEncoding] error:NULL];
+    [_outputStream writeString:@"\"" error:NULL];
 }
 
 - (void)_outputCStringAttribute:(const char *)key withValue:(NSString *)value {
-    [_outputStream writeCString:" "];
-    [_outputStream writeCString:key];
-    [_outputStream writeCString:"=\""];
-    [_outputStream writeString:value];
-    [_outputStream writeCString:"\""];
+    [_outputStream writeString:@" " error:NULL];
+    [_outputStream writeString:[NSString stringWithCString:key encoding:NSASCIIStringEncoding] error:NULL];
+    [_outputStream writeString:@"=\"" error:NULL];
+    [_outputStream writeString:value error:NULL];
+    [_outputStream writeString:@"\"" error:NULL];
 }
 
 - (void)_outputAttribute:(NSString *)key withCStringValue:(const char *)value {
-    [_outputStream writeCString:" "];
+    [_outputStream writeString:@" " error:NULL];
     [_outputStream writeString:key];
-    [_outputStream writeCString:"=\""];
-    [_outputStream writeCString:value];
-    [_outputStream writeCString:"\""];
+    [_outputStream writeString:@"=\"" error:NULL];
+    [_outputStream writeString:[NSString stringWithCString:value encoding:NSASCIIStringEncoding] error:NULL];
+    [_outputStream writeString:@"\"" error:NULL];
 }
 
 - (void)_outputAttribute:(NSString *)key withValue:(NSString *)value {
-    [_outputStream writeCString:" "];
+    [_outputStream writeString:@" " error:NULL];
     [_outputStream writeString:key];
-    [_outputStream writeCString:"=\""];
+    [_outputStream writeString:@"=\"" error:NULL];
     [_outputStream writeString:value];
-    [_outputStream writeCString:"\""];
+    [_outputStream writeString:@"\"" error:NULL];
 }
 
 - (void)_outputAttributes:(NSDictionary *)attributes {
@@ -168,10 +168,10 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
     NSUInteger indent = [_stack count] - 2;
     
     if (_prettyOutput && !node.suppressPrettyPrinting) {
-        [_outputStream writeIndent:indent width:_indentSize];
+        [_outputStream writeIndent:indent width:_indentSize error:NULL];
     }
     if ([node name]) {
-        [_outputStream writeCString:"<"];
+        [_outputStream writeString:@"<" error:NULL];
         [_outputStream writeString:[node name]];
     }
 }
@@ -179,11 +179,11 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
 - (void)_outputNodeClose:(AJRXMLStreamNode *)node {
     if ([node hasChildren]) {
         if (_prettyOutput && !node.suppressPrettyPrinting) {
-            [_outputStream writeIndent:[_stack count] - 1 width:_indentSize];
+            [_outputStream writeIndent:[_stack count] - 1 width:_indentSize error:NULL];
         }
-        [_outputStream writeCString:"</"];
+        [_outputStream writeString:@"</" error:NULL];
         [_outputStream writeString:[node name]];
-        [_outputStream writeCString:">"];
+        [_outputStream writeString:@">" error:NULL];
         if (_prettyOutput) {
             [_outputStream writeString:@"\n"];
         }
@@ -208,11 +208,11 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
     if ([_stack count] == 1) {
         AJRXMLStreamNode *XMLNode = [_stack firstObject];
         [XMLNode doInitialAttributesBlock];
-        [_outputStream writeCString:"?>\n"];
+        [_outputStream writeString:@"?>\n" error:NULL];
     } else if (![node hasChildren]) {
-        [_outputStream writeCString:">"];
+        [_outputStream writeString:@">" error:NULL];
         if (_prettyOutput && !node.suppressPrettyPrinting) {
-            [_outputStream writeCString:"\n"];
+            [_outputStream writeString:@"\n" error:NULL];
         }
         [node setHasChildren:YES];
     }
@@ -262,15 +262,15 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
         }
         for (NSInteger x = 0; x < length; x += allowed) {
             if (x != 0) {
-                [_outputStream writeCString:"\n"];
-                [_outputStream writeIndent:[_stack count] - 2 width:_indentSize];
+                [_outputStream writeString:@"\n" error:NULL];
+                [_outputStream writeIndent:[_stack count] - 2 width:_indentSize error:NULL];
             }
             // D'oh. When we're controlling the line breaks, we have to make sure we enumerate the output in sets of 3 bytes.
             [_outputStream writeString:AJRBase64EncodedString(bytes, length, (NSRange){x, allowed - 1}, AJRBase64NoLineBreak)];
         }
 //        for (NSInteger x = 0; x < length; x++) {
 //            if (x && x % allowed == 0) {
-//                [_outputStream writeCString:"\n"];
+//                [_outputStream writeString:@"\n"];
 //                [_outputStream writeIndent:[_stack count] - 2 width:_indentSize];
 //            }
 //            [_outputStream writeCFormat:"%02x", bytes[x]];
@@ -286,9 +286,9 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
 }
 
 - (void)addComment:(NSString *)comment {
-    [_outputStream writeCString:"<!-- "];
+    [_outputStream writeString:@"<!-- " error:NULL];
     [_outputStream writeString:comment];
-    [_outputStream writeCString:" -->"];
+    [_outputStream writeString:@" -->" error:NULL];
 }
 
 @end

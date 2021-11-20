@@ -90,16 +90,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return [self writeData:data];
 }
 
-- (NSInteger)writeIndent:(NSInteger)indent width:(NSInteger)indentWidth {
-    NSInteger written = 0;
-    
-    if (indent * indentWidth > 0) {
-        written = [self writeString:AJRFormat(@"%*s", (int)(indent * indentWidth), "")];
-    }
-    
-    return written;
-}
-
 - (NSInteger)writeCString:(const char *)cString {
     NSInteger cStringLength = strlen(cString);
     NSInteger written = 0;
@@ -119,8 +109,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSInteger)writeCFormat:(const char *)cFormat arguments:(va_list)args {
     char buffer[1024];
     
-    vsnprintf(buffer, sizeof(buffer), cFormat, args);
-    return [self writeCString:buffer];
+    vsnprintf(buffer, sizeof(buffer) - 1, cFormat, args);
+    size_t written = 0;
+    if ([self writeCString:buffer bytesWritten:&written error:NULL]) {
+        return written;
+    }
+    return -1;
 }
 
 - (NSInteger)writeCFormat:(const char *)cFormat, ... {

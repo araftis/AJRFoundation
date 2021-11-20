@@ -608,10 +608,10 @@ void AJRAddWriterConveniencesToWriter(Class class) {
         return AJRWriteCString(self, string, NULL, error);
     }, AJRMethodSignature(@encode(BOOL), @encode(const char *), @encode(NSError * _Nullable __autoreleasing *)));
     _AJRAddMethod(class, @selector(writeIndent:error:), ^(id <AJRByteWriter> self, NSInteger indent, NSError **error) {
-        return AJRWriteIndent(self, indent, 3, error);
+        return AJRWriteIndent(self, indent, 4, error);
     }, AJRMethodSignature(@encode(BOOL), @encode(NSInteger), @encode(NSError * _Nullable __autoreleasing *)));
     _AJRAddMethod(class, @selector(writeIndent:width:error:), ^(id <AJRByteWriter> self, NSInteger indent, NSInteger width, NSError **error) {
-        AJRWriteIndent(self, indent, width, error);
+        return AJRWriteIndent(self, indent, width, error);
     }, AJRMethodSignature(@encode(BOOL), @encode(NSInteger), @encode(NSInteger), @encode(NSError * _Nullable __autoreleasing *)));
 }
 
@@ -705,7 +705,19 @@ BOOL AJRWriteUInteger(id <AJRByteWriter> writer, NSUInteger value, AJREndianness
 }
 
 BOOL AJRWriteString(id <AJRByteWriter> writer, NSString *string, size_t *bytesWritten, NSError **error) {
-    NSData *data = [string dataUsingEncoding:writer.encoding];
+    NSData *data = [string dataUsingEncoding:writer.encoding allowLossyConversion:YES];
+    const uint8_t *bytes = [data bytes];
+    if ([data length] >= 2
+        && ((bytes[0] == 0xFF && bytes[1] == 0xFE)
+            || (bytes[0] == 0xFE && bytes[1] == 0xFF))) {
+        if ([data length] >= 4
+            && bytes[2] == 0x00
+            && bytes[3] == 0x00) {
+            data = [data subdataWithRange:(NSRange){4, [data length] - 4}];
+        } else {
+            data = [data subdataWithRange:(NSRange){2, [data length] - 2}];
+        }
+    }
     return [writer writeBytes:data.bytes length:data.length bytesWritten:bytesWritten error:error];
 }
 
@@ -722,17 +734,17 @@ BOOL AJRWriteIndent(id <AJRByteWriter> writer, NSInteger indent, NSInteger width
 
         for (NSInteger x = 0; x < indent; x += blockSize) {
             if (written) {
-                written = [writer writeBytes:_tabs length:blockSize bytesWritten:NULL error:error];
+                written = AJRWriteString(writer, [[NSString alloc] initWithBytes:_tabs length:blockSize encoding:NSASCIIStringEncoding], NULL, error);
             }
         }
         if (written && remainder > 0) {
-            written = [writer writeBytes:_tabs length:remainder bytesWritten:NULL error:error];
+            written = AJRWriteString(writer, [[NSString alloc] initWithBytes:_tabs length:remainder encoding:NSASCIIStringEncoding], NULL, error);
         }
     } else {
         NSInteger spaces = indent * width;
         if (spaces > 0 && spaces < AJRCountOf(_spaces)) {
             // We'll almost always enter this loop, unless we're really, deeply indented.
-            written = [writer writeBytes:_spaces length:spaces bytesWritten:NULL error:error];
+            written = AJRWriteString(writer, [[NSString alloc] initWithBytes:_spaces length:spaces encoding:NSASCIIStringEncoding], NULL, error);
         } else {
             // But just in case...
             NSInteger blockSize = (spaces / AJRCountOf(_spaces)) * AJRCountOf(_spaces);
@@ -741,11 +753,11 @@ BOOL AJRWriteIndent(id <AJRByteWriter> writer, NSInteger indent, NSInteger width
             for (NSInteger x = 0; x < spaces; x += blockSize) {
                 if (written) {
                     // Don't write if one write fails
-                    written = [writer writeBytes:_spaces length:blockSize bytesWritten:NULL error:error];
+                    written = AJRWriteString(writer, [[NSString alloc] initWithBytes:_spaces length:blockSize encoding:NSASCIIStringEncoding], NULL, error);
                 }
             }
             if (written && remainder > 0) {
-                written = [writer writeBytes:_spaces length:remainder bytesWritten:NULL error:error];
+                written = AJRWriteString(writer, [[NSString alloc] initWithBytes:_spaces length:remainder encoding:NSASCIIStringEncoding], NULL, error);
             }
         }
     }

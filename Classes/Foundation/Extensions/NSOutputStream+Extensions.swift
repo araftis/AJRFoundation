@@ -55,5 +55,24 @@ public extension OutputStream {
         }
         return nil
     }
+    
+    /**
+     A convenience for writing indents. This basically allows you to inline writing indents, at least in Swift.
+     
+     The basic for would be:
+
+     ```
+     ouputStream.indent(2).write()
+     ```
+     
+     - parameter indent: The number of indents
+     - parameter width: The width of the indent. The default is 3. If 0, then`\t` is used instead.
+     
+     - returns This returns itself, which allows you to chain.
+     */
+    func indent(_ indent: Int, width: Int = 4) throws -> OutputStream {
+        try writeIndent(indent, width: width)
+        return self
+    }
 
 }
