@@ -34,6 +34,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJREditingContext.h"
 #import "AJRFunctions.h"
 #import "AJRMutableCountedDictionary.h"
+#import "NSPointerArray+Extensions.h"
 
 #if !defined(AJRFoundation_iOS)
 #import <objc/objc-class.h>
@@ -71,7 +72,7 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByCl
     if ((self = [super init])) {
         [self setEditedKeys:[NSSet set]];
         objc_setAssociatedObject(self, @selector(editedKeys), [NSMutableSet set], OBJC_ASSOCIATION_RETAIN);
-        objc_setAssociatedObject(self, @selector(observers), [NSMutableArray array], OBJC_ASSOCIATION_RETAIN);
+        objc_setAssociatedObject(self, @selector(observers), [NSPointerArray weakObjectsPointerArray], OBJC_ASSOCIATION_RETAIN);
         _keyValueObserverInitialValues = [AJRMutableCountedDictionary dictionary];
         [self setSuppressCount:0];
         [self setPauseCount:0];
@@ -325,8 +326,8 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByCl
     }
 }
 
-- (NSMutableArray<id <AJREditObserver>> *)mutableObservers {
-    return AJRObjectIfKindOfClass(self.observers, NSMutableArray);
+- (NSPointerArray *)mutableObservers {
+    return AJRObjectIfKindOfClassOrAssert(self.observers, NSPointerArray);
 }
 
 - (NSArray<id <AJREditObserver>> *)observers {
