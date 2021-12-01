@@ -178,4 +178,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	return [NSURL URLWithString:string];
 }
 
+- (BOOL)isTemporary {
+	return [self.path hasPrefix:NSTemporaryDirectory()];
+}
+
 @end

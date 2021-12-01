@@ -91,6 +91,49 @@ import Cocoa
         }
         return false
     }
+    
+    private static func updateAttributes(on fileWrapper: FileWrapper, from url: URL) -> Void {
+        if let attributes = try? FileManager.default.attributesOfItem(atPath: url.path) {
+            var copy = [String:Any]()
+            for (key, value) in attributes {
+                copy[key.rawValue] = value
+            }
+            fileWrapper.fileAttributes = copy
+        }
+    }
+    
+    private func privateUpdateFileAttributes(from url: URL) -> Void {
+        if self.isRegularFile || self.isSymbolicLink {
+            if let filename = filename {
+                FileWrapper.updateAttributes(on: self, from: url.appendingPathComponent(filename))
+            }
+        } else {
+            if let children = fileWrappers {
+                let fullURL : URL
+                if let filename = filename {
+                    fullURL = url.appendingPathComponent(filename)
+                } else {
+                    fullURL = url
+                }
+                for (_, child) in children {
+                    child.updateFileAttributes(from: fullURL)
+                }
+            }
+        }
+    }
+
+    func updateFileAttributes(from url: URL) -> Void {
+        if self.isRegularFile || self.isSymbolicLink {
+            FileWrapper.updateAttributes(on: self, from: url)
+        } else {
+            if let children = fileWrappers {
+                for (_, child) in children {
+                    child.privateUpdateFileAttributes(from: url)
+                }
+            }
+        }
+    }
+    
 }
 
 public extension FileWrapper {

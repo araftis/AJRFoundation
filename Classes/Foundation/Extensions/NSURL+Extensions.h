@@ -65,6 +65,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (nullable instancetype)URLWithParsableString:(NSString *)string;
 
+/*!
+ @discussion Returns YES if the receiver is located within the user's temporary directory space, as defined by being in NSTemporaryDirectory().
+ */
+@property (nonatomic,readonly) BOOL isTemporary;
+
 @end
 
 NS_ASSUME_NONNULL_END
