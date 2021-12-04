@@ -327,7 +327,7 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByCl
 }
 
 - (NSPointerArray *)mutableObservers {
-    return AJRObjectIfKindOfClassOrAssert(self.observers, NSPointerArray);
+    return AJRObjectIfKindOfClassOrNilOrAssert(self.observers, NSPointerArray);
 }
 
 - (NSArray<id <AJREditObserver>> *)observers {
