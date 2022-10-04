@@ -425,6 +425,7 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     if (_forwardObjectsByID.count > 0) {
         success = NO;
         localError = [NSError errorWithDomain:AJRXMLCodingErrorDomain format:@"Some objects that were forward declared were never instantiated. This happens when an archive writes out an object reference without later writing the actual object, and results in the corruption of the archive. The following object IDs were never instantiated: %@", [[_forwardObjectsByID allKeys] componentsJoinedByString:@", "]];
+        _rootObject = nil;
     } else if (!success) {
         localError = [_parser parserError];
     }
