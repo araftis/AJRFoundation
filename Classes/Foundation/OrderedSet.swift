@@ -9,6 +9,7 @@
 /// An ordered set is an ordered collection of instances of `Element` in which
 /// uniqueness of the objects is guaranteed.
 public struct OrderedSet<E: Hashable>: Equatable, Collection {
+
     public typealias Element = E
     public typealias Index = Int
 
@@ -18,8 +19,8 @@ public struct OrderedSet<E: Hashable>: Equatable, Collection {
     public typealias Indices = CountableRange<Int>
   #endif
 
-    private var array: Array<Element>
-    private var set: Set<Element>
+    fileprivate var array: Array<Element>
+    fileprivate var set: Set<Element>
 
     /// Creates an empty ordered set.
     public init() {

@@ -8,22 +8,22 @@
         </element>
     </extension-point>
     
-    <ajrconstant class="AJRPIConstant">
+    <ajrconstant class="AJRFoundation.AJRPIConstant">
         <token name="π" />
         <token name="pi" />
     </ajrconstant>
-    <ajrconstant class="AJREConstant">
+    <ajrconstant class="AJRFoundation.AJREConstant">
         <token name="e" />
     </ajrconstant>
-    <ajrconstant class="AJRTrueConstant">
+    <ajrconstant class="AJRFoundation.AJRTrueConstant">
         <token name="true" />
         <token name="yes" />
     </ajrconstant>
-    <ajrconstant class="AJRFalseConstant">
+    <ajrconstant class="AJRFoundation.AJRFalseConstant">
         <token name="false" />
         <token name="no" />
     </ajrconstant>
-    <ajrconstant class="AJRNilConstant">
+    <ajrconstant class="AJRFoundation.AJRNilConstant">
         <token name="nil" />
         <token name="null" />
     </ajrconstant>

@@ -31,7 +31,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <AJRFoundation/NSObject+AJRUserInfo.h>
 
-#import "AJRExpression.h"
+#import <AJRFoundation/AJRFoundation-Swift.h>
 #import "AJRFunctions.h"
 
 #import <objc/runtime.h>

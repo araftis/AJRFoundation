@@ -1,46 +1,50 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <plugindata owner="com.ajr.framework.AJRFoundation" version="1">
-    <extension-point name="ajrfunction" class="AJRFunction" registrySelector="registerFunction:properties:">
+    <extension-point name="ajrfunction" class="AJRFoundation.AJRFunction" registrySelector="registerFunction:properties:">
         <attribute name="class" type="class" required="YES" />
         <attribute name="name" type="string" required="YES" />
         <attribute name="prototype" type="string" required="YES" />
     </extension-point>
     
     <!-- Misc Functions -->
-    <ajrfunction class="AJRNullFunction" name="null" prototype="null(...)" />
-    <ajrfunction class="AJRIsNullFunction" name="isnull" prototype="isnull(value)" />
-    <ajrfunction class="AJRHelpFunction" name="help" prototype="help(function())" />
+    <ajrfunction class="AJRFoundation.AJRNullFunction" name="null" prototype="null(...)" />
+    <ajrfunction class="AJRFoundation.AJRIsNullFunction" name="isnull" prototype="isnull(value)" />
+    <ajrfunction class="AJRFoundation.AJRHelpFunction" name="help" prototype="help(function())" />
 
     <!-- Logic Functions -->
-    <ajrfunction class="AJRIfFunction" name="if" prototype="if(condition, expression)" />
-    <ajrfunction class="AJRIfElseFunction" name="ifelse" prototype="ifelse(condition, true_expression, false_expression)" />
+    <ajrfunction class="AJRFoundation.AJRIfFunction" name="if" prototype="if(condition, expression)" />
+    <ajrfunction class="AJRFoundation.AJRIfElseFunction" name="ifelse" prototype="ifelse(condition, true_expression, false_expression)" />
 
     <!-- Basic Math Functions -->
-    <ajrfunction class="AJRSquareRootFunction" name="sqrt" prototype="sqrt(value)" />
-    <ajrfunction class="AJRCeilingFunction" name="ceiling" prototype="ceiling(value)" />
-    <ajrfunction class="AJRFloorFunction" name="floor" prototype="floot(value)" />
-    <ajrfunction class="AJRRoundFunction" name="round" prototype="round(value)" />
-    <ajrfunction class="AJRRemainderFunction" name="remainder" prototype="remainder(value)" />
-    <ajrfunction class="AJRMinFunction" name="min" prototype="min(value)" />
-    <ajrfunction class="AJRMaxFunction" name="max" prototype="max(value)" />
-    <ajrfunction class="AJRAbsFunction" name="abs" prototype="abs(value)" />
-    <ajrfunction class="AJRLogFunction" name="log" prototype="log(value)" />
-    <ajrfunction class="AJRLnFunction" name="ln" prototype="ln(value)" />
+    <ajrfunction class="AJRFoundation.AJRSquareRootFunction" name="sqrt" prototype="sqrt(value)" />
+    <ajrfunction class="AJRFoundation.AJRCeilingFunction" name="ceiling" prototype="ceiling(value)" />
+    <ajrfunction class="AJRFoundation.AJRFloorFunction" name="floor" prototype="floot(value)" />
+    <ajrfunction class="AJRFoundation.AJRRoundFunction" name="round" prototype="round(value)" />
+    <ajrfunction class="AJRFoundation.AJRRemainderFunction" name="remainder" prototype="remainder(value)" />
+    <ajrfunction class="AJRFoundation.AJRMinFunction" name="min" prototype="min(value)" />
+    <ajrfunction class="AJRFoundation.AJRMaxFunction" name="max" prototype="max(value)" />
+    <ajrfunction class="AJRFoundation.AJRAbsFunction" name="abs" prototype="abs(value)" />
+    <ajrfunction class="AJRFoundation.AJRLogFunction" name="log" prototype="log(value)" />
+    <ajrfunction class="AJRFoundation.AJRLnFunction" name="ln" prototype="ln(value)" />
     
     <!-- Collection Functions -->
-    <ajrfunction class="AJRArrayFunction" name="array" prototype="array(object, ...)" />
-    <ajrfunction class="AJRSetFunction" name="set" prototype="set(object, ...)" />
-    <ajrfunction class="AJRDictionaryFunction" name="dictionary" prototype="dictionary(key, value, ..., ...)" />
-    <ajrfunction class="AJRCountFunction" name="count" prototype="count()" />
-    <ajrfunction class="AJRContainsFunction" name="contains" prototype="contains(value)" />
-    <ajrfunction class="AJRIterateFunction" name="iterate" prototype="iterate(collection, function)" />
-    
+    <ajrfunction class="AJRFoundation.AJRArrayFunction" name="array" prototype="array(object, ...)" />
+    <ajrfunction class="AJRFoundation.AJRSetFunction" name="set" prototype="set(object, ...)" />
+    <ajrfunction class="AJRFoundation.AJRDictionaryFunction" name="dictionary" prototype="dictionary(key, value, ..., ...)" />
+    <ajrfunction class="AJRFoundation.AJRCountFunction" name="count" prototype="count()" />
+    <ajrfunction class="AJRFoundation.AJRContainsFunction" name="contains" prototype="contains(value)" />
+    <ajrfunction class="AJRFoundation.AJRIterateFunction" name="iterate" prototype="iterate(collection, function)" />
+
+    <!-- String Functions -->
+    <ajrfunction class="AJRFoundation.AJRHasPrefixFunction" name="hasPrefix" prototype="hasPrefix(string, prefix) -> Bool" />
+    <ajrfunction class="AJRFoundation.AJRHasSuffixFunction" name="hasSuffix" prototype="hasSuffix(string, prefix) -> Bool" />
+
     <!-- Trig Functions -->
-    <ajrfunction class="AJRSinFunction" name="sin" prototype="sin(value)" />
-    <ajrfunction class="AJRCosFunction" name="cos" prototype="cos(value)" />
-    <ajrfunction class="AJRTanFunction" name="tan" prototype="tan(value)" />
-    <ajrfunction class="AJRArcsinFunction" name="arcsin" prototype="arcsin(value)" />
-    <ajrfunction class="AJRArccosFunction" name="arccos" prototype="arccos(value)" />
-    <ajrfunction class="AJRArctanFunction" name="arctan" prototype="arctan(value)" />
+    <ajrfunction class="AJRFoundation.AJRSinFunction" name="sin" prototype="sin(value)" />
+    <ajrfunction class="AJRFoundation.AJRCosFunction" name="cos" prototype="cos(value)" />
+    <ajrfunction class="AJRFoundation.AJRTanFunction" name="tan" prototype="tan(value)" />
+    <ajrfunction class="AJRFoundation.AJRArcsinFunction" name="arcsin" prototype="arcsin(value)" />
+    <ajrfunction class="AJRFoundation.AJRArccosFunction" name="arccos" prototype="arccos(value)" />
+    <ajrfunction class="AJRFoundation.AJRArctanFunction" name="arctan" prototype="arctan(value)" />
 
 </plugindata>

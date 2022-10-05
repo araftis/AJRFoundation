@@ -31,13 +31,13 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "NSObject+Extensions.h"
 
-#import "AJRExpression.h"
 #import "AJRFunctions.h"
 #import "AJRTranslator.h"
 
 #import <objc/message.h>
 #import <objc/runtime.h>
 #import <AJRFoundation/AJRFoundation.h>
+#import <AJRFoundation/AJRFoundation-Swift.h>
 
 @interface _AJRDebugKeyContainer : NSObject
 

@@ -29,22 +29,22 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import "AJRUnionOperator.h"
+import Foundation
 
-#import "AJRCollection.h"
-#import "AJRExpression.h"
-#import "AJRFunctions.h"
+@objc
+open class AJRUnionOperator : AJROperator {
 
-@implementation AJRUnionOperator
+    func test(param: any Collection) {
+    }
 
-- (id)performOperatorWithLeft:(id)left andRight:(id)right error:(NSError **)error
-{
-    NSError *localError;
-    id <AJRCollection> leftCollection = [AJRExpression valueAsCollection:left withObject:nil error:&localError];
-    id <AJRCollection> rightCollection = localError == nil ? [AJRExpression valueAsCollection:right withObject:nil error:&localError] : nil;
-    id <AJRCollection> result = localError == nil ? [leftCollection ajr_collectionByUnioningWithCollection:rightCollection] : nil;
+    func performCollectionOperator(withLeft left: AJRUntypedCollection?, andRight right: AJRUntypedCollection?) throws -> Any? {
+        if let left = left {
+            if let right = right {
+                return left.untypedUnion(with: right)
+            }
+            return left
+        }
+        return right
+    }
 
-    return AJRAssertOrPropagateError(result, error, localError);
 }
-
-@end

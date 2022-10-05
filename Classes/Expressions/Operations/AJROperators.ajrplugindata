@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <plugindata owner="com.ajr.framework.AJRFoundation" version="1">
-    <extension-point name="ajroperator" class="AJROperator" registrySelector="registerOperator:properties:">
+    <extension-point name="ajroperator" class="AJRFoundation.AJROperator" registrySelector="registerOperator:properties:">
         <attribute name="class" type="class" />
         <attribute name="precedence" type="string" />
         <attribute name="preferredToken" type="string" />
@@ -9,74 +9,74 @@
         </element>
     </extension-point>
     
-    <ajroperator class="AJRAddOperator">
+    <ajroperator class="AJRFoundation.AJRAddOperator">
         <operator name="+" />
     </ajroperator>
-    <ajroperator class="AJRAndOperator">
+    <ajroperator class="AJRFoundation.AJRAndOperator">
         <operator name="&amp;&amp;" />
         <operator name="and" />
         <operator name="∧" />
     </ajroperator>
-    <ajroperator class="AJRDivideOperator" precedence="high">
+    <ajroperator class="AJRFoundation.AJRDivideOperator" precedence="high">
         <operator name="/" />
         <operator name="÷" />
     </ajroperator>
-    <ajroperator class="AJREqualsOperator">
+    <ajroperator class="AJRFoundation.AJREqualsOperator">
         <operator name="==" />
         <operator name="=" />
     </ajroperator>
-    <ajroperator class="AJRExclusiveOrOperator">
+    <ajroperator class="AJRFoundation.AJRExclusiveOrOperator">
         <operator name="xor" />
         <operator name="^^" />
         <operator name="⊻" />
     </ajroperator>
-    <ajroperator class="AJRExponentOperator" precedence="higher">
+    <ajroperator class="AJRFoundation.AJRExponentOperator" precedence="higher">
         <operator name="^" />
     </ajroperator>
-    <ajroperator class="AJRGreaterThanOperator">
+    <ajroperator class="AJRFoundation.AJRGreaterThanOperator">
         <operator name="&gt;" />
     </ajroperator>
-    <ajroperator class="AJRGreatorThanOrEqualToOperator">
+    <ajroperator class="AJRFoundation.AJRGreatorThanOrEqualToOperator">
         <operator name="&gt;=" />
         <operator name="≥" />
     </ajroperator>
-    <ajroperator class="AJRIntersectOperator">
+    <ajroperator class="AJRFoundation.AJRIntersectOperator">
         <operator name="∩" />
         <operator name="intersect" />
     </ajroperator>
-    <ajroperator class="AJRLessThanOperator">
+    <ajroperator class="AJRFoundation.AJRLessThanOperator">
         <operator name="&lt;" />
     </ajroperator>
-    <ajroperator class="AJRLessThanOrEqualToOperator">
+    <ajroperator class="AJRFoundation.AJRLessThanOrEqualToOperator">
         <operator name="&lt;=" />
         <operator name="≤" />
     </ajroperator>
-    <ajroperator class="AJRModulusOperator" precedence="high">
+    <ajroperator class="AJRFoundation.AJRModulusOperator" precedence="high">
         <operator name="mod" />
     </ajroperator>
-    <ajroperator class="AJRMultiplyOperator" precedence="high">
+    <ajroperator class="AJRFoundation.AJRMultiplyOperator" precedence="high">
         <operator name="*" />
         <operator name="×" />
         <operator name="·" />
     </ajroperator>
-    <ajroperator class="AJRNotEqualsOperator">
+    <ajroperator class="AJRFoundation.AJRNotEqualsOperator">
         <operator name="!=" />
         <operator name="&lt;&gt;" />
         <operator name="≠" />
     </ajroperator>
-    <ajroperator class="AJRNotOperator" precedence="unary">
+    <ajroperator class="AJRFoundation.AJRNotOperator" precedence="unary">
         <operator name="!" />
         <operator name="¬" />
     </ajroperator>
-    <ajroperator class="AJROrOperator">
+    <ajroperator class="AJRFoundation.AJROrOperator">
         <operator name="||" />
         <operator name="or" />
         <operator name="∨" />
     </ajroperator>
-    <ajroperator class="AJRSubtractOperator">
+    <ajroperator class="AJRFoundation.AJRSubtractOperator">
         <operator name="-" />
     </ajroperator>
-    <ajroperator class="AJRUnionOperator">
+    <ajroperator class="AJRFoundation.AJRUnionOperator">
         <operator name="∪" />
         <operator name="union" />
     </ajroperator>
