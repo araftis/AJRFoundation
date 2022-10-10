@@ -45,7 +45,7 @@ public enum AJRNumericError : Error {
 
 public protocol AJREquatable {
     
-    func isEqual(to other: Any) -> Bool
+    func isEqual(to other: Any?) -> Bool
     
 }
 
@@ -214,7 +214,7 @@ extension SignedInteger {
 
     public var isFloatingPoint : Bool { return false }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         var result = false
         if let myself = self as? AJRValueForUntypedComparison, let other = other as? AJRValueForUntypedComparison {
             do {
@@ -286,7 +286,7 @@ extension UnsignedInteger {
     
     public var isFloatingPoint : Bool { return false }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         var result = false
         if let myself = self as? AJRValueForUntypedComparison, let other = other as? AJRValueForUntypedComparison {
             do {
@@ -377,7 +377,7 @@ extension Float : AJRValueForUntypedDoubleComparison, AJRValueForUntypedComparis
     
     public var isFloatingPoint : Bool { return true }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         var result = false
         if let other = other as? AJRValueForUntypedDoubleComparison {
             do {
@@ -432,7 +432,7 @@ extension Double : AJRValueForUntypedDoubleComparison, AJRValueForUntypedCompari
     
     public var isFloatingPoint : Bool { return true }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         var result = false
         if let other = other as? AJRValueForUntypedDoubleComparison {
             do {
@@ -506,7 +506,7 @@ extension String : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJ
         return self.contains(".") || self.contains("e")
     }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         var result = false
         if let other = other as? String {
             result = self == other
@@ -568,7 +568,7 @@ extension String : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJ
 
 extension Bool : AJREquatable, AJRComparable {
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? Bool {
             // The brain dead case.
             return self == other
@@ -613,7 +613,7 @@ extension Bool : AJREquatable, AJRComparable {
 
 extension Date : AJREquatable, AJRComparable {
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? Date {
             return self == other
         }
@@ -636,7 +636,7 @@ extension Date : AJREquatable, AJRComparable {
 
 extension Data : AJREquatable, AJRComparable {
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? Data {
             return self == other
         }

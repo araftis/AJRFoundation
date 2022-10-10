@@ -38,8 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol AJRPropertyListCoding <NSObject>
 
-- (id)initWithPropertyListValue:(id)value error:(NSError * _Nullable * _Nullable)error;
-- (id)propertyListValue;
++ (nullable id)createWithPropertyListValue:(id)value error:(NSError * _Nullable * _Nullable)error;
+@property (readonly) id propertyListValue;
 
 @end
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugindata owner="com.ajr.framework.AJRFoundation" version="1">
+
+    <!-- Test Functions -->
+    <ajrfunction class="AJRFoundationTests.AJRIntegerFunction" name="ajr_testintegerparameter" prototype="ajr_testintegerparameter()" />
+    <ajrfunction class="AJRFoundationTests.AJRBrokenFunction" name="ajr_broken" prototype="ajr_broken()" />
+    <ajrfunction class="AJRFoundationTests.AJRArgCountCheckerFunction" name="ajr_arg_count_checker" prototype="ajr_arg_count_checker(...)" />
+
+    <ajroperator class="AJRFoundationTests.AJRBrokenOperator">
+        <operator name="ajr_broken_operator" />
+    </ajroperator>
+    <ajroperator class="AJRFoundationTests.AJRBrokenUnaryOperator" precedence="unary">
+        <operator name="ajr_broken_unary" />
+    </ajroperator>
+    <ajroperator class="AJRFoundationTests.AJROddStartOperator">
+        <operator name="👁" />
+    </ajroperator>
+
+    <ajrconstant class="AJRFoundationTests.AJRBrokenConstant">
+        <token name="ajr_broken_constant" />
+    </ajrconstant>
+
+</plugindata>

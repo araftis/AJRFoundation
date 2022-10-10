@@ -38,10 +38,25 @@ public enum AJROperatorError : Error {
     
 }
 
-@objc
+@_cdecl("AJRFoundation_AJRStringFromOperatorPrecedence")
+public func AJRStringFromOperatorPrecedence(_ precedence: AJROperator.Precedence) -> String? {
+    return precedence.description
+}
+
+@_cdecl("AJRFoundation_AJROperatorPrecedenceFromString")
+public func AJROperatorPrecedenceFromString(_ string: String) -> AJROperator.Precedence {
+    if let e = AJROperator.Precedence(string: string) {
+        return e
+    } else {
+        return .low
+    }
+}
+
+@objcMembers
 open class AJROperator: NSObject, AJREquatable {
-    
-    public enum Precedence : Int {
+
+    @objc(AJROperatorPrecedence)
+    public enum Precedence : Int, AJRXMLEncodableEnum {
         
         case lowest = -20
         case lower = -10
@@ -51,6 +66,17 @@ open class AJROperator: NSObject, AJREquatable {
         case higher = 30
         case unary = 40
         
+        public var description: String {
+            switch self {
+            case .lowest: return "lowest"
+            case .lower: return "lower"
+            case .low: return "low"
+            case .medium: return "medium"
+            case .high: return "high"
+            case .higher: return "higher"
+            case .unary: return "unary"
+            }
+        }
     }
     
     open var precedence : Precedence { return .low }
@@ -203,7 +229,7 @@ open class AJROperator: NSObject, AJREquatable {
     
     // MARK: - Equatable
     
-    open func isEqual(to other: Any) -> Bool {
+    open override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJROperator {
             return AJREqual(self.preferredToken, typed.preferredToken)
         }

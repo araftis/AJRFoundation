@@ -10,7 +10,7 @@ import Foundation
 @objc
 open class AJRSquareRootFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return sqrt(double)
@@ -21,7 +21,7 @@ open class AJRSquareRootFunction : AJRFunction {
 @objc
 open class AJRCeilingFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return ceil(double)
@@ -32,7 +32,7 @@ open class AJRCeilingFunction : AJRFunction {
 @objc
 open class AJRFloorFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return floor(double)
@@ -43,7 +43,7 @@ open class AJRFloorFunction : AJRFunction {
 @objc
 open class AJRRoundFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return round(double)
@@ -54,7 +54,7 @@ open class AJRRoundFunction : AJRFunction {
 @objc
 open class AJRRemainderFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 2)
         let x : Double = try float(at: 0, withObject: object)
         let y : Double = try float(at: 1, withObject: object)
@@ -66,7 +66,7 @@ open class AJRRemainderFunction : AJRFunction {
 @objc
 open class AJRMinFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCountMin: 1)
         
         var value : Double = try float(at:0, withObject:object)
@@ -85,7 +85,7 @@ open class AJRMinFunction : AJRFunction {
 @objc
 open class AJRMaxFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCountMin: 1)
         
         var value : Double = try float(at:0, withObject:object)
@@ -104,7 +104,7 @@ open class AJRMaxFunction : AJRFunction {
 @objc
 open class AJRAbsFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let value: Double = try float(at: 0, withObject: object)
         return abs(value)
@@ -115,7 +115,7 @@ open class AJRAbsFunction : AJRFunction {
 @objc
 open class AJRLogFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return log10(double)
@@ -126,7 +126,7 @@ open class AJRLogFunction : AJRFunction {
 @objc
 open class AJRLnFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return log(double)

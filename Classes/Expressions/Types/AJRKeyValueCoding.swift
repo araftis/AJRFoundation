@@ -47,7 +47,7 @@ public extension AJRKeyValueCoding {
     }
 
     func value(forExpression expression: AJRExpression) throws -> Any? {
-        return try expression.evaluate(withObject: self)
+        return try expression.evaluate(with: self)
     }
 
 }

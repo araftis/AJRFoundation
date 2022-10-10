@@ -41,11 +41,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NSNumber (AJRPropertyListCoding)
 
-- (id)initWithPropertyListValue:(id)value error:(NSError *__autoreleasing  _Nullable *)error
++ (id)createWithPropertyListValue:(id)value error:(NSError *__autoreleasing  _Nullable *)error
 {
     NSError *localError = nil;
-    self = [self init]; // Pretty much going to be ingored.
-    NSNumber *result;
+    NSNumber *result = nil;
     const char *encoding = [[value stringForKey:@"encoding" defaultValue:@"i"] UTF8String];
     NSString *rawValue = [value objectForKey:@"value"];
     switch (encoding[0]) {
@@ -114,12 +113,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NSString (AJRPropertyListCoding)
 
-- (id)initWithPropertyListValue:(id)value error:(NSError *__autoreleasing  _Nullable *)error
++ (id)createWithPropertyListValue:(id)value error:(NSError *__autoreleasing  _Nullable *)error
 {
     if ([value isKindOfClass:[NSString class]]) {
-        return [self initWithString:value];
+        return [[self alloc] initWithString:value];
     }
-    return [self initWithString:[value objectForKey:@"value"]];
+    return [[self alloc] initWithString:[value objectForKey:@"value"]];
 }
 
 - (id)propertyListValue

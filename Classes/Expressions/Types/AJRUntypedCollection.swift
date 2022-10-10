@@ -16,7 +16,7 @@ public enum ExpressionCollectionSemantic : Int {
 
 public protocol AJRUntypedCollection : AJRKeyValueCoding, AJREquatable {
     
-    func isEqual(to other: Any) -> Bool
+    func isEqual(to other: Any?) -> Bool
     var untypedCount : Int { get }
     func untypedContains(_ object: Any) -> Bool
     func untypedContainsKey(_ key: AnyHashable) -> Bool
@@ -35,6 +35,8 @@ public protocol AJRUntypedCollection : AJRKeyValueCoding, AJREquatable {
 
     func untypedUnion(with other: AJRUntypedCollection) -> AJRUntypedCollection
     func untypedIntersection(with other: AJRUntypedCollection) -> AJRUntypedCollection
+
+    var untypedHashable : AnyHashable? { get }
 
 }
 
@@ -119,6 +121,11 @@ extension AJRUntypedCollection {
         return string
     }
 
+    public var untypedHashable : AnyHashable? {
+        let any : Any = self
+        return any as? AnyHashable
+    }
+
 }
 
 extension Array : AJRKeyValueCoding, AJRUntypedCollection {
@@ -126,7 +133,7 @@ extension Array : AJRKeyValueCoding, AJRUntypedCollection {
         return getValue(forKeyPath: path, on: self)
     }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .objectOrdered {
             if self.count != other.untypedCount {
                 return false
@@ -214,7 +221,7 @@ extension Array : AJRKeyValueCoding, AJRUntypedCollection {
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 extension NSArray : AJRKeyValueCoding, AJRUntypedCollection {
     
-    public func isEqual(to other: Any) -> Bool {
+    public override func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .objectOrdered {
             if self.count != other.untypedCount {
                 return false
@@ -303,7 +310,7 @@ extension Dictionary : AJRKeyValueCoding, AJRUntypedCollection {
         return getValue(forKeyPath: path, on: self)
     }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .keyValueUnordered {
             if self.count != other.untypedCount {
                 return false
@@ -410,7 +417,7 @@ extension Dictionary : AJRKeyValueCoding, AJRUntypedCollection {
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 extension NSDictionary : AJRKeyValueCoding, AJRUntypedCollection {
     
-    public func isEqual(to other: Any) -> Bool {
+    public override func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .keyValueUnordered {
             if self.count != other.untypedCount {
                 return false
@@ -506,13 +513,17 @@ extension NSDictionary : AJRKeyValueCoding, AJRUntypedCollection {
 }
 #endif
 
+private func autocast<T>(_ some:Any?) -> T? {
+    return some as? T
+}
+
 extension Set : AJRKeyValueCoding, AJRUntypedCollection {
 
     public func value(forKeyPath path: String) -> Any? {
         return getValue(forKeyPath: path, on: self)
     }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .objectUnordered {
             if self.count != other.untypedCount {
                 return false
@@ -566,9 +577,11 @@ extension Set : AJRKeyValueCoding, AJRUntypedCollection {
         
         for object in self {
             if let object = object as? AJRUntypedCollection {
-                _ = newSet.insert(object.untypedMutableCopy() as! AnyHashable)
+                if let hashable = object.untypedMutableCopy().untypedHashable {
+                    newSet.insert(hashable)
+                }
             } else {
-                _ = newSet.insert(object)
+                newSet.insert(object)
             }
         }
         
@@ -579,7 +592,7 @@ extension Set : AJRKeyValueCoding, AJRUntypedCollection {
         let new = AJRMutableSet<AnyHashable>()
 
         for object in self {
-            _ = new.insert(object)
+            new.insert(object)
         }
 
         return new
@@ -590,7 +603,7 @@ extension Set : AJRKeyValueCoding, AJRUntypedCollection {
 
         for object in self {
             if other.untypedContains(object) {
-                _ = new.insert(object)
+                new.insert(object)
             }
         }
 
@@ -602,7 +615,7 @@ extension Set : AJRKeyValueCoding, AJRUntypedCollection {
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 extension NSSet : AJRKeyValueCoding, AJRUntypedCollection {
     
-    public func isEqual(to other: Any) -> Bool {
+    public override func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .objectUnordered {
             if self.count != other.untypedCount {
                 return false
@@ -690,7 +703,7 @@ extension AJRMutableArray : AJRKeyValueCoding, AJRUntypedCollection {
         return getValue(forKeyPath: path, on: self)
     }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .objectOrdered {
             if self.count != other.untypedCount {
                 return false
@@ -780,7 +793,7 @@ extension AJRMutableDictionary : AJRKeyValueCoding, AJRUntypedCollection {
         return getValue(forKeyPath: path, on: self)
     }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .keyValueUnordered {
             if self.count != other.untypedCount {
                 return false
@@ -883,7 +896,7 @@ extension AJRMutableSet : AJRKeyValueCoding, AJRUntypedCollection {
         return getValue(forKeyPath: path, on: self)
     }
     
-    public func isEqual(to other: Any) -> Bool {
+    public func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUntypedCollection, other.untypedCollectionSemantic == .objectUnordered {
             if self.count != other.untypedCount {
                 return false
@@ -937,9 +950,11 @@ extension AJRMutableSet : AJRKeyValueCoding, AJRUntypedCollection {
         
         for object in self {
             if let object = object as? AJRUntypedCollection {
-                _ = newSet.insert(object.untypedMutableCopy() as! AnyHashable)
+                if let hashable = object.untypedMutableCopy().untypedHashable {
+                    newSet.insert(hashable)
+                }
             } else {
-                _ = newSet.insert(object)
+                newSet.insert(object)
             }
         }
         
@@ -950,7 +965,7 @@ extension AJRMutableSet : AJRKeyValueCoding, AJRUntypedCollection {
         let new = AJRMutableSet<AnyHashable>()
 
         for object in self {
-            _ = new.insert(object)
+            new.insert(object)
         }
 
         return new
@@ -961,7 +976,7 @@ extension AJRMutableSet : AJRKeyValueCoding, AJRUntypedCollection {
 
         for object in self {
             if other.untypedContains(object) {
-                _ = new.insert(object)
+                new.insert(object)
             }
         }
 

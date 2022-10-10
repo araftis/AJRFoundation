@@ -10,7 +10,7 @@ import Foundation
 @objc
 open class AJRNullFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         return nil
     }
     
@@ -19,7 +19,7 @@ open class AJRNullFunction : AJRFunction {
 @objc
 open class AJRIsNullFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let value = try AJRExpression.value(arguments[0], withObject: object)
         
@@ -31,7 +31,7 @@ open class AJRIsNullFunction : AJRFunction {
 @objc
 open class AJRHelpFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         var result : Any? = nil
         

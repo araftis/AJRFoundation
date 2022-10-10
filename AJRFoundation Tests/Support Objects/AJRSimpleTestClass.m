@@ -92,25 +92,25 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     _stringValue = [first stringByAppendingString:second];
 }
 
-- (nonnull id)initWithPropertyListValue:(nonnull NSDictionary *)value error:(NSError * _Nullable __autoreleasing * _Nullable)error {
++ (id)createWithPropertyListValue:(nonnull NSDictionary *)value error:(NSError * _Nullable __autoreleasing * _Nullable)error {
     if (value[@"string"]) {
         if ([value[@"string"] isEqualToString:@"Three"]) {
             *error = [NSError errorWithDomain:NSInvalidArgumentException message:@"We don't like 'Three'. He's shifty."];
             return nil;
         }
-        return [self initWithStringValue:value[@"string"]];
+        return [[[self class] alloc] initWithStringValue:value[@"string"]];
     }
     if (value[@"integer"]) {
-        return [self initWithIntegerValue:[value[@"string"] integerValue]];
+        return [[[self class] alloc] initWithIntegerValue:[value[@"string"] integerValue]];
     }
     if (value[@"float"]) {
-        return [self initWithFloatValue:[value[@"float"] floatValue]];
+        return [[[self class] alloc] initWithFloatValue:[value[@"float"] floatValue]];
     }
     if (value[@"double"]) {
-        return [self initWithDoubleValue:[value[@"double"] doubleValue]];
+        return [[[self class] alloc] initWithDoubleValue:[value[@"double"] doubleValue]];
     }
     if (value[@"bool"]) {
-        return [self initWithBOOLValue:[value[@"bool"] boolValue]];
+        return [[[self class] alloc] initWithBOOLValue:[value[@"bool"] boolValue]];
     }
     return nil;
 }

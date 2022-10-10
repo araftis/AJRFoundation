@@ -10,7 +10,7 @@ import Foundation
 @objc
 open class AJRArrayFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         let array = AJRMutableArray<Any>()
         
         for argument in arguments {
@@ -29,7 +29,7 @@ open class AJRArrayFunction : AJRFunction {
 @objc
 open class AJRSetFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         let set = AJRMutableSet<AnyHashable>()
         
         for argument in arguments {
@@ -48,7 +48,7 @@ open class AJRSetFunction : AJRFunction {
 @objc
 open class AJRDictionaryFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         let dictionary = AJRMutableDictionary<AnyHashable, Any>()
 
         if arguments.count % 2 != 0 {
@@ -76,7 +76,7 @@ open class AJRDictionaryFunction : AJRFunction {
 @objc
 open class AJRCountFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount:1)
         
         if let collection = try collection(at:0, withObject:object) {
@@ -90,7 +90,7 @@ open class AJRCountFunction : AJRFunction {
 @objc
 open class AJRContainsFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount:2)
 
         if let collection = try self.collection(at:0, withObject:object) {
@@ -105,7 +105,7 @@ open class AJRContainsFunction : AJRFunction {
 @objc
 open class AJRIterateFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount:2)
         
         var newCollection : Any?
@@ -135,7 +135,7 @@ open class AJRIterateFunction : AJRFunction {
             if let function = functionExpression?.function {
                 try collection.untypedEnumerate { (argument, stop) in
                     function.arguments = [AJRConstantExpression(value: argument)]
-                    if let result = try function.evaluate(withObject: object) {
+                    if let result = try function.evaluate(with: object) {
                         appender(result)
                     } else {
                         appender(NSNull.init())

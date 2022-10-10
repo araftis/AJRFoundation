@@ -31,7 +31,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 public class AJRFunctionExpression : AJRExpression {
     
     // MARK: - Properties
@@ -47,8 +47,8 @@ public class AJRFunctionExpression : AJRExpression {
     
     // MARK: - AJRExpression
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
-        return try function.evaluate(withObject: object)
+    public override func evaluate(with object: Any?) throws -> Any? {
+        return try function.evaluate(with: object)
     }
     
     // MARK: - CustomStringConvertible
@@ -69,13 +69,29 @@ public class AJRFunctionExpression : AJRExpression {
         return description
     }
     
-    public override func isEqual(to other: Any) -> Bool {
+    public override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRFunctionExpression {
             return (super.isEqual(to: other)
                 && AJREqual(function, typed.function)
             )
         }
         return false;
+    }
+
+    // MARK: - NSCoding
+
+    public required init?(coder: NSCoder) {
+        if let function = coder.decodeObject(forKey: "function") as? AJRFunction {
+            self.function = function
+        } else {
+            return nil
+        }
+        super.init(coder:coder)
+    }
+
+    public override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        coder.encode(function, forKey: "function")
     }
 
 }

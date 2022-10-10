@@ -49,6 +49,7 @@ public enum AJRExpressionParserError : Error {
 
 }
 
+@objcMembers
 public class AJRExpressionParser : NSObject {
 
     // MARK: - Character Sets
@@ -83,7 +84,13 @@ public class AJRExpressionParser : NSObject {
         self.arguments = []
         self.argumentIndex = 0
     }
-    
+
+    @objc (initWithFormat:arguments:error:)
+    public convenience init(format: String, _ arguments: [Any]) throws {
+        try self.init(string: format)
+        self.arguments = arguments
+    }
+
     public convenience init(format: String, _ arguments: [Any?]) throws {
         try self.init(string: format)
         self.arguments = arguments
@@ -385,7 +392,8 @@ public class AJRExpressionParser : NSObject {
         return nil
     }
 
-    internal func expression() throws -> AJRExpression {
+    @objc(expressionWithError:)
+    public func expression() throws -> AJRExpression {
         if _expression == nil {
             stack = [AJRExpressionStackFrame]()
             stack.append(AJRExpressionStackFrame())
@@ -417,7 +425,7 @@ public class AJRExpressionParser : NSObject {
                         // Make sure this doesn't free itself when we remove it from the _stack.
                         stack.removeLast()
                         // And add the subframe's expression to the preceeding stack frame.
-                        let expression : AJRExpression = try frame.expression()!
+                        let expression : AJRExpression = try frame.expression()
                         expression.protected = true
                         try stack.last!.add(expression: expression)
                     }
@@ -458,12 +466,18 @@ public class AJRExpressionParser : NSObject {
     }
     
     // MARK: - Building Expressions
-    
-    public class func expression(forString string: String) throws -> AJRExpression {
+
+    @objc(expressionForString:error:)
+    public class func expression(string: String) throws -> AJRExpression {
         return try AJRExpressionParser(string: string).expression()
     }
-    
-    public class func expression(forFormat format: String, _ arguments: Any?...) throws -> AJRExpression {
+
+    @objc(expressionWithFormat:arguments:error:)
+    public class func expression(format: String, _ arguments: [Any]) throws -> AJRExpression {
+        return try AJRExpressionParser(format: format, arguments).expression()
+    }
+
+    public class func expression(format: String, _ arguments: Any?...) throws -> AJRExpression {
         return try AJRExpressionParser(format: format, arguments).expression()
     }
 

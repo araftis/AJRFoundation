@@ -39,156 +39,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @end
 
-@interface AJRIntegerFunction : AJRFunction
-
-@end
-
-@implementation AJRIntegerFunction
-
-+ (NSString *)name
-{
-    return @"ajr_testintegerparameter";
-}
-
-- (id)evaluateWithObject:(id)object error:(NSError **)error
-{
-    NSError *localError = [self checkArgumentCount:1];
-    NSInteger value = localError == nil ? [self integerAtIndex:0 withObject:object error:&localError] : 0.0;
-    id returnValue = localError == nil ? @(value) : nil;
-    return AJRAssertOrPropagateError(returnValue, error, localError);
-}
-
-- (NSString *)prototype {
-    return @"ajr_testintegerparameter()";
-}
-
-@end
-
-@interface AJRBrokenFunction : AJRFunction
-
-@end
-
-@implementation AJRBrokenFunction
-
-+ (NSString *)name
-{
-    return @"ajr_broken";
-}
-
-@end
-
-@interface AJRBrokenOperator : AJROperator
-
-@end
-
-@implementation AJRBrokenOperator
-
-+ (NSArray<NSString *> *)tokens
-{
-    return @[@"ajr_broken_operator"];
-}
-
-@end
-
-@interface AJRBrokenUnaryOperator : AJRUnaryOperator
-
-@end
-
-@implementation AJRBrokenUnaryOperator
-
-+ (NSArray<NSString *> *)tokens
-{
-    return @[@"ajr_broken_unary"];
-}
-
-@end
-
-@interface AJROddStartOperator : AJROperator
-
-@end
-
-@implementation AJROddStartOperator
-
-+ (NSArray<NSString *> *)tokens
-{
-    return @[@"👁"];
-}
-
-//- (AJROperatorPrecedence)precedence {
-//    return AJROperatorPrecedenceLow;
-//}
-
-+ (NSString *)preferredToken {
-    return @"👁";
-}
-
-- (id)performOperatorWithLeft:(id)left andRight:(id)right error:(NSError **)error
-{
-    if ([left isInteger] && [right isInteger]) {
-        return [NSNumber numberWithLong:[left longValue] + [right longValue]];
-    }
-    return [NSNumber numberWithDouble:[left doubleValue] + [right doubleValue]];
-}
-
-@end
-
-@interface AJRArgCountCheckerFunction : AJRFunction
-
-@end
-
-@implementation AJRArgCountCheckerFunction
-
-+ (NSString *)name
-{
-    return @"ajr_arg_count_checker";
-}
-
-- (id)evaluateWithObject:(id)object error:(NSError **)error
-{
-    NSError *localError = nil;
-    id value = nil;
-    
-    localError = [self checkArgumentCountMin:2];
-    if (localError && [[localError localizedDescription] isEqualToString:@"Function ajr_arg_count_checker expects at least 2 arguments"]) {
-        localError = [NSError errorWithDomain:AJRExpressionErrorDomain message:@"Correct"];
-    }
-    
-    if (localError == nil) {
-        localError = [self checkArgumentCountMax:10];
-        if (localError && [[localError localizedDescription] isEqualToString:@"Function ajr_arg_count_checker expects at most 10 arguments"]) {
-            localError = [NSError errorWithDomain:AJRExpressionErrorDomain message:@"Correct"];
-        }
-    }
-    
-    if (localError == nil) {
-        if ([[self stringAtIndex:0 withObject:object error:NULL] isEqualToString:@"one"]) {
-            localError = [self checkArgumentCountMax:1];
-            if (localError && [[localError localizedDescription] isEqualToString:@"Function ajr_arg_count_checker expects at most 1 argument"]) {
-                localError = [NSError errorWithDomain:AJRExpressionErrorDomain message:@"Correct"];
-            }
-        }
-    }
-    
-    return AJRAssertOrPropagateError(value, error, localError);
-}
-
-@end
-
-@interface AJRBrokenConstant : AJRConstant
-
-@end
-
-@implementation AJRBrokenConstant
-
-+ (NSArray<NSString *> *)tokens
-{
-    return @[@"ajr_broken_constant"];
-}
-
-// Broken because we don't implement -[AJRConstant value].
-
-@end
-
 @interface AJRExpressionTest : XCTestCase
 
 @end
@@ -198,14 +48,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)setUp
 {
     [super setUp];
-    
-    [AJRFunction registerFunction:[AJRIntegerFunction class]];
-    [AJRFunction registerFunction:[AJRBrokenFunction class]];
-    [AJRFunction registerFunction:[AJRArgCountCheckerFunction class]];
-    [AJRConstant registerConstant:[AJRBrokenConstant class]];
-    [AJROperator registerOperator:[AJRBrokenOperator class]];
-    [AJROperator registerOperator:[AJRBrokenUnaryOperator class]];
-    [AJROperator registerOperator:[AJROddStartOperator class]];
 }
 
 - (void)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue expectError:(BOOL)expectError
@@ -532,7 +374,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     threwException = NO;
     @try {
         AJRExpression *expression = [[AJRExpression alloc] init];
-        [expression evaluateWithObject:nil error:NULL];
+        AJRPrintf(@"%@", [expression evaluateWithObject:nil error:NULL]);
     } @catch(NSException *localException) {
         XCTAssert([[localException description] hasSuffix:@"Abstract method -[AJRExpression evaluateWithObject:error:] should be implemented"]);
         threwException = YES;
@@ -575,15 +417,16 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         threwException = YES;
     }
     XCTAssert(threwException, @"ajr_broken_unary didn't fail.");
-    
-    threwException = NO;
-    @try {
-        AJRStringFromExpressionTokenType(UINT8_MAX);
-    } @catch(NSException *localException) {
-        XCTAssert([[localException description] hasSuffix:@"We reached code we shouldn't have reached in AJRStringFromExpressionTokenType: Invalid AJRExpressionTokenType: 255"]);
-        threwException = YES;
-    }
-    XCTAssert(threwException, @"-[AJRExpression evaluateWithObject:error:] didn't fail.");
+
+    // Not relevant for Swift, since enums are stronger than Obj-C.
+//    threwException = NO;
+//    @try {
+//        AJRStringFromExpressionTokenType(UINT8_MAX);
+//    } @catch(NSException *localException) {
+//        XCTAssert([[localException description] hasSuffix:@"We reached code we shouldn't have reached in AJRStringFromExpressionTokenType: Invalid AJRExpressionTokenType: 255"]);
+//        threwException = YES;
+//    }
+//    XCTAssert(threwException, @"-[AJRExpression evaluateWithObject:error:] didn't fail.");
 }
 
 - (void)testExpressionStackFrameEdgeCases
@@ -591,9 +434,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     NSException *exception = nil;
     AJRExpressionStackFrame *stackFrame = [[AJRExpressionStackFrame alloc] init];
     
-    [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOperator value:[AJROperator operatorForToken:@"+"]]];
+    [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOperator value:[AJROperator operatorForToken:@"+"]] error:NULL];
     @try {
-        [stackFrame expression];
+        [stackFrame expressionWithError:NULL];
     } @catch (NSException *localException) {
         exception = localException;
     }
@@ -601,7 +444,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     stackFrame = [[AJRExpressionStackFrame alloc] init];
     @try {
-        [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOpenParen]];
+        [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOpenParen] error:NULL];
     } @catch (NSException *localException) {
         exception = localException;
     }
@@ -610,71 +453,43 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)testExpressionParser
 {
-    NSException *exception = nil;
-    
-    AJRExpression *expression = [AJRExpressionParser expressionForStringFormat:@"%s = %@ or \"int\" = %d or \"float\" = %f", "test", @"test", 1, M_PI];
+    NSError *localError = nil;
+
+    AJRExpression *expression = [AJRExpressionParser expressionWithFormat:@"%s = %@ or \"int\" = %d or \"float\" = %f" arguments: @[@1, @(M_PI)] error: NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(((((test == test) || int) == 1) || float) == 3.141592653589793)"]);
     
-    expression = [AJRExpressionParser expressionForString:@"test = test"];
+    expression = [AJRExpressionParser expressionForString:@"test = test" error:NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == test)"]);
     
-    expression = [AJRExpressionParser expressionForStringFormat:@"%s = %s", "test", nil];
+    expression = [AJRExpressionParser expressionWithFormat:@"%s = %s" arguments:@[@"test", [NSNull null]] error:NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == (null))"]);
     
-    expression = [AJRExpressionParser expressionForStringFormat:@"%s = %@", "test", @(1)];
+    expression = [AJRExpressionParser expressionWithFormat:@"%s = %@" arguments: @[@"test", @1] error:NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == 1)"]);
     
-    exception = nil;
-    @try {
-        expression = [AJRExpressionParser expressionForStringFormat:@"%s = %", "test", @"test"];
-    } @catch (NSException *localException) {
-        exception = localException;
-    }
-    XCTAssert(exception != nil);
+    localError = nil;
+    expression = [AJRExpressionParser expressionWithFormat:@"%s = %" arguments: @[@"test", @"test"] error: &localError];
+    XCTAssert(localError != nil);
     
-    expression = [AJRExpressionParser expressionForString:@"\"\\t\\n\\\\\\'\\\"\\r\\e\\q\\s\""];
+    expression = [AJRExpressionParser expressionForString:@"\"\\t\\n\\\\\\'\\\"\\r\\e\\q\\s\"" error:NULL];
     XCTAssert(expression != nil && [[expression evaluateWithObject:nil error:NULL] isEqualToString:@"\t\n\\\'\"\r\e? "]);
     
-    expression = [AJRExpressionParser expressionForString:@"\"This is an...\\"];
+    expression = [AJRExpressionParser expressionForString:@"\"This is an...\\" error:NULL];
     XCTAssert(expression != nil && [[expression evaluateWithObject:nil error:NULL] isEqualToString:@"This is an..."]);
     
-    expression = [AJRExpressionParser expressionForString:@"\"This is a long string to force reallocation while reading a string constant.\""];
+    expression = [AJRExpressionParser expressionForString:@"\"This is a long string to force reallocation while reading a string constant.\"" error:NULL];
     XCTAssert(expression != nil && [[expression evaluateWithObject:nil error:NULL] isEqualToString:@"This is a long string to force reallocation while reading a string constant."]);
     
-    expression = [[[AJRExpressionParser alloc] initWithStringFormat:@"%s = %@", "test", @"test"] expression];
+    expression = [[[AJRExpressionParser alloc] initWithFormat:@"%s = %@" arguments:@[@"test", @"test"] error:NULL] expressionWithError:NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == test)"]);
 }
 
 - (void)testExpressionConstructors
 {
     AJRExpression *expression;
-    NSError *localError = nil;
+    AJRExpression *decoded;
     
-    //    NSLog(@"switch (encoding[0]) {");
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithChar:[value charValue]]; break;\n", @encode(char));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithUnsignedChar:[value unsignedCharValue]]; break;\n", @encode(unsigned char));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithShort:[value shortValue]]; break;\n", @encode(short));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithUnsignedShort:[value unsignedShortValue]]; break;\n", @encode(unsigned short));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithInt:[value intValue]]; break;\n", @encode(int));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithUnsignedInt:[value unsignedIntValue]]; break;\n", @encode(unsigned int));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithLong:[value longValue]]; break;\n", @encode(long));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithUnsignedLong:[value unsignedLongVBalue]; break;\n", @encode(unsigned long));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithLongLong:[value longLongValue]]; break;\n", @encode(long long));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithUnsignedLongLong:[value unsignedLongLongValue]]; break;\n", @encode(unsigned long long));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithFloat:[value floatValue]]; break;\n", @encode(float));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithDouble:[value doubleValue]]; break;\n", @encode(double));
-    //    NSLog(@"    case '%s': result = [NSNumber numberWithLongDouble:[value longDoubleValue]]; break;\n", @encode(long double));
-    //    NSLog(@"    default:\n");
-    //    NSLog(@"       // Punt;\n");
-    //    NSLog(@"       result = [NSNumber numberWithDouble:[value doubleValue]];\n");
-    //    NSLog(@"       break;\n");
-    //    NSLog(@"}\n");
-    
-    expression = [AJRExpression expressionWithExpressionFormat:@"%s = %f", "pi", 1.0];
-    AJRExpression *decoded = [AJRExpression expressionForObject:[expression propertyListValue] error:NULL];
-    XCTAssert(AJREqual(expression, decoded));
-    
-    expression = [AJRExpression expressionForObject:@"pi = 1.0" error:NULL];
+    expression = [AJRExpression expressionWithString:@"pi = 1.0" error:NULL];
     decoded = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     XCTAssert(AJREqual(expression, decoded));
     
@@ -685,72 +500,64 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     expression = [AJRExpression expressionWithString:@"5" error:NULL];
     decoded = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     XCTAssert(AJREqual(expression, decoded));
-    decoded = [AJRExpression expressionForObject:[expression propertyListValue] error:NULL];
-    XCTAssert(AJREqual(expression, decoded));
-    
+
     expression = [AJRExpression expressionWithString:@"a" error:NULL];
     decoded = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     XCTAssert(AJREqual(expression, decoded));
-    decoded = [AJRExpression expressionForObject:[expression propertyListValue] error:NULL];
-    XCTAssert(AJREqual(expression, decoded));
-    
+
     expression = [AJRExpression expressionWithString:@"!true" error:NULL];
     decoded = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     XCTAssert(AJREqual(expression, decoded));
-    decoded = [AJRExpression expressionForObject:[expression propertyListValue] error:NULL];
-    XCTAssert(AJREqual(expression, decoded));
-    
+
     expression = [AJRExpression expressionWithString:@"min(1, 2, max(3, 4))" error:NULL];
     decoded = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     XCTAssert(AJREqual(expression, decoded));
-    decoded = [AJRExpression expressionForObject:[expression propertyListValue] error:NULL];
-    XCTAssert(AJREqual(expression, decoded));
+
+//    NSString *raw = @"{"
+//    @"    function = {"
+//    @"        arguments = ("
+//    @"             {"
+//    @"                 protected = 0;"
+//    @"                 type = AJRConstantExpression;"
+//    @"                 value = {"
+//    @"                     encoding = I;"
+//    @"                     type = NSNumber;"
+//    @"                     value = 1;"
+//    @"                 };"
+//    @"             }"
+//    @"        );"
+//    @"        type = AJRThisAintGunnaWorkFunction;"
+//    @"    };"
+//    @"    protected = 1;"
+//    @"    type = AJRFunctionExpression;"
+//    @"}";
+//    NSDictionary *rawDictionary = [raw propertyList];
+//    decoded = [AJRExpression expressionForObject:rawDictionary error:&localError];
+//    XCTAssert(decoded == nil);
+//    XCTAssert([[localError localizedDescription] isEqualToString:@"No known function class: AJRThisAintGunnaWorkFunction"]);
     
-    NSString *raw = @"{"
-    @"    function = {"
-    @"        arguments = ("
-    @"             {"
-    @"                 protected = 0;"
-    @"                 type = AJRConstantExpression;"
-    @"                 value = {"
-    @"                     encoding = I;"
-    @"                     type = NSNumber;"
-    @"                     value = 1;"
-    @"                 };"
-    @"             }"
-    @"        );"
-    @"        type = AJRThisAintGunnaWorkFunction;"
-    @"    };"
-    @"    protected = 1;"
-    @"    type = AJRFunctionExpression;"
-    @"}";
-    NSDictionary *rawDictionary = [raw propertyList];
-    decoded = [AJRExpression expressionForObject:rawDictionary error:&localError];
-    XCTAssert(decoded == nil);
-    XCTAssert([[localError localizedDescription] isEqualToString:@"No known function class: AJRThisAintGunnaWorkFunction"]);
-    
-    raw = @"{"
-    @"    function = {"
-    @"        arguments = ("
-    @"             {"
-    @"                 protected = 0;"
-    @"                 type = AJRConstantExpression;"
-    @"                 value = {"
-    @"                     encoding = Z;"
-    @"                     type = NSNumber;"
-    @"                     value = 1;"
-    @"                 };"
-    @"             }"
-    @"        );"
-    @"        type = AJRSinFunction;"
-    @"    };"
-    @"    protected = 1;"
-    @"    type = AJRFunctionExpression;"
-    @"}";
-    rawDictionary = [raw propertyList];
-    decoded = [AJRExpression expressionForObject:rawDictionary error:&localError];
-    XCTAssert(decoded == nil);
-    XCTAssert([[localError localizedDescription] isEqualToString:@"Unknown number encoding: Z"]);
+//    raw = @"{"
+//    @"    function = {"
+//    @"        arguments = ("
+//    @"             {"
+//    @"                 protected = 0;"
+//    @"                 type = AJRConstantExpression;"
+//    @"                 value = {"
+//    @"                     encoding = Z;"
+//    @"                     type = NSNumber;"
+//    @"                     value = 1;"
+//    @"                 };"
+//    @"             }"
+//    @"        );"
+//    @"        type = AJRSinFunction;"
+//    @"    };"
+//    @"    protected = 1;"
+//    @"    type = AJRFunctionExpression;"
+//    @"}";
+//    rawDictionary = [raw propertyList];
+//    decoded = [AJRExpression expressionForObject:rawDictionary error:&localError];
+//    XCTAssert(decoded == nil);
+//    XCTAssert([[localError localizedDescription] isEqualToString:@"Unknown number encoding: Z"]);
 }
 
 - (void)testTokens
@@ -773,34 +580,35 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert([expression isEqual:decodedExpression], @"%@ wasn't equal to %@", expression, decodedExpression);
 }
 
-- (void)testPropertyListEncoding
-{
-    NSArray *numbers = @[
-        [NSNumber numberWithChar:CHAR_MAX],
-        [NSNumber numberWithUnsignedChar:UCHAR_MAX],
-        [NSNumber numberWithShort:SHRT_MAX],
-        [NSNumber numberWithUnsignedShort:USHRT_MAX],
-        [NSNumber numberWithInt:INT_MAX],
-        [NSNumber numberWithUnsignedInt:UINT_MAX],
-        [NSNumber numberWithLongLong:LLONG_MAX],
-        [NSNumber numberWithUnsignedLongLong:ULLONG_MAX],
-        [NSNumber numberWithFloat:FLT_MAX],
-        [NSNumber numberWithDouble:DBL_MAX],
-    ];
-    
-    for (NSNumber *number in numbers) {
-        NSDictionary *propertyList = [number propertyListValue];
-        XCTAssert(propertyList != nil);
-        NSNumber *decoded = [[NSNumber alloc] initWithPropertyListValue:propertyList error:NULL];
-        XCTAssert(AJREqual(number, decoded), @"%@ != %@", number, decoded);
-    }
-    
-    NSString *original = @"This is a test";
-    NSString *decoded = [[NSString alloc] initWithPropertyListValue:[original propertyListValue] error:NULL];
-    XCTAssert(AJREqual(original, decoded));
-    decoded = [[NSString alloc] initWithPropertyListValue:original error:NULL];
-    XCTAssert(AJREqual(original, decoded));
-}
+// We dropped property lsit encoding, at least for now. Might bring it back, if it's needed.
+//- (void)testPropertyListEncoding
+//{
+//    NSArray *numbers = @[
+//        [NSNumber numberWithChar:CHAR_MAX],
+//        [NSNumber numberWithUnsignedChar:UCHAR_MAX],
+//        [NSNumber numberWithShort:SHRT_MAX],
+//        [NSNumber numberWithUnsignedShort:USHRT_MAX],
+//        [NSNumber numberWithInt:INT_MAX],
+//        [NSNumber numberWithUnsignedInt:UINT_MAX],
+//        [NSNumber numberWithLongLong:LLONG_MAX],
+//        [NSNumber numberWithUnsignedLongLong:ULLONG_MAX],
+//        [NSNumber numberWithFloat:FLT_MAX],
+//        [NSNumber numberWithDouble:DBL_MAX],
+//    ];
+//
+//    for (NSNumber *number in numbers) {
+//        NSDictionary *propertyList = [number propertyListValue];
+//        XCTAssert(propertyList != nil);
+//        NSNumber *decoded = [[NSNumber alloc] initWithPropertyListValue:propertyList error:NULL];
+//        XCTAssert(AJREqual(number, decoded), @"%@ != %@", number, decoded);
+//    }
+//
+//    NSString *original = @"This is a test";
+//    NSString *decoded = [[NSString alloc] initWithPropertyListValue:[original propertyListValue] error:NULL];
+//    XCTAssert(AJREqual(original, decoded));
+//    decoded = [[NSString alloc] initWithPropertyListValue:original error:NULL];
+//    XCTAssert(AJREqual(original, decoded));
+//}
 
 - (void)testOperators
 {
@@ -816,14 +624,14 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         XCTAssert([precedence integerValue] == decoded);
     }
     
-    NSError *localError;
-    AJROperator *operator = [[AJROperator alloc] initWithPropertyListValue:@"ajr_cant_find_me" error:&localError];
-    XCTAssert(operator == nil);
-    XCTAssert(localError != nil);
+//    NSError *localError;
+//    AJROperator *operator = [[AJROperator alloc] initWithPropertyListValue:@"ajr_cant_find_me" error:&localError];
+//    XCTAssert(operator == nil);
+//    XCTAssert(localError != nil);
     
-    AJRExpression *expression = [[AJROperatorExpression alloc] initWithPropertyListValue:@{@"type":@"AJROperatorExpression", @"operator":@"ajr_cant_find_me"} error:&localError];
-    XCTAssert(expression == nil);
-    XCTAssert(localError != nil);
+//    AJRExpression *expression = [[AJROperatorExpression alloc] initWithPropertyListValue:@{@"type":@"AJROperatorExpression", @"operator":@"ajr_cant_find_me"} error:&localError];
+//    XCTAssert(expression == nil);
+//    XCTAssert(localError != nil);
     
     BOOL hitException = NO;
     @try {

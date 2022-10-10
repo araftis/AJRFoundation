@@ -50,10 +50,10 @@ public class AJRExpressionFunctionStackFrame : AJRExpressionStackFrame {
         // This only works if the stack count is 1.
         if tokenStack.count == 1 {
             // Get the actual expression of the argument from our super.
-            if let expression = try super.expression() {
-                // If we got something, add it as an argument to the function.
-                function.append(argument: expression)
-            }
+            let expression = try super.expression()
+            // Add it as an argument to the function.
+            function.append(argument: expression)
+
             // And regardless of what we did, clear the expression in preparation for the next argument.
             tokenStack.removeAll()
         } else if tokenStack.count > 1 {
@@ -64,7 +64,7 @@ public class AJRExpressionFunctionStackFrame : AJRExpressionStackFrame {
     
     // MARK: - AJRExpressionStackFrame
     
-    public override func expression() throws -> AJRExpression? {
+    public override func expression() throws -> AJRExpression {
         try reduceArgument()
         return AJRFunctionExpression(function: function)
     }

@@ -10,7 +10,7 @@ import Foundation
 @objc
 open class AJRSinFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return sin(double)
@@ -21,7 +21,7 @@ open class AJRSinFunction : AJRFunction {
 @objc
 open class AJRCosFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return cos(double)
@@ -32,7 +32,7 @@ open class AJRCosFunction : AJRFunction {
 @objc
 open class AJRTanFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return tan(double)
@@ -43,7 +43,7 @@ open class AJRTanFunction : AJRFunction {
 @objc
 open class AJRArcsinFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return asin(double)
@@ -54,7 +54,7 @@ open class AJRArcsinFunction : AJRFunction {
 @objc
 open class AJRArccosFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount: 1)
         let double : Double = try float(at: 0, withObject: object)
         return acos(double)
@@ -65,7 +65,7 @@ open class AJRArccosFunction : AJRFunction {
 @objc
 open class AJRArctanFunction : AJRFunction {
     
-    open override func evaluate(withObject object: Any?) throws -> Any? {
+    open override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCountMin: 1, max: 2)
         let value1 : Double = try float(at: 0, withObject: object)
         let returnValue : Double

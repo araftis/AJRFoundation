@@ -31,7 +31,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRConstantExpression : AJRExpression {
     
     // MARK: - Properties
@@ -57,7 +57,7 @@ open class AJRConstantExpression : AJRExpression {
     
     // MARK: - Actions
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         if let constant = value as? AJRConstant {
             return constant.value
         }
@@ -75,7 +75,7 @@ open class AJRConstantExpression : AJRExpression {
     
     // MARL: - Equality
 
-    public override func isEqual(to other: Any) -> Bool {
+    public override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRConstantExpression {
             return (super.isEqual(to: other)
                 && AJREqual(value, typed.value)
@@ -84,4 +84,16 @@ open class AJRConstantExpression : AJRExpression {
         return false
     }
     
+    // MARK: - NSCoding
+
+    public required init?(coder: NSCoder) {
+        super.init(coder:coder)
+        self.value = coder.decodeObject(forKey: "value")
+    }
+
+    public override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        coder.encode(value, forKey: "value")
+    }
+
 }

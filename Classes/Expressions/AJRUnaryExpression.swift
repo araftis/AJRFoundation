@@ -7,6 +7,7 @@
 
 import Foundation
 
+@objcMembers
 public class AJRUnaryExpression : AJROperatorExpression {
 
     public var value : Any?
@@ -21,7 +22,7 @@ public class AJRUnaryExpression : AJROperatorExpression {
     
     // MARK: - Actions
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         let value = try AJRExpression.evaluate(value: self.value, withObject: object)
         return try self.operator.performOperator(withValue: value)
     }
@@ -34,13 +35,29 @@ public class AJRUnaryExpression : AJROperatorExpression {
     
     // MARK: - Equatable
     
-    public override func isEqual(to other: Any) -> Bool {
+    public override func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJRUnaryExpression {
             return (super.isEqual(to: other)
                 && AJREqual(self.value, other.value)
             )
         }
         return false
+    }
+
+    // MARK: - NSCoding
+
+    public required init?(coder: NSCoder) {
+        if let value = coder.decodeObject(forKey: "value") as? AJRExpression {
+            self.value = value
+        } else {
+            return nil
+        }
+        super.init(coder: coder)
+    }
+
+    open override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        coder.encode(value, forKey:"value")
     }
 
 }

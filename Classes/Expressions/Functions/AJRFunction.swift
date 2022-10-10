@@ -110,7 +110,7 @@ open class AJRFunction : NSObject, AJREquatable {
     
     // MARK: - Actions
     
-    open func evaluate(withObject object: Any?) throws -> Any? {
+    open func evaluate(with object: Any?) throws -> Any? {
         throw AJRFunctionError.unimplementedAbstract("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
     
@@ -155,7 +155,7 @@ open class AJRFunction : NSObject, AJREquatable {
     public func integer<T: BinaryInteger>(at index: Int, withObject object: Any?) throws -> T {
         return try AJRExpression.valueAsInteger(arguments[index], withObject: object)
     }
-    
+
     public func float<T: BinaryFloatingPoint>(at index: Int, withObject object: Any?) throws -> T {
         return try AJRExpression.valueAsFloat(arguments[index], withObject: object)
     }

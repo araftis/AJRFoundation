@@ -31,8 +31,8 @@
 
 import Foundation
 
-@objc
-open class AJRConstant : AJRUnaryOperator {
+@objcMembers
+open class AJRConstant : AJRUnaryOperator, NSCopying {
 
     private static var constants = [String:AJRConstant]()
 
@@ -50,7 +50,7 @@ open class AJRConstant : AJRUnaryOperator {
     
     open var hashableValue : AnyHashable? { return nil }
     open var value : Any? { return hashableValue }
-    
+
     public class func constant(forToken name: String) -> AJRConstant? {
         return constants[name]
     }
@@ -67,7 +67,7 @@ open class AJRConstant : AJRUnaryOperator {
     
     // MARK: - Equality
     
-    open override func isEqual(to other: Any) -> Bool {
+    open override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRConstant {
             return (super.isEqual(to: typed)
                 && AJREqual(value, typed.value)
@@ -85,6 +85,19 @@ open class AJRConstant : AJRUnaryOperator {
             return hasher.finalize()
         }
         return 0
+    }
+
+    /**
+     Copies the receiver.
+
+     Copies the receiver, but since we're a constant, this basically returns self.
+
+     - parameter zone: Deprecated, don't use.
+
+     - returns `self`
+     */
+    public func copy(with zone: NSZone? = nil) -> Any {
+        return self
     }
 
 }

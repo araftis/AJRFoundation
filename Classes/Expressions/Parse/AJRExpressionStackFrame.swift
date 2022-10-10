@@ -31,6 +31,7 @@
 
 import Foundation
 
+@objcMembers
 public class AJRExpressionStackFrame : NSObject {
     
     class AJRStackToken: CustomStringConvertible {
@@ -136,6 +137,7 @@ public class AJRExpressionStackFrame : NSObject {
     private func DEBUG_STACK() -> Void {
     }
 
+    @objc(addToken:error:)
     public func add(token value: AJRExpressionToken) throws {
         if value.type == .openParen || value.type == .closeParen {
             throw AJRExpressionParserError.invalidToken("Attempt to push a parenthesis operator onto the expression stack. This isn't allowed")
@@ -300,8 +302,9 @@ public class AJRExpressionStackFrame : NSObject {
         }
         throw AJRExpressionParserError.unexpectedTokenSequence("\(tokenStack)")
     }
-        
-    public func expression() throws -> AJRExpression? {
+
+    @objc(expressionWithError:)
+    public func expression() throws -> AJRExpression {
         try reduce()
         if tokenStack.count == 1 {
             let stackFrame = tokenStack[0]

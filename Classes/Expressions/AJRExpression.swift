@@ -36,11 +36,12 @@ public enum AJRExpressionError : Error {
     case valueIsNotANumber(String)
     case valueIsNotABool(String)
     case unimplementedMethod(String)
+    case invalidParameter(String)
 
 }
 
 @objc
-open class AJRExpression: NSObject, AJREquatable {
+open class AJRExpression: NSObject, AJREquatable, NSCoding {
 
     // MARK: - Properties
 
@@ -49,12 +50,37 @@ open class AJRExpression: NSObject, AJREquatable {
 
     // MARK: - Creation
 
+    // Bring this back if I decide to support property list encoding, but right now, I'm not inclined to do so.
+//    @objc(expressionForObject:error:)
+//    public class func expression(object: Any) throws -> AJRExpression {
+//        if let string = object as? String {
+//            return try expression(string: string)
+//        } else if let dictionary = object as? Dictionary<AnyHashable,Any> {
+//            return try create(withPropertyListValue: dictionary) as! AJRExpression
+//        }
+//        throw AJRExpressionError.invalidParameter("The input to expression(object:) must be a String or a Dictionary.")
+//    }
+
+    @objc(expressionWithString:error:)
     public class func expression(string: String) throws -> AJRExpression {
         return try AJRExpressionParser(string: string).expression()
     }
 
+    @objc(expressionWithFormat:arguments:error:)
+    public class func expression(format: String, _ arguments: [Any]) throws -> AJRExpression {
+        return try AJRExpressionParser(format: format, arguments).expression()
+    }
+
     public class func expression(format: String, _ arguments: Any?...) throws -> AJRExpression {
         return try AJRExpressionParser(format: format, arguments).expression()
+    }
+
+    public override init() {
+        self.protected = false
+    }
+
+    private init(protected: Bool) {
+        self.protected = protected
     }
 
     // MARK: - Actions
@@ -62,12 +88,31 @@ open class AJRExpression: NSObject, AJREquatable {
     public class func evaluate(value: Any?, withObject object: Any?) throws -> Any? {
         var returnValue = value
         while returnValue is AJRExpression {
-            returnValue = try (returnValue! as! AJRExpression).evaluate(withObject: object)
+            returnValue = try (returnValue! as! AJRExpression).evaluate(with: object)
         }
         return returnValue
     }
 
-    public func evaluate(withObject object: Any? = nil) throws -> Any? {
+    /**
+     Evaluates the receiver and returns the result.
+
+     This method is primarily meant to be called from Obj-C, and is a little jenky, because we break the standard convention here, just a little. Normally, if a method has an error parameter and returns nil, then that means an error occurred. However, for our purposes, we could evaluate to nil, as that's perfectly acceptable. As such, unlike most calls of this pattern, we always initialize `errorIO` to nil, and then initialize it with any error that occurs.
+
+     - parameter object: The "root" object of the evaluation. This is messaged to resolve key paths.
+     - parameter errorIO: A pointer to an NSError object. It may be nil.
+     */
+    @objc(evaluateWithObject:error:)
+    public func evaluate(withObject object: Any? = nil, error errorIO: UnsafeMutablePointer<NSError?>?) -> Any? {
+        errorIO?.pointee = nil
+        do {
+            return try evaluate(with: object)
+        } catch {
+            errorIO?.pointee = error as NSError
+        }
+        return nil
+    }
+
+    public func evaluate(with object: Any? = nil) throws -> Any? {
         throw AJRExpressionError.unimplementedMethod("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
 
@@ -96,7 +141,7 @@ open class AJRExpression: NSObject, AJREquatable {
     public class func value(_ valueIn: Any?, withObject object: Any? = nil) throws -> Any? {
         var value = valueIn
         while value is AJRExpression {
-            value = try (value! as! AJRExpression).evaluate(withObject: object)
+            value = try (value! as! AJRExpression).evaluate(with: object)
         }
         return value
     }
@@ -142,5 +187,34 @@ open class AJRExpression: NSObject, AJREquatable {
     // MARK: - CustomStringConvertible
 
     public override var description : String { return "" }
+
+    // I'm not sure these are necessary any longer.
+//    + (AJRExpression *)expressionForDictionary:(NSDictionary *)dictionary error:(NSError **)error {
+//        return [[self alloc] initWithPropertyListValue:dictionary error:error];
+//    }
+//
+//    + (AJRExpression *)expressionForObject:(id)anObject error:(NSError **)error {
+//        if ([anObject isKindOfClass:[NSDictionary class]]) {
+//            return [self expressionForDictionary:anObject error:error];
+//        } else {
+//            // Couldn't make a dictionary, so it must be a string.
+//            return [self expressionWithString:[anObject description] error:error];
+//        }
+//    }
+
+    public var propertyListValue : Any {
+        return ["type": NSStringFromClass(Self.self), "protected": protected];
+    }
+
+    // MARK: - NSCoding
+
+    public required init?(coder: NSCoder) {
+        self.protected = coder.decodeBool(forKey: "protected")
+    }
+
+    public func encode(with coder: NSCoder) {
+        coder.encode(protected, forKey: "protected")
+    }
+
 
 }

@@ -10,7 +10,7 @@ import Foundation
 @objc
 open class AJRIfFunction : AJRFunction {
 
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount:2)
         var returnValue : Any? = nil
         
@@ -27,7 +27,7 @@ open class AJRIfFunction : AJRFunction {
 @objc
 open class AJRIfElseFunction : AJRFunction {
     
-    public override func evaluate(withObject object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?) throws -> Any? {
         try check(argumentCount:3)
         var returnValue : Any? = nil
         

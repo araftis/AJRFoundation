@@ -31,8 +31,10 @@
 
 import Foundation
 
+@objcMembers
 public class AJRExpressionToken: NSObject {
 
+    @objc(AJRExpressionTokenType)
     public enum TokenType : Int {
         case string
         case number
@@ -52,7 +54,12 @@ public class AJRExpressionToken: NSObject {
 
     public var type : TokenType
     public var value : Any?
-    
+
+    @available(swift, obsoleted: 1.0) // Swift doesn't need this method, because it understands the one below.
+    public class func token(type: TokenType) -> AJRExpressionToken {
+        return token(type: type, value: nil)
+    }
+
     public class func token(type: TokenType, value: Any? = nil) -> AJRExpressionToken {
         var token : AJRExpressionToken
         

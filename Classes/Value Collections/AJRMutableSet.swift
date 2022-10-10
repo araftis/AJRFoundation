@@ -75,7 +75,8 @@ public class AJRMutableSet<Element> : Sequence, CustomStringConvertible, CustomD
     public func contains(_ object: Element) -> Bool {
         return set.contains(object)
     }
-    
+
+    @discardableResult
     public func insert(_ object: Element) -> (inserted: Bool, memberAfterInsert: Element) {
         return set.insert(object)
     }

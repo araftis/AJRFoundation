@@ -258,7 +258,7 @@ const NSComparator AJRSimpleCompare = ^NSComparisonResult(id first, id second) {
         temp = [[NSMutableArray alloc] initWithCapacity:[propertyList count]];
         @autoreleasepool {
             for (id sublist in propertyList) {
-                id object = [[class alloc] initWithPropertyListValue:sublist error:&localError];
+                id object = [class createWithPropertyListValue:sublist error:&localError];
                 if (object == nil) {
                     temp = nil;
                     break;
