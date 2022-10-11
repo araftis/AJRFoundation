@@ -8,15 +8,6 @@
 import Foundation
 
 @objcMembers
-open class AJRNullFunction : AJRFunction {
-    
-    public override func evaluate(with object: Any?) throws -> Any? {
-        return nil
-    }
-    
-}
-
-@objcMembers
 open class AJRIsNullFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
@@ -36,7 +27,7 @@ open class AJRHelpFunction : AJRFunction {
         var result : Any? = nil
         
         if let expression = arguments[0] as? AJRFunctionExpression {
-            result = type(of:expression.function).prototype;
+            result = expression.function.prototype;
         } else {
             throw AJRFunctionError.invalidArgument("Parameter to help() must be a function")
         }

@@ -45,15 +45,13 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation AJRExpressionTest
 
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
     // We need to make sure this is running, because the operators, functions, etc. all come from plugin data.
     [AJRPlugInManager initializePlugInManager];
 }
 
-- (void)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue expectError:(BOOL)expectError
-{
+- (void)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue expectError:(BOOL)expectError {
     AJRExpression *expression = nil;
     NSError *localError = nil;
     
@@ -75,13 +73,11 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
 }
 
-- (void)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue
-{
+- (void)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue {
     [self _testExpression:string withObject:object expectedResult:expectedValue expectError:NO];
 }
 
-- (void)testBasicExpressions
-{
+- (void)testBasicExpressions {
     [self _testExpression:@"5+5" withObject:nil expectedResult:@(10)];
     [self _testExpression:@"-5" withObject:nil expectedResult:@(-5)];
     [self _testExpression:@"-5+10" withObject:nil expectedResult:@(5)];
@@ -119,8 +115,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"true ^^ true" withObject:nil expectedResult:@(0)];
     [self _testExpression:@"5" withObject:nil expectedResult:@(5)];
     [self _testExpression:@"2^10" withObject:nil expectedResult:@(1024)];
-    [self _testExpression:@"null()" withObject:nil expectedResult:nil];
-    [self _testExpression:@"isnull(null())" withObject:nil expectedResult:@YES];
+    [self _testExpression:@"null" withObject:nil expectedResult:nil];
+    [self _testExpression:@"nil" withObject:nil expectedResult:nil];
+    [self _testExpression:@"isnull(null)" withObject:nil expectedResult:@YES];
     [self _testExpression:@"isnull(\"a\")" withObject:nil expectedResult:@NO];
     [self _testExpression:@"5 + 5 * 5 + 5" withObject:nil expectedResult:@(35)];
     [self _testExpression:@"5 + 5^2 + 5" withObject:nil expectedResult:@(35)];
@@ -147,13 +144,14 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"👁💕🐑 + 1" withObject:@{@"👁💕🐑":@(2)} expectedResult:@(3)];
     [self _testExpression:@"1 👁 1" withObject:nil expectedResult:@(2)];
     [self _testExpression:@"1.5 👁 1.5" withObject:nil expectedResult:@(3)];
+    [self _testExpression:@"1.5 👁 1" withObject:nil expectedResult:@(2.5)];
+    [self _testExpression:@"1 👁 1.5" withObject:nil expectedResult:@(2.5)];
     [self _testExpression:@"++& + 1" withObject:@{@"++&":@(1)} expectedResult:@(2)];
     [self _testExpression:@"ifelse(nil, 'one', 'two')" withObject:nil expectedResult:@"two"];
 }
 
 
-- (void)testObjectExpressions
-{
+- (void)testObjectExpressions {
     NSDictionary    *dictionary;
     
     dictionary = @{
@@ -177,8 +175,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"array.@count + three" withObject:dictionary expectedResult:@(7)];
 }
 
-- (void)testSetOperations
-{
+- (void)testSetOperations {
     NSDictionary    *dictionary;
     
     dictionary = @{
@@ -190,8 +187,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"array1 intersect array2" withObject:dictionary expectedResult:@[@"three", @"four"]];
 }
 
-- (void)testConstants
-{
+- (void)testConstants {
     [self _testExpression:@"π" withObject:nil expectedResult:@(M_PI)];
     [self _testExpression:@"pi" withObject:nil expectedResult:@(M_PI)];
     [self _testExpression:@"e" withObject:nil expectedResult:@(M_E)];
@@ -214,8 +210,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert([[testDictionary objectForKey:e] doubleValue] == M_E);
 }
 
-- (void)testMathFunctions
-{
+- (void)testMathFunctions {
     [self _testExpression:@"sqrt(16)" withObject:nil expectedResult:@(sqrt(16))];
     [self _testExpression:@"sqrt(sqrt(16))" withObject:nil expectedResult:@(sqrt(sqrt(16)))];
     [self _testExpression:@"sqrt(sqrt(4*4))" withObject:nil expectedResult:@(sqrt(sqrt(4*4)))];
@@ -240,8 +235,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"ln(e*2)" withObject:nil expectedResult:@(log(M_E * 2.0))];
 }
 
-- (void)testTrigFunctions
-{
+- (void)testTrigFunctions {
     [self _testExpression:@"sin(0)" withObject:nil expectedResult:@(sin(0))];
     [self _testExpression:@"sin(π*0.5)" withObject:nil expectedResult:@(sin(M_PI*0.5))];
     [self _testExpression:@"sin(π*1.0)" withObject:nil expectedResult:@(sin(M_PI*1.0))];
@@ -276,16 +270,14 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"arctan(0,\"bogus\",0)" withObject:nil expectedResult:nil expectError:YES];
 }
 
-- (void)testLogicFunctions
-{
+- (void)testLogicFunctions {
     [self _testExpression:@"if(true, \"a\")" withObject:nil expectedResult:@"a"];
     [self _testExpression:@"if(false, \"a\")" withObject:nil expectedResult:nil];
     [self _testExpression:@"ifelse(true, \"a\", \"b\")" withObject:nil expectedResult:@"a"];
     [self _testExpression:@"ifelse(false, \"a\", \"b\")" withObject:nil expectedResult:@"b"];
 }
 
-- (void)testCollectionFunctions
-{                                    
+- (void)testCollectionFunctions {
     [self _testExpression:@"contains(array(1, 2, 3), 1)" withObject:nil expectedResult:@(1)];
     [self _testExpression:@"contains(array(1, 2, 3), 4)" withObject:nil expectedResult:@(0)];
     [self _testExpression:@"contains(array(1, 2, 3), 1)" withObject:nil expectedResult:@(1)];
@@ -325,8 +317,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"set(3, 4, 5) intersect dictionary(\"one\", 1, \"two\", 2, \"three\", 3)" withObject:nil expectedResult:[NSSet setWithArray:@[@(3)]]];
 }
 
-- (void)testRandomAdvancedStuff
-{
+- (void)testRandomAdvancedStuff {
     NSDictionary    *object = @{@"one":@(1),
                                 @"value":@"mom",
     };
@@ -335,8 +326,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"ifelse(value = \"dad\", \"you bet\", \"not a chance\")" withObject:object expectedResult:@"not a chance"];
 }
 
-- (void)testErrorExpressions
-{
+- (void)testErrorExpressions {
     [self _testExpression:@"1 + a a" withObject:nil expectedResult:nil expectError:YES];
     [self _testExpression:@"(1 + 1) (2 + 2)" withObject:nil expectedResult:nil expectError:YES];
     [self _testExpression:@"1 +" withObject:nil expectedResult:nil expectError:YES];
@@ -431,8 +421,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //    XCTAssert(threwException, @"-[AJRExpression evaluateWithObject:error:] didn't fail.");
 }
 
-- (void)testExpressionStackFrameEdgeCases
-{
+- (void)testExpressionStackFrameEdgeCases {
     NSException *exception = nil;
     AJRExpressionStackFrame *stackFrame = [[AJRExpressionStackFrame alloc] init];
     
@@ -453,8 +442,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert(exception != nil);
 }
 
-- (void)testExpressionParser
-{
+- (void)testExpressionParser {
     NSError *localError = nil;
 
     AJRExpression *expression = [AJRExpressionParser expressionWithFormat:@"%s = %@ or \"int\" = %d or \"float\" = %f" arguments: @[@1, @(M_PI)] error: NULL];
@@ -486,8 +474,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == test)"]);
 }
 
-- (void)testExpressionConstructors
-{
+- (void)testExpressionConstructors {
     AJRExpression *expression;
     AJRExpression *decoded;
     
@@ -562,8 +549,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //    XCTAssert([[localError localizedDescription] isEqualToString:@"Unknown number encoding: Z"]);
 }
 
-- (void)testTokens
-{
+- (void)testTokens {
     XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeComma] description] rangeOfString:@"Comma"].location != NSNotFound);
     XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeNumber] description] rangeOfString:@"Number"].location != NSNotFound);
     XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeString] description] rangeOfString:@"String"].location != NSNotFound);
@@ -574,8 +560,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOperator] description] rangeOfString:@"Operator"].location != NSNotFound);
 }
 
-- (void)testCoding
-{
+- (void)testCoding {
     AJRExpression *expression = [AJRExpression expressionWithString:@"sin(π)" error:NULL];
     AJRExpression *decodedExpression = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     
@@ -612,8 +597,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //    XCTAssert(AJREqual(original, decoded));
 //}
 
-- (void)testOperators
-{
+- (void)testOperators {
     NSArray<NSNumber *> *operatorPrecedences = @[@(AJROperatorPrecedenceLow),
                                                  @(AJROperatorPrecedenceMedium),
                                                  @(AJROperatorPrecedenceHigh),

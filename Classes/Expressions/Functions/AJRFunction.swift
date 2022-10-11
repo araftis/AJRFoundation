@@ -48,46 +48,46 @@ open class AJRFunction : NSObject, AJREquatable {
     
     open var arguments = [AJRExpression]()
     
-    private static var functions = [String:AJRFunction.Type]()
+    private static var functions = [String:AJRFunction]()
 
     public class func registerFunction(_ function: AJRFunction.Type, properties: [String:Any]) -> Void {
-        if let name = properties["name"] as? String {
-            if functions[name] != nil {
-                AJRLog.warning("A function by the name \"\(name)\" is already registered.")
+        let function = function.init()
+
+        function.name = properties["name", AJRFunction.failureSentinel]
+        function.prototype = properties["prototype", AJRFunction.failureSentinel]
+
+        if function.name != AJRFunction.failureSentinel
+            && function.prototype != AJRFunction.failureSentinel {
+            if functions[function.name] != nil {
+                AJRLog.warning("A function by the name \"\(function.name)\" is already registered.")
                 return
             }
-            if name != AJRFunction.failureSentinel {
-                functions[name] = function
-            }
-            if name != AJRFunction.failureSentinel {
-                AJRExpressionParser.addLiteralToken(name)
-            }
+            functions[function.name] = function
+            AJRExpressionParser.addLiteralToken(function.name)
         }
     }
     
-    public class var allFunctions : [AJRFunction.Type] {
-        var allFunctions = [AJRFunction.Type]()
+    public class var allFunctions : [AJRFunction] {
+        var allFunctions = [AJRFunction]()
 
-        for key in functions.keys {
-            allFunctions.append(functions[key]!)
+        for function in functions.values {
+            allFunctions.append(function)
         }
 
         return allFunctions
     }
-    
+
     private static var failureSentinel = "__FAILURE__"
-    open class var name: String {
-        AJRLog.warning("Subclasses AJRFunction should override name: \(self)")
-        return AJRFunction.failureSentinel
-    }
-    public var name: String { return type(of:self).name }
-    open class var prototype: String {
-        AJRLog.warning("Abstract property \(#function) not implemented by \(self)")
-        return AJRFunction.failureSentinel
-    }
-    
-    public class func functionClass(forName name: String) -> AJRFunction.Type? {
-        return functions[name]
+
+    open private(set) var name: String = AJRFunction.failureSentinel
+    open private(set) var prototype: String = AJRFunction.failureSentinel
+
+    @objc(functionForName:)
+    public class func function(for name: String) -> AJRFunction? {
+        if let function = functions[name] {
+            return function
+        }
+        return nil
     }
     
     // MARK: - Creation
@@ -118,25 +118,25 @@ open class AJRFunction : NSObject, AJREquatable {
     
     public func check(argumentCount count: Int) throws -> Void {
         if arguments.count != count {
-            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(type(of:self).name) expects \(count) argument\(count == 1 ? "" : "s")")
+            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(name) expects \(count) argument\(count == 1 ? "" : "s")")
         }
     }
     
     public func check(argumentCountMin min: Int) throws -> Void {
         if arguments.count < min {
-            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(type(of:self).name) expects at least \(min) argument\(min == 1 ? "" : "s")")
+            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(name) expects at least \(min) argument\(min == 1 ? "" : "s")")
         }
     }
     
     public func check(argumentCountMin min: Int, max: Int) throws -> Void {
         if arguments.count < min || arguments.count > max {
-            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(type(of:self).name) expects between \(min) and \(max) arguments")
+            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(name) expects between \(min) and \(max) arguments")
         }
     }
     
     public func check(argumentCountMax max: Int) throws -> Void {
         if arguments.count > max {
-            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(type(of:self).name) expects at most \(max) argument\(max == 1 ? "" : "s")")
+            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(name) expects at most \(max) argument\(max == 1 ? "" : "s")")
         }
     }
     
@@ -164,7 +164,7 @@ open class AJRFunction : NSObject, AJREquatable {
         return try AJRExpression.valueAsCollection(arguments[index], withObject: object)
     }
     
-    // MARL: - Equality
+    // MARK: - Equality
     
     public func equal(toFunction other: AJRFunction) -> Bool {
         return AJREqual(arguments, other.arguments)
@@ -179,6 +179,16 @@ open class AJRFunction : NSObject, AJREquatable {
     
     public static func == (lhs: AJRFunction, rhs: AJRFunction) -> Bool {
         return lhs.isEqual(to:rhs)
+    }
+
+    // MARK: - Copying
+
+    open override func copy() -> Any {
+        let new = type(of: self).init()
+        new.name = name
+        new.prototype = prototype
+        new.arguments = arguments
+        return new
     }
     
 }

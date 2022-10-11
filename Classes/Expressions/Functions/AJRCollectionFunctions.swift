@@ -114,7 +114,7 @@ open class AJRIterateFunction : AJRFunction {
         if let collection = try collection(at: 0, withObject: object) {
             let functionExpression = arguments[1] as? AJRFunctionExpression
             if functionExpression == nil {
-                throw AJRFunctionError.invalidArgument("Invalid argument to function \"\(type(of:self).name)\": \(arguments[1]). Expected a function.")
+                throw AJRFunctionError.invalidArgument("Invalid argument to function \"\(name)\": \(arguments[1]). Expected a function.")
             }
             
             switch collection.untypedCollectionSemantic {

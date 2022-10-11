@@ -34,7 +34,7 @@ public class AJRSimpleExpression : AJROperatorExpression {
     // MARK: - CustomStringConvertible
     
     public override var description : String {
-        return "(\(left ?? "nil") \(type(of:self.operator).preferredToken) \(right ?? "nil"))"
+        return "(\(left ?? "nil") \(self.operator.preferredToken) \(right ?? "nil"))"
     }
     
     public override func isEqual(to other: Any?) -> Bool {

@@ -78,36 +78,37 @@ open class AJROperator: NSObject, AJREquatable {
             }
         }
     }
+
+    /**
+     The predence of the operator when determining which operations should be computer first. The higher the precedence, the sooner the operator if evaluated. Thus, add and subtract are lower than say multiply, which must happen first.
+     */
+    open private(set) var precedence : Precedence = .low
+
+    /**
+     Used by operators that are generally not unary, but can act as unary in some circumstances. For example, consider, "5 - -5". In this case, the first '-' is the subtraction operator, while the second '-' is '-' acting as a unary operator.
+     */
+    open private(set) var canActAsUnary : Bool = false
     
-    open var precedence : Precedence {
-        if let precedence = AJROperator.operatorsByClassName[NSStringFromClass(Self.self)]?.precedence {
-            AJRLog.info("\(Self.self): \(precedence)")
-            return precedence
-        }
-        return .low
-    }
-    open var canActAsUnary : Bool { return precedence == .unary } // Used by operators that are generally not unary, but can act as unary in some circumstances. For example, consider, "5 - -5". In this case, the first '-' is the subtraction operator, while the second '-' is '-' acting as a unary operator.
+    open private(set) var tokens = [String]()
+
+//    open class var preferredToken : String { return tokens[0] }
+    open var preferredToken : String { return tokens[0] }
     
-    open class var tokens : [String] {
-        if let result = operatorsByClassName[NSStringFromClass(Self.self)]?.operators {
-            return result
-        }
-        return []
-    }
-    open class var preferredToken : String { return tokens[0] }
-    open var preferredToken : String { return type(of:self).preferredToken }
-    
-    private struct OperatorInfo {
+    internal struct OperatorInfo {
         var instance : AJROperator
         var operators : [String]
         var precedence : Precedence = .low
+        var canActAsUnary : Bool = false
     }
     
-    private static var operatorsByToken = [String:OperatorInfo]()
-    private static var operatorsByClassName = [String:OperatorInfo]()
+    private static var operatorsByToken = [String:AJROperator]()
+    private static var operatorsByClassName = [String:AJROperator]()
 
     @objc
     open class func registerOperator(_ operatorClass : AJROperator.Type, properties: [String:Any]) -> Void {
+        let instance = operatorClass.init()
+
+        // Get it's tokens
         if let tokens = properties["operators"] as? [[String:Any]] {
             var tokenNames = [String]()
             for tokenProperties in tokens {
@@ -115,32 +116,35 @@ open class AJROperator: NSObject, AJREquatable {
                     tokenNames.append(tokenName)
                 }
             }
-            let precedence : Precedence
-            if let raw = properties["precedence"] as? String,
-               let possible = Precedence(string: raw) {
-                precedence = possible
-            } else {
-                precedence = .low
-            }
-            let info = OperatorInfo(instance: operatorClass.init(), operators: tokenNames, precedence: precedence)
-            operatorsByClassName[NSStringFromClass(operatorClass)] = info
-            for name in tokenNames {
-                operatorsByToken[name] = info
-                AJRExpressionParser.addOperatorToken(name)
-            }
+            instance.tokens = tokenNames
+        }
+
+        // And its precedence
+        instance.precedence = properties["precedence", .low]
+
+        // And whether it can act as a unary operator or not
+        instance.canActAsUnary = properties["canActAsUnary", false]
+
+        // And now cache by its class name
+        operatorsByClassName[NSStringFromClass(operatorClass)] = instance
+
+        // And also cache by its tokens.
+        for name in instance.tokens {
+            operatorsByToken[name] = instance
+            AJRExpressionParser.addOperatorToken(name)
         }
     }
     
     @objc
     open class func operatorForToken(_ token: String) -> AJROperator? {
-        return operatorsByToken[token]?.instance
+        return operatorsByToken[token]
     }
     
     @objc
     open class func allOperators() -> [AJROperator] {
         var allOperators = [AJROperator]()
         for op in operatorsByClassName.values {
-            allOperators.append(op.instance)
+            allOperators.append(op)
         }
         return allOperators
     }
@@ -251,7 +255,7 @@ open class AJROperator: NSObject, AJREquatable {
     // MARK: - Describing
     
     open override var description : String {
-        return "<\(type(of:self)): \(type(of:self).preferredToken) (\(precedence))>"
+        return "<\(type(of:self)): \(self.preferredToken) (\(precedence))>"
     }
     
     // MARK: - Equatable

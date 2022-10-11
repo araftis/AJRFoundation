@@ -30,7 +30,7 @@ public class AJRUnaryExpression : AJROperatorExpression {
     // MARK: - NSObject
     
     public override var description : String {
-        return "\(type(of:self.operator).preferredToken)\(value ?? "nil")"
+        return "\(self.operator.preferredToken)\(value ?? "nil")"
     }
     
     // MARK: - Equatable

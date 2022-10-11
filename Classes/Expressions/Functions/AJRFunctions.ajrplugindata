@@ -7,7 +7,6 @@
     </extension-point>
     
     <!-- Misc Functions -->
-    <ajrfunction class="AJRFoundation.AJRNullFunction" name="null" prototype="null(...)" />
     <ajrfunction class="AJRFoundation.AJRIsNullFunction" name="isnull" prototype="isnull(value)" />
     <ajrfunction class="AJRFoundation.AJRHelpFunction" name="help" prototype="help(function())" />
 

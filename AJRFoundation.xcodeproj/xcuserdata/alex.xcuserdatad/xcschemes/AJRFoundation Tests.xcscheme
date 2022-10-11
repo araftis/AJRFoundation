@@ -47,8 +47,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FA53B77417A2D87F0009D370"
-               BuildableName = "AJRFoundation Tests.xctest"
-               BlueprintName = "AJRFoundation Tests"
+               BuildableName = "AJRFoundationTests.xctest"
+               BlueprintName = "AJRFoundationTests"
                ReferencedContainer = "container:AJRFoundation.xcodeproj">
             </BuildableReference>
          </TestableReference>

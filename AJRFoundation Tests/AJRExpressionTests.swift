@@ -29,7 +29,7 @@ class AJRBrokenUnaryOperator : AJRUnaryOperator {
 
 }
 
-class AJROddStartOperator : AJROperator {
+class AJROddStartOperator : AJROperator, AJRIntOperator, AJRDoubleOperator {
 
     public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
         return left + right
@@ -76,8 +76,8 @@ class AJRArgCountCheckerFunction : AJRFunction {
 }
 
 class AJRBrokenConstant : AJRConstant {
-    
+
     // Broken because we don't implement -[AJRConstant value].
-    
+
 }
 

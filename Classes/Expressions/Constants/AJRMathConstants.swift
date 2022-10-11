@@ -24,6 +24,6 @@ open class AJREConstant : AJRConstant {
 @objcMembers
 open class AJRNilConstant : AJRConstant {
 
-    open override var hashableValue: AnyHashable? { return 0 }
+    open override var hashableValue: AnyHashable? { return nil }
 
 }

@@ -245,13 +245,13 @@ public class AJRExpressionParser : NSObject {
     
         if position < length && string[position] == "(" {
             // We have a function declaration.
-            let functionClass = AJRFunction.functionClass(forName: stringValue)
+            let function = AJRFunction.function(for: stringValue)
     
             // Consume the opening parenthesis.
             position = string.index(after: position)
     
-            if let functionClass = functionClass {
-                return AJRExpressionToken.token(type: .function, value: functionClass.init())
+            if let function = function {
+                return AJRExpressionToken.token(type: .function, value: function.copy())
             }
             throw AJRExpressionParserError.unknownFunction("Unknown function: \(stringValue)")
         }

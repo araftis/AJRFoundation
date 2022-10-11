@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <plugindata owner="com.ajr.framework.AJRFoundation" version="1">
     <extension-point name="ajroperator" class="AJRFoundation.AJROperator" registrySelector="registerOperator:properties:">
-        <attribute name="class" type="class" />
-        <attribute name="precedence" type="string" />
+        <attribute name="class" type="class" required="YES" />
+        <attribute name="precedence" type="string" required="YES" defaultValue="low" />
+        <attribute name="canActAsUnary" type="boolean" required="YES" defaultValue="false" />
         <element name="operator" key="operators" type="array" required="YES">
             <attribute name="name" type="string" required="YES" />
         </element>
     </extension-point>
     
-    <ajroperator class="AJRFoundation.AJRAddOperator">
+    <ajroperator class="AJRFoundation.AJRAddOperator" canActAsUnary="true">
         <operator name="+" />
     </ajroperator>
     <ajroperator class="AJRFoundation.AJRAndOperator">
@@ -72,7 +73,7 @@
         <operator name="or" />
         <operator name="∨" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRSubtractOperator">
+    <ajroperator class="AJRFoundation.AJRSubtractOperator" canActAsUnary="true">
         <operator name="-" />
     </ajroperator>
     <ajroperator class="AJRFoundation.AJRUnionOperator">

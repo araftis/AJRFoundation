@@ -43,5 +43,13 @@ public extension Dictionary {
         }
         return defaultValue
     }
+
+    subscript<T:AJRXMLEncodableEnum>(key: Key, defaultValue: T) -> T {
+        if let raw = self[key] as? String,
+           let enumerable = T.init(string: raw) {
+            return enumerable
+        }
+        return defaultValue
+    }
     
 }
