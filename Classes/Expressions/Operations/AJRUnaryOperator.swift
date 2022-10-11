@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRUnaryOperator : AJROperator {
     
     open override var precedence: AJROperator.Precedence { return .unary }

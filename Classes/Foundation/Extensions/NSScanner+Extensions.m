@@ -75,7 +75,7 @@ static _ajrDateSpellings dateSpellings[] = {
         return NO;
     }
     
-    // Try to scan a quote, and we we do, treat the field as quoted.
+    // Try to scan a quote, and if we do, treat the field as quoted.
     if ([self scanString:@"\"" intoString:nil]) {
         NSMutableString *build = [NSMutableString string];
         
@@ -108,7 +108,12 @@ static _ajrDateSpellings dateSpellings[] = {
         [self setCharactersToBeSkipped:nil];
         // And then scan up to the next delimiter, or the end of the string.
         if ([self scanUpToString:delimiter intoString:&substring]) {
-            // We scanned something, so skip over the delimiter.
+        } else {
+            // The field was empty.
+            substring = @"";
+        }
+        if (![self isAtEnd]) {
+            // And if we're not at the end of the string, then scan the delimiter.
             [self scanString:delimiter intoString:nil];
         }
     }

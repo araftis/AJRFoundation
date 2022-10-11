@@ -41,7 +41,7 @@ public enum AJRFunctionError : Error {
     
 }
 
-@objc
+@objcMembers
 open class AJRFunction : NSObject, AJREquatable {
     
     // MARK: - Properties
@@ -60,7 +60,7 @@ open class AJRFunction : NSObject, AJREquatable {
                 functions[name] = function
             }
             if name != AJRFunction.failureSentinel {
-                AJRExpressionParser.addLiteralToken(function.name)
+                AJRExpressionParser.addLiteralToken(name)
             }
         }
     }
@@ -170,7 +170,7 @@ open class AJRFunction : NSObject, AJREquatable {
         return AJREqual(arguments, other.arguments)
     }
     
-    public func isEqual(to other: Any) -> Bool {
+    public override func isEqual(to other: Any?) -> Bool {
         if type(of:self) == type(of:other) {
             return equal(toFunction: other as! AJRFunction)
         }

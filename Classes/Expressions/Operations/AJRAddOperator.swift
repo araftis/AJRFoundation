@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRAddOperator : AJROperator, AJRStringOperator, AJRIntOperator, AJRDoubleOperator, AJRDateOperator {
 
     public func performStringOperator(withLeft left: String?, andRight right: String?) throws -> Any? {

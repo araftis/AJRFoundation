@@ -737,6 +737,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		2171606A28F4FBF7001F2D4C /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.ajrplugindata";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/$(INPUT_FILE_BASE).ajrplugindata",
+			);
+			script = "Tools/CopyAndValidatePlugInData\n";
+		};
 		FA5B950620C9D4A500B01849 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
@@ -746,9 +759,9 @@
 			);
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).ajrplugindata",
+				"$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/$(INPUT_FILE_BASE).ajrplugindata",
 			);
-			script = "#!/bin/csh -f\n\nset name = $1\nset output = $1\n\nprintenv\n\nxmllint --format \"$name\" >! \"$output\"";
+			script = "Tools/CopyAndValidatePlugInData\n";
 		};
 		FA5B950720C9D5D200B01849 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -1012,7 +1025,7 @@
 		FA4FD44B0E8BEBBF00F05C19 /* NSString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
 		FA4FD44C0E8BEBBF00F05C19 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA4FDDC70E8BFA5100F05C19 /* AJRFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundation.h; sourceTree = "<group>"; };
-		FA53B77517A2D87F0009D370 /* AJRFoundation Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AJRFoundation Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA53B77517A2D87F0009D370 /* AJRFoundationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AJRFoundationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA53B77917A2D87F0009D370 /* AJRFoundation Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AJRFoundation Tests-Info.plist"; sourceTree = "<group>"; };
 		FA53B77B17A2D87F0009D370 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FA53B77F17A2D87F0009D370 /* AJRFoundation Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AJRFoundation Tests-Prefix.pch"; sourceTree = "<group>"; };
@@ -1316,7 +1329,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* AJRFoundation.framework */,
-				FA53B77517A2D87F0009D370 /* AJRFoundation Tests.xctest */,
+				FA53B77517A2D87F0009D370 /* AJRFoundationTests.xctest */,
 				FA2AC5CE196615000052EB20 /* AJRFoundation.framework */,
 				FA5B950E20CA3FFA00B01849 /* AJRPlugInManagerTestBundle.bundle */,
 			);
@@ -2269,6 +2282,7 @@
 				FA2AC5CC196615000052EB20 /* Resources */,
 			);
 			buildRules = (
+				2171606A28F4FBF7001F2D4C /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -2277,9 +2291,9 @@
 			productReference = FA2AC5CE196615000052EB20 /* AJRFoundation.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		FA53B77417A2D87F0009D370 /* AJRFoundation Tests */ = {
+		FA53B77417A2D87F0009D370 /* AJRFoundationTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FA53B78217A2D87F0009D370 /* Build configuration list for PBXNativeTarget "AJRFoundation Tests" */;
+			buildConfigurationList = FA53B78217A2D87F0009D370 /* Build configuration list for PBXNativeTarget "AJRFoundationTests" */;
 			buildPhases = (
 				FA53B77117A2D87F0009D370 /* Sources */,
 				FA53B77217A2D87F0009D370 /* Frameworks */,
@@ -2294,9 +2308,9 @@
 				FA0587DA192FF1CB002913B6 /* PBXTargetDependency */,
 				FA0587DC192FF1CB002913B6 /* PBXTargetDependency */,
 			);
-			name = "AJRFoundation Tests";
+			name = AJRFoundationTests;
 			productName = "AJRFoundation Tests";
-			productReference = FA53B77517A2D87F0009D370 /* AJRFoundation Tests.xctest */;
+			productReference = FA53B77517A2D87F0009D370 /* AJRFoundationTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		FA5B950D20CA3FFA00B01849 /* AJRPlugInManagerTestBundle */ = {
@@ -2368,7 +2382,7 @@
 				8DC2EF4F0486A6940098B216 /* AJRFoundation */,
 				FA2AC5CD196615000052EB20 /* AJRFoundationTouch */,
 				FA6A5BB00EE8596E0094F769 /* Documentation */,
-				FA53B77417A2D87F0009D370 /* AJRFoundation Tests */,
+				FA53B77417A2D87F0009D370 /* AJRFoundationTests */,
 				FA5B950D20CA3FFA00B01849 /* AJRPlugInManagerTestBundle */,
 			);
 		};
@@ -3505,7 +3519,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FA53B78217A2D87F0009D370 /* Build configuration list for PBXNativeTarget "AJRFoundation Tests" */ = {
+		FA53B78217A2D87F0009D370 /* Build configuration list for PBXNativeTarget "AJRFoundationTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA53B78317A2D87F0009D370 /* Debug */,

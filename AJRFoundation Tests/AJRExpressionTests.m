@@ -48,6 +48,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)setUp
 {
     [super setUp];
+    // We need to make sure this is running, because the operators, functions, etc. all come from plugin data.
+    [AJRPlugInManager initializePlugInManager];
 }
 
 - (void)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue expectError:(BOOL)expectError
@@ -635,7 +637,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     BOOL hitException = NO;
     @try {
-        AJRStringFromOperatorPrecedence(UINT8_MAX);
+        NSString *result = AJRStringFromOperatorPrecedence(UINT8_MAX);
+        XCTAssert(result == nil); // We'll never actually reach this
     } @catch (NSException *localException) {
         XCTAssert([[localException description] isEqualToString:@"We reached code we shouldn't have reached in AJRStringFromOperatorPrecedence: Invalid AJROperatorPrecedence: 255"]);
         hitException = YES;

@@ -3,7 +3,6 @@
     <extension-point name="ajroperator" class="AJRFoundation.AJROperator" registrySelector="registerOperator:properties:">
         <attribute name="class" type="class" />
         <attribute name="precedence" type="string" />
-        <attribute name="preferredToken" type="string" />
         <element name="operator" key="operators" type="array" required="YES">
             <attribute name="name" type="string" required="YES" />
         </element>
@@ -21,7 +20,7 @@
         <operator name="/" />
         <operator name="÷" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJREqualsOperator">
+    <ajroperator class="AJRFoundation.AJREqualOperator">
         <operator name="==" />
         <operator name="=" />
     </ajroperator>
@@ -36,7 +35,7 @@
     <ajroperator class="AJRFoundation.AJRGreaterThanOperator">
         <operator name="&gt;" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRGreatorThanOrEqualToOperator">
+    <ajroperator class="AJRFoundation.AJRGreaterThanOrEqualToOperator">
         <operator name="&gt;=" />
         <operator name="≥" />
     </ajroperator>
@@ -59,7 +58,7 @@
         <operator name="×" />
         <operator name="·" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRNotEqualsOperator">
+    <ajroperator class="AJRFoundation.AJRNotEqualToOperator">
         <operator name="!=" />
         <operator name="&lt;&gt;" />
         <operator name="≠" />

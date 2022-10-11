@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRGreaterThanOrEqualToOperator : AJROperator, AJRIntOperator, AJRDoubleOperator, AJRStringOperator {
     
     public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {

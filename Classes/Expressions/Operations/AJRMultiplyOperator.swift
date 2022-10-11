@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRMultiplyOperator : AJROperator, AJRIntOperator, AJRDoubleOperator {
     
     public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {

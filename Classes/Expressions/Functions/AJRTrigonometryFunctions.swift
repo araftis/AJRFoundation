@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRSinFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -18,7 +18,7 @@ open class AJRSinFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRCosFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -29,7 +29,7 @@ open class AJRCosFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRTanFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -40,7 +40,7 @@ open class AJRTanFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRArcsinFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -51,7 +51,7 @@ open class AJRArcsinFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRArccosFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -62,7 +62,7 @@ open class AJRArccosFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRArctanFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {

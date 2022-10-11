@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRHasPrefixFunction : AJRFunction {
 
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -20,7 +20,7 @@ open class AJRHasPrefixFunction : AJRFunction {
 
 }
 
-@objc
+@objcMembers
 open class AJRHasSuffixFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {

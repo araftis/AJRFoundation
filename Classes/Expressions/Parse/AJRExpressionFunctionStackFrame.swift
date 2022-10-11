@@ -31,6 +31,7 @@
 
 import Foundation
 
+@objcMembers
 public class AJRExpressionFunctionStackFrame : AJRExpressionStackFrame {
     
     // MARK: - Properties

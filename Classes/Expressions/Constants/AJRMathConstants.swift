@@ -7,21 +7,21 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRPIConstant : AJRConstant {
 
     open override var hashableValue: AnyHashable? { return Double.pi }
 
 }
 
-@objc
+@objcMembers
 open class AJREConstant : AJRConstant {
 
     open override var hashableValue: AnyHashable? { return M_E }
 
 }
 
-@objc
+@objcMembers
 open class AJRNilConstant : AJRConstant {
 
     open override var hashableValue: AnyHashable? { return 0 }

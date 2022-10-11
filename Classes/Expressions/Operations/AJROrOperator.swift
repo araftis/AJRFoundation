@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJROrOperator : AJROperator, AJRBoolOperator {
 
     public func performBoolOperator(withLeft left: Bool, andRight right: Bool) throws -> Any? {

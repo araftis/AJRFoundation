@@ -31,7 +31,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRIntersectOperator : AJROperator {
 
     func test(param: any Collection) {

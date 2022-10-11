@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRArrayFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
@@ -26,7 +26,7 @@ open class AJRArrayFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRSetFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
@@ -45,7 +45,7 @@ open class AJRSetFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRDictionaryFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
@@ -73,7 +73,7 @@ open class AJRDictionaryFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRCountFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
@@ -87,7 +87,7 @@ open class AJRCountFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRContainsFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
@@ -102,7 +102,7 @@ open class AJRContainsFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRIterateFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {

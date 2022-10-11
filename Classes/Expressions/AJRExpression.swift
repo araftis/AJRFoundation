@@ -40,7 +40,7 @@ public enum AJRExpressionError : Error {
 
 }
 
-@objc
+@objcMembers
 open class AJRExpression: NSObject, AJREquatable, NSCoding {
 
     // MARK: - Properties
@@ -118,7 +118,7 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding {
 
     // MARK: - Equatable
 
-    public func isEqual(to other: Any) -> Bool {
+    public override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRExpression {
             return AJREqual(protected, typed.protected)
         }

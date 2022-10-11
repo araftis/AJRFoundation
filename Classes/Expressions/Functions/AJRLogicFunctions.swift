@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRIfFunction : AJRFunction {
 
     public override func evaluate(with object: Any?) throws -> Any? {
@@ -24,7 +24,7 @@ open class AJRIfFunction : AJRFunction {
 
 }
 
-@objc
+@objcMembers
 open class AJRIfElseFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {

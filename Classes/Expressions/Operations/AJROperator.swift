@@ -38,12 +38,12 @@ public enum AJROperatorError : Error {
     
 }
 
-@_cdecl("AJRFoundation_AJRStringFromOperatorPrecedence")
+@_cdecl("AJRStringFromOperatorPrecedence")
 public func AJRStringFromOperatorPrecedence(_ precedence: AJROperator.Precedence) -> String? {
     return precedence.description
 }
 
-@_cdecl("AJRFoundation_AJROperatorPrecedenceFromString")
+@_cdecl("AJROperatorPrecedenceFromString")
 public func AJROperatorPrecedenceFromString(_ string: String) -> AJROperator.Precedence {
     if let e = AJROperator.Precedence(string: string) {
         return e
@@ -79,41 +79,68 @@ open class AJROperator: NSObject, AJREquatable {
         }
     }
     
-    open var precedence : Precedence { return .low }
-    open var canActAsUnary : Bool { return precedence == .unary } // Used by operators that are generally not unary, but can act as unary in some circumstances. For example, consider, "5 - +5". In this case, the first '-' is the subtraction operator, while the second '-' is '-' acting as a unary operator.
+    open var precedence : Precedence {
+        if let precedence = AJROperator.operatorsByClassName[NSStringFromClass(Self.self)]?.precedence {
+            AJRLog.info("\(Self.self): \(precedence)")
+            return precedence
+        }
+        return .low
+    }
+    open var canActAsUnary : Bool { return precedence == .unary } // Used by operators that are generally not unary, but can act as unary in some circumstances. For example, consider, "5 - -5". In this case, the first '-' is the subtraction operator, while the second '-' is '-' acting as a unary operator.
     
     open class var tokens : [String] {
-        preconditionFailure("Subclasses must override tokens")
+        if let result = operatorsByClassName[NSStringFromClass(Self.self)]?.operators {
+            return result
+        }
+        return []
     }
-    
     open class var preferredToken : String { return tokens[0] }
     open var preferredToken : String { return type(of:self).preferredToken }
     
-    private static var operators = [String:AJROperator]()
+    private struct OperatorInfo {
+        var instance : AJROperator
+        var operators : [String]
+        var precedence : Precedence = .low
+    }
+    
+    private static var operatorsByToken = [String:OperatorInfo]()
+    private static var operatorsByClassName = [String:OperatorInfo]()
 
     @objc
     open class func registerOperator(_ operatorClass : AJROperator.Type, properties: [String:Any]) -> Void {
         if let tokens = properties["operators"] as? [[String:Any]] {
-            let operatorInstance = operatorClass.init()
+            var tokenNames = [String]()
             for tokenProperties in tokens {
                 if let tokenName = tokenProperties["name"] as? String {
-                    operators[tokenName] = operatorInstance
-                    AJRExpressionParser.addOperatorToken(tokenName)
+                    tokenNames.append(tokenName)
                 }
+            }
+            let precedence : Precedence
+            if let raw = properties["precedence"] as? String,
+               let possible = Precedence(string: raw) {
+                precedence = possible
+            } else {
+                precedence = .low
+            }
+            let info = OperatorInfo(instance: operatorClass.init(), operators: tokenNames, precedence: precedence)
+            operatorsByClassName[NSStringFromClass(operatorClass)] = info
+            for name in tokenNames {
+                operatorsByToken[name] = info
+                AJRExpressionParser.addOperatorToken(name)
             }
         }
     }
     
     @objc
     open class func operatorForToken(_ token: String) -> AJROperator? {
-        return operators[token]
+        return operatorsByToken[token]?.instance
     }
     
     @objc
     open class func allOperators() -> [AJROperator] {
         var allOperators = [AJROperator]()
-        for op in operators {
-            allOperators.append(op.value)
+        for op in operatorsByClassName.values {
+            allOperators.append(op.instance)
         }
         return allOperators
     }

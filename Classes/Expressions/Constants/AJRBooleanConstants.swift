@@ -7,14 +7,14 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRTrueConstant : AJRConstant {
 
     open override var hashableValue: AnyHashable? { return true }
     
 }
 
-@objc
+@objcMembers
 open class AJRFalseConstant : AJRConstant {
 
     open override var hashableValue: AnyHashable? { return false }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJRSquareRootFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -18,7 +18,7 @@ open class AJRSquareRootFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRCeilingFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -29,7 +29,7 @@ open class AJRCeilingFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRFloorFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -40,7 +40,7 @@ open class AJRFloorFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRRoundFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -51,7 +51,7 @@ open class AJRRoundFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRRemainderFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -63,7 +63,7 @@ open class AJRRemainderFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRMinFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -82,7 +82,7 @@ open class AJRMinFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRMaxFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -101,7 +101,7 @@ open class AJRMaxFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRAbsFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -112,7 +112,7 @@ open class AJRAbsFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRLogFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {
@@ -123,7 +123,7 @@ open class AJRLogFunction : AJRFunction {
     
 }
 
-@objc
+@objcMembers
 open class AJRLnFunction : AJRFunction {
     
     open override func evaluate(with object: Any?) throws -> Any? {

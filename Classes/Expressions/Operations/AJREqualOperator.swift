@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc
+@objcMembers
 open class AJREqualOperator : AJROperator {
     
     public override func performOperator(withLeft left: Any?, andRight right: Any?) throws -> Any? {
