@@ -40,7 +40,10 @@ public enum AJROperatorError : Error {
 
 @_cdecl("AJRStringFromOperatorPrecedence")
 public func AJRStringFromOperatorPrecedence(_ precedence: AJROperator.Precedence) -> String? {
-    return precedence.description
+    if AJROperator.Precedence(rawValue: precedence.rawValue) != nil {
+        return precedence.description
+    }
+    return nil
 }
 
 @_cdecl("AJROperatorPrecedenceFromString")
@@ -48,7 +51,7 @@ public func AJROperatorPrecedenceFromString(_ string: String) -> AJROperator.Pre
     if let e = AJROperator.Precedence(string: string) {
         return e
     } else {
-        return .low
+        return .additive
     }
 }
 
@@ -58,23 +61,39 @@ open class AJROperator: NSObject, AJREquatable {
     @objc(AJROperatorPrecedence)
     public enum Precedence : Int, AJRXMLEncodableEnum {
         
-        case lowest = -20
-        case lower = -10
-        case low = 0
-        case medium = 10
-        case high = 20
-        case higher = 30
-        case unary = 40
+        case conditional
+        case logicalOr
+        case logicalXor
+        case logicalAnd
+        case bitOr
+        case bitXor
+        case bitAnd
+        case equality
+        case relational
+        case shift
+        case additive
+        case multiplicative
+        case unary
+        case postfix
         
         public var description: String {
             switch self {
-            case .lowest: return "lowest"
-            case .lower: return "lower"
-            case .low: return "low"
-            case .medium: return "medium"
-            case .high: return "high"
-            case .higher: return "higher"
+            case .conditional: return "conditional"
+            case .logicalOr: return "logicalOr"
+            case .logicalXor: return "logicalXor"
+            case .logicalAnd: return "logicalAnd"
+            case .bitOr: return "bitOr"
+            case .bitXor: return "bitXor"
+            case .bitAnd: return "bitAnd"
+            case .equality: return "equality"
+            case .relational: return "relational"
+            case .shift: return "shift"
+            case .additive: return "additive"
+            case .multiplicative: return "multiplicative"
             case .unary: return "unary"
+            case .postfix: return "postfix"
+            default:
+                return "\(rawValue)"
             }
         }
     }
@@ -82,7 +101,7 @@ open class AJROperator: NSObject, AJREquatable {
     /**
      The predence of the operator when determining which operations should be computer first. The higher the precedence, the sooner the operator if evaluated. Thus, add and subtract are lower than say multiply, which must happen first.
      */
-    open private(set) var precedence : Precedence = .low
+    open private(set) var precedence : Precedence = .additive
 
     /**
      Used by operators that are generally not unary, but can act as unary in some circumstances. For example, consider, "5 - -5". In this case, the first '-' is the subtraction operator, while the second '-' is '-' acting as a unary operator.
@@ -97,7 +116,7 @@ open class AJROperator: NSObject, AJREquatable {
     internal struct OperatorInfo {
         var instance : AJROperator
         var operators : [String]
-        var precedence : Precedence = .low
+        var precedence : Precedence = .additive
         var canActAsUnary : Bool = false
     }
     
@@ -120,7 +139,7 @@ open class AJROperator: NSObject, AJREquatable {
         }
 
         // And its precedence
-        instance.precedence = properties["precedence", .low]
+        instance.precedence = properties["precedence", .additive]
 
         // And whether it can act as a unary operator or not
         instance.canActAsUnary = properties["canActAsUnary", false]
@@ -215,11 +234,15 @@ open class AJROperator: NSObject, AJREquatable {
         }
         if let op = self as? AJRCollectionOperator {
             // We use "or" here, because we'll turn a single object into a collection to match the other parameter
-            if left is AJRUntypedCollection || right is AJRUntypedCollection {
-                let leftCollection = try  AJRExpression.valueAsCollection(left)
-                let rightCollection = try AJRExpression.valueAsCollection(right)
-                return try op.performCollectionOperator(withLeft: leftCollection!, andRight: rightCollection)
+            if let left = left as? any AJRCollection,
+               let right = right as? any AJRCollection {
+                return try op.performCollectionOperator(withLeft: left, andRight: right)
             }
+//            if left is AJRUntypedCollection || right is AJRUntypedCollection {
+//                let leftCollection = try  AJRExpression.valueAsCollection(left)
+//                let rightCollection = try AJRExpression.valueAsCollection(right)
+//                return try op.performCollectionOperator(withLeft: leftCollection!, andRight: rightCollection)
+//            }
         }
         throw AJROperatorError.unimplementedAbstract("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
@@ -310,7 +333,7 @@ public protocol AJRStringOperator {
 
 public protocol AJRCollectionOperator {
     
-    func performCollectionOperator(withLeft left: AJRUntypedCollection?, andRight right: AJRUntypedCollection?) throws -> Any?
+    func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any?
     
 }
 

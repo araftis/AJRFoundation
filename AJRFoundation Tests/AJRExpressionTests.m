@@ -51,7 +51,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [AJRPlugInManager initializePlugInManager];
 }
 
-- (void)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue expectError:(BOOL)expectError {
+- (nullable NSString *)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue expectError:(BOOL)expectError {
     AJRExpression *expression = nil;
     NSError *localError = nil;
     
@@ -62,15 +62,18 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         
         id result = [expression evaluateWithObject:object error:&localError];
         AJRPrintf(@"[%@]: %@ = %@\n", string, expression, result);
-        
+
         XCTAssert(AJREqual(result, expectedValue), @"expression: %@, expected result: %@, got: %@", string, expectedValue, result);
     }
     
     if (expectError) {
         XCTAssert(localError != nil, @"We expected a failure in expression: \"%@\", but didn't get one.", string);
+        return localError.description;
     } else {
         XCTAssert(localError == nil, @"We didn't expect a failure, but got one in expression: \"%@\": %@", string, [localError localizedDescription]);
     }
+
+    return nil;
 }
 
 - (void)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue {
@@ -184,7 +187,11 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     };
     
     [self _testExpression:@"array1 union array2" withObject:dictionary expectedResult:@[@"one", @"two", @"three", @"four", @"five", @"six"]];
+    [self _testExpression:@"array1 ∪ array2" withObject:dictionary expectedResult:@[@"one", @"two", @"three", @"four", @"five", @"six"]];
     [self _testExpression:@"array1 intersect array2" withObject:dictionary expectedResult:@[@"three", @"four"]];
+    [self _testExpression:@"array1 ∩ array2" withObject:dictionary expectedResult:@[@"three", @"four"]];
+    [self _testExpression:@"array1 - array2" withObject:dictionary expectedResult:@[@"one", @"two"]];
+    [self _testExpression:@"array1 xor array2" withObject:dictionary expectedResult:@[@"one", @"two", @"five", @"six"]];
 }
 
 - (void)testConstants {
@@ -303,7 +310,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"dictionary(\"one\", 1, \"null\", a, \"two\", 2)" withObject:nil expectedResult:@{@"one":@(1), @"null":[NSNull null], @"two":@(2)}]; // the 'a' forces a nil
     [self _testExpression:@"dictionary(\"one\", 1, \"null\", 1/0, \"two\", 2)" withObject:nil expectedResult:nil expectError:YES];
     [self _testExpression:@"iterate(set(1, 2, 3, 4), π)" withObject:nil expectedResult:nil expectError:YES];
-    [self _testExpression:@"iterate(array(1, 2, 3, 4), null())" withObject:nil expectedResult:@[[NSNull null], [NSNull null], [NSNull null], [NSNull null]]];
     [self _testExpression:@"contains(1, 1)" withObject:nil expectedResult:@(1)];
     
     // Union
@@ -345,107 +351,39 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"help(π)" withObject:nil expectedResult:nil expectError:YES];
     [self _testExpression:@"1 * * 1" withObject:nil expectedResult:nil expectError:YES];
     
-    BOOL threwException = NO;
-    @try {
-        [self _testExpression:@"ajr_broken()" withObject:nil expectedResult:nil expectError:YES];
-    } @catch(NSException *localException) {
-        XCTAssert([[localException description] hasSuffix:@"Abstract method -[AJRBrokenFunction evaluateWithObject:error:] should be implemented"]);
-        threwException = YES;
-    }
-    XCTAssert(threwException, @"ajr_broken didn't fail.");
-    
-    threwException = NO;
-    @try {
-        [self _testExpression:@"min(ajr_broken_constant)" withObject:nil expectedResult:nil expectError:YES];
-    } @catch(NSException *localException) {
-        XCTAssert([[localException description] hasSuffix:@"Abstract method -[AJRBrokenConstant value] should be implemented"]);
-        threwException = YES;
-    }
-    XCTAssert(threwException, @"ajr_broken didn't fail.");
-    
-    threwException = NO;
-    @try {
-        AJRExpression *expression = [[AJRExpression alloc] init];
-        AJRPrintf(@"%@", [expression evaluateWithObject:nil error:NULL]);
-    } @catch(NSException *localException) {
-        XCTAssert([[localException description] hasSuffix:@"Abstract method -[AJRExpression evaluateWithObject:error:] should be implemented"]);
-        threwException = YES;
-    }
-    XCTAssert(threwException, @"-[AJRExpression evaluateWithObject:error:] didn't fail.");
-    
-    threwException = NO;
-    @try {
-        AJRExpression *expression = [[AJRExpression alloc] init];
-        [expression hash];
-    } @catch(NSException *localException) {
-        XCTAssert([[localException description] hasSuffix:@"Abstract method -[AJRExpression hash] should be implemented"]);
-        threwException = YES;
-    }
-    XCTAssert(threwException, @"-[AJRExpression hash] didn't fail.");
-    
-    threwException = NO;
-    @try {
-        [self _testExpression:@"1 ajr_broken_operator 2" withObject:nil expectedResult:nil expectError:YES];
-    } @catch(NSException *localException) {
-        XCTAssert([[localException description] hasSuffix:@"Abstract method -[AJRBrokenOperator performOperatorWithLeft:andRight:error:] should be implemented"]);
-        threwException = YES;
-    }
-    XCTAssert(threwException, @"ajr_broken_operator didn't fail.");
-    
-    threwException = NO;
-    @try {
-        [self _testExpression:@"ajr_broken_unary 2" withObject:nil expectedResult:nil expectError:YES];
-    } @catch(NSException *localException) {
-        XCTAssert([[localException description] hasSuffix:@"Abstract method -[AJRBrokenUnaryOperator performOperatorWithValue:error:] should be implemented"]);
-        threwException = YES;
-    }
-    XCTAssert(threwException, @"ajr_broken_unary didn't fail.");
-    
-    threwException = NO;
-    @try {
-        [[AJROperator operatorForToken:@"ajr_broken_unary"] precedence];
-    } @catch(NSException *localException) {
-        XCTAssert([[localException description] hasSuffix:@"Abstract method -[AJRBrokenUnaryOperator precedence] should be implemented"]);
-        threwException = YES;
-    }
-    XCTAssert(threwException, @"ajr_broken_unary didn't fail.");
+    NSString *error = [self _testExpression:@"ajr_broken()" withObject:nil expectedResult:nil expectError:YES];
+    XCTAssert(error != nil && [error containsString:@"AJRFoundation.AJRFunctionError.unimplementedAbstract(\"Abstract method AJRBrokenFunction.evaluate(with:) should be implemented\")"]);
 
-    // Not relevant for Swift, since enums are stronger than Obj-C.
-//    threwException = NO;
-//    @try {
-//        AJRStringFromExpressionTokenType(UINT8_MAX);
-//    } @catch(NSException *localException) {
-//        XCTAssert([[localException description] hasSuffix:@"We reached code we shouldn't have reached in AJRStringFromExpressionTokenType: Invalid AJRExpressionTokenType: 255"]);
-//        threwException = YES;
-//    }
-//    XCTAssert(threwException, @"-[AJRExpression evaluateWithObject:error:] didn't fail.");
+    NSError *localError = nil;
+    AJRExpression *expression = [[AJRExpression alloc] init];
+    AJRPrintf(@"%@", [expression evaluateWithObject:nil error:&localError]);
+    XCTAssert([localError.description containsString:@"Abstract method AJRExpression.evaluate(with:) should be implemented"]);
+
+    error = [self _testExpression:@"1 ajr_broken_operator 2" withObject:nil expectedResult:nil expectError:YES];
+    XCTAssert(error != nil && [error containsString:@"Abstract method AJRBrokenOperator.performOperator(withLeft:andRight:) should be implemented"]);
+
+    error = [self _testExpression:@"ajr_broken_unary 2" withObject:nil expectedResult:nil expectError:YES];
+    XCTAssert(error != nil && [error containsString:@"Abstract method AJRBrokenUnaryOperator.performOperator(withValue:) should be implemented"]);
 }
 
 - (void)testExpressionStackFrameEdgeCases {
-    NSException *exception = nil;
+    NSError *localError = nil;
     AJRExpressionStackFrame *stackFrame = [[AJRExpressionStackFrame alloc] init];
     
     [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOperator value:[AJROperator operatorForToken:@"+"]] error:NULL];
-    @try {
-        [stackFrame expressionWithError:NULL];
-    } @catch (NSException *localException) {
-        exception = localException;
-    }
-    XCTAssert(exception != nil);
-    
+    [stackFrame expressionWithError:&localError];
+    XCTAssert(localError != nil);
+
+    localError = nil;
     stackFrame = [[AJRExpressionStackFrame alloc] init];
-    @try {
-        [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOpenParen] error:NULL];
-    } @catch (NSException *localException) {
-        exception = localException;
-    }
-    XCTAssert(exception != nil);
+    [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOpenParen] error:&localError];
+    XCTAssert(localError != nil);
 }
 
 - (void)testExpressionParser {
     NSError *localError = nil;
 
-    AJRExpression *expression = [AJRExpressionParser expressionWithFormat:@"%s = %@ or \"int\" = %d or \"float\" = %f" arguments: @[@1, @(M_PI)] error: NULL];
+    AJRExpression *expression = [AJRExpressionParser expressionWithFormat:@"%s = %@ or \"int\" = %d or \"float\" = %f" arguments: @[@"test", @"test", @1, @(M_PI)] error: NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(((((test == test) || int) == 1) || float) == 3.141592653589793)"]);
     
     expression = [AJRExpressionParser expressionForString:@"test = test" error:NULL];
@@ -598,11 +536,20 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //}
 
 - (void)testOperators {
-    NSArray<NSNumber *> *operatorPrecedences = @[@(AJROperatorPrecedenceLow),
-                                                 @(AJROperatorPrecedenceMedium),
-                                                 @(AJROperatorPrecedenceHigh),
-                                                 @(AJROperatorPrecedenceHigher),
-                                                 @(AJROperatorPrecedenceUnary)];
+    NSArray<NSNumber *> *operatorPrecedences = @[@(AJROperatorPrecedencePostfix),
+                                                 @(AJROperatorPrecedenceUnary),
+                                                 @(AJROperatorPrecedenceMultiplicative),
+                                                 @(AJROperatorPrecedenceAdditive),
+                                                 @(AJROperatorPrecedenceShift),
+                                                 @(AJROperatorPrecedenceRelational),
+                                                 @(AJROperatorPrecedenceEquality),
+                                                 @(AJROperatorPrecedenceBitAnd),
+                                                 @(AJROperatorPrecedenceBitXor),
+                                                 @(AJROperatorPrecedenceBitOr),
+                                                 @(AJROperatorPrecedenceLogicalAnd),
+                                                 @(AJROperatorPrecedenceLogicalXor),
+                                                 @(AJROperatorPrecedenceLogicalOr),
+                                                 @(AJROperatorPrecedenceConditional)];
     
     for (NSNumber *precedence in operatorPrecedences) {
         NSString *string = AJRStringFromOperatorPrecedence([precedence integerValue]);
@@ -619,15 +566,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //    XCTAssert(expression == nil);
 //    XCTAssert(localError != nil);
     
-    BOOL hitException = NO;
-    @try {
-        NSString *result = AJRStringFromOperatorPrecedence(UINT8_MAX);
-        XCTAssert(result == nil); // We'll never actually reach this
-    } @catch (NSException *localException) {
-        XCTAssert([[localException description] isEqualToString:@"We reached code we shouldn't have reached in AJRStringFromOperatorPrecedence: Invalid AJROperatorPrecedence: 255"]);
-        hitException = YES;
-    }
-    XCTAssert(hitException, @"We didn't failing in AJRStringFromOperatorPrecedence() like we expected.");
+    NSString *result = AJRStringFromOperatorPrecedence(UINT8_MAX);
+    XCTAssert(result == nil); // We'll never actually reach this
 }
 
 //- (void)testComplexExpression

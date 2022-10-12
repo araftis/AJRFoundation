@@ -11,7 +11,7 @@ import Foundation
 open class AJREqualOperator : AJROperator {
     
     public override func performOperator(withLeft left: Any?, andRight right: Any?) throws -> Any? {
-        return AJREqual(left, right)
+        return AJRAnyEquals(left, right)
     }
     
 }

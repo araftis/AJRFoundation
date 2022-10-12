@@ -9,74 +9,74 @@
         </element>
     </extension-point>
     
-    <ajroperator class="AJRFoundation.AJRAddOperator" canActAsUnary="true">
+    <ajroperator class="AJRFoundation.AJRAddOperator" canActAsUnary="true" precedence="additive">
         <operator name="+" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRAndOperator">
+    <ajroperator class="AJRFoundation.AJRAndOperator" precedence="logicalAnd">
         <operator name="&amp;&amp;" />
         <operator name="and" />
         <operator name="∧" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRDivideOperator" precedence="high">
+    <ajroperator class="AJRFoundation.AJRDivideOperator" precedence="multiplicative">
         <operator name="/" />
         <operator name="÷" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJREqualOperator">
+    <ajroperator class="AJRFoundation.AJREqualOperator" precedence="equality">
         <operator name="==" />
         <operator name="=" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRExclusiveOrOperator">
+    <ajroperator class="AJRFoundation.AJRExclusiveOrOperator" precedence="logicalOr">
         <operator name="xor" />
         <operator name="^^" />
         <operator name="⊻" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRExponentOperator" precedence="higher">
+    <ajroperator class="AJRFoundation.AJRExponentOperator" precedence="multiplicative">
         <operator name="^" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRGreaterThanOperator">
+    <ajroperator class="AJRFoundation.AJRGreaterThanOperator" precedence="relational">
         <operator name="&gt;" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRGreaterThanOrEqualToOperator">
+    <ajroperator class="AJRFoundation.AJRGreaterThanOrEqualToOperator" precedence="relational">
         <operator name="&gt;=" />
         <operator name="≥" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRIntersectOperator">
+    <ajroperator class="AJRFoundation.AJRIntersectOperator" precedence="bitAnd">
         <operator name="∩" />
         <operator name="intersect" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRLessThanOperator">
+    <ajroperator class="AJRFoundation.AJRLessThanOperator" precedence="relational">
         <operator name="&lt;" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRLessThanOrEqualToOperator">
+    <ajroperator class="AJRFoundation.AJRLessThanOrEqualToOperator" precedence="relational">
         <operator name="&lt;=" />
         <operator name="≤" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRModulusOperator" precedence="high">
+    <ajroperator class="AJRFoundation.AJRModulusOperator" precedence="multiplicative">
         <operator name="mod" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRMultiplyOperator" precedence="high">
+    <ajroperator class="AJRFoundation.AJRMultiplyOperator" precedence="multiplicative">
         <operator name="*" />
         <operator name="×" />
         <operator name="·" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRNotEqualToOperator">
+    <ajroperator class="AJRFoundation.AJRNotEqualToOperator" precedence="equality">
         <operator name="!=" />
         <operator name="&lt;&gt;" />
         <operator name="≠" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRNotOperator" precedence="unary">
+    <ajroperator class="AJRFoundation.AJRNotOperator" precedence="high">
         <operator name="!" />
         <operator name="¬" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJROrOperator">
+    <ajroperator class="AJRFoundation.AJROrOperator" precedence="logicalOr">
         <operator name="||" />
         <operator name="or" />
         <operator name="∨" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRSubtractOperator" canActAsUnary="true">
+    <ajroperator class="AJRFoundation.AJRSubtractOperator" canActAsUnary="true" precedence="additive">
         <operator name="-" />
     </ajroperator>
-    <ajroperator class="AJRFoundation.AJRUnionOperator">
+    <ajroperator class="AJRFoundation.AJRUnionOperator" precedence="bitOr">
         <operator name="∪" />
         <operator name="union" />
     </ajroperator>

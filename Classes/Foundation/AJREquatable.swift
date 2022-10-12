@@ -110,10 +110,8 @@ public func AJRAnyEquals(_ lhsIn: Any?, _ rhsIn: Any?) -> Bool {
         return true
     } else if (lhs == nil && rhs != nil) || (lhs != nil && rhs == nil) {
         return false
-    } else if type(of: lhs) == type(of: rhs) {
-        if let lhs = lhs as? AJREquatable, let rhs = rhs {
-            return lhs.isEqual(to: rhs)
-        }
+    } else if let lhs = lhs as? AJREquatable, let rhs = rhs {
+        return lhs.isEqual(to: rhs)
     }
     
     AJRLog.warning("Trying to compare: \(type(of:lhs!)). Consider making this class conform to AJREquatable for better results.")

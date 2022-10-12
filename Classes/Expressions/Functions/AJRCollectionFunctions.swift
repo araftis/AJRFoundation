@@ -11,7 +11,7 @@ import Foundation
 open class AJRArrayFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
-        let array = AJRMutableArray<Any>()
+        var array = Array<Any>()
         
         for argument in arguments {
             if let value = try AJRExpression.evaluate(value: argument, withObject: object) {
@@ -30,11 +30,11 @@ open class AJRArrayFunction : AJRFunction {
 open class AJRSetFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
-        let set = AJRMutableSet<AnyHashable>()
+        var set = Set<AnyHashable>()
         
         for argument in arguments {
             if let value = try AJRExpression.evaluate(value:argument, withObject:object) as? AnyHashable {
-                _ = set.insert(value)
+                set.insert(value)
             } else {
                 _ = set.insert(NSNull.init()) // May fail, at which point we'll just skip?
             }
@@ -49,7 +49,7 @@ open class AJRSetFunction : AJRFunction {
 open class AJRDictionaryFunction : AJRFunction {
     
     public override func evaluate(with object: Any?) throws -> Any? {
-        let dictionary = AJRMutableDictionary<AnyHashable, Any>()
+        var dictionary = Dictionary<AnyHashable, Any>()
 
         if arguments.count % 2 != 0 {
             throw AJRFunctionError.invalidArgumentCount("You must pass an equal number of key/value pairs to dictionary().")
@@ -80,7 +80,7 @@ open class AJRCountFunction : AJRFunction {
         try check(argumentCount:1)
         
         if let collection = try collection(at:0, withObject:object) {
-            return collection.untypedCount
+            return collection.count
         }
         throw AJRFunctionError.invalidArgument("Argument to count() isn't a collection.")
     }
@@ -95,7 +95,7 @@ open class AJRContainsFunction : AJRFunction {
 
         if let collection = try self.collection(at:0, withObject:object) {
             let value = try AJRExpression.evaluate(value: arguments[1], withObject:object)
-            return collection.untypedContains(value == nil ? NSNull.init() : value!)
+            return collection.contains(equatable: value == nil ? NSNull.init() : value!)
         }
         throw AJRFunctionError.invalidArgument("First argument to contains() must be a collection.")
     }
@@ -117,24 +117,31 @@ open class AJRIterateFunction : AJRFunction {
                 throw AJRFunctionError.invalidArgument("Invalid argument to function \"\(name)\": \(arguments[1]). Expected a function.")
             }
             
-            switch collection.untypedCollectionSemantic {
-            case .objectOrdered: fallthrough
+            switch collection.semantic {
+            case .unknown: fallthrough // Just treat the unknown case as ordered.
+            case .valueOrdered: fallthrough
             case .keyValueOrdered:
-                newCollection = AJRMutableArray<Any>()
+                var intermediate = Array<Any>()
                 appender = { (value : Any) in
-                    (newCollection as! AJRMutableArray<Any>).append(value)
+                    intermediate.append(value)
+                    newCollection = intermediate
                 }
-            case .objectUnordered: fallthrough
+            case .valueUnordered: fallthrough
             case .keyValueUnordered:
-                newCollection = AJRMutableSet<AnyHashable>()
+                var intermediate = Set<AnyHashable>()
                 appender = { (value : Any) in
-                    _ = (newCollection as! AJRMutableSet<AnyHashable>).insert(value as! AnyHashable)
+                    _ = intermediate.insert(value as! AnyHashable)
+                    newCollection = intermediate
                 }
             }
             
             if let function = functionExpression?.function {
-                try collection.untypedEnumerate { (argument, stop) in
-                    function.arguments = [AJRConstantExpression(value: argument)]
+                for argument in collection {
+                    if let argument = argument as? (key:AnyHashable, value:Any) {
+                        function.arguments = [AJRConstantExpression(value: argument.value)]
+                    } else {
+                        function.arguments = [AJRConstantExpression(value: argument)]
+                    }
                     if let result = try function.evaluate(with: object) {
                         appender(result)
                     } else {

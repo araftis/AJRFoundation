@@ -50,4 +50,20 @@ class Collection_ExtensionsTests: XCTestCase {
         XCTAssert(string == nil)
     }
 
+    func testUnion() {
+        let array1 = ["a", "b", "c"]
+        let array2 = ["a", "b", "d"]
+
+        var result = array1.union(array2)
+        print("array result: \(result)")
+        XCTAssert(AJRAnyEquals(result, ["a", "b", "c", "d"]))
+
+        let string1 = "abc"
+        let string2 = "abd"
+
+        result = string1.union(string2)
+        print("string result: \(result)")
+        XCTAssert(AJRAnyEquals(result, [Character("a"), Character("b"), Character("c"), Character("d")]))
+    }
+
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 @objcMembers
-open class AJRSubtractOperator : AJROperator, AJRIntOperator, AJRDoubleOperator, AJRIntUnaryOperator, AJRDoubleUnaryOperator, AJRDateOperator {
+open class AJRSubtractOperator : AJROperator, AJRIntOperator, AJRDoubleOperator, AJRIntUnaryOperator, AJRDoubleUnaryOperator, AJRDateOperator, AJRCollectionOperator {
     
     public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
         return left - right
@@ -50,6 +50,16 @@ open class AJRSubtractOperator : AJROperator, AJRIntOperator, AJRDoubleOperator,
     
     public func performDateOperator(withLeft left: DateComponents, andRight right: DateComponents) throws -> Any? {
         return Calendar(identifier: .gregorian).dateComponents([.year, .month, .day, .hour, .minute, .second], from: right, to: left)
+    }
+
+    public func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any? {
+        if let left = left {
+            if let right = right {
+                return left.subtract(right)
+            }
+            return left
+        }
+        return nil
     }
     
 }

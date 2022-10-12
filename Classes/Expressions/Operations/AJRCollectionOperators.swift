@@ -32,15 +32,25 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 @objcMembers
-open class AJRIntersectOperator : AJROperator {
+open class AJRIntersectOperator : AJROperator, AJRCollectionOperator {
 
-    func test(param: any Collection) {
+    public func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any? {
+        if let left = left,
+           let right = right {
+            return left.intersect(right)
+        }
+        return []
     }
 
-    func performCollectionOperator(withLeft left: AJRUntypedCollection?, andRight right: AJRUntypedCollection?) throws -> Any? {
+}
+
+@objcMembers
+open class AJRUnionOperator : AJROperator, AJRCollectionOperator {
+
+    public func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any? {
         if let left = left {
             if let right = right {
-                return left.untypedIntersection(with: right)
+                return left.union(right)
             }
             return left
         }

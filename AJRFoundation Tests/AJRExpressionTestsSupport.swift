@@ -41,23 +41,27 @@ class AJROddStartOperator : AJROperator, AJRIntOperator, AJRDoubleOperator {
 
 }
 
+enum AJRExpressionTestingError : Error {
+    case correct
+}
+
 class AJRArgCountCheckerFunction : AJRFunction {
 
     override func evaluate(with object: Any?) throws -> Any? {
         do {
             try check(argumentCountMin: 2)
-        } catch {
-            //if (localError && [[localError localizedDescription] isEqualToString:@"Function ajr_arg_count_checker expects at least 2 arguments"]) {
-            //   localError = [NSError errorWithDomain:AJRExpressionErrorDomain message:@"Correct"];
-            //}
+        } catch AJRFunctionError.invalidArgumentCount(let message) {
+            if message == "AJRFunction ajr_arg_count_checker expects at least 2 arguments" {
+                throw AJRExpressionTestingError.correct
+            }
         }
 
         do {
             try check(argumentCountMax: 10)
-        } catch {
-            //if (localError && [[localError localizedDescription] isEqualToString:@"Function ajr_arg_count_checker expects at most 10 arguments"]) {
-            //    localError = [NSError errorWithDomain:AJRExpressionErrorDomain message:@"Correct"];
-            //}
+        } catch AJRFunctionError.invalidArgumentCount(let message) {
+            if message == "AJRFunction ajr_arg_count_checker expects at most 10 arguments" {
+                throw AJRExpressionTestingError.correct
+            }
         }
 
         do {
@@ -74,10 +78,3 @@ class AJRArgCountCheckerFunction : AJRFunction {
     }
 
 }
-
-class AJRBrokenConstant : AJRConstant {
-
-    // Broken because we don't implement -[AJRConstant value].
-
-}
-

@@ -160,7 +160,7 @@ open class AJRFunction : NSObject, AJREquatable {
         return try AJRExpression.valueAsFloat(arguments[index], withObject: object)
     }
     
-    public func collection(at index: Int, withObject object: Any?) throws -> AJRUntypedCollection? {
+    public func collection(at index: Int, withObject object: Any?) throws -> (any AJRCollection)? {
         return try AJRExpression.valueAsCollection(arguments[index], withObject: object)
     }
     

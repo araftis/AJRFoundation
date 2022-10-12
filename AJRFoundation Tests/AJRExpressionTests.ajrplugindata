@@ -16,8 +16,4 @@
         <operator name="👁" />
     </ajroperator>
 
-    <ajrconstant class="AJRFoundationTests.AJRBrokenConstant">
-        <token name="ajr_broken_constant" />
-    </ajrconstant>
-
 </plugindata>

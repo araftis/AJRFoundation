@@ -140,7 +140,7 @@ extension Array : AJRKeyValueCoding, AJRUntypedCollection {
             }
             var equalToOther = true
             other.untypedEnumerate { (index: Int, object: Any, stop: inout Bool) in
-                if !AJREqual(self[index], object) {
+                if !AJRAnyEquals(self[index], object) {
                     equalToOther = false
                     stop = true
                 }

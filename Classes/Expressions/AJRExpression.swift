@@ -146,16 +146,16 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding {
         return value
     }
 
-    public class func valueAsCollection(_ valueIn: Any?, withObject object: Any? = nil) throws -> AJRUntypedCollection? {
+    public class func valueAsCollection(_ valueIn: Any?, withObject object: Any? = nil) throws -> (any AJRCollection)? {
         // Iterate an expression values until we get a basic value of some sort returned.
         if var returnValue = try value(valueIn, withObject: object) {
             // Now see if we already have a collection class. If we do, we can just return it.
-            if !(returnValue is AJRUntypedCollection) {
+            if !(returnValue is (any AJRCollection)) {
                 // Value isn't a collection so make it a collection.
                 returnValue = Set<AnyHashable>([returnValue as! AnyHashable])
             }
 
-            return returnValue as? AJRUntypedCollection
+            return returnValue as? (any AJRCollection)
         }
         return nil
     }
