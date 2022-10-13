@@ -10,9 +10,9 @@ import Foundation
 @objcMembers
 open class AJRSquareRootFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return sqrt(double)
     }
     
@@ -21,9 +21,9 @@ open class AJRSquareRootFunction : AJRFunction {
 @objcMembers
 open class AJRCeilingFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return ceil(double)
     }
     
@@ -32,9 +32,9 @@ open class AJRCeilingFunction : AJRFunction {
 @objcMembers
 open class AJRFloorFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return floor(double)
     }
     
@@ -43,9 +43,9 @@ open class AJRFloorFunction : AJRFunction {
 @objcMembers
 open class AJRRoundFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return round(double)
     }
     
@@ -54,10 +54,10 @@ open class AJRRoundFunction : AJRFunction {
 @objcMembers
 open class AJRRemainderFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 2)
-        let x : Double = try float(at: 0, withObject: object)
-        let y : Double = try float(at: 1, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 2)
+        let x : Double = try arguments.float(at: 0, withObject: object)
+        let y : Double = try arguments.float(at: 1, withObject: object)
         return remainder(x, y)
     }
     
@@ -66,12 +66,12 @@ open class AJRRemainderFunction : AJRFunction {
 @objcMembers
 open class AJRMinFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCountMin: 1)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCountMin: 1)
         
-        var value : Double = try float(at:0, withObject:object)
+        var value : Double = try arguments.float(at:0, withObject:object)
         for x in 1 ..< arguments.count {
-            let nextValue : Double = try float(at: x, withObject: object)
+            let nextValue : Double = try arguments.float(at: x, withObject: object)
             if nextValue < value {
                 value = nextValue
             }
@@ -85,12 +85,12 @@ open class AJRMinFunction : AJRFunction {
 @objcMembers
 open class AJRMaxFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCountMin: 1)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCountMin: 1)
         
-        var value : Double = try float(at:0, withObject:object)
+        var value : Double = try arguments.float(at:0, withObject:object)
         for x in 1 ..< arguments.count {
-            let nextValue : Double = try float(at: x, withObject: object)
+            let nextValue : Double = try arguments.float(at: x, withObject: object)
             if nextValue > value {
                 value = nextValue
             }
@@ -104,9 +104,9 @@ open class AJRMaxFunction : AJRFunction {
 @objcMembers
 open class AJRAbsFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let value: Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let value: Double = try arguments.float(at: 0, withObject: object)
         return abs(value)
     }
     
@@ -115,9 +115,9 @@ open class AJRAbsFunction : AJRFunction {
 @objcMembers
 open class AJRLogFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return log10(double)
     }
     
@@ -126,9 +126,9 @@ open class AJRLogFunction : AJRFunction {
 @objcMembers
 open class AJRLnFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return log(double)
     }
     

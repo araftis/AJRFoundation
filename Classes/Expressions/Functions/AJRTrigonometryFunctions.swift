@@ -10,9 +10,9 @@ import Foundation
 @objcMembers
 open class AJRSinFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return sin(double)
     }
     
@@ -21,9 +21,9 @@ open class AJRSinFunction : AJRFunction {
 @objcMembers
 open class AJRCosFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return cos(double)
     }
     
@@ -32,9 +32,9 @@ open class AJRCosFunction : AJRFunction {
 @objcMembers
 open class AJRTanFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return tan(double)
     }
     
@@ -43,9 +43,9 @@ open class AJRTanFunction : AJRFunction {
 @objcMembers
 open class AJRArcsinFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return asin(double)
     }
     
@@ -54,9 +54,9 @@ open class AJRArcsinFunction : AJRFunction {
 @objcMembers
 open class AJRArccosFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
-        let double : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
+        let double : Double = try arguments.float(at: 0, withObject: object)
         return acos(double)
     }
     
@@ -65,15 +65,15 @@ open class AJRArccosFunction : AJRFunction {
 @objcMembers
 open class AJRArctanFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCountMin: 1, max: 2)
-        let value1 : Double = try float(at: 0, withObject: object)
+    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCountMin: 1, max: 2)
+        let value1 : Double = try arguments.float(at: 0, withObject: object)
         let returnValue : Double
 
         if arguments.count == 1 {
             returnValue = atan(value1)
         } else {
-            let value2 : Double = try float(at: 1, withObject: object)
+            let value2 : Double = try arguments.float(at: 1, withObject: object)
             returnValue = atan2(value1, value2)
         }
 

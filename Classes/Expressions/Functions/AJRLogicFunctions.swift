@@ -10,11 +10,11 @@ import Foundation
 @objcMembers
 open class AJRIfFunction : AJRFunction {
 
-    public override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount:2)
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount:2)
         var returnValue : Any? = nil
         
-        let expressionResult : Bool = try boolean(at:0, withObject:object)
+        let expressionResult : Bool = try arguments.boolean(at:0, withObject:object)
         if expressionResult {
             returnValue = try AJRExpression.evaluate(value: arguments[1], withObject: object)
         }
@@ -27,11 +27,11 @@ open class AJRIfFunction : AJRFunction {
 @objcMembers
 open class AJRIfElseFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount:3)
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount:3)
         var returnValue : Any? = nil
         
-        let expressionResult : Bool = try boolean(at:0, withObject:object)
+        let expressionResult : Bool = try arguments.boolean(at:0, withObject:object)
         if expressionResult {
             returnValue = try AJRExpression.evaluate(value: arguments[1], withObject: object)
         } else {

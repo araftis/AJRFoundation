@@ -36,12 +36,13 @@ public class AJRSimpleExpression : AJROperatorExpression {
     public override var description : String {
         return "(\(left ?? "nil") \(self.operator.preferredToken) \(right ?? "nil"))"
     }
-    
+
+    @objc
     public override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRSimpleExpression {
             return (super.isEqual(to: other)
-                && AJREqual(left, typed.left)
-                && AJREqual(right, typed.right)
+                && AJRAnyEquals(left, typed.left)
+                && AJRAnyEquals(right, typed.right)
             )
         }
         return false

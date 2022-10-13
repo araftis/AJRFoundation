@@ -352,7 +352,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"1 * * 1" withObject:nil expectedResult:nil expectError:YES];
     
     NSString *error = [self _testExpression:@"ajr_broken()" withObject:nil expectedResult:nil expectError:YES];
-    XCTAssert(error != nil && [error containsString:@"AJRFoundation.AJRFunctionError.unimplementedAbstract(\"Abstract method AJRBrokenFunction.evaluate(with:) should be implemented\")"]);
+    XCTAssert(error != nil && [error containsString:@"AJRFoundation.AJRFunctionError.unimplementedAbstract(\"Abstract method AJRBrokenFunction.evaluate(with:arguments:) should be implemented\")"]);
 
     NSError *localError = nil;
     AJRExpression *expression = [[AJRExpression alloc] init];
@@ -371,8 +371,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     AJRExpressionStackFrame *stackFrame = [[AJRExpressionStackFrame alloc] init];
     
     [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOperator value:[AJROperator operatorForToken:@"+"]] error:NULL];
-    [stackFrame expressionWithError:&localError];
-    XCTAssert(localError != nil);
+    AJRExpression *expression = [stackFrame expressionWithError:&localError];
+    XCTAssert(expression == nil && localError != nil);
 
     localError = nil;
     stackFrame = [[AJRExpressionStackFrame alloc] init];
@@ -384,16 +384,16 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     NSError *localError = nil;
 
     AJRExpression *expression = [AJRExpressionParser expressionWithFormat:@"%s = %@ or \"int\" = %d or \"float\" = %f" arguments: @[@"test", @"test", @1, @(M_PI)] error: NULL];
-    XCTAssert(expression != nil && [[expression description] isEqualToString:@"(((((test == test) || int) == 1) || float) == 3.141592653589793)"]);
+    XCTAssert(expression != nil && [[expression description] isEqualToString:@"(((\"test\" == \"test\") || (\"int\" == 1)) || (\"float\" == 3.141592653589793))"]);
     
     expression = [AJRExpressionParser expressionForString:@"test = test" error:NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == test)"]);
+
+    expression = [AJRExpressionParser expressionWithFormat:@"%s = %s" arguments:@[@"test", [NSNull null]] error:&localError];
+    XCTAssert(expression != nil && [[expression description] isEqualToString:@"(\"test\" == nil)"], @"Error encounted: %@", localError);
     
-    expression = [AJRExpressionParser expressionWithFormat:@"%s = %s" arguments:@[@"test", [NSNull null]] error:NULL];
-    XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == (null))"]);
-    
-    expression = [AJRExpressionParser expressionWithFormat:@"%s = %@" arguments: @[@"test", @1] error:NULL];
-    XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == 1)"]);
+    expression = [AJRExpressionParser expressionWithFormat:@"%s = %@" arguments: @[@"test", @1] error:&localError];
+    XCTAssert(expression != nil && [[expression description] isEqualToString:@"(\"test\" == 1)"], @"Error encounted: %@", localError);
     
     localError = nil;
     expression = [AJRExpressionParser expressionWithFormat:@"%s = %" arguments: @[@"test", @"test"] error: &localError];
@@ -409,7 +409,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert(expression != nil && [[expression evaluateWithObject:nil error:NULL] isEqualToString:@"This is a long string to force reallocation while reading a string constant."]);
     
     expression = [[[AJRExpressionParser alloc] initWithFormat:@"%s = %@" arguments:@[@"test", @"test"] error:NULL] expressionWithError:NULL];
-    XCTAssert(expression != nil && [[expression description] isEqualToString:@"(test == test)"]);
+    XCTAssert(expression != nil && [[expression description] isEqualToString:@"(\"test\" == \"test\")"]);
 }
 
 - (void)testExpressionConstructors {
@@ -439,63 +439,17 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     expression = [AJRExpression expressionWithString:@"min(1, 2, max(3, 4))" error:NULL];
     decoded = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     XCTAssert(AJREqual(expression, decoded));
-
-//    NSString *raw = @"{"
-//    @"    function = {"
-//    @"        arguments = ("
-//    @"             {"
-//    @"                 protected = 0;"
-//    @"                 type = AJRConstantExpression;"
-//    @"                 value = {"
-//    @"                     encoding = I;"
-//    @"                     type = NSNumber;"
-//    @"                     value = 1;"
-//    @"                 };"
-//    @"             }"
-//    @"        );"
-//    @"        type = AJRThisAintGunnaWorkFunction;"
-//    @"    };"
-//    @"    protected = 1;"
-//    @"    type = AJRFunctionExpression;"
-//    @"}";
-//    NSDictionary *rawDictionary = [raw propertyList];
-//    decoded = [AJRExpression expressionForObject:rawDictionary error:&localError];
-//    XCTAssert(decoded == nil);
-//    XCTAssert([[localError localizedDescription] isEqualToString:@"No known function class: AJRThisAintGunnaWorkFunction"]);
-    
-//    raw = @"{"
-//    @"    function = {"
-//    @"        arguments = ("
-//    @"             {"
-//    @"                 protected = 0;"
-//    @"                 type = AJRConstantExpression;"
-//    @"                 value = {"
-//    @"                     encoding = Z;"
-//    @"                     type = NSNumber;"
-//    @"                     value = 1;"
-//    @"                 };"
-//    @"             }"
-//    @"        );"
-//    @"        type = AJRSinFunction;"
-//    @"    };"
-//    @"    protected = 1;"
-//    @"    type = AJRFunctionExpression;"
-//    @"}";
-//    rawDictionary = [raw propertyList];
-//    decoded = [AJRExpression expressionForObject:rawDictionary error:&localError];
-//    XCTAssert(decoded == nil);
-//    XCTAssert([[localError localizedDescription] isEqualToString:@"Unknown number encoding: Z"]);
 }
 
 - (void)testTokens {
-    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeComma] description] rangeOfString:@"Comma"].location != NSNotFound);
-    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeNumber] description] rangeOfString:@"Number"].location != NSNotFound);
-    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeString] description] rangeOfString:@"String"].location != NSNotFound);
-    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOpenParen] description] rangeOfString:@"OpenParen"].location != NSNotFound);
-    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeCloseParen] description] rangeOfString:@"CloseParen"].location != NSNotFound);
-    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeLiteral] description] rangeOfString:@"Literal"].location != NSNotFound);
-    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeFunction] description] rangeOfString:@"Function"].location != NSNotFound);
-    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOperator] description] rangeOfString:@"Operator"].location != NSNotFound);
+    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeComma] description] rangeOfString:@"comma"].location != NSNotFound, @"Didn't get expected value: %@", [[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeComma] description]);
+    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeNumber] description] rangeOfString:@"number"].location != NSNotFound);
+    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeString] description] rangeOfString:@"string"].location != NSNotFound);
+    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOpenParen] description] rangeOfString:@"openParen"].location != NSNotFound);
+    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeCloseParen] description] rangeOfString:@"closeParen"].location != NSNotFound);
+    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeLiteral] description] rangeOfString:@"literal"].location != NSNotFound);
+    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeFunction] description] rangeOfString:@"function"].location != NSNotFound);
+    XCTAssert([[[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOperator] description] rangeOfString:@"operator"].location != NSNotFound);
 }
 
 - (void)testCoding {

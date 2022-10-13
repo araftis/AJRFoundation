@@ -10,7 +10,7 @@ import Foundation
 @objcMembers
 open class AJRArrayFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
         var array = Array<Any>()
         
         for argument in arguments {
@@ -29,7 +29,7 @@ open class AJRArrayFunction : AJRFunction {
 @objcMembers
 open class AJRSetFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
         var set = Set<AnyHashable>()
         
         for argument in arguments {
@@ -48,7 +48,7 @@ open class AJRSetFunction : AJRFunction {
 @objcMembers
 open class AJRDictionaryFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
         var dictionary = Dictionary<AnyHashable, Any>()
 
         if arguments.count % 2 != 0 {
@@ -76,10 +76,10 @@ open class AJRDictionaryFunction : AJRFunction {
 @objcMembers
 open class AJRCountFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount:1)
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount:1)
         
-        if let collection = try collection(at:0, withObject:object) {
+        if let collection = try arguments.collection(at:0, withObject:object) {
             return collection.count
         }
         throw AJRFunctionError.invalidArgument("Argument to count() isn't a collection.")
@@ -90,10 +90,10 @@ open class AJRCountFunction : AJRFunction {
 @objcMembers
 open class AJRContainsFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount:2)
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount:2)
 
-        if let collection = try self.collection(at:0, withObject:object) {
+        if let collection = try arguments.collection(at:0, withObject:object) {
             let value = try AJRExpression.evaluate(value: arguments[1], withObject:object)
             return collection.contains(equatable: value == nil ? NSNull.init() : value!)
         }
@@ -105,49 +105,48 @@ open class AJRContainsFunction : AJRFunction {
 @objcMembers
 open class AJRIterateFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount:2)
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount:2)
         
         var newCollection : Any?
         var appender : (Any) -> Void
         
-        if let collection = try collection(at: 0, withObject: object) {
-            let functionExpression = arguments[1] as? AJRFunctionExpression
-            if functionExpression == nil {
-                throw AJRFunctionError.invalidArgument("Invalid argument to function \"\(name)\": \(arguments[1]). Expected a function.")
-            }
-            
-            switch collection.semantic {
-            case .unknown: fallthrough // Just treat the unknown case as ordered.
-            case .valueOrdered: fallthrough
-            case .keyValueOrdered:
-                var intermediate = Array<Any>()
-                appender = { (value : Any) in
-                    intermediate.append(value)
-                    newCollection = intermediate
-                }
-            case .valueUnordered: fallthrough
-            case .keyValueUnordered:
-                var intermediate = Set<AnyHashable>()
-                appender = { (value : Any) in
-                    _ = intermediate.insert(value as! AnyHashable)
-                    newCollection = intermediate
-                }
-            }
-            
-            if let function = functionExpression?.function {
-                for argument in collection {
-                    if let argument = argument as? (key:AnyHashable, value:Any) {
-                        function.arguments = [AJRConstantExpression(value: argument.value)]
-                    } else {
-                        function.arguments = [AJRConstantExpression(value: argument)]
+        if let collection = try arguments.collection(at: 0, withObject: object) {
+            if let functionExpression = arguments[1] as? AJRFunctionExpression {
+                switch collection.semantic {
+                case .unknown: fallthrough // Just treat the unknown case as ordered.
+                case .valueOrdered: fallthrough
+                case .keyValueOrdered:
+                    var intermediate = Array<Any>()
+                    appender = { (value : Any) in
+                        intermediate.append(value)
+                        newCollection = intermediate
                     }
-                    if let result = try function.evaluate(with: object) {
+                case .valueUnordered: fallthrough
+                case .keyValueUnordered:
+                    var intermediate = Set<AnyHashable>()
+                    appender = { (value : Any) in
+                        _ = intermediate.insert(value as! AnyHashable)
+                        newCollection = intermediate
+                    }
+                }
+
+                for argument in collection {
+                    let localArguments : [AJRExpression]
+                    if let argument = argument as? (key:AnyHashable, value:Any) {
+                        localArguments = [AJRConstantExpression(value: argument.value)]
+                    } else {
+                        localArguments = [AJRConstantExpression(value: argument)]
+                    }
+                    let localArgumentExpression = AJRFunctionExpression(function: functionExpression.function, arguments: localArguments)
+                    if let result = try localArgumentExpression.evaluate(with: object) {
                         appender(result)
                     } else {
                         appender(NSNull.init())
                     }
                 }
+            } else {
+                throw AJRFunctionError.invalidArgument("Invalid argument to function \"\(name)\": \(arguments[1]). Expected a function.")
             }
         }
         

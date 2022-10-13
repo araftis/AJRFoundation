@@ -45,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,readonly) BOOL isFloatingPoint;
 @property (nonatomic,readonly) BOOL isPositive;
 @property (nonatomic,readonly) BOOL isNegative;
+@property (nonatomic,readonly) BOOL isUnsignedInteger;
 @property (nonatomic,readonly) BOOL isInteger;
 
 @end

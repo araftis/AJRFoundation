@@ -118,11 +118,17 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding {
 
     // MARK: - Equatable
 
+    @objc
     public override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRExpression {
-            return AJREqual(protected, typed.protected)
+            return AJRAnyEquals(protected, typed.protected)
         }
         return false
+    }
+
+    @objc
+    public override func isEqual(_ object: Any?) -> Bool {
+        return isEqual(to: object)
     }
 
     public static func == (lhs: AJRExpression, rhs: AJRExpression) -> Bool {

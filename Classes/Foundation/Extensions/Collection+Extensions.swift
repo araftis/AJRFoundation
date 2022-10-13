@@ -381,6 +381,20 @@ extension Array : AJRCollection {
 
 }
 
+extension NSArray : AJRCollection {
+
+    public var semantic: AJRCollectionSemantic {
+        return .valueOrdered
+    }
+
+    public func appendAny(_ value: Any) {
+        if let mutable = self as? NSMutableArray {
+            mutable.add(value)
+        }
+    }
+
+}
+
 extension Set : AJRCollection {
 
     public var semantic : AJRCollectionSemantic {
