@@ -16,8 +16,9 @@ public class AJROperatorExpression : AJRExpression {
         self.operator = anOperator
         super.init()
     }
-    
-    public override func isEqual(to other: Any?) -> Bool {
+
+    @objc
+    open override func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJROperatorExpression {
             return (super.isEqual(to: other)
                 && self.operator == other.operator)

@@ -10,8 +10,8 @@ import Foundation
 @objcMembers
 open class AJRIsNullFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
         let value = try AJRExpression.value(arguments[0], withObject: object)
         
         return value == nil || value is NSNull ? true : false;
@@ -22,8 +22,8 @@ open class AJRIsNullFunction : AJRFunction {
 @objcMembers
 open class AJRHelpFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?) throws -> Any? {
-        try check(argumentCount: 1)
+    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+        try arguments.check(argumentCount: 1)
         var result : Any? = nil
         
         if let expression = arguments[0] as? AJRFunctionExpression {

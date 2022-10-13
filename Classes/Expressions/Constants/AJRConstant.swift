@@ -43,6 +43,7 @@ open class AJRConstant : AJRUnaryOperator, NSCopying {
                 if let tokenName = token["name"] as? String {
                     constants[tokenName] = constantInstance
                     AJRExpressionParser.addLiteralToken(tokenName)
+                    constantInstance.append(token: tokenName)
                 }
             }
         }
@@ -109,10 +110,16 @@ internal class AJRUnitTestConstant : AJRConstant {
 
     required internal init() {
         self.internalValue = nil
+        super.init()
     }
     
     internal init(value: Any?) {
         self.internalValue = value
+        super.init()
     }
-    
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
 }

@@ -49,6 +49,14 @@ public protocol AJREquatable {
     
 }
 
+public extension AJREquatable {
+
+    func isEqual(_ other: Any?) -> Bool {
+        return self.isEqual(to: other)
+    }
+
+}
+
 public protocol AJRValueForUntypedComparison {
     func signedValueForComparison() throws -> Int64
     func unsignedValueForComparison() throws -> UInt64
@@ -111,6 +119,9 @@ public func AJRAnyEquals(_ lhsIn: Any?, _ rhsIn: Any?) -> Bool {
     } else if (lhs == nil && rhs != nil) || (lhs != nil && rhs == nil) {
         return false
     } else if let lhs = lhs as? AJREquatable, let rhs = rhs {
+        return lhs.isEqual(to: rhs)
+    } else if let lhs = lhs as? AnyObject {
+        // Because AnyObjects are NSObjects, and they'll implement isEqual(to:)
         return lhs.isEqual(to: rhs)
     }
     
@@ -406,6 +417,83 @@ extension Float : AJRValueForUntypedDoubleComparison, AJRValueForUntypedComparis
         return result
     }
     
+}
+
+extension NSNumber : AJRValueForUntypedDoubleComparison, AJRValueForUntypedComparison, AJREquatable, AJRComparable {
+
+    public func signedValueForComparison() throws -> Int64 {
+        if self.isUnsignedInteger {
+            let value = uint64Value
+            // Only return a value if we won't overflow
+            if value <= Int64.max {
+                return Int64(value)
+            }
+        } else if self.isInteger {
+            return int64Value
+        } else if self.isFloatingPoint {
+            let doubleValue = self.doubleValue
+            if floor(doubleValue) == doubleValue {
+                return Int64(doubleValue)
+            }
+        }
+        throw AJRNumericError.cannotRepresentValue
+    }
+
+    public func unsignedValueForComparison() throws -> UInt64 {
+        if isUnsignedInteger {
+            return uint64Value
+        } else if isInteger && !isNegative {
+            return uint64Value
+        } else if isFloatingPoint {
+            if !isNegative {
+                let doubleValue = self.doubleValue
+                if floor(doubleValue) == doubleValue {
+                    // We're an integer value, so...
+                    return uint64Value
+                }
+            }
+        }
+        throw AJRNumericError.cannotRepresentValue
+    }
+
+    public func doubleValueForComparison() throws -> Double {
+        return doubleValue
+    }
+
+    public var isFloatingPoint : Bool { return true }
+
+// I'm pretty sure we don't want this, but just in case...
+//    public func isEqual(to other: Any?) -> Bool {
+//        var result = false
+//        if let other = other as? AJRValueForUntypedDoubleComparison {
+//            do {
+//                let left = try self.doubleValueForComparison()
+//                let right = try other.doubleValueForComparison()
+//                result = left == right
+//            } catch {
+//                // We don't care, we failed to convert other to double, so fail.
+//            }
+//        }
+//        return result
+//    }
+
+    public func compare(to other: Any) -> AJRComparisonResult {
+        var result = AJRComparisonResult.incomparable
+        if let other = other as? AJRValueForUntypedDoubleComparison {
+            do {
+                let left = try self.doubleValueForComparison()
+                let right = try other.doubleValueForComparison()
+                if left == right {
+                    result = .orderedSame
+                } else {
+                    result = left < right ? .orderedAscending : .orderedDescending
+                }
+            } catch {
+            }
+        }
+        return result
+    }
+
 }
 
 extension Double : AJRValueForUntypedDoubleComparison, AJRValueForUntypedComparison, AJREquatable, AJRComparable {

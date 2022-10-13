@@ -56,7 +56,7 @@ public func AJROperatorPrecedenceFromString(_ string: String) -> AJROperator.Pre
 }
 
 @objcMembers
-open class AJROperator: NSObject, AJREquatable {
+open class AJROperator: NSObject, AJREquatable, NSCoding {
 
     @objc(AJROperatorPrecedence)
     public enum Precedence : Int, AJRXMLEncodableEnum {
@@ -110,15 +110,11 @@ open class AJROperator: NSObject, AJREquatable {
     
     open private(set) var tokens = [String]()
 
-//    open class var preferredToken : String { return tokens[0] }
-    open var preferredToken : String { return tokens[0] }
-    
-    internal struct OperatorInfo {
-        var instance : AJROperator
-        var operators : [String]
-        var precedence : Precedence = .additive
-        var canActAsUnary : Bool = false
+    internal func append(token: String) {
+        tokens.append(token)
     }
+
+    open var preferredToken : String { return tokens[0] }
     
     private static var operatorsByToken = [String:AJROperator]()
     private static var operatorsByClassName = [String:AJROperator]()
@@ -292,6 +288,29 @@ open class AJROperator: NSObject, AJREquatable {
     
     public static func == (lhs: AJROperator, rhs: AJROperator) -> Bool {
         return lhs.isEqual(to:rhs)
+    }
+
+    // MARK: - NSCoding
+
+    public func encode(with coder: NSCoder) {
+        coder.encode(precedence.rawValue, forKey: "precedence")
+        coder.encode(canActAsUnary, forKey: "canActAsUnary")
+        coder.encode(preferredToken, forKey: "preferredToken")
+        coder.encode(tokens, forKey: "tokens")
+    }
+
+    public required init?(coder: NSCoder) {
+        if let precedence = Precedence(rawValue: coder.decodeInteger(forKey: "precedence")) {
+            self.precedence = precedence
+        } else {
+            return nil
+        }
+        self.canActAsUnary = coder.decodeBool(forKey: "canActAsUnary")
+        if let tokens = coder.decodeObject(forKey: "tokens") as? [String] {
+            self.tokens = Array<String>(tokens)
+        } else {
+            return nil
+        }
     }
 
     // MARK: - Utilties

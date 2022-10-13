@@ -32,7 +32,7 @@
 import Foundation
 
 @objcMembers
-public class AJRExpressionStackFrame : NSObject {
+open class AJRExpressionStackFrame : NSObject {
     
     class AJRStackToken: CustomStringConvertible {
         

@@ -78,7 +78,7 @@ open class AJRConstantExpression : AJRExpression {
     public override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRConstantExpression {
             return (super.isEqual(to: other)
-                && AJREqual(value, typed.value)
+                && AJRAnyEquals(value, typed.value)
             )
         }
         return false

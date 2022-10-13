@@ -32,23 +32,26 @@
 import Foundation
 
 @objcMembers
-public class AJRFunctionExpression : AJRExpression {
+open class AJRFunctionExpression : AJRExpression {
     
     // MARK: - Properties
     
-    public var function : AJRFunction
+    open var function : AJRFunction
+    open var arguments : AJRFunctionArguments
     
     // MARK: - Creation
     
-    public init(function: AJRFunction) {
+    public init(function: AJRFunction, arguments: [AJRExpression]) {
         self.function = function
+        self.arguments = AJRFunctionArguments(arguments: arguments)
         super.init()
+        self.arguments.functionExpression = self
     }
     
     // MARK: - AJRExpression
     
     public override func evaluate(with object: Any?) throws -> Any? {
-        return try function.evaluate(with: object)
+        return try function.evaluate(with: object, arguments: arguments)
     }
     
     // MARK: - CustomStringConvertible
@@ -58,7 +61,7 @@ public class AJRFunctionExpression : AJRExpression {
     
         description += function.name
         description += "("
-        for (index, argument) in function.arguments.enumerated() {
+        for (index, argument) in arguments.enumerated() {
             if index > 0 {
                 description += ", "
             }
@@ -72,7 +75,7 @@ public class AJRFunctionExpression : AJRExpression {
     public override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRFunctionExpression {
             return (super.isEqual(to: other)
-                && AJREqual(function, typed.function)
+                && AJRAnyEquals(function, typed.function)
             )
         }
         return false;
@@ -86,12 +89,18 @@ public class AJRFunctionExpression : AJRExpression {
         } else {
             return nil
         }
+        if let arguments = coder.decodeObject(forKey: "arguments") as? AJRFunctionArguments {
+            self.arguments = arguments
+        } else {
+            return nil
+        }
         super.init(coder:coder)
     }
 
     public override func encode(with coder: NSCoder) {
         super.encode(with: coder)
         coder.encode(function, forKey: "function")
+        coder.encode(arguments, forKey: "arguments")
     }
 
 }

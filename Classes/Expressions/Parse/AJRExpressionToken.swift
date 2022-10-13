@@ -35,7 +35,7 @@ import Foundation
 public class AJRExpressionToken: NSObject {
 
     @objc(AJRExpressionTokenType)
-    public enum TokenType : Int {
+    public enum TokenType : Int, CustomStringConvertible, AJRXMLEncodableEnum {
         case string
         case number
         case dateComponent
@@ -45,6 +45,20 @@ public class AJRExpressionToken: NSObject {
         case closeParen
         case function
         case comma
+
+        public var description: String {
+            switch self {
+            case .string: return "string"
+            case .number: return "number"
+            case .dateComponent: return "dateComponent"
+            case .literal: return "literal"
+            case .`operator`: return "operator"
+            case .openParen: return "openParen"
+            case .closeParen: return "closeParen"
+            case .function: return "function"
+            case .comma: return "comma"
+            }
+        }
     }
     
 

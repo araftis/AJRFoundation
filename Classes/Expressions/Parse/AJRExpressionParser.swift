@@ -102,11 +102,12 @@ public class AJRExpressionParser : NSObject {
         if argumentIndex >= arguments.count {
             throw AJRExpressionParserError.insufficientArguments("Not enough arguments were provided by caller.")
         }
+        let argument = arguments[argumentIndex];
         argumentIndex += 1
-        if arguments[argumentIndex - 1] == nil {
+        if argument == nil || (argument as? NSObject) == NSNull.init() {
             return nil
         }
-        if let argument = arguments[argumentIndex - 1] as? T {
+        if let argument = argument as? T {
             return argument
         }
         throw AJRExpressionParserError.invalidType("Argument was not of a valid type: \(type(of:T.self))")
@@ -316,6 +317,9 @@ public class AJRExpressionParser : NSObject {
         if value == nil {
             token = AJRExpressionToken.token(type: .number, value: nil)
         } else if value is (any BinaryInteger) || value is (any BinaryFloatingPoint) {
+            token = AJRExpressionToken.token(type: .number, value: value)
+        } else if value is NSNumber {
+            // This means we got a value via the Obj-C bridge.
             token = AJRExpressionToken.token(type: .number, value: value)
         } else if let value = value as? CustomStringConvertible {
             // A string, or something we're going to treat as a string.

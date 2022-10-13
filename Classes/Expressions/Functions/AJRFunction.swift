@@ -42,11 +42,9 @@ public enum AJRFunctionError : Error {
 }
 
 @objcMembers
-open class AJRFunction : NSObject, AJREquatable {
+open class AJRFunction : NSObject, AJREquatable, NSCoding {
     
     // MARK: - Properties
-    
-    open var arguments = [AJRExpression]()
     
     private static var functions = [String:AJRFunction]()
 
@@ -96,89 +94,37 @@ open class AJRFunction : NSObject, AJREquatable {
         // Has to be here so we can call from our meta-type
     }
     
-    // MARK: - Arguments
-    
-    public func append(argument: AJRExpression) -> Void {
-        arguments.append(argument)
-    }
-
     // MARK: - CustomStringConvertible
     
     public override var description: String {
-        return ""
+        return "\(name)(...)"
     }
     
     // MARK: - Actions
     
-    open func evaluate(with object: Any?) throws -> Any? {
+    open func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
         throw AJRFunctionError.unimplementedAbstract("Abstract method \(type(of:self)).\(#function) should be implemented")
-    }
-    
-    // MARK: - Utilities
-    
-    public func check(argumentCount count: Int) throws -> Void {
-        if arguments.count != count {
-            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(name) expects \(count) argument\(count == 1 ? "" : "s")")
-        }
-    }
-    
-    public func check(argumentCountMin min: Int) throws -> Void {
-        if arguments.count < min {
-            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(name) expects at least \(min) argument\(min == 1 ? "" : "s")")
-        }
-    }
-    
-    public func check(argumentCountMin min: Int, max: Int) throws -> Void {
-        if arguments.count < min || arguments.count > max {
-            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(name) expects between \(min) and \(max) arguments")
-        }
-    }
-    
-    public func check(argumentCountMax max: Int) throws -> Void {
-        if arguments.count > max {
-            throw AJRFunctionError.invalidArgumentCount("AJRFunction \(name) expects at most \(max) argument\(max == 1 ? "" : "s")")
-        }
-    }
-    
-    public func string(at index: Int, withObject object: Any?) throws -> String {
-        return try AJRExpression.valueAsString(arguments[index], withObject: object)
-    }
-    
-    public func date(at index: Int, withObject object: Any?) throws -> AJRTimeZoneDate? {
-        return try AJRExpression.valueAsDate(arguments[index], withObject: object)
-    }
-    
-    public func boolean(at index: Int, withObject object: Any?) throws -> Bool {
-        return try AJRExpression.valueAsBool(arguments[index], withObject: object)
-    }
-    
-    public func integer<T: BinaryInteger>(at index: Int, withObject object: Any?) throws -> T {
-        return try AJRExpression.valueAsInteger(arguments[index], withObject: object)
-    }
-
-    public func float<T: BinaryFloatingPoint>(at index: Int, withObject object: Any?) throws -> T {
-        return try AJRExpression.valueAsFloat(arguments[index], withObject: object)
-    }
-    
-    public func collection(at index: Int, withObject object: Any?) throws -> (any AJRCollection)? {
-        return try AJRExpression.valueAsCollection(arguments[index], withObject: object)
     }
     
     // MARK: - Equality
     
     public func equal(toFunction other: AJRFunction) -> Bool {
-        return AJREqual(arguments, other.arguments)
+        return AJRAnyEquals(name, other.name)
+    }
+
+    public override func isEqual(_ object: Any?) -> Bool {
+        return isEqual(to: object)
     }
     
     public override func isEqual(to other: Any?) -> Bool {
-        if type(of:self) == type(of:other) {
-            return equal(toFunction: other as! AJRFunction)
+        if let other = other as? AJRFunction {
+            return equal(toFunction: other)
         }
         return false
     }
     
     public static func == (lhs: AJRFunction, rhs: AJRFunction) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(to: rhs)
     }
 
     // MARK: - Copying
@@ -187,8 +133,34 @@ open class AJRFunction : NSObject, AJREquatable {
         let new = type(of: self).init()
         new.name = name
         new.prototype = prototype
-        new.arguments = arguments
         return new
     }
+
+    // MARK: - Hash
+
+    open override var hash: Int {
+        return name.hash
+    }
     
+    // MARK: - NSCoding
+
+    public required init?(coder: NSCoder) {
+        if let name = coder.decodeObject(forKey: "name") as? String {
+            self.name = name
+        } else {
+            return nil
+        }
+        if let prototype = coder.decodeObject(forKey: "prototype") as? String {
+            self.prototype = prototype
+        } else {
+            return nil
+        }
+        super.init()
+    }
+
+    public func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: "name")
+        coder.encode(prototype, forKey: "prototype")
+    }
+
 }

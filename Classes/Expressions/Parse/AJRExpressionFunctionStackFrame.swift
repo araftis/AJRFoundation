@@ -32,12 +32,13 @@
 import Foundation
 
 @objcMembers
-public class AJRExpressionFunctionStackFrame : AJRExpressionStackFrame {
+open class AJRExpressionFunctionStackFrame : AJRExpressionStackFrame {
     
     // MARK: - Properties
     
-    public var function : AJRFunction
-    
+    open var function : AJRFunction
+    open var arguments = [AJRExpression]()
+
     // MARK: - Creation
     
     public init(function: AJRFunction) {
@@ -53,7 +54,7 @@ public class AJRExpressionFunctionStackFrame : AJRExpressionStackFrame {
             // Get the actual expression of the argument from our super.
             let expression = try super.expression()
             // Add it as an argument to the function.
-            function.append(argument: expression)
+            arguments.append(expression)
 
             // And regardless of what we did, clear the expression in preparation for the next argument.
             tokenStack.removeAll()
@@ -67,7 +68,7 @@ public class AJRExpressionFunctionStackFrame : AJRExpressionStackFrame {
     
     public override func expression() throws -> AJRExpression {
         try reduceArgument()
-        return AJRFunctionExpression(function: function)
+        return AJRFunctionExpression(function: function, arguments: arguments)
     }
 
 }
