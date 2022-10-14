@@ -57,7 +57,7 @@ open class AJRConstantExpression : AJRExpression {
     
     // MARK: - Actions
     
-    public override func evaluate(with object: Any?) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
         if let constant = value as? AJRConstant {
             return constant.value
         }

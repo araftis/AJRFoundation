@@ -28,7 +28,7 @@ open class AJRAddOperator : AJROperator, AJRStringOperator, AJRIntOperator, AJRD
         return left + right
     }
     
-    public override func performOperator(withValue value: Any?) throws -> Any? {
+    public override func performOperator(value: Any?, context: AJREvaluationContext) throws -> Any? {
         return value
     }
     

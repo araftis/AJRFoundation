@@ -173,25 +173,25 @@ open class AJROperator: NSObject, AJREquatable, NSCoding {
         return value == nil || value is DateComponents
     }
     
-    open func performOperator(withLeft left: Any?, andRight right: Any?) throws -> Any? {
+    open func performOperator(left: Any?, right: Any?, context: AJREvaluationContext) throws -> Any? {
         if let op = self as? AJRDateOperator {
             if left is AJRTimeZoneDate && valueCanBeDateComponents(right) {
                 let leftDate : AJRTimeZoneDate = left as! AJRTimeZoneDate
-                if let rightDateComponents = try AJRExpression.valueAsDateComponents(right) {
+                if let rightDateComponents = try AJRExpression.valueAsDateComponents(right, with: context) {
                     return try op.performDateOperator(withLeft: leftDate, andRight: rightDateComponents)
                 } else {
                     throw AJROperatorError.invalidInput("Cannot convert value (\(right ?? "nil")) into date components")
                 }
             } else if valueCanBeDateComponents(left) && right is AJRTimeZoneDate {
                 let rightDate : AJRTimeZoneDate = right as! AJRTimeZoneDate
-                if let leftDateComponents : DateComponents = try AJRExpression.valueAsDateComponents(left) {
+                if let leftDateComponents : DateComponents = try AJRExpression.valueAsDateComponents(left, with: context) {
                     return try op.performDateOperator(withLeft: leftDateComponents, andRight: rightDate)
                 } else {
                     throw AJROperatorError.invalidInput("Cannot convert value (\(right ?? "nil")) into date components")
                 }
             } else if valueCanBeDateComponents(left) && valueCanBeDateComponents(right) {
-                if let leftDateComponents : DateComponents = try AJRExpression.valueAsDateComponents(left),
-                    let rightDateComponents : DateComponents = try AJRExpression.valueAsDateComponents(right) {
+                if let leftDateComponents : DateComponents = try AJRExpression.valueAsDateComponents(left, with: context),
+                    let rightDateComponents : DateComponents = try AJRExpression.valueAsDateComponents(right, with: context) {
                     return try op.performDateOperator(withLeft: leftDateComponents, andRight: rightDateComponents)
                 } else {
                     throw AJROperatorError.invalidInput("Cannot convert value (\(left ?? "nil")) or (\(right ?? "nil")) into date components")
@@ -202,29 +202,29 @@ open class AJROperator: NSObject, AJREquatable, NSCoding {
         }
         if let op = self as? AJRStringOperator {
             if left is String || right is String {
-                let leftString = try AJRExpression.valueAsString(left)
-                let rightString = try AJRExpression.valueAsString(right)
+                let leftString = try AJRExpression.valueAsString(left, with: context)
+                let rightString = try AJRExpression.valueAsString(right, with: context)
                 return try op.performStringOperator(withLeft: leftString, andRight: rightString)
             }
         }
         if let op = self as? AJRDoubleOperator {
             if left is Double || right is Double {
-                let leftDouble : Double = try AJRExpression.valueAsFloat(left)
-                let rightDouble : Double = try AJRExpression.valueAsFloat(right)
+                let leftDouble : Double = try AJRExpression.valueAsFloat(left, with: context)
+                let rightDouble : Double = try AJRExpression.valueAsFloat(right, with: context)
                 return try op.performDoubleOperator(withLeft: leftDouble, andRight: rightDouble)
             }
         }
         if let op = self as? AJRIntOperator {
             if left is Int || right is Int {
-                let leftInt : Int = try AJRExpression.valueAsInteger(left)
-                let rightInt : Int = try AJRExpression.valueAsInteger(right)
+                let leftInt : Int = try AJRExpression.valueAsInteger(left, with: context)
+                let rightInt : Int = try AJRExpression.valueAsInteger(right, with: context)
                 return try op.performIntOperator(withLeft: leftInt, andRight: rightInt)
             }
         }
         if let op = self as? AJRBoolOperator {
             if left is Bool || right is Bool {
-                let leftBool = try AJRExpression.valueAsBool(left)
-                let rightBool = try AJRExpression.valueAsBool(right)
+                let leftBool = try AJRExpression.valueAsBool(left, with: context)
+                let rightBool = try AJRExpression.valueAsBool(right, with: context)
                 return try op.performBoolOperator(withLeft: leftBool, andRight: rightBool)
             }
         }
@@ -243,28 +243,28 @@ open class AJROperator: NSObject, AJREquatable, NSCoding {
         throw AJROperatorError.unimplementedAbstract("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
     
-    open func performOperator(withValue value: Any?) throws -> Any? {
+    open func performOperator(value: Any?, context: AJREvaluationContext) throws -> Any? {
         if let op = self as? AJRStringUnaryOperator {
             if value is String {
-                let valueString = try AJRExpression.valueAsString(value)
+                let valueString = try AJRExpression.valueAsString(value, with: context)
                 return try op.performStringOperator(withValue: valueString)
             }
         }
         if let op = self as? AJRDoubleUnaryOperator {
             if value is Double {
-                let valueDouble : Double = try AJRExpression.valueAsFloat(value)
+                let valueDouble : Double = try AJRExpression.valueAsFloat(value, with: context)
                 return try op.performDoubleOperator(withValue: valueDouble)
             }
         }
         if let op = self as? AJRIntUnaryOperator {
             if value is Int {
-                let valueInt : Int = try AJRExpression.valueAsInteger(value)
+                let valueInt : Int = try AJRExpression.valueAsInteger(value, with: context)
                 return try op.performIntOperator(withValue: valueInt)
             }
         }
         if let op = self as? AJRBoolUnaryOperator {
             if value is Bool {
-                let valueBool = try AJRExpression.valueAsBool(value)
+                let valueBool = try AJRExpression.valueAsBool(value, with: context)
                 return try op.performBoolOperator(withValue: valueBool)
             }
         }
@@ -313,17 +313,6 @@ open class AJROperator: NSObject, AJREquatable, NSCoding {
         }
     }
 
-    // MARK: - Utilties
-    
-    public func doOperation(left: Any?, right: Any?, asInteger: ((Int, Int) -> Int?)? = nil, asDouble: ((Double, Double) -> Double?)? = nil, asString: ((String, String) -> String?)? = nil) throws -> Any? {
-        if asString != nil && left is String || right is String {
-            let leftString = try AJRExpression.valueAsString(left)
-            let rightString = try AJRExpression.valueAsString(right)
-            return asString!(leftString, rightString)
-        }
-        // We failed to recognize any of the input types
-        return nil
-    }
 }
 
 public protocol AJRIntOperator {

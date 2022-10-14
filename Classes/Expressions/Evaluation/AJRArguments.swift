@@ -8,7 +8,7 @@
 import Foundation
 
 @objcMembers
-open class AJRFunctionArguments : NSObject, NSCoding, Sequence {
+open class AJRArguments : NSObject, NSCoding, Sequence {
 
     open var arguments : [AJRExpression]
     weak open var functionExpression : AJRFunctionExpression?
@@ -72,28 +72,28 @@ open class AJRFunctionArguments : NSObject, NSCoding, Sequence {
         }
     }
 
-    public func string(at index: Int, withObject object: Any?) throws -> String {
-        return try AJRExpression.valueAsString(arguments[index], withObject: object)
+    public func string(at index: Int, with context: AJREvaluationContext) throws -> String {
+        return try AJRExpression.valueAsString(arguments[index], with: context)
     }
 
-    public func date(at index: Int, withObject object: Any?) throws -> AJRTimeZoneDate? {
-        return try AJRExpression.valueAsDate(arguments[index], withObject: object)
+    public func date(at index: Int, with context: AJREvaluationContext) throws -> AJRTimeZoneDate? {
+        return try AJRExpression.valueAsDate(arguments[index], with: context)
     }
 
-    public func boolean(at index: Int, withObject object: Any?) throws -> Bool {
-        return try AJRExpression.valueAsBool(arguments[index], withObject: object)
+    public func boolean(at index: Int, with context: AJREvaluationContext) throws -> Bool {
+        return try AJRExpression.valueAsBool(arguments[index], with: context)
     }
 
-    public func integer<T: BinaryInteger>(at index: Int, withObject object: Any?) throws -> T {
-        return try AJRExpression.valueAsInteger(arguments[index], withObject: object)
+    public func integer<T: BinaryInteger>(at index: Int, with context: AJREvaluationContext) throws -> T {
+        return try AJRExpression.valueAsInteger(arguments[index], with: context)
     }
 
-    public func float<T: BinaryFloatingPoint>(at index: Int, withObject object: Any?) throws -> T {
-        return try AJRExpression.valueAsFloat(arguments[index], withObject: object)
+    public func float<T: BinaryFloatingPoint>(at index: Int, with context: AJREvaluationContext) throws -> T {
+        return try AJRExpression.valueAsFloat(arguments[index], with: context)
     }
 
-    public func collection(at index: Int, withObject object: Any?) throws -> (any AJRCollection)? {
-        return try AJRExpression.valueAsCollection(arguments[index], withObject: object)
+    public func collection(at index: Int, with context: AJREvaluationContext) throws -> (any AJRCollection)? {
+        return try AJRExpression.valueAsCollection(arguments[index], with: context)
     }
 
     // MARK: - NSCoding

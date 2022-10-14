@@ -22,9 +22,9 @@ public class AJRUnaryExpression : AJROperatorExpression {
     
     // MARK: - Actions
     
-    public override func evaluate(with object: Any?) throws -> Any? {
-        let value = try AJRExpression.evaluate(value: self.value, withObject: object)
-        return try self.operator.performOperator(withValue: value)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        let value = try AJRExpression.evaluate(value: self.value, with: context)
+        return try self.operator.performOperator(value: value, context: context)
     }
     
     // MARK: - NSObject

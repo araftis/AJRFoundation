@@ -41,7 +41,7 @@ public enum AJRExpressionError : Error {
 }
 
 @objcMembers
-open class AJRExpression: NSObject, AJREquatable, NSCoding {
+open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation {
 
     // MARK: - Properties
 
@@ -85,10 +85,10 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding {
 
     // MARK: - Actions
 
-    public class func evaluate(value: Any?, withObject object: Any?) throws -> Any? {
+    public class func evaluate(value: Any?, with context: AJREvaluationContext) throws -> Any? {
         var returnValue = value
         while returnValue is AJRExpression {
-            returnValue = try (returnValue! as! AJRExpression).evaluate(with: object)
+            returnValue = try (returnValue! as! AJRExpression).evaluate(with: context)
         }
         return returnValue
     }
@@ -98,21 +98,21 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding {
 
      This method is primarily meant to be called from Obj-C, and is a little jenky, because we break the standard convention here, just a little. Normally, if a method has an error parameter and returns nil, then that means an error occurred. However, for our purposes, we could evaluate to nil, as that's perfectly acceptable. As such, unlike most calls of this pattern, we always initialize `errorIO` to nil, and then initialize it with any error that occurs.
 
-     - parameter object: The "root" object of the evaluation. This is messaged to resolve key paths.
+     - parameter context: The context used to track the evaluation state of the expression.
      - parameter errorIO: A pointer to an NSError object. It may be nil.
      */
-    @objc(evaluateWithObject:error:)
-    public func evaluate(withObject object: Any? = nil, error errorIO: UnsafeMutablePointer<NSError?>?) -> Any? {
+    @objc(evaluateWithContext:error:)
+    public func evaluate(with context: AJREvaluationContext, error errorIO: NSErrorPointer) -> Any? {
         errorIO?.pointee = nil
         do {
-            return try evaluate(with: object)
+            return try evaluate(with: context)
         } catch {
             errorIO?.pointee = error as NSError
         }
         return nil
     }
 
-    public func evaluate(with object: Any? = nil) throws -> Any? {
+    public func evaluate(with context: AJREvaluationContext) throws -> Any? {
         throw AJRExpressionError.unimplementedMethod("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
 
@@ -144,17 +144,17 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding {
     // MARK: - Utilities
 
     /*! Recursive evaluates value until we reach something that doesn't evaluate to an expression. */
-    public class func value(_ valueIn: Any?, withObject object: Any? = nil) throws -> Any? {
+    public class func value(_ valueIn: Any?, with context: AJREvaluationContext) throws -> Any? {
         var value = valueIn
         while value is AJRExpression {
-            value = try (value! as! AJRExpression).evaluate(with: object)
+            value = try (value! as! AJRExpression).evaluate(with: context)
         }
         return value
     }
 
-    public class func valueAsCollection(_ valueIn: Any?, withObject object: Any? = nil) throws -> (any AJRCollection)? {
+    public class func valueAsCollection(_ valueIn: Any?, with context: AJREvaluationContext) throws -> (any AJRCollection)? {
         // Iterate an expression values until we get a basic value of some sort returned.
-        if var returnValue = try value(valueIn, withObject: object) {
+        if var returnValue = try value(valueIn, with: context) {
             // Now see if we already have a collection class. If we do, we can just return it.
             if !(returnValue is (any AJRCollection)) {
                 // Value isn't a collection so make it a collection.
@@ -166,28 +166,28 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding {
         return nil
     }
 
-    public class func valueAsBool(_ valueIn: Any?, withObject object: Any? = nil) throws -> Bool {
-        return try Conversion.valueAsBool(try value(valueIn, withObject: object))
+    public class func valueAsBool(_ valueIn: Any?, with context: AJREvaluationContext) throws -> Bool {
+        return try Conversion.valueAsBool(try value(valueIn, with: context))
     }
 
-    public class func valueAsInteger<T: BinaryInteger>(_ valueIn: Any?, withObject object: Any? = nil) throws -> T {
-        return try Conversion.valueAsInteger(try value(valueIn, withObject: object))
+    public class func valueAsInteger<T: BinaryInteger>(_ valueIn: Any?, with context: AJREvaluationContext) throws -> T {
+        return try Conversion.valueAsInteger(try value(valueIn, with: context))
     }
 
-    public class func valueAsFloat<T: BinaryFloatingPoint>(_ valueIn: Any?, withObject object: Any? = nil) throws -> T {
-        return try Conversion.valueAsFloatingPoint(try value(valueIn, withObject: object))
+    public class func valueAsFloat<T: BinaryFloatingPoint>(_ valueIn: Any?, with context: AJREvaluationContext) throws -> T {
+        return try Conversion.valueAsFloatingPoint(try value(valueIn, with: context))
     }
 
-    public class func valueAsString(_ valueIn: Any?, withObject object: Any? = nil) throws -> String {
-        return try Conversion.valueAsString(try value(valueIn, withObject: object))
+    public class func valueAsString(_ valueIn: Any?, with context: AJREvaluationContext) throws -> String {
+        return try Conversion.valueAsString(try value(valueIn, with: context))
     }
 
-    public class func valueAsDate(_ valueIn: Any?, withObject object: Any? = nil) throws -> AJRTimeZoneDate? {
-        return try Conversion.valueAsTimeZoneDate(try value(valueIn, withObject: object))
+    public class func valueAsDate(_ valueIn: Any?, with context: AJREvaluationContext) throws -> AJRTimeZoneDate? {
+        return try Conversion.valueAsTimeZoneDate(try value(valueIn, with: context))
     }
 
-    public class func valueAsDateComponents(_ valueIn: Any?, withObject object: Any? = nil) throws -> DateComponents? {
-        return try Conversion.valueAsDateComponents(try value(valueIn, withObject: object))
+    public class func valueAsDateComponents(_ valueIn: Any?, with context: AJREvaluationContext) throws -> DateComponents? {
+        return try Conversion.valueAsDateComponents(try value(valueIn, with: context))
     }
 
     // MARK: - CustomStringConvertible

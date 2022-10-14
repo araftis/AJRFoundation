@@ -10,11 +10,11 @@ import Foundation
 @objcMembers
 open class AJRArrayFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
         var array = Array<Any>()
         
-        for argument in arguments {
-            if let value = try AJRExpression.evaluate(value: argument, withObject: object) {
+        for argument in try context.getArguments() {
+            if let value = try AJRExpression.evaluate(value: argument, with: context) {
                 array.append(value)
             } else {
                 array.append(NSNull.init())
@@ -29,11 +29,11 @@ open class AJRArrayFunction : AJRFunction {
 @objcMembers
 open class AJRSetFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
         var set = Set<AnyHashable>()
         
-        for argument in arguments {
-            if let value = try AJRExpression.evaluate(value:argument, withObject:object) as? AnyHashable {
+        for argument in try context.getArguments() {
+            if let value = try AJRExpression.evaluate(value:argument, with: context) as? AnyHashable {
                 set.insert(value)
             } else {
                 _ = set.insert(NSNull.init()) // May fail, at which point we'll just skip?
@@ -48,16 +48,16 @@ open class AJRSetFunction : AJRFunction {
 @objcMembers
 open class AJRDictionaryFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
         var dictionary = Dictionary<AnyHashable, Any>()
 
-        if arguments.count % 2 != 0 {
+        if try context.getArguments().count % 2 != 0 {
             throw AJRFunctionError.invalidArgumentCount("You must pass an equal number of key/value pairs to dictionary().")
         }
         
-        for x in stride(from: 0, to: arguments.count, by: 2) {
-            if let key = try AJRExpression.evaluate(value: arguments[x], withObject: object) as? AnyHashable {
-                let value = try AJRExpression.evaluate(value: arguments[x + 1], withObject: object)
+        for x in stride(from: 0, to: try context.getArguments().count, by: 2) {
+            if let key = try AJRExpression.evaluate(value: try context.getArgument(at: x), with: context) as? AnyHashable {
+                let value = try AJRExpression.evaluate(value: try context.getArgument(at: x + 1), with: context)
                 if value == nil {
                     dictionary[key] = NSNull.init()
                 } else {
@@ -76,10 +76,10 @@ open class AJRDictionaryFunction : AJRFunction {
 @objcMembers
 open class AJRCountFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount:1)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount:1)
         
-        if let collection = try arguments.collection(at:0, withObject:object) {
+        if let collection = try context.collection(at: 0) {
             return collection.count
         }
         throw AJRFunctionError.invalidArgument("Argument to count() isn't a collection.")
@@ -90,11 +90,11 @@ open class AJRCountFunction : AJRFunction {
 @objcMembers
 open class AJRContainsFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount:2)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount:2)
 
-        if let collection = try arguments.collection(at:0, withObject:object) {
-            let value = try AJRExpression.evaluate(value: arguments[1], withObject:object)
+        if let collection = try context.collection(at:0) {
+            let value = try AJRExpression.evaluate(value: context.getArgument(at: 1), with: context)
             return collection.contains(equatable: value == nil ? NSNull.init() : value!)
         }
         throw AJRFunctionError.invalidArgument("First argument to contains() must be a collection.")
@@ -105,14 +105,14 @@ open class AJRContainsFunction : AJRFunction {
 @objcMembers
 open class AJRIterateFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount:2)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount: 2)
         
         var newCollection : Any?
         var appender : (Any) -> Void
         
-        if let collection = try arguments.collection(at: 0, withObject: object) {
-            if let functionExpression = arguments[1] as? AJRFunctionExpression {
+        if let collection = try context.collection(at: 0) {
+            if let functionExpression = try context.getArgument(at: 1) as? AJRFunctionExpression {
                 switch collection.semantic {
                 case .unknown: fallthrough // Just treat the unknown case as ordered.
                 case .valueOrdered: fallthrough
@@ -139,14 +139,14 @@ open class AJRIterateFunction : AJRFunction {
                         localArguments = [AJRConstantExpression(value: argument)]
                     }
                     let localArgumentExpression = AJRFunctionExpression(function: functionExpression.function, arguments: localArguments)
-                    if let result = try localArgumentExpression.evaluate(with: object) {
+                    if let result = try localArgumentExpression.evaluate(with: context) {
                         appender(result)
                     } else {
                         appender(NSNull.init())
                     }
                 }
             } else {
-                throw AJRFunctionError.invalidArgument("Invalid argument to function \"\(name)\": \(arguments[1]). Expected a function.")
+                throw AJRFunctionError.invalidArgument("Invalid argument to function \"\(try context.getFunctionName())\": \(try context.getArgument(at: 1)). Expected a function.")
             }
         }
         

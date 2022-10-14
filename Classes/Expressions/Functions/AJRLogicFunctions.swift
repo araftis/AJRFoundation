@@ -10,13 +10,13 @@ import Foundation
 @objcMembers
 open class AJRIfFunction : AJRFunction {
 
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount:2)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount:2)
         var returnValue : Any? = nil
         
-        let expressionResult : Bool = try arguments.boolean(at:0, withObject:object)
+        let expressionResult : Bool = try context.boolean(at: 0)
         if expressionResult {
-            returnValue = try AJRExpression.evaluate(value: arguments[1], withObject: object)
+            returnValue = try AJRExpression.evaluate(value: try context.getArgument(at: 1), with: context)
         }
         
         return returnValue
@@ -27,15 +27,15 @@ open class AJRIfFunction : AJRFunction {
 @objcMembers
 open class AJRIfElseFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount:3)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount: 3)
         var returnValue : Any? = nil
         
-        let expressionResult : Bool = try arguments.boolean(at:0, withObject:object)
+        let expressionResult : Bool = try context.boolean(at: 0)
         if expressionResult {
-            returnValue = try AJRExpression.evaluate(value: arguments[1], withObject: object)
+            returnValue = try AJRExpression.evaluate(value: try context.getArgument(at: 1), with: context)
         } else {
-            returnValue = try AJRExpression.evaluate(value: arguments[2], withObject: object)
+            returnValue = try AJRExpression.evaluate(value: try context.getArgument(at: 2), with: context)
         }
 
         return returnValue

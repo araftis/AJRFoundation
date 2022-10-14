@@ -42,7 +42,7 @@ public enum AJRFunctionError : Error {
 }
 
 @objcMembers
-open class AJRFunction : NSObject, AJREquatable, NSCoding {
+open class AJRFunction : NSObject, AJREquatable, NSCoding, AJREvaluation {
     
     // MARK: - Properties
     
@@ -102,7 +102,7 @@ open class AJRFunction : NSObject, AJREquatable, NSCoding {
     
     // MARK: - Actions
     
-    open func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+    open func evaluate(with context: AJREvaluationContext) throws -> Any? {
         throw AJRFunctionError.unimplementedAbstract("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
     

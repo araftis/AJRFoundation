@@ -58,7 +58,7 @@ open class AJRConstant : AJRUnaryOperator, NSCopying {
 
     // MARK: - UnaryExpression
     
-    open override func performOperator(withValue object: Any?) throws -> Any? {
+    open override func performOperator(value: Any?, context: AJREvaluationContext) throws -> Any? {
         return value
     }
     

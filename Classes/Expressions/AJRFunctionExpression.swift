@@ -37,21 +37,28 @@ open class AJRFunctionExpression : AJRExpression {
     // MARK: - Properties
     
     open var function : AJRFunction
-    open var arguments : AJRFunctionArguments
+    open var arguments : AJRArguments
     
     // MARK: - Creation
     
     public init(function: AJRFunction, arguments: [AJRExpression]) {
         self.function = function
-        self.arguments = AJRFunctionArguments(arguments: arguments)
+        self.arguments = AJRArguments(arguments: arguments)
         super.init()
         self.arguments.functionExpression = self
     }
     
     // MARK: - AJRExpression
     
-    public override func evaluate(with object: Any?) throws -> Any? {
-        return try function.evaluate(with: object, arguments: arguments)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        let newStore = AJRStore(arguments: arguments)
+        context.push(store: newStore);
+        defer {
+            context.pop()
+        }
+        let result = try function.evaluate(with: context)
+
+        return result
     }
     
     // MARK: - CustomStringConvertible
@@ -89,7 +96,7 @@ open class AJRFunctionExpression : AJRExpression {
         } else {
             return nil
         }
-        if let arguments = coder.decodeObject(forKey: "arguments") as? AJRFunctionArguments {
+        if let arguments = coder.decodeObject(forKey: "arguments") as? AJRArguments {
             self.arguments = arguments
         } else {
             return nil

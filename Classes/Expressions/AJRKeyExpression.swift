@@ -21,8 +21,8 @@ public class AJRKeyExpression : AJRExpression {
 
     // MARK: - Actions
 
-    public override func evaluate(with object: Any?) throws -> Any? {
-        return getValue(forKeyPath: keyPath, on: object)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        return getValue(forKeyPath: keyPath, on: context.rootObject)
     }
 
     // MARK: - NSObject

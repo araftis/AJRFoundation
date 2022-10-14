@@ -10,10 +10,10 @@ import Foundation
 @objcMembers
 open class AJRHasPrefixFunction : AJRFunction {
 
-    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount: 2)
-        let string = try arguments.string(at: 0, withObject: object)
-        let prefix = try arguments.string(at: 1, withObject: object)
+    open override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount: 2)
+        let string = try context.string(at: 0)
+        let prefix = try context.string(at: 1)
         
         return string.hasPrefix(prefix)
     }
@@ -23,10 +23,10 @@ open class AJRHasPrefixFunction : AJRFunction {
 @objcMembers
 open class AJRHasSuffixFunction : AJRFunction {
     
-    open override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount: 2)
-        let string = try arguments.string(at: 0, withObject: object)
-        let suffix = try arguments.string(at: 1, withObject: object)
+    open override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount: 2)
+        let string = try context.string(at: 0)
+        let suffix = try context.string(at: 1)
         
         return string.hasSuffix(suffix)
     }

@@ -9,9 +9,9 @@ import AJRFoundation
 
 class AJRIntegerFunction : AJRFunction {
 
-    override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount: 1)
-        let integer : Int = try arguments.integer(at: 0, withObject: object)
+    override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount: 1)
+        let integer : Int = try context.integer(at: 0)
         return integer
     }
     
@@ -47,9 +47,9 @@ enum AJRExpressionTestingError : Error {
 
 class AJRArgCountCheckerFunction : AJRFunction {
 
-    override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
+    override func evaluate(with context: AJREvaluationContext) throws -> Any? {
         do {
-            try arguments.check(argumentCountMin: 2)
+            try context.check(argumentCountMin: 2)
         } catch AJRFunctionError.invalidArgumentCount(let message) {
             if message == "AJRFunction ajr_arg_count_checker expects at least 2 arguments" {
                 throw AJRExpressionTestingError.correct
@@ -57,7 +57,7 @@ class AJRArgCountCheckerFunction : AJRFunction {
         }
 
         do {
-            try arguments.check(argumentCountMax: 10)
+            try context.check(argumentCountMax: 10)
         } catch AJRFunctionError.invalidArgumentCount(let message) {
             if message == "AJRFunction ajr_arg_count_checker expects at most 10 arguments" {
                 throw AJRExpressionTestingError.correct
@@ -65,9 +65,9 @@ class AJRArgCountCheckerFunction : AJRFunction {
         }
 
         do {
-            if let string = try? arguments.string(at: 0, withObject: object),
+            if let string = try? context.string(at: 0),
                string == "one" {
-                try arguments.check(argumentCountMax: 1)
+                try context.check(argumentCountMax: 1)
                 //if (localError && [[localError localizedDescription] isEqualToString:@"Function ajr_arg_count_checker expects at most 1 argument"]) {
                 //    localError = [NSError errorWithDomain:AJRExpressionErrorDomain message:@"Correct"];
                 //}

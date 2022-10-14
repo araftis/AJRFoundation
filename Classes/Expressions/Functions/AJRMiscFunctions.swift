@@ -10,9 +10,9 @@ import Foundation
 @objcMembers
 open class AJRIsNullFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount: 1)
-        let value = try AJRExpression.value(arguments[0], withObject: object)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount: 1)
+        let value = try AJRExpression.value(try context.getArgument(at: 0), with: context)
         
         return value == nil || value is NSNull ? true : false;
     }
@@ -22,11 +22,11 @@ open class AJRIsNullFunction : AJRFunction {
 @objcMembers
 open class AJRHelpFunction : AJRFunction {
     
-    public override func evaluate(with object: Any?, arguments: AJRFunctionArguments) throws -> Any? {
-        try arguments.check(argumentCount: 1)
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        try context.check(argumentCount: 1)
         var result : Any? = nil
         
-        if let expression = arguments[0] as? AJRFunctionExpression {
+        if let expression = try context.getArgument(at: 0) as? AJRFunctionExpression {
             result = expression.function.prototype;
         } else {
             throw AJRFunctionError.invalidArgument("Parameter to help() must be a function")

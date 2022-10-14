@@ -60,7 +60,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     if (localError == nil) {
         XCTAssert(expression != nil, @"Failed to parse expression: \"%@\"", string);
         
-        id result = [expression evaluateWithObject:object error:&localError];
+        id result = [expression evaluateWithContext:[AJREvaluationContext evaluationContextWithRootObject:object] error:&localError];
         AJRPrintf(@"[%@]: %@ = %@\n", string, expression, result);
 
         XCTAssert(AJREqual(result, expectedValue), @"expression: %@, expected result: %@, got: %@", string, expectedValue, result);
@@ -352,18 +352,18 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"1 * * 1" withObject:nil expectedResult:nil expectError:YES];
     
     NSString *error = [self _testExpression:@"ajr_broken()" withObject:nil expectedResult:nil expectError:YES];
-    XCTAssert(error != nil && [error containsString:@"AJRFoundation.AJRFunctionError.unimplementedAbstract(\"Abstract method AJRBrokenFunction.evaluate(with:arguments:) should be implemented\")"]);
+    XCTAssert(error != nil && [error containsString:@"AJRFoundation.AJRFunctionError.unimplementedAbstract(\"Abstract method AJRBrokenFunction.evaluate(with:) should be implemented\")"]);
 
     NSError *localError = nil;
     AJRExpression *expression = [[AJRExpression alloc] init];
-    AJRPrintf(@"%@", [expression evaluateWithObject:nil error:&localError]);
+    AJRPrintf(@"%@", [expression evaluateWithContext:[AJREvaluationContext evaluationContext] error:&localError]);
     XCTAssert([localError.description containsString:@"Abstract method AJRExpression.evaluate(with:) should be implemented"]);
 
     error = [self _testExpression:@"1 ajr_broken_operator 2" withObject:nil expectedResult:nil expectError:YES];
-    XCTAssert(error != nil && [error containsString:@"Abstract method AJRBrokenOperator.performOperator(withLeft:andRight:) should be implemented"]);
+    XCTAssert(error != nil && [error containsString:@"Abstract method AJRBrokenOperator.performOperator(left:right:context:) should be implemented"]);
 
     error = [self _testExpression:@"ajr_broken_unary 2" withObject:nil expectedResult:nil expectError:YES];
-    XCTAssert(error != nil && [error containsString:@"Abstract method AJRBrokenUnaryOperator.performOperator(withValue:) should be implemented"]);
+    XCTAssert(error != nil && [error containsString:@"Abstract method AJRBrokenUnaryOperator.performOperator(value:context:) should be implemented"]);
 }
 
 - (void)testExpressionStackFrameEdgeCases {
@@ -400,13 +400,13 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert(localError != nil);
     
     expression = [AJRExpressionParser expressionForString:@"\"\\t\\n\\\\\\'\\\"\\r\\e\\q\\s\"" error:NULL];
-    XCTAssert(expression != nil && [[expression evaluateWithObject:nil error:NULL] isEqualToString:@"\t\n\\\'\"\r\e? "]);
+    XCTAssert(expression != nil && [[expression evaluateWithContext:[AJREvaluationContext evaluationContext] error:NULL] isEqualToString:@"\t\n\\\'\"\r\e? "]);
     
     expression = [AJRExpressionParser expressionForString:@"\"This is an...\\" error:NULL];
-    XCTAssert(expression != nil && [[expression evaluateWithObject:nil error:NULL] isEqualToString:@"This is an..."]);
+    XCTAssert(expression != nil && [[expression evaluateWithContext:[AJREvaluationContext evaluationContext] error:NULL] isEqualToString:@"This is an..."]);
     
     expression = [AJRExpressionParser expressionForString:@"\"This is a long string to force reallocation while reading a string constant.\"" error:NULL];
-    XCTAssert(expression != nil && [[expression evaluateWithObject:nil error:NULL] isEqualToString:@"This is a long string to force reallocation while reading a string constant."]);
+    XCTAssert(expression != nil && [[expression evaluateWithContext:[AJREvaluationContext evaluationContext] error:NULL] isEqualToString:@"This is a long string to force reallocation while reading a string constant."]);
     
     expression = [[[AJRExpressionParser alloc] initWithFormat:@"%s = %@" arguments:@[@"test", @"test"] error:NULL] expressionWithError:NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(\"test\" == \"test\")"]);
