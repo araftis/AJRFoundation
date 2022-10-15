@@ -261,9 +261,6 @@ public class AJRExpressionParser : NSObject {
         if let `operator` = AJROperator.operatorForToken(stringValue) {
             return AJRExpressionToken.token(type: .operator, value: `operator`)
         }
-        if let constant = AJRConstant.constant(forToken: stringValue) {
-            return AJRExpressionToken.token(type: .number, value: constant)
-        }
     
         return AJRExpressionToken.token(type: .literal, value: stringValue)
     }

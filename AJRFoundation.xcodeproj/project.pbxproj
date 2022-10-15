@@ -531,6 +531,8 @@
 		FA8B8FCE28F8EB1000650F23 /* AJRStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FCC28F8EB1000650F23 /* AJRStore.swift */; };
 		FA8B8FD028F8EB3100650F23 /* AJREvaluationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FCF28F8EB3100650F23 /* AJREvaluationContext.swift */; };
 		FA8B8FD128F8EB3100650F23 /* AJREvaluationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FCF28F8EB3100650F23 /* AJREvaluationContext.swift */; };
+		FA8B8FD328FA533F00650F23 /* AJRLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FD228FA533F00650F23 /* AJRLiteral.swift */; };
+		FA8B8FD428FA533F00650F23 /* AJRLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FD228FA533F00650F23 /* AJRLiteral.swift */; };
 		FA8BBA1D0EE4677B00C92598 /* NSBundle+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA8BBA1B0EE4677B00C92598 /* NSBundle+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA8BBA1E0EE4677B00C92598 /* NSBundle+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */; };
 		FA8E370725C5182400EB554F /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E370625C5182400EB554F /* Sequence+Extensions.swift */; };
@@ -1146,6 +1148,7 @@
 		FA8B8FC828F8E3AE00650F23 /* AJREvaluation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJREvaluation.swift; sourceTree = "<group>"; };
 		FA8B8FCC28F8EB1000650F23 /* AJRStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRStore.swift; sourceTree = "<group>"; };
 		FA8B8FCF28F8EB3100650F23 /* AJREvaluationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJREvaluationContext.swift; sourceTree = "<group>"; };
+		FA8B8FD228FA533F00650F23 /* AJRLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRLiteral.swift; sourceTree = "<group>"; };
 		FA8BBA1B0EE4677B00C92598 /* NSBundle+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
 		FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
 		FA8E370625C5182400EB554F /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
@@ -1763,6 +1766,7 @@
 				FA311C4528ED18EE006BE0FB /* AJRConstantExpression.swift */,
 				FA311C0D28ECF90D006BE0FB /* AJRExpression.swift */,
 				FA311C4828ED1948006BE0FB /* AJRFunctionExpression.swift */,
+				FA8B8FD228FA533F00650F23 /* AJRLiteral.swift */,
 				FA311C4B28ED2396006BE0FB /* AJRKeyExpression.swift */,
 				FA311C4E28ED23D2006BE0FB /* AJROperatorExpression.swift */,
 				FA311C5128ED2417006BE0FB /* AJRSimpleExpression.swift */,
@@ -2542,6 +2546,7 @@
 				FAD091FC20CE4E83004320F5 /* AJRRuntime.m in Sources */,
 				FA311C3A28ED12D0006BE0FB /* CharacterSet+Extensions.swift in Sources */,
 				FA311C8228ED2B33006BE0FB /* AJRGreaterThanOperator.swift in Sources */,
+				FA8B8FD328FA533F00650F23 /* AJRLiteral.swift in Sources */,
 				FA5B950420C9C96E00B01849 /* AJRPlugInElement.m in Sources */,
 				FADDA11B229BB6DB00257007 /* XMLDocument.swift in Sources */,
 				FAFE4BD70EC50C3D00AE17D0 /* AJRUniqueObject.m in Sources */,
@@ -2874,6 +2879,7 @@
 				FA2AC65C196615F20052EB20 /* NSUserDefaults+Extensions.m in Sources */,
 				FA311C7428ED2B08006BE0FB /* AJRAndOperator.swift in Sources */,
 				FADDA122229BB6DB00257007 /* XMLDTDElementContent.swift in Sources */,
+				FA8B8FD428FA533F00650F23 /* AJRLiteral.swift in Sources */,
 				FA6FFEB52203CE910083357D /* AJRSemaphores.swift in Sources */,
 				FA68695220A91E1100BBC3B2 /* AJRPropertyListCoding.m in Sources */,
 				FA07C85A220D111E0077A0B5 /* UserDefaults+Extensions.swift in Sources */,

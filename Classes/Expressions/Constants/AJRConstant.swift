@@ -32,7 +32,7 @@
 import Foundation
 
 @objcMembers
-open class AJRConstant : AJRUnaryOperator, NSCopying {
+open class AJRConstant : NSObject, AJREvaluation, NSCopying {
 
     private static var constants = [String:AJRConstant]()
 
@@ -48,33 +48,58 @@ open class AJRConstant : AJRUnaryOperator, NSCopying {
             }
         }
     }
-    
+
+    // MARK: - Properties
+
     open var hashableValue : AnyHashable? { return nil }
     open var value : Any? { return hashableValue }
+    open var tokens : [String]
+    open var preferredToken : String {
+        return tokens[0]
+    }
+
+    // MARK: - Creation and Factory
+
+    required public override init() {
+        tokens = [String]()
+    }
 
     public class func constant(forToken name: String) -> AJRConstant? {
         return constants[name]
     }
 
-    // MARK: - UnaryExpression
-    
-    open override func performOperator(value: Any?, context: AJREvaluationContext) throws -> Any? {
-        return value
+    public static var allConstants : [String:AJRConstant] {
+        return constants
     }
-    
+
     // MARK: - CustomStringConvertible
     
     open override var description: String { return "\((value == nil ? "nil" : value!))" }
+
+    // MARK: - AJREvaluation
+
+    open func evaluate(with context: AJREvaluationContext) throws -> Any? {
+        return value
+    }
     
     // MARK: - Equality
     
     open override func isEqual(to other: Any?) -> Bool {
         if let typed = other as? AJRConstant {
             return (super.isEqual(to: typed)
-                && AJREqual(value, typed.value)
+                    && AJREqual(tokens, typed.tokens)
+                    && AJREqual(value, typed.value)
             )
         }
         return false
+    }
+
+    // MARK: - Tokens
+
+    open func append(token: String) {
+        if !tokens.contains(token) {
+            tokens.append(token)
+        }
     }
     
     // MARK: - Hashable
@@ -99,27 +124,6 @@ open class AJRConstant : AJRUnaryOperator, NSCopying {
      */
     public func copy(with zone: NSZone? = nil) -> Any {
         return self
-    }
-
-}
-
-internal class AJRUnitTestConstant : AJRConstant {
-    
-    private var internalValue : Any?
-    public override var value : Any? { return internalValue }
-
-    required internal init() {
-        self.internalValue = nil
-        super.init()
-    }
-    
-    internal init(value: Any?) {
-        self.internalValue = value
-        super.init()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
     }
 
 }

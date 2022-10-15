@@ -25,7 +25,7 @@ open class AJREvaluationContext : NSObject {
 
     @objc(evaluationContext)
     open class func evaluationContext() -> AJREvaluationContext {
-        return AJREvaluationContext()
+        return AJREvaluationContext(rootObject: nil)
     }
 
     @objc(evaluationContextWithRootObject:)
@@ -42,6 +42,8 @@ open class AJREvaluationContext : NSObject {
         self.rootObject = rootObject
         if let stores = stores {
             self.stores.append(contentsOf: stores)
+        } else {
+            self.stores.append(AJRStore.rootStore)
         }
     }
 
