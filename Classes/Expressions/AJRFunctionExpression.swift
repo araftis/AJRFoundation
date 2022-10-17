@@ -41,7 +41,7 @@ open class AJRFunctionExpression : AJRExpression {
     
     // MARK: - Creation
     
-    public init(function: AJRFunction, arguments: [AJRExpression]) {
+    public init(function: AJRFunction, arguments: [AJREvaluation]) {
         self.function = function
         self.arguments = AJRArguments(arguments: arguments)
         super.init()
@@ -50,7 +50,7 @@ open class AJRFunctionExpression : AJRExpression {
     
     // MARK: - AJRExpression
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         let newStore = AJRStore(arguments: arguments)
         context.push(store: newStore);
         defer {

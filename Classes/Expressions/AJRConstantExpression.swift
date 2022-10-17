@@ -32,43 +32,33 @@
 import Foundation
 
 @objcMembers
-open class AJRConstantExpression : AJRExpression {
+open class AJRLiteralValue : AJRExpression {
     
     // MARK: - Properties
     
-    private var isString: Bool = false
-    public var _value: Any?
-    public var value: Any? {
-        get {
-            return _value
-        }
-        set(newValue) {
-            _value = newValue
-            isString = _value is String
-        }
-    }
+    public var value: Any?
     
     // MARK: - Creation
     
     public init(value: Any? = nil) {
-        super.init()
         self.value = value
+        super.init()
     }
     
     // MARK: - Actions
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         if let constant = value as? AJRConstant {
-            return constant.value
+            return constant.value ?? NSNull()
         }
-        return value
+        return value ?? NSNull()
     }
     
     // MARK: - CustomStringConvertible
     
     public override var description: String {
         if let value = value {
-            return isString ? "\"\(value)\"" : "\(value)"
+            return (value is String) ? "\"\(value)\"" : "\(value)"
         }
         return "nil"
     }
@@ -76,7 +66,7 @@ open class AJRConstantExpression : AJRExpression {
     // MARL: - Equality
 
     public override func isEqual(to other: Any?) -> Bool {
-        if let typed = other as? AJRConstantExpression {
+        if let typed = other as? AJRLiteralValue {
             return (super.isEqual(to: other)
                 && AJRAnyEquals(value, typed.value)
             )

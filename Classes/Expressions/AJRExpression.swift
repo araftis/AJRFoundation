@@ -62,16 +62,16 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation {
 //    }
 
     @objc(expressionWithString:error:)
-    public class func expression(string: String) throws -> AJRExpression {
+    public class func expression(string: String) throws -> AJREvaluation {
         return try AJRExpressionParser(string: string).expression()
     }
 
     @objc(expressionWithFormat:arguments:error:)
-    public class func expression(format: String, _ arguments: [Any]) throws -> AJRExpression {
+    public class func expression(format: String, _ arguments: [Any]) throws -> AJREvaluation {
         return try AJRExpressionParser(format: format, arguments).expression()
     }
 
-    public class func expression(format: String, _ arguments: Any?...) throws -> AJRExpression {
+    public class func expression(format: String, _ arguments: Any?...) throws -> AJREvaluation {
         return try AJRExpressionParser(format: format, arguments).expression()
     }
 
@@ -85,34 +85,7 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation {
 
     // MARK: - Actions
 
-    public class func evaluate(value: Any?, with context: AJREvaluationContext) throws -> Any? {
-        var returnValue = value
-        while returnValue is AJRExpression {
-            returnValue = try (returnValue! as! AJRExpression).evaluate(with: context)
-        }
-        return returnValue
-    }
-
-    /**
-     Evaluates the receiver and returns the result.
-
-     This method is primarily meant to be called from Obj-C, and is a little jenky, because we break the standard convention here, just a little. Normally, if a method has an error parameter and returns nil, then that means an error occurred. However, for our purposes, we could evaluate to nil, as that's perfectly acceptable. As such, unlike most calls of this pattern, we always initialize `errorIO` to nil, and then initialize it with any error that occurs.
-
-     - parameter context: The context used to track the evaluation state of the expression.
-     - parameter errorIO: A pointer to an NSError object. It may be nil.
-     */
-    @objc(evaluateWithContext:error:)
-    public func evaluate(with context: AJREvaluationContext, error errorIO: NSErrorPointer) -> Any? {
-        errorIO?.pointee = nil
-        do {
-            return try evaluate(with: context)
-        } catch {
-            errorIO?.pointee = error as NSError
-        }
-        return nil
-    }
-
-    public func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public func evaluate(with context: AJREvaluationContext) throws -> Any {
         throw AJRExpressionError.unimplementedMethod("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
 
@@ -146,8 +119,25 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation {
     /*! Recursive evaluates value until we reach something that doesn't evaluate to an expression. */
     public class func value(_ valueIn: Any?, with context: AJREvaluationContext) throws -> Any? {
         var value = valueIn
-        while value is AJRExpression {
-            value = try (value! as! AJRExpression).evaluate(with: context)
+        while value is AJREvaluation {
+            value = try (value! as! AJREvaluation).evaluate(with: context)
+        }
+        if let set = value as? NSSet {
+            // This is necessary because the NSSet intermediate in the bridge doesn't implement Collection, which means it can't implement AJRCollection, so we have to convert it to Set.
+            var temp = Set<AnyHashable>()
+            for object in set {
+                // It should be safe to force this coersion, because anything in an NSSet will be Hashable.
+                temp.insert(object as! (AnyHashable))
+            }
+            value = temp
+        } else if let dictionary = value as? NSDictionary {
+            // This is necessary because the NSSet intermediate in the bridge doesn't implement Collection, which means it can't implement AJRCollection, so we have to convert it to Set.
+            var temp = Dictionary<AnyHashable,Any>()
+            for (key, object) in dictionary {
+                // It should be safe to force this coersion, because any key in a dictionary should be Hashable.
+                temp[key as! AnyHashable] = object
+            }
+            value = temp
         }
         return value
     }

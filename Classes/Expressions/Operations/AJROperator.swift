@@ -230,8 +230,8 @@ open class AJROperator: NSObject, AJREquatable, NSCoding {
         }
         if let op = self as? AJRCollectionOperator {
             // We use "or" here, because we'll turn a single object into a collection to match the other parameter
-            if let left = left as? any AJRCollection,
-               let right = right as? any AJRCollection {
+            if let left = try AJRExpression.valueAsCollection(left, with: context),
+               let right = try AJRExpression.valueAsCollection(right, with: context) {
                 return try op.performCollectionOperator(withLeft: left, andRight: right)
             }
 //            if left is AJRUntypedCollection || right is AJRUntypedCollection {

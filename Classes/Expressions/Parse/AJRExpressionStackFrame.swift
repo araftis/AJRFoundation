@@ -37,7 +37,7 @@ open class AJRExpressionStackFrame : NSObject {
     class AJRStackToken: CustomStringConvertible {
         
         var token : AJRExpressionToken? = nil
-        var expression : AJRExpression? = nil
+        var expression : AJREvaluation? = nil
         var `operator` : AJROperator? {
             if isOperator {
                 return token?.value as? AJROperator
@@ -49,7 +49,7 @@ open class AJRExpressionStackFrame : NSObject {
             self.token = token
         }
         
-        init(expression: AJRExpression) {
+        init(expression: AJREvaluation) {
             self.expression = expression
         }
         
@@ -112,16 +112,20 @@ open class AJRExpressionStackFrame : NSObject {
         return tokenStack.last?.isOperator ?? false
     }
     
-    func transform(value: AJRExpressionToken) -> AJRStackToken {
+    func transform(value: AJRExpressionToken) throws -> AJRStackToken {
         if value.type == .literal {
             // We need to transform.
-            return AJRStackToken(expression: AJRKeyExpression(keyPath: value.value as! String))
+            if let stringValue = value.value as? String {
+                return AJRStackToken(expression: AJRLiteral(name: stringValue))
+            } else {
+                throw AJRExpressionParserError.invalidIdentifier("Attempted to create a literal from something that wasn't a string: \(value.value ?? "nil")")
+            }
         }
         if value.type == .operator {
             return AJRStackToken(token: value)
         }
         // Nothing to transform, so just return the value.
-        return AJRStackToken(expression: AJRConstantExpression(value: value.value))
+        return AJRStackToken(expression: AJRLiteralValue(value: value.value))
     }
     
     func shouldBreakUpExpression(_ value: AJRStackToken, dueTo operator: AJROperator) -> Bool {
@@ -146,7 +150,7 @@ open class AJRExpressionStackFrame : NSObject {
         // Add a token with some simple error checking...
         if tokenStack.count == 0 {
             // Nothing on the stack yet, so anything is good.
-            tokenStack.append(transform(value:value))
+            tokenStack.append(try transform(value:value))
             DEBUG_STACK()
         } else if let theOperator = value.operator {
             // We have an operator, so what we allow varies depending on the type of the operator.
@@ -171,7 +175,7 @@ open class AJRExpressionStackFrame : NSObject {
             // the stack already, so we have to get pushed next to an operator.
             if stackTopIsOperator() {
                 // If the value is a literal, we'll go ahead and transform it into a key expression.
-                tokenStack.append(transform(value:value))
+                tokenStack.append(try transform(value:value))
                 DEBUG_STACK()
                 // And now that we've added a litteral, let's reduce.
                 try reduce()
@@ -276,9 +280,9 @@ open class AJRExpressionStackFrame : NSObject {
                     // Remove the top three items from the stack.
                     tokenStack.removeLast(3)
                     // Now push the pieces of value1 onto the stack.
-                    tokenStack.append(AJRStackToken(expression: value1.simpleExpression.left as! AJRExpression))
+                    tokenStack.append(AJRStackToken(expression: value1.simpleExpression.left as! AJREvaluation))
                     tokenStack.append(AJRStackToken(token: AJRExpressionToken.token(type: .operator, value: value1.simpleExpression.operator)))
-                    tokenStack.append(AJRStackToken(expression: value1.simpleExpression.right as! AJRExpression))
+                    tokenStack.append(AJRStackToken(expression: value1.simpleExpression.right as! AJREvaluation))
                     // And push our other two values back onto the stack.
                     tokenStack.append(AJRStackToken(token: `operator`.token!))
                     tokenStack.append(value2)
@@ -304,7 +308,7 @@ open class AJRExpressionStackFrame : NSObject {
     }
 
     @objc(expressionWithError:)
-    public func expression() throws -> AJRExpression {
+    public func expression() throws -> AJREvaluation {
         try reduce()
         if tokenStack.count == 1 {
             let stackFrame = tokenStack[0]

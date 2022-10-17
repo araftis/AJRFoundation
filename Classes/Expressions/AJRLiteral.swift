@@ -8,20 +8,64 @@
 import Foundation
 
 @objcMembers
-open class AJRLiteral : NSObject, AJREvaluation {
+open class AJRLiteral : NSObject, AJREvaluation, NSCoding, AJREquatable {
 
     open var name : String
-    open var value : AJREvaluation? = nil
 
-    public init(name: String, value: AJREvaluation?) {
+    @objc(literalWithName:)
+    public class func literal(with name: String) -> AJRLiteral {
+        return AJRLiteral(name: name)
+    }
+
+    public init(name: String) {
         self.name = name
-        self.value = value
+    }
+
+    // MARK: - AJREquatable
+
+    open override func isEqual(to object: Any?) -> Bool {
+        if let object = object as? AJRLiteral {
+            return AJRAnyEquals(name, object.name)
+        }
+        return false
+    }
+
+    open override func isEqual(_ object: Any?) -> Bool {
+        return isEqual(to: object)
+    }
+
+    // MARK: - Hashable
+
+    open override var hash: Int {
+        return name.hash
+    }
+
+    // MARK: - CustomStringConvertible
+
+    open override var description: String {
+        return name
     }
 
     // MARK: - AJREvaluation
 
-    open func evaluate(with context: AJREvaluationContext) throws -> Any? {
-        return try value?.evaluate(with: context)
+    open func evaluate(with context: AJREvaluationContext) throws -> Any {
+        // First, let's check and see if we have a something defined for us in context.
+        if let symbol = context.symbol(named: name) {
+            return try symbol.evaluate(with: context)
+        } else {
+            // We don't define this as a symbol, so we treat it as a key path and resolve via context's rootObject.
+            return getValue(forKeyPath: name, on: context.rootObject) ?? NSNull()
+        }
+    }
+
+    // MARK: - NSCoding
+
+    required public init?(coder: NSCoder) {
+        name = coder.decodeObject(forKey: "name") ?? "<undefined>"
+    }
+
+    open func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: "name")
     }
 
 }

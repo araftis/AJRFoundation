@@ -10,7 +10,7 @@ import Foundation
 @objcMembers
 open class AJRArrayFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         var array = Array<Any>()
         
         for argument in try context.getArguments() {
@@ -29,7 +29,7 @@ open class AJRArrayFunction : AJRFunction {
 @objcMembers
 open class AJRSetFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         var set = Set<AnyHashable>()
         
         for argument in try context.getArguments() {
@@ -48,7 +48,7 @@ open class AJRSetFunction : AJRFunction {
 @objcMembers
 open class AJRDictionaryFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         var dictionary = Dictionary<AnyHashable, Any>()
 
         if try context.getArguments().count % 2 != 0 {
@@ -76,7 +76,7 @@ open class AJRDictionaryFunction : AJRFunction {
 @objcMembers
 open class AJRCountFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount:1)
         
         if let collection = try context.collection(at: 0) {
@@ -90,12 +90,12 @@ open class AJRCountFunction : AJRFunction {
 @objcMembers
 open class AJRContainsFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount:2)
 
         if let collection = try context.collection(at:0) {
             let value = try AJRExpression.evaluate(value: context.getArgument(at: 1), with: context)
-            return collection.contains(equatable: value == nil ? NSNull.init() : value!)
+            return collection.contains(equatable: value ?? NSNull())
         }
         throw AJRFunctionError.invalidArgument("First argument to contains() must be a collection.")
     }
@@ -105,7 +105,7 @@ open class AJRContainsFunction : AJRFunction {
 @objcMembers
 open class AJRIterateFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 2)
         
         var newCollection : Any?
@@ -132,25 +132,21 @@ open class AJRIterateFunction : AJRFunction {
                 }
 
                 for argument in collection {
-                    let localArguments : [AJRExpression]
+                    let localArguments : [AJREvaluation]
                     if let argument = argument as? (key:AnyHashable, value:Any) {
-                        localArguments = [AJRConstantExpression(value: argument.value)]
+                        localArguments = [AJRLiteralValue(value: argument.value)]
                     } else {
-                        localArguments = [AJRConstantExpression(value: argument)]
+                        localArguments = [AJRLiteralValue(value: argument)]
                     }
                     let localArgumentExpression = AJRFunctionExpression(function: functionExpression.function, arguments: localArguments)
-                    if let result = try localArgumentExpression.evaluate(with: context) {
-                        appender(result)
-                    } else {
-                        appender(NSNull.init())
-                    }
+                    appender(try localArgumentExpression.evaluate(with: context))
                 }
             } else {
                 throw AJRFunctionError.invalidArgument("Invalid argument to function \"\(try context.getFunctionName())\": \(try context.getArgument(at: 1)). Expected a function.")
             }
         }
         
-        return newCollection
+        return newCollection ?? NSNull()
     }
     
 }

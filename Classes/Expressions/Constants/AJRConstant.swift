@@ -78,8 +78,8 @@ open class AJRConstant : NSObject, AJREvaluation, NSCopying {
 
     // MARK: - AJREvaluation
 
-    open func evaluate(with context: AJREvaluationContext) throws -> Any? {
-        return value
+    open func evaluate(with context: AJREvaluationContext) throws -> Any {
+        return value ?? NSNull()
     }
     
     // MARK: - Equality
@@ -113,6 +113,8 @@ open class AJRConstant : NSObject, AJREvaluation, NSCopying {
         return 0
     }
 
+    // MARK: - NSCopying
+
     /**
      Copies the receiver.
 
@@ -124,6 +126,16 @@ open class AJRConstant : NSObject, AJREvaluation, NSCopying {
      */
     public func copy(with zone: NSZone? = nil) -> Any {
         return self
+    }
+
+    // MARK: - NSCoding
+
+    required public init?(coder: NSCoder) {
+        preconditionFailure("AJRConstant should code. We'll remove this code after I'm sure we're not hitting this assert.")
+    }
+
+    open func encode(with coder: NSCoder) {
+        preconditionFailure("AJRConstant should code. We'll remove this code after I'm sure we're not hitting this assert.")
     }
 
 }

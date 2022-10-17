@@ -25,10 +25,10 @@ public class AJRSimpleExpression : AJROperatorExpression {
     
     // MARK: - Actions
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         let left = try AJRExpression.evaluate(value: self.left, with: context)
         let right = try AJRExpression.evaluate(value: self.right, with: context)
-        return try self.operator.performOperator(left: left, right: right, context: context)
+        return try self.operator.performOperator(left: left, right: right, context: context) ?? NSNull()
     }
     
     // MARK: - CustomStringConvertible

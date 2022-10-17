@@ -52,7 +52,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 - (nullable NSString *)_testExpression:(NSString *)string withObject:(id)object expectedResult:(id)expectedValue expectError:(BOOL)expectError {
-    AJRExpression *expression = nil;
+    id <AJREvaluation> expression = nil;
     NSError *localError = nil;
     
     expression = [AJRExpression expressionWithString:string error:&localError];
@@ -61,6 +61,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         XCTAssert(expression != nil, @"Failed to parse expression: \"%@\"", string);
         
         id result = [expression evaluateWithContext:[AJREvaluationContext evaluationContextWithRootObject:object] error:&localError];
+        if (result == [NSNull null]) {
+            result = nil;
+        }
         AJRPrintf(@"[%@]: %@ = %@\n", string, expression, result);
 
         XCTAssert(AJREqual(result, expectedValue), @"expression: %@, expected result: %@, got: %@", string, expectedValue, result);
@@ -371,7 +374,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     AJRExpressionStackFrame *stackFrame = [[AJRExpressionStackFrame alloc] init];
     
     [stackFrame addToken:[AJRExpressionToken tokenWithType:AJRExpressionTokenTypeOperator value:[AJROperator operatorForToken:@"+"]] error:NULL];
-    AJRExpression *expression = [stackFrame expressionWithError:&localError];
+    id <AJREvaluation> expression = [stackFrame expressionWithError:&localError];
     XCTAssert(expression == nil && localError != nil);
 
     localError = nil;
@@ -383,7 +386,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)testExpressionParser {
     NSError *localError = nil;
 
-    AJRExpression *expression = [AJRExpressionParser expressionWithFormat:@"%s = %@ or \"int\" = %d or \"float\" = %f" arguments: @[@"test", @"test", @1, @(M_PI)] error: NULL];
+    id <AJREvaluation> expression = [AJRExpressionParser expressionWithFormat:@"%s = %@ or \"int\" = %d or \"float\" = %f" arguments: @[@"test", @"test", @1, @(M_PI)] error: NULL];
     XCTAssert(expression != nil && [[expression description] isEqualToString:@"(((\"test\" == \"test\") || (\"int\" == 1)) || (\"float\" == 3.141592653589793))"]);
     
     expression = [AJRExpressionParser expressionForString:@"test = test" error:NULL];
@@ -413,14 +416,14 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 - (void)testExpressionConstructors {
-    AJRExpression *expression;
-    AJRExpression *decoded;
+    id <AJREvaluation> expression;
+    id <AJREvaluation> decoded;
     
     expression = [AJRExpression expressionWithString:@"pi = 1.0" error:NULL];
     decoded = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     XCTAssert(AJREqual(expression, decoded));
     
-    expression = [AJRSimpleExpression expressionWithLeft:[AJRConstant constantForToken:@"π"] operator:[AJROperator operatorForToken:@"="] right:@(1.0)];
+    expression = [AJRSimpleExpression expressionWithLeft:[AJRLiteral literalWithName:@"π"] operator:[AJROperator operatorForToken:@"="] right:@(1.0)];
     decoded = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     XCTAssert(AJREqual(expression, decoded));
     

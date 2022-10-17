@@ -10,7 +10,7 @@ import Foundation
 @objcMembers
 open class AJRSinFunction : AJRFunction {
     
-    open override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    open override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 1)
         let double : Double = try context.float(at: 0)
         return sin(double)
@@ -21,7 +21,7 @@ open class AJRSinFunction : AJRFunction {
 @objcMembers
 open class AJRCosFunction : AJRFunction {
     
-    open override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    open override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 1)
         let double : Double = try context.float(at: 0)
         return cos(double)
@@ -32,7 +32,7 @@ open class AJRCosFunction : AJRFunction {
 @objcMembers
 open class AJRTanFunction : AJRFunction {
     
-    open override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    open override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 1)
         let double : Double = try context.float(at: 0)
         return tan(double)
@@ -43,7 +43,7 @@ open class AJRTanFunction : AJRFunction {
 @objcMembers
 open class AJRArcsinFunction : AJRFunction {
     
-    open override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    open override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 1)
         let double : Double = try context.float(at: 0)
         return asin(double)
@@ -54,7 +54,7 @@ open class AJRArcsinFunction : AJRFunction {
 @objcMembers
 open class AJRArccosFunction : AJRFunction {
     
-    open override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    open override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 1)
         let double : Double = try context.float(at: 0)
         return acos(double)
@@ -65,7 +65,7 @@ open class AJRArccosFunction : AJRFunction {
 @objcMembers
 open class AJRArctanFunction : AJRFunction {
     
-    open override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    open override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCountMin: 1, max: 2)
         let value1 : Double = try context.float(at: 0)
         let returnValue : Double

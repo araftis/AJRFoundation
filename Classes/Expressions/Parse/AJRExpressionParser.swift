@@ -46,6 +46,7 @@ public enum AJRExpressionParserError : Error {
     case invalidCharacter(String)
     case unbalancedParentheses(String)
     case invalidInput(String)
+    case invalidIdentifier(String)
 
 }
 
@@ -71,7 +72,7 @@ public class AJRExpressionParser : NSObject {
     public var stack : [AJRExpressionStackFrame]
     public var arguments : [Any?]
     public var argumentIndex : Int
-    internal var _expression: AJRExpression?
+    internal var _expression: AJREvaluation?
     
     // MARK: - Creation
     
@@ -261,7 +262,7 @@ public class AJRExpressionParser : NSObject {
         if let `operator` = AJROperator.operatorForToken(stringValue) {
             return AJRExpressionToken.token(type: .operator, value: `operator`)
         }
-    
+
         return AJRExpressionToken.token(type: .literal, value: stringValue)
     }
 
@@ -394,7 +395,7 @@ public class AJRExpressionParser : NSObject {
     }
 
     @objc(expressionWithError:)
-    public func expression() throws -> AJRExpression {
+    public func expression() throws -> AJREvaluation {
         if _expression == nil {
             stack = [AJRExpressionStackFrame]()
             stack.append(AJRExpressionStackFrame())
@@ -426,9 +427,12 @@ public class AJRExpressionParser : NSObject {
                         // Make sure this doesn't free itself when we remove it from the _stack.
                         stack.removeLast()
                         // And add the subframe's expression to the preceeding stack frame.
-                        let expression : AJRExpression = try frame.expression()
-                        expression.protected = true
-                        try stack.last!.add(expression: expression)
+                        if let expression = try frame.expression() as? AJRExpression {
+                            expression.protected = true
+                            try stack.last!.add(expression: expression)
+                        } else {
+                            throw AJRExpressionParserError.invalidState("We expected to pop an expresion but something else was found.")
+                        }
                     }
                     
                 case .function:
@@ -469,16 +473,16 @@ public class AJRExpressionParser : NSObject {
     // MARK: - Building Expressions
 
     @objc(expressionForString:error:)
-    public class func expression(string: String) throws -> AJRExpression {
+    public class func expression(string: String) throws -> AJREvaluation {
         return try AJRExpressionParser(string: string).expression()
     }
 
     @objc(expressionWithFormat:arguments:error:)
-    public class func expression(format: String, _ arguments: [Any]) throws -> AJRExpression {
+    public class func expression(format: String, _ arguments: [Any]) throws -> AJREvaluation {
         return try AJRExpressionParser(format: format, arguments).expression()
     }
 
-    public class func expression(format: String, _ arguments: Any?...) throws -> AJRExpression {
+    public class func expression(format: String, _ arguments: Any?...) throws -> AJREvaluation {
         return try AJRExpressionParser(format: format, arguments).expression()
     }
 

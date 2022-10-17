@@ -10,7 +10,7 @@ import Foundation
 @objcMembers
 open class AJRIfFunction : AJRFunction {
 
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount:2)
         var returnValue : Any? = nil
         
@@ -19,7 +19,7 @@ open class AJRIfFunction : AJRFunction {
             returnValue = try AJRExpression.evaluate(value: try context.getArgument(at: 1), with: context)
         }
         
-        return returnValue
+        return returnValue ?? NSNull()
     }
 
 }
@@ -27,7 +27,7 @@ open class AJRIfFunction : AJRFunction {
 @objcMembers
 open class AJRIfElseFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 3)
         var returnValue : Any? = nil
         
@@ -38,7 +38,7 @@ open class AJRIfElseFunction : AJRFunction {
             returnValue = try AJRExpression.evaluate(value: try context.getArgument(at: 2), with: context)
         }
 
-        return returnValue
+        return returnValue ?? NSNull()
     }
     
 }

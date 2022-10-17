@@ -9,7 +9,7 @@ import AJRFoundation
 
 class AJRIntegerFunction : AJRFunction {
 
-    override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 1)
         let integer : Int = try context.integer(at: 0)
         return integer
@@ -47,7 +47,7 @@ enum AJRExpressionTestingError : Error {
 
 class AJRArgCountCheckerFunction : AJRFunction {
 
-    override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    override func evaluate(with context: AJREvaluationContext) throws -> Any {
         do {
             try context.check(argumentCountMin: 2)
         } catch AJRFunctionError.invalidArgumentCount(let message) {
@@ -74,7 +74,7 @@ class AJRArgCountCheckerFunction : AJRFunction {
             }
         }
 
-        return nil
+        return NSNull()
     }
 
 }

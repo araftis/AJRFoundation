@@ -10,23 +10,23 @@ import Foundation
 @objcMembers
 open class AJRArguments : NSObject, NSCoding, Sequence {
 
-    open var arguments : [AJRExpression]
+    open var arguments : [AJREvaluation]
     weak open var functionExpression : AJRFunctionExpression?
 
     internal var name : String {
         return functionExpression?.function.name ?? "***DEALLOCATED***"
     }
 
-    public init(arguments: [AJRExpression]? = nil) {
+    public init(arguments: [AJREvaluation]? = nil) {
         if let arguments = arguments {
             self.arguments = arguments
         } else {
-            self.arguments = [AJRExpression]()
+            self.arguments = [AJREvaluation]()
         }
         super.init()
     }
 
-    open func append(argument: AJRExpression) {
+    open func append(argument: AJREvaluation) {
         arguments.append(argument)
     }
 
@@ -34,11 +34,11 @@ open class AJRArguments : NSObject, NSCoding, Sequence {
         return arguments.count
     }
 
-    public subscript(index: Int) -> AJRExpression {
+    public subscript(index: Int) -> AJREvaluation {
         return arguments[index];
     }
 
-    public func enumerated() -> EnumeratedSequence<[AJRExpression]> {
+    public func enumerated() -> EnumeratedSequence<[AJREvaluation]> {
         return arguments.enumerated()
     }
 
@@ -104,12 +104,12 @@ open class AJRArguments : NSObject, NSCoding, Sequence {
     }
 
     required public init?(coder: NSCoder) {
-        if let arguments = coder.decodeObject(forKey: "arguments") as? [AJRExpression] {
+        if let arguments = coder.decodeObject(forKey: "arguments") as? [AJREvaluation] {
             self.arguments = arguments
         } else {
             return nil
         }
-        if let functionExpression = coder.decodeObject(forKey: "functionExpression") as? AJRFunctionExpression{
+        if let functionExpression = coder.decodeObject(forKey: "functionExpression") as? AJRFunctionExpression {
             self.functionExpression = functionExpression
         } else {
             return nil

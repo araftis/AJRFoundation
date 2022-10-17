@@ -35,7 +35,7 @@ public protocol AJRKeyValueCoding {
 
     func value(forKeyPath key: String) -> Any?
     func value(forKeyExpression expression: String) throws-> Any?
-    func value(forExpression expression: AJRExpression) throws -> Any?
+    func value(forExpression expression: AJREvaluation) throws -> Any?
 
 }
 
@@ -46,7 +46,7 @@ public extension AJRKeyValueCoding {
         return try value(forExpression: expression)
     }
 
-    func value(forExpression expression: AJRExpression) throws -> Any? {
+    func value(forExpression expression: AJREvaluation) throws -> Any? {
         return try expression.evaluate(with: AJREvaluationContext(rootObject: self))
     }
 
@@ -65,7 +65,7 @@ public struct Conversion {
     public static func valueAsBool(_ valueIn: Any?) throws -> Bool {
         var returnValue = valueIn
 
-        if returnValue == nil {
+        if returnValue == nil || returnValue is NSNull {
             returnValue = false
         } else if returnValue is Bool {
             // We've got nothing to do

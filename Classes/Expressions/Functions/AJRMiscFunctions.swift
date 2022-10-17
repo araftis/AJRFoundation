@@ -10,7 +10,7 @@ import Foundation
 @objcMembers
 open class AJRIsNullFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 1)
         let value = try AJRExpression.value(try context.getArgument(at: 0), with: context)
         
@@ -22,7 +22,7 @@ open class AJRIsNullFunction : AJRFunction {
 @objcMembers
 open class AJRHelpFunction : AJRFunction {
     
-    public override func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
         try context.check(argumentCount: 1)
         var result : Any? = nil
         
@@ -32,7 +32,7 @@ open class AJRHelpFunction : AJRFunction {
             throw AJRFunctionError.invalidArgument("Parameter to help() must be a function")
         }
         
-        return result
+        return result ?? NSNull()
     }
     
 }

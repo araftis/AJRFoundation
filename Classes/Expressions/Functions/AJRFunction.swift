@@ -102,7 +102,7 @@ open class AJRFunction : NSObject, AJREquatable, NSCoding, AJREvaluation {
     
     // MARK: - Actions
     
-    open func evaluate(with context: AJREvaluationContext) throws -> Any? {
+    open func evaluate(with context: AJREvaluationContext) throws -> Any {
         throw AJRFunctionError.unimplementedAbstract("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
     

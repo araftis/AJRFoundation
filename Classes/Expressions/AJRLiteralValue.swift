@@ -1,5 +1,5 @@
 /*
- AJRExpressionFunctionStackFrame.swift
+ ConstantExpression.swift
  AJRFoundation
 
  Copyright © 2021, AJ Raftis and AJRFoundation authors
@@ -32,43 +32,70 @@
 import Foundation
 
 @objcMembers
-open class AJRExpressionFunctionStackFrame : AJRExpressionStackFrame {
+open class AJRLiteralValue : NSObject, AJREvaluation, AJREquatable, NSCoding {
     
     // MARK: - Properties
     
-    open var function : AJRFunction
-    open var arguments = [AJREvaluation]()
-
+    public var value: Any?
+    
     // MARK: - Creation
     
-    public init(function: AJRFunction) {
-        self.function = function
+    public init(value: Any? = nil) {
+        self.value = value
         super.init()
     }
     
     // MARK: - Actions
     
-    public func reduceArgument() throws -> Void {
-        // This only works if the stack count is 1.
-        if tokenStack.count == 1 {
-            // Get the actual expression of the argument from our super.
-            let expression = try super.expression()
-            // Add it as an argument to the function.
-            arguments.append(expression)
-
-            // And regardless of what we did, clear the expression in preparation for the next argument.
-            tokenStack.removeAll()
-        } else if tokenStack.count > 1 {
-            throw AJRExpressionParserError.failedToFullyReduce("AJRExpression failed to fully reduce: \(tokenStack)")
+    public func evaluate(with context: AJREvaluationContext) throws -> Any {
+        if let constant = value as? AJRConstant {
+            return constant.value ?? NSNull()
         }
-        // Do nothing in this case. We'll just ignore blank arguments.
+        return value ?? NSNull()
     }
     
-    // MARK: - AJRExpressionStackFrame
+    // MARK: - CustomStringConvertible
     
-    public override func expression() throws -> AJREvaluation {
-        try reduceArgument()
-        return AJRFunctionExpression(function: function, arguments: arguments)
+    public override var description: String {
+        if let value = value {
+            return (value is String) ? "\"\(value)\"" : "\(value)"
+        }
+        return "nil"
+    }
+    
+    // MARK: - Equality
+
+    public override func isEqual(to other: Any?) -> Bool {
+        if let typed = other as? AJRLiteralValue {
+            return AJRAnyEquals(value, typed.value)
+        }
+        return false
+    }
+
+    public override func isEqual(_ object: Any?) -> Bool {
+        return isEqual(to: object)
+    }
+
+    // MARK: - Hashable
+
+    open override var hash: Int {
+        if let value = value as? AnyHashable {
+            return value.hashValue
+        }
+        if let value = value {
+            return String(describing: value).hashValue
+        }
+        return NSNull().hashValue
+    }
+    
+    // MARK: - NSCoding
+
+    public required init?(coder: NSCoder) {
+        self.value = coder.decodeObject(forKey: "value")
+    }
+
+    public func encode(with coder: NSCoder) {
+        coder.encode(value, forKey: "value")
     }
 
 }

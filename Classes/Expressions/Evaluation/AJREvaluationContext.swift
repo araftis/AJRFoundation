@@ -51,7 +51,7 @@ open class AJREvaluationContext : NSObject {
         self.init(rootObject: rootObject, stores: [rootStore])
     }
 
-    // MARK: - Manipulating the Store
+    // MARK: - Managing the Store
 
     @discardableResult
     open func push(store: AJRStore? = nil) -> AJRStore {
@@ -67,6 +67,16 @@ open class AJREvaluationContext : NSObject {
 
     open var arguments : AJRArguments? {
         return stores.last?.arguments
+    }
+
+    open func symbol(named name: String) -> AJREvaluation? {
+        // Walk up the symbol stack, looking to resolve the name.
+        for store in stores.reversed() {
+            if let symbol = store.symbol(named: name) {
+                return symbol
+            }
+        }
+        return nil
     }
 
     // MARK: - Argment Utilities

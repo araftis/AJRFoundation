@@ -7,46 +7,61 @@
 
 import Foundation
 
-public protocol AJREvaluationObjC {
+@objc
+public protocol AJREvaluation : NSCoding {
 
     /**
      This is a front end for Obj-C, because we break the normal error semantics due to the fact that our method can succeed when it returns nil.
 
      - parameter context Contextual information about the evaluation.
-     - parameter error An in/out pointer to a NSError object.
 
-     - returns The result of the evaluation. The result may be `nil`.
+     - returns The result of the evaluation. If the result in `nil`, returns `NSNull()`.
      */
-    func evaluate(with context: AJREvaluationContext, error: NSErrorPointer) -> Any?
+    @objc(evaluateWithContext:error:)
+    func evaluate(with context: AJREvaluationContext) throws -> Any
+
+    var description : String { get }
 
 }
 
-public protocol AJREvaluation : AJREvaluationObjC {
+public extension AJREvaluation {
 
-    /**
-     Evaluates the receiver, return a result.
-
-     - parameter context Contextual information about the evaluation.
-
-     - returns The result of the evaluation. The result may be `nil`.
-     */
-    func evaluate(with context: AJREvaluationContext) throws -> Any?
-
-}
-
-extension AJREvaluation {
-
-    public func evaluate(with context: AJREvaluationContext, error errorPtr: NSErrorPointer) -> Any? {
-        var result: Any? = nil
-
-        do {
-            result = try evaluate(with: context)
-        } catch {
-            errorPtr?.pointee = error as NSError
+    static func evaluate(value: Any?, with context: AJREvaluationContext) throws -> Any? {
+        var returnValue = value
+        while returnValue is AJREvaluation {
+            returnValue = try (returnValue! as! AJREvaluation).evaluate(with: context)
         }
-
-        return result
+        return returnValue
     }
 
-
 }
+
+//public protocol AJREvaluation : AJREvaluationObjC {
+//
+//    /**
+//     Evaluates the receiver, return a result.
+//
+//     - parameter context Contextual information about the evaluation.
+//
+//     - returns The result of the evaluation. The result may be `nil`.
+//     */
+//    func evaluate(with context: AJREvaluationContext) throws -> Any?
+//
+//}
+//
+//extension AJREvaluation {
+//
+//    public func evaluate(with context: AJREvaluationContext, error errorPtr: NSErrorPointer) -> Any? {
+//        var result: Any? = nil
+//
+//        do {
+//            result = try evaluate(with: context)
+//        } catch {
+//            errorPtr?.pointee = error as NSError
+//        }
+//
+//        return result
+//    }
+//
+//
+//}
