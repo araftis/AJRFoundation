@@ -35,11 +35,16 @@ import Foundation
 open class AJRFunctionExpression : AJRExpression {
     
     // MARK: - Properties
-    
-    open var function : AJRFunction
-    open var arguments : AJRArguments
+
+    // NOTE: The force unwraps here are present, because we have to be able to init in an uninitialized state.
+    open var function : AJRFunction!
+    open var arguments : AJRArguments!
     
     // MARK: - Creation
+
+    public required init() {
+        super.init()
+    }
     
     public init(function: AJRFunction, arguments: [AJREvaluation]) {
         self.function = function
@@ -105,6 +110,28 @@ open class AJRFunctionExpression : AJRExpression {
     }
 
     public override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        coder.encode(function, forKey: "function")
+        coder.encode(arguments, forKey: "arguments")
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public override func decode(with coder: AJRXMLCoder) {
+        super.decode(with: coder)
+        coder.decodeObject(forKey: "function") { value in
+            if let value = value as? AJRFunction {
+                self.function = value
+            }
+        }
+        coder.decodeObject(forKey: "arguments") { value in
+            if let value = value as? AJRArguments {
+                self.arguments = value
+            }
+        }
+    }
+
+    public override func encode(with coder: AJRXMLCoder) {
         super.encode(with: coder)
         coder.encode(function, forKey: "function")
         coder.encode(arguments, forKey: "arguments")

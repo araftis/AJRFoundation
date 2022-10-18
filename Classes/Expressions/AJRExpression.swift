@@ -41,7 +41,7 @@ public enum AJRExpressionError : Error {
 }
 
 @objcMembers
-open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation {
+open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation, AJRXMLCoding {
 
     // MARK: - Properties
 
@@ -75,7 +75,7 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation {
         return try AJRExpressionParser(format: format, arguments).expression()
     }
 
-    public override init() {
+    required public override init() {
         self.protected = false
     }
     
@@ -212,5 +212,16 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation {
         coder.encode(protected, forKey: "protected")
     }
 
+    // MARK: - AJRXMLCoding
+
+    public func decode(with coder: AJRXMLCoder) {
+        coder.decodeBool(forKey: "protected") { value in
+            self.protected = value
+        }
+    }
+
+    public func encode(with coder: AJRXMLCoder) {
+        coder.encode(protected, forKey: "protected")
+    }
 
 }

@@ -42,7 +42,7 @@ public enum AJRFunctionError : Error {
 }
 
 @objcMembers
-open class AJRFunction : NSObject, AJREquatable, NSCoding, AJREvaluation {
+open class AJRFunction : NSObject, AJREquatable, AJREvaluation {
     
     // MARK: - Properties
     
@@ -159,6 +159,26 @@ open class AJRFunction : NSObject, AJREquatable, NSCoding, AJREvaluation {
     }
 
     public func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: "name")
+        coder.encode(prototype, forKey: "prototype")
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public func decode(with coder: AJRXMLCoder) {
+        coder.decodeObject(forKey: "name") { value in
+            if let value = value as? String {
+                self.name = value
+            }
+        }
+        coder.decodeObject(forKey: "prototype") { value in
+            if let value = value as? String {
+                self.prototype = value
+            }
+        }
+    }
+
+    public func encode(with coder: AJRXMLCoder) {
         coder.encode(name, forKey: "name")
         coder.encode(prototype, forKey: "prototype")
     }

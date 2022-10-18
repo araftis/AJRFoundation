@@ -131,7 +131,7 @@ open class AJRExpressionStackFrame : NSObject {
     func shouldBreakUpExpression(_ value: AJRStackToken, dueTo operator: AJROperator) -> Bool {
         if let expression = value.nonunaryOperatorExpression {
             let preceeding = expression.operator
-            return preceeding.precedence < `operator`.precedence
+            return preceeding!.precedence < `operator`.precedence
         }
         return false
     }

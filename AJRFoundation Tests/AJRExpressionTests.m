@@ -456,41 +456,20 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 - (void)testCoding {
-    AJRExpression *expression = [AJRExpression expressionWithString:@"sin(π)" error:NULL];
-    AJRExpression *decodedExpression = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
+    id <AJREvaluation> expression = [AJRExpression expressionWithString:@"sin(π)" error:NULL];
+    id <AJREvaluation> decodedExpression = (AJRExpression *)AJRCopyCodableObject(expression, Nil);
     
-    XCTAssert([expression isEqual:decodedExpression], @"%@ wasn't equal to %@", expression, decodedExpression);
-}
+    XCTAssert(AJREqual(expression, decodedExpression), @"%@ wasn't equal to %@", expression, decodedExpression);
 
-// We dropped property lsit encoding, at least for now. Might bring it back, if it's needed.
-//- (void)testPropertyListEncoding
-//{
-//    NSArray *numbers = @[
-//        [NSNumber numberWithChar:CHAR_MAX],
-//        [NSNumber numberWithUnsignedChar:UCHAR_MAX],
-//        [NSNumber numberWithShort:SHRT_MAX],
-//        [NSNumber numberWithUnsignedShort:USHRT_MAX],
-//        [NSNumber numberWithInt:INT_MAX],
-//        [NSNumber numberWithUnsignedInt:UINT_MAX],
-//        [NSNumber numberWithLongLong:LLONG_MAX],
-//        [NSNumber numberWithUnsignedLongLong:ULLONG_MAX],
-//        [NSNumber numberWithFloat:FLT_MAX],
-//        [NSNumber numberWithDouble:DBL_MAX],
-//    ];
-//
-//    for (NSNumber *number in numbers) {
-//        NSDictionary *propertyList = [number propertyListValue];
-//        XCTAssert(propertyList != nil);
-//        NSNumber *decoded = [[NSNumber alloc] initWithPropertyListValue:propertyList error:NULL];
-//        XCTAssert(AJREqual(number, decoded), @"%@ != %@", number, decoded);
-//    }
-//
-//    NSString *original = @"This is a test";
-//    NSString *decoded = [[NSString alloc] initWithPropertyListValue:[original propertyListValue] error:NULL];
-//    XCTAssert(AJREqual(original, decoded));
-//    decoded = [[NSString alloc] initWithPropertyListValue:original error:NULL];
-//    XCTAssert(AJREqual(original, decoded));
-//}
+    // TODO: We need to really expand the XML archiving tests. I doubt we're getting anywhere near to 100%
+
+    NSError *localError = nil;
+    NSData *data = [AJRXMLArchiver archivedDataWithRootObject:expression];
+    decodedExpression = [AJRXMLUnarchiver unarchivedObjectWithData:data error:&localError];
+
+    XCTAssert(localError == nil, @"We didn't expect an error, but we got one.");
+    XCTAssert(AJREqual(expression, decodedExpression), @"%@ wasn't equal to %@", expression, decodedExpression);
+}
 
 - (void)testOperators {
     NSArray<NSNumber *> *operatorPrecedences = @[@(AJROperatorPrecedencePostfix),

@@ -8,13 +8,18 @@
 import Foundation
 
 @objcMembers
-open class AJRArguments : NSObject, NSCoding, Sequence {
+open class AJRArguments : NSObject, NSCoding, Sequence, AJRXMLCoding {
 
     open var arguments : [AJREvaluation]
     weak open var functionExpression : AJRFunctionExpression?
 
     internal var name : String {
         return functionExpression?.function.name ?? "***DEALLOCATED***"
+    }
+
+    required public override init() {
+        self.arguments = []
+        super.init()
     }
 
     public init(arguments: [AJREvaluation]? = nil) {
@@ -115,6 +120,26 @@ open class AJRArguments : NSObject, NSCoding, Sequence {
             return nil
         }
         super.init()
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public func decode(with coder: AJRXMLCoder) {
+        coder.decodeObject(forKey: "arguments") { value in
+            if let value = value as? [AJREvaluation] {
+                self.arguments = value
+            }
+        }
+        coder.decodeObject(forKey: "functionExpression") { value in
+            if let value = value as? AJRFunctionExpression {
+                self.functionExpression = value
+            }
+        }
+    }
+
+    public func encode(with coder: AJRXMLCoder) {
+        coder.encode(arguments, forKey: "arguments")
+        coder.encode(functionExpression, forKey: "functionExpression")
     }
 
 }

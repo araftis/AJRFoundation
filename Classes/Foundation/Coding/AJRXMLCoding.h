@@ -60,6 +60,11 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol AJRXMLDecoding <NSObject>
 
 /*!
+ This protocol requires that objects be instantiated in an "default" state. This is necessary, because the object is instantiated "empty" and then initialized as the object is unarchived via streaming. The round-about-ness of this is required, because we might need to instantiate an object other than the one initially indicated by the archive.
+ */
+- (instancetype)init;
+
+/*!
  Called to decode the object. In this method to call various decode... method on coder passing in blocks to set the values as they're read from the XML stream. For this reason, you can't depend on specific values being set in any order, as the order they're called is the same as they're found in the XML. When XML decoding is complete, if you implement -[id<AJRXMLCoding> finalizeXMLDecoding], this method will be called. You can to any final initialization in this method, knowing that all of your setter blocks have been called.
  
  This method is optional, but it truth, it will need to be implemented by most objects. It's optional, because some decoders will make use of the +[id<AJRXMLCoding> instantiateWithXMLCoder:] and -[id<AJRXMLCoding> finalzeXMLDecoding] methods to actually perform the decoding on a place holder object that's then returned via the finalize method. For example, NSString cannot be modified after creation, but because we use a "lazy" initialization method, and because we don't want to return a "mutable" string, NSString decodes into a place holder that's then turned into an actual NSString in the finalize method.

@@ -35,6 +35,7 @@ public enum AJROperatorError : Error {
     
     case unimplementedAbstract(String)
     case invalidInput(String)
+    case unknownOperator(String)
     
 }
 
@@ -56,7 +57,7 @@ public func AJROperatorPrecedenceFromString(_ string: String) -> AJROperator.Pre
 }
 
 @objcMembers
-open class AJROperator: NSObject, AJREquatable, NSCoding {
+open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
 
     @objc(AJROperatorPrecedence)
     public enum Precedence : Int, AJRXMLEncodableEnum {
@@ -311,6 +312,46 @@ open class AJROperator: NSObject, AJREquatable, NSCoding {
         } else {
             return nil
         }
+    }
+
+    // MARK: - AJRXMLCoding
+
+    internal class XMLCodingPlaceholder : NSObject, AJRXMLDecoding {
+
+        var preferredToken : String?
+
+        required public override init() {
+            super.init()
+        }
+
+        func decode(with coder: AJRXMLCoder) {
+            coder.decodeObject(forKey: "token") { value in
+                if let value = value as? String {
+                    self.preferredToken = value
+                }
+            }
+        }
+
+        func finalizeXMLDecoding() throws -> Any {
+            if let token = preferredToken {
+                if let op = AJROperator.operatorForToken(token) {
+                    return op
+                } else {
+                    throw AJROperatorError.unknownOperator("Unknown operator in archive: \(token)")
+                }
+            } else {
+                throw AJROperatorError.unknownOperator("Invalid operator in archive.")
+            }
+        }
+
+    }
+
+    public class func instantiate(with coder: AJRXMLCoder) -> Any {
+        return XMLCodingPlaceholder()
+    }
+
+    public func encode(with coder: AJRXMLCoder) {
+        coder.encode(preferredToken, forKey: "token")
     }
 
 }

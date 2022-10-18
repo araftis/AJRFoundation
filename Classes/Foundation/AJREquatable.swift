@@ -143,6 +143,8 @@ public func AJRAnyEquals<T: Equatable>(_ lhs: T?, _ rhs: T?) -> Bool {
     // NOTE: nil is never equatable, so lhs and rhs will never both be nil. When that happens, the Any parameter version of AJREquals is called.
     if (lhs == nil && rhs != nil) || (lhs != nil && rhs == nil) {
         result = false
+    } else if let lhs = lhs as? AJREquatable ,let rhs = rhs {
+        result = lhs.isEqual(to: rhs)
     } else if let lhs = lhs, let rhs = rhs {
         result = lhs == rhs
     }

@@ -131,11 +131,21 @@ open class AJRConstant : NSObject, AJREvaluation, NSCopying {
     // MARK: - NSCoding
 
     required public init?(coder: NSCoder) {
-        preconditionFailure("AJRConstant should code. We'll remove this code after I'm sure we're not hitting this assert.")
+        preconditionFailure("AJRConstant should not code/decode.")
     }
 
     open func encode(with coder: NSCoder) {
-        preconditionFailure("AJRConstant should code. We'll remove this code after I'm sure we're not hitting this assert.")
+        preconditionFailure("AJRConstant should not code/decode.")
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public func decode(with coder: AJRXMLCoder) {
+        preconditionFailure("AJRConstant should not code/decode.")
+    }
+
+    public func encode(with coder: AJRXMLCoder) {
+        preconditionFailure("AJRConstant should not code/decode.")
     }
 
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 @objc
-public protocol AJREvaluation : NSCoding {
+public protocol AJREvaluation : NSCoding, AJRXMLCoding {
 
     /**
      This is a front end for Obj-C, because we break the normal error semantics due to the fact that our method can succeed when it returns nil.

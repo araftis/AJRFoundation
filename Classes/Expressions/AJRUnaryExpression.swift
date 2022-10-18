@@ -13,6 +13,10 @@ public class AJRUnaryExpression : AJROperatorExpression {
     public var value : Any?
     
     // MARK: - Creation
+
+    required public init() {
+        super.init()
+    }
     
     public init(value: Any?, operator anOperator: AJROperator) {
         assert(anOperator is AJRUnaryOperator || anOperator.canActAsUnary)
@@ -58,6 +62,16 @@ public class AJRUnaryExpression : AJROperatorExpression {
     open override func encode(with coder: NSCoder) {
         super.encode(with: coder)
         coder.encode(value, forKey:"value")
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public override func decode(with coder: AJRXMLCoder) {
+        coder.decodeObject(forKey: "value") { self.value = $0 }
+    }
+
+    public override func encode(with coder: AJRXMLCoder) {
+        coder.encode(value, forKey: "value")
     }
 
 }

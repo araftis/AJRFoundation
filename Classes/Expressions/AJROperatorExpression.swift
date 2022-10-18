@@ -10,8 +10,12 @@ import Foundation
 @objcMembers
 public class AJROperatorExpression : AJRExpression {
     
-    public var `operator`: AJROperator
+    public var `operator`: AJROperator!
     
+    required public init() {
+        super.init()
+    }
+
     public init(_ anOperator: AJROperator) {
         self.operator = anOperator
         super.init()
@@ -21,7 +25,7 @@ public class AJROperatorExpression : AJRExpression {
     open override func isEqual(to other: Any?) -> Bool {
         if let other = other as? AJROperatorExpression {
             return (super.isEqual(to: other)
-                && self.operator == other.operator)
+                && AJRAnyEquals(self.operator, other.operator))
         }
         return false
     }
@@ -39,6 +43,20 @@ public class AJROperatorExpression : AJRExpression {
 
     public override func encode(with coder: NSCoder) {
         super.encode(with: coder)
+        coder.encode(`operator`, forKey: "operator")
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public override func decode(with coder: AJRXMLCoder) {
+        coder.decodeObject(forKey: "operator") { value in
+            if let value = value as? AJROperator {
+                self.operator = value
+            }
+        }
+    }
+
+    public override func encode(with coder: AJRXMLCoder) {
         coder.encode(`operator`, forKey: "operator")
     }
 

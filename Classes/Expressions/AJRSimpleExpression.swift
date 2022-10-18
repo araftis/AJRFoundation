@@ -13,6 +13,10 @@ public class AJRSimpleExpression : AJROperatorExpression {
     public var left: Any?
     public var right: Any?
     
+    required public init() {
+        super.init()
+    }
+
     public init(left: Any?, operator anOperator: AJROperator, right: Any?) {
         super.init(anOperator)
         self.left = left
@@ -60,6 +64,18 @@ public class AJRSimpleExpression : AJROperatorExpression {
         super.encode(with: coder)
         coder.encode(left, forKey:"left")
         coder.encode(right, forKey:"right")
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public override func decode(with coder: AJRXMLCoder) {
+        coder.decodeObject(forKey: "left") { self.left = $0 }
+        coder.decodeObject(forKey: "right") { self.right = $0 }
+    }
+
+    public override func encode(with coder: AJRXMLCoder) {
+        coder.encode(left, forKey: "left")
+        coder.encode(right, forKey: "right")
     }
 
 }

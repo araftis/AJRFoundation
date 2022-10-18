@@ -8,13 +8,17 @@
 import Foundation
 
 @objcMembers
-open class AJRLiteral : NSObject, AJREvaluation, NSCoding, AJREquatable {
+open class AJRLiteral : NSObject, AJREvaluation, NSCoding, AJREquatable, AJRXMLCoding {
 
-    open var name : String
+    open var name : String!
 
     @objc(literalWithName:)
     public class func literal(with name: String) -> AJRLiteral {
         return AJRLiteral(name: name)
+    }
+
+    required public override init() {
+        super.init()
     }
 
     public init(name: String) {
@@ -65,6 +69,16 @@ open class AJRLiteral : NSObject, AJREvaluation, NSCoding, AJREquatable {
     }
 
     open func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: "name")
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public func decode(with coder: AJRXMLCoder) {
+        coder.decodeString(forKey: "name") { self.name = $0 }
+    }
+
+    public func encode(with coder: AJRXMLCoder) {
         coder.encode(name, forKey: "name")
     }
 

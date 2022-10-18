@@ -32,13 +32,17 @@
 import Foundation
 
 @objcMembers
-open class AJRLiteralValue : NSObject, AJREvaluation, AJREquatable, NSCoding {
+open class AJRLiteralValue : NSObject, AJREvaluation, AJREquatable, NSCoding, AJRXMLCoding {
     
     // MARK: - Properties
     
     public var value: Any?
     
     // MARK: - Creation
+
+    required public override init() {
+        super.init()
+    }
     
     public init(value: Any? = nil) {
         self.value = value
@@ -95,6 +99,18 @@ open class AJRLiteralValue : NSObject, AJREvaluation, AJREquatable, NSCoding {
     }
 
     public func encode(with coder: NSCoder) {
+        coder.encode(value, forKey: "value")
+    }
+
+    // MARK: - AJRXMLCoding
+
+    public func decode(with coder: AJRXMLCoder) {
+        coder.decodeObject(forKey: "value") { value in
+            self.value = value
+        }
+    }
+
+    public func encode(with coder: AJRXMLCoder) {
         coder.encode(value, forKey: "value")
     }
 
