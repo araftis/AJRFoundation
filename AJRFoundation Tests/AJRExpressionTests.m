@@ -127,6 +127,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"isnull(\"a\")" withObject:nil expectedResult:@NO];
     [self _testExpression:@"5 + 5 * 5 + 5" withObject:nil expectedResult:@(35)];
     [self _testExpression:@"5 + 5^2 + 5" withObject:nil expectedResult:@(35)];
+    [self _testExpression:@"5.0 + 5.0^2.0 + 5.0" withObject:nil expectedResult:@(35.0)];
     [self _testExpression:@"\"foo\" + \"bar\"" withObject:nil expectedResult:@"foobar"];
     [self _testExpression:@"5 + 5 mod 3" withObject:nil expectedResult:@(5 + 5 % 3)];
     [self _testExpression:@"ajr_testintegerparameter(10)" withObject:nil expectedResult:@(10)];

@@ -30,7 +30,8 @@
       enableAddressSanitizer = "YES"
       enableASanStackUseAfterReturn = "YES"
       enableUBSanitizer = "YES"
-      codeCoverageEnabled = "YES">
+      codeCoverageEnabled = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "YES">
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "TEST_VARIABLE"
@@ -50,6 +51,15 @@
             isEnabled = "YES">
          </AdditionalOption>
       </AdditionalOptions>
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
+            BuildableName = "AJRFoundation.framework"
+            BlueprintName = "AJRFoundation"
+            ReferencedContainer = "container:AJRFoundation.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
       <Testables>
          <TestableReference
             skipped = "NO">
