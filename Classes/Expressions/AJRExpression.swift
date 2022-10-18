@@ -78,7 +78,7 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation {
     public override init() {
         self.protected = false
     }
-
+    
     private init(protected: Bool) {
         self.protected = protected
     }
