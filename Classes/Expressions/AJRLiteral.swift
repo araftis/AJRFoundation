@@ -55,7 +55,7 @@ open class AJRLiteral : NSObject, AJREvaluation, NSCoding, AJREquatable, AJRXMLC
     open func evaluate(with context: AJREvaluationContext) throws -> Any {
         // First, let's check and see if we have a something defined for us in context.
         if let symbol = context.symbol(named: name) {
-            return try symbol.evaluate(with: context)
+            return try AJRExpression.value(symbol, with: context) ?? NSNull()
         } else {
             // We don't define this as a symbol, so we treat it as a key path and resolve via context's rootObject.
             return getValue(forKeyPath: name, on: context.rootObject) ?? NSNull()
@@ -80,6 +80,16 @@ open class AJRLiteral : NSObject, AJREvaluation, NSCoding, AJREquatable, AJRXMLC
 
     public func encode(with coder: AJRXMLCoder) {
         coder.encode(name, forKey: "name")
+    }
+
+    // MARK: - NSCopying
+
+    open func copy(with zone: NSZone? = nil) -> Any {
+        let copy = type(of:self).init()
+
+        copy.name = name
+
+        return copy
     }
 
 }

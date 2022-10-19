@@ -14,46 +14,36 @@ public enum AJRStoreError : Error {
 }
 
 @objcMembers
-open class AJRStore : NSObject {
+open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying {
 
     // MARK: - Properties
 
-    // This is the default store with all the predefined functions and constants added as variables.
-    public static var rootStore : AJRStore = {
-        let store = AJRStore()
-
-        // First, add all our functions
-        for function in AJRFunction.allFunctions {
-            do {
-                try store.addSymbol(named: function.name, value: function)
-            } catch {
-                AJRLog.warning("Attempt to add a duplicate root symbol. This is going to cause issues: \(error.localizedDescription)")
-            }
-        }
-
-        // And our constants
-        for (name, constant) in AJRConstant.allConstants {
-            do {
-                try store.addSymbol(named: name, value: constant)
-            } catch {
-                AJRLog.warning("Attempt to add a duplicate root symbol. This is going to cause issues: \(error.localizedDescription)")
-            }
-        }
-
-        return store
-    }()
-
     public var symbols : [String:AJREvaluation]
-    public var arguments : AJRArguments
 
     // MARK: - Creation
 
-    public init(symbols: [String:AJREvaluation]? = nil, arguments: AJRArguments? = nil) {
+    open class func store() -> AJRStore {
+        return AJRStore(symbols: nil)
+    }
+
+    @objc(storeWithSymbols:)
+    open class func store(with symbols: [String:AJREvaluation]?) -> AJRStore {
+        return AJRStore(symbols: symbols)
+    }
+
+    required override public convenience init() {
+        self.init(symbols: nil)
+    }
+
+    public init(symbols: [String:AJREvaluation]? = nil) {
         self.symbols = symbols ?? [String:AJREvaluation]()
-        self.arguments = arguments ?? AJRArguments()
     }
 
     // MARK: - Accessing Symbols
+
+    open var count : Int {
+        return symbols.count
+    }
 
     open func symbol(named name: String) -> AJREvaluation? {
         return symbols[name]
@@ -75,16 +65,72 @@ open class AJRStore : NSObject {
         }
     }
 
-    public func addOrReplaceSymbol(named name: String, value: AJREvaluation) throws -> Void {
+    public func addOrReplaceSymbol(named name: String, value: AJREvaluation) -> Void {
         symbols[name] = value
     }
 
-    // MARK: - Access Arguments
+    // MARK: - Sequence
 
-    public var argumentCount : Int { return arguments.count }
+    public func enumerated() -> EnumeratedSequence<[String:AJREvaluation]> {
+        return symbols.enumerated()
+    }
 
-    public func argument(at index: Int) -> AJREvaluation? {
-        return arguments[index]
+    public func makeIterator() -> some IteratorProtocol {
+        return symbols.makeIterator()
+    }
+
+    /**
+     Makes enumeration of our contents easy from Obj-C
+     */
+    @objc
+    open func enumerate(_ block: @convention(block) (_ name: String, _ value: AJREvaluation, _ stop: UnsafeMutablePointer<Bool>) -> Void) -> Void {
+        for (name, value) in symbols {
+            var stop = false
+            block(name, value, &stop)
+            if stop {
+                break
+            }
+        }
+    }
+
+    // MARK: - AJREquatable
+
+    open override func isEqual(to object: Any?) -> Bool {
+        if let object = object as? AJRStore {
+            return (super.isEqual(to: object)
+                    && AJRAnyEquals(symbols, object.symbols))
+        }
+        return false
+    }
+
+    open override func isEqual(_ object: Any?) -> Bool {
+        return isEqual(to: object)
+    }
+
+    // MARK: - AJRXMLCoding
+
+    open func decode(with coder: AJRXMLCoder) {
+        coder.decodeObject(forKey: "symbols") { symbols in
+            if let symbols = symbols as? [String:AJREvaluation] {
+                self.symbols = symbols
+            }
+        }
+    }
+
+    open func encode(with coder: AJRXMLCoder) {
+        coder.encode(symbols, forKey: "symbols")
+    }
+
+    // MARK: - NSCopying
+
+    open func copy(with zone: NSZone? = nil) -> Any {
+        let copy = type(of: self).init()
+
+        for (name, value) in symbols {
+            copy.addOrReplaceSymbol(named: name, value: value.copy() as! AJREvaluation)
+        }
+
+        return copy
     }
 
 }

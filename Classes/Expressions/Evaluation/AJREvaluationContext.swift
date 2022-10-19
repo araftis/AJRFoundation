@@ -19,7 +19,7 @@ open class AJREvaluationContext : NSObject {
     // MARK: - Properties
 
     open var rootObject : Any? = nil
-    open var stores = [AJRStore]()
+    open var stackFrames = [AJRStackFrame]()
 
     // MARK: - Creation
 
@@ -30,48 +30,48 @@ open class AJREvaluationContext : NSObject {
 
     @objc(evaluationContextWithRootObject:)
     open class func evaluationContext(rootObject: Any?) -> AJREvaluationContext {
-        return AJREvaluationContext(rootObject: rootObject, stores: nil)
+        return AJREvaluationContext(rootObject: rootObject, stackFrames: nil)
     }
 
-    @objc(evaluationContextWithRootObject:stores:)
-    open class func evaluationContext(rootObject: Any?, stores: [AJRStore]?) -> AJREvaluationContext {
-        return AJREvaluationContext(rootObject: rootObject, stores: stores)
+    @objc(evaluationContextWithRootObject:stackFrames:)
+    open class func evaluationContext(rootObject: Any?, stackFrames: [AJRStackFrame]?) -> AJREvaluationContext {
+        return AJREvaluationContext(rootObject: rootObject, stackFrames: stackFrames)
     }
 
-    public init(rootObject: Any? = nil, stores: [AJRStore]? = nil) {
+    public init(rootObject: Any? = nil, stackFrames: [AJRStackFrame]? = nil) {
         self.rootObject = rootObject
-        if let stores = stores {
-            self.stores.append(contentsOf: stores)
+        if let stackFrames = stackFrames {
+            self.stackFrames.append(contentsOf: stackFrames)
         } else {
-            self.stores.append(AJRStore.rootStore)
+            self.stackFrames.append(AJRStackFrame.rootStackFrame)
         }
     }
 
-    public convenience init(rootObject: Any? = nil, rootStore: AJRStore) {
-        self.init(rootObject: rootObject, stores: [rootStore])
+    public convenience init(rootObject: Any? = nil, rootStackFrame: AJRStackFrame) {
+        self.init(rootObject: rootObject, stackFrames: [rootStackFrame])
     }
 
     // MARK: - Managing the Store
 
     @discardableResult
-    open func push(store: AJRStore? = nil) -> AJRStore {
-        let returnStore = store ?? AJRStore()
-        stores.append(returnStore)
-        return returnStore
+    open func push(stackFrame: AJRStackFrame? = nil) -> AJRStackFrame {
+        let returnFrame = stackFrame ?? AJRStackFrame()
+        stackFrames.append(returnFrame)
+        return returnFrame
     }
 
     @discardableResult
-    open func pop() -> AJRStore? {
-        return stores.removeLast()
+    open func pop() -> AJRStackFrame? {
+        return stackFrames.removeLast()
     }
 
     open var arguments : AJRArguments? {
-        return stores.last?.arguments
+        return stackFrames.last?.arguments
     }
 
     open func symbol(named name: String) -> AJREvaluation? {
         // Walk up the symbol stack, looking to resolve the name.
-        for store in stores.reversed() {
+        for store in stackFrames.reversed() {
             if let symbol = store.symbol(named: name) {
                 return symbol
             }
@@ -82,12 +82,12 @@ open class AJREvaluationContext : NSObject {
     // MARK: - Argment Utilities
 
     open var argumentCount : Int {
-        return stores.last?.argumentCount ?? 0
+        return stackFrames.last?.argumentCount ?? 0
     }
 
     open func getArguments() throws -> AJRArguments {
-        if let store = stores.last {
-            return store.arguments
+        if let stackFrame = stackFrames.last {
+            return stackFrame.arguments
         }
         throw AJREvaluationError.stackUnderflow("Stack is empty, so we can't access local arguments.")
     }

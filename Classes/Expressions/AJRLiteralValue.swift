@@ -114,4 +114,18 @@ open class AJRLiteralValue : NSObject, AJREvaluation, AJREquatable, NSCoding, AJ
         coder.encode(value, forKey: "value")
     }
 
+    // MARK: - NSCopying
+
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let copy = type(of: self).init()
+
+        if let copyable = value as? NSCopying {
+            copy.value = copyable.copy(with: zone)
+        } else {
+            copy.value = value
+        }
+
+        return copy
+    }
+
 }

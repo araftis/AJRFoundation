@@ -46,7 +46,6 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation, AJRXM
     // MARK: - Properties
 
     public var protected = false
-    internal var dateTimeZoneMap = [Date: TimeZone]()
 
     // MARK: - Creation
 
@@ -222,6 +221,16 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation, AJRXM
 
     public func encode(with coder: AJRXMLCoder) {
         coder.encode(protected, forKey: "protected")
+    }
+
+    // MARK: - NSCopying
+
+    open func copy(with zone: NSZone? = nil) -> Any {
+        let copy = type(of:self).init()
+
+        copy.protected = protected
+
+        return copy
     }
 
 }

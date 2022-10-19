@@ -196,7 +196,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma mark Key/Value Expression
 
 - (id)valueForKeyExpression:(NSString *)keyExpression {
-    return [[AJRExpression expressionWithString:keyExpression error:NULL] evaluateWithContext:[[AJREvaluationContext alloc] initWithRootObject:self stores:nil] error:NULL];
+    return [[AJRExpression expressionWithString:keyExpression error:NULL] evaluateWithContext:[[AJREvaluationContext alloc] initWithRootObject:self stackFrames:nil] error:NULL];
 }
 
 #pragma mark - Reflection

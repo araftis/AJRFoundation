@@ -56,8 +56,8 @@ open class AJRFunctionExpression : AJRExpression {
     // MARK: - AJRExpression
     
     public override func evaluate(with context: AJREvaluationContext) throws -> Any {
-        let newStore = AJRStore(arguments: arguments)
-        context.push(store: newStore);
+        let frame = AJRStackFrame(arguments: arguments)
+        context.push(stackFrame: frame);
         defer {
             context.pop()
         }

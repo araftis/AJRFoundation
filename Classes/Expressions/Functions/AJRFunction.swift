@@ -183,4 +183,11 @@ open class AJRFunction : NSObject, AJREquatable, AJREvaluation {
         coder.encode(prototype, forKey: "prototype")
     }
 
+    // MARK: - NSCopying
+
+    open func copy(with zone: NSZone? = nil) -> Any {
+        // These are immutable.
+        return self
+    }
+
 }
