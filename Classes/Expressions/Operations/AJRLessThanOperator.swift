@@ -8,7 +8,7 @@
 import Foundation
 
 @objcMembers
-open class AJRLessThanOperator : AJROperator, AJRIntOperator, AJRDoubleOperator, AJRStringOperator {
+open class AJRLessThanOperator : AJROperator, AJRIntegerOperator, AJRDoubleOperator, AJRStringOperator {
     
     public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
         return left < right

@@ -215,7 +215,7 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
                 return try op.performDoubleOperator(withLeft: leftDouble, andRight: rightDouble)
             }
         }
-        if let op = self as? AJRIntOperator {
+        if let op = self as? AJRIntegerOperator {
             if left is Int || right is Int {
                 let leftInt : Int = try AJRExpression.valueAsInteger(left, with: context)
                 let rightInt : Int = try AJRExpression.valueAsInteger(right, with: context)
@@ -251,13 +251,13 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
                 return try op.performStringOperator(withValue: valueString)
             }
         }
-        if let op = self as? AJRDoubleUnaryOperator {
+        if let op = self as? AJRFloatingPointUnaryOperator {
             if value is Double {
                 let valueDouble : Double = try AJRExpression.valueAsFloat(value, with: context)
                 return try op.performDoubleOperator(withValue: valueDouble)
             }
         }
-        if let op = self as? AJRIntUnaryOperator {
+        if let op = self as? AJRIntegerUnaryOperator {
             if value is Int {
                 let valueInt : Int = try AJRExpression.valueAsInteger(value, with: context)
                 return try op.performIntOperator(withValue: valueInt)
@@ -356,7 +356,7 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
 
 }
 
-public protocol AJRIntOperator {
+public protocol AJRIntegerOperator {
     
     func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any?
     
@@ -395,13 +395,13 @@ public protocol AJRDateOperator {
 
 }
 
-public protocol AJRIntUnaryOperator {
+public protocol AJRIntegerUnaryOperator {
     
     func performIntOperator(withValue value: Int) throws -> Any?
     
 }
 
-public protocol AJRDoubleUnaryOperator {
+public protocol AJRFloatingPointUnaryOperator {
     
     func performDoubleOperator(withValue value: Double) throws -> Any?
     

@@ -14,7 +14,7 @@ import Foundation
  */
 @objcMembers
 open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
-
+    
     // MARK: - Properties
 
     public static let UnsetPlaceholderName = "<unset>"

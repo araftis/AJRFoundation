@@ -29,7 +29,7 @@ class AJRBrokenUnaryOperator : AJRUnaryOperator {
 
 }
 
-class AJROddStartOperator : AJROperator, AJRIntOperator, AJRDoubleOperator {
+class AJROddStartOperator : AJROperator, AJRIntegerOperator, AJRDoubleOperator {
 
     public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
         return left + right

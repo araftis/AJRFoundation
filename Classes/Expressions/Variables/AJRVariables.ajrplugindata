@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugindata owner="com.ajr.framework.AJRFoundation" version="1">
+    <extension-point name="ajrvariabletype" class="AJRFoundation.AJRVariableType" registrySelector="registerVariableType:properties:">
+        <attribute name="class" type="class" required="YES" />
+        <attribute name="name" type="string" required="YES" />
+    </extension-point>
+    
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeBool" name="Bool" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeInteger" name="Integer" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeFloatingPoint" name="Floating Point" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeString" name="String" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeArray" name="Array" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeSet" name="Set" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeDictionary" name="Dictionary" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeDate" name="Date" />
+</plugindata>

@@ -8,7 +8,7 @@
 import Foundation
 
 @objcMembers
-open class AJRModulusOperator : AJROperator, AJRIntOperator {
+open class AJRModulusOperator : AJROperator, AJRIntegerOperator {
     
     public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
         if right == 0 {

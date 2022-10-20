@@ -8,7 +8,7 @@
 import Foundation
 
 @objcMembers
-open class AJRExponentOperator : AJROperator, AJRDoubleOperator, AJRIntOperator {
+open class AJRExponentOperator : AJROperator, AJRDoubleOperator, AJRIntegerOperator {
     
     public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
         return Int(pow(Double(left), Double(right)))
