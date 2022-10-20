@@ -518,6 +518,10 @@ extension Double : AJRValueForUntypedDoubleComparison, AJRValueForUntypedCompari
         return Double(self)
     }
     
+    public var isInteger : Bool {
+        return floor(self) == self
+    }
+    
     public var isFloatingPoint : Bool { return true }
     
     public func isEqual(to other: Any?) -> Bool {

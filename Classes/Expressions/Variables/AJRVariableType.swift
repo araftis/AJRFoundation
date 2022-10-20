@@ -71,6 +71,18 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
         return typesByName[name];
     }
     
+    // MARK: - Operator Support
+    
+    open func possiblyPerform(operator: AJROperator, left: Any?, right: Any?, context: AJREvaluationContext, consumed: inout Bool) throws -> Any? {
+        consumed = false
+        return nil
+    }
+    
+    open func possiblyPerform(operator: AJROperator, value: Any?, context: AJREvaluationContext, consumed: inout Bool) throws -> Any? {
+        consumed = false
+        return nil
+    }
+    
     // MARK: - AJRXMLCoding
     
     /// Grabs the singleton instance from the factory and returns it.
@@ -90,10 +102,6 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
 
 @objcMembers
 open class AJRVariableTypeBool : AJRVariableType {
-}
-
-@objcMembers
-open class AJRVariableTypeInteger : AJRVariableType {
 }
 
 @objcMembers

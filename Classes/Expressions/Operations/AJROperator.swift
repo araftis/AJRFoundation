@@ -175,6 +175,15 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
     }
     
     open func performOperator(left: Any?, right: Any?, context: AJREvaluationContext) throws -> Any? {
+        
+        for variableType in AJRVariableType.types {
+            var consumed : Bool = false
+            let result = try variableType.possiblyPerform(operator: self, left: left, right: right, context: context, consumed: &consumed)
+            if consumed {
+                return result
+            }
+        }
+        
         if let op = self as? AJRDateOperator {
             if left is AJRTimeZoneDate && valueCanBeDateComponents(right) {
                 let leftDate : AJRTimeZoneDate = left as! AJRTimeZoneDate
@@ -215,13 +224,13 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
                 return try op.performDoubleOperator(withLeft: leftDouble, andRight: rightDouble)
             }
         }
-        if let op = self as? AJRIntegerOperator {
-            if left is Int || right is Int {
-                let leftInt : Int = try AJRExpression.valueAsInteger(left, with: context)
-                let rightInt : Int = try AJRExpression.valueAsInteger(right, with: context)
-                return try op.performIntOperator(withLeft: leftInt, andRight: rightInt)
-            }
-        }
+//        if let op = self as? AJRIntegerOperator {
+//            if left is Int || right is Int {
+//                let leftInt : Int = try AJRExpression.valueAsInteger(left, with: context)
+//                let rightInt : Int = try AJRExpression.valueAsInteger(right, with: context)
+//                return try op.performIntOperator(withLeft: leftInt, andRight: rightInt)
+//            }
+//        }
         if let op = self as? AJRBoolOperator {
             if left is Bool || right is Bool {
                 let leftBool = try AJRExpression.valueAsBool(left, with: context)
@@ -235,16 +244,18 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
                let right = try AJRExpression.valueAsCollection(right, with: context) {
                 return try op.performCollectionOperator(withLeft: left, andRight: right)
             }
-//            if left is AJRUntypedCollection || right is AJRUntypedCollection {
-//                let leftCollection = try  AJRExpression.valueAsCollection(left)
-//                let rightCollection = try AJRExpression.valueAsCollection(right)
-//                return try op.performCollectionOperator(withLeft: leftCollection!, andRight: rightCollection)
-//            }
         }
         throw AJROperatorError.unimplementedAbstract("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
     
     open func performOperator(value: Any?, context: AJREvaluationContext) throws -> Any? {
+        for variableType in AJRVariableType.types {
+            var consumed = false
+            let result = try variableType.possiblyPerform(operator: self, value: value, context: context, consumed: &consumed)
+            if consumed {
+                return result
+            }
+        }
         if let op = self as? AJRStringUnaryOperator {
             if value is String {
                 let valueString = try AJRExpression.valueAsString(value, with: context)
@@ -257,12 +268,12 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
                 return try op.performDoubleOperator(withValue: valueDouble)
             }
         }
-        if let op = self as? AJRIntegerUnaryOperator {
-            if value is Int {
-                let valueInt : Int = try AJRExpression.valueAsInteger(value, with: context)
-                return try op.performIntOperator(withValue: valueInt)
-            }
-        }
+//        if let op = self as? AJRIntegerUnaryOperator {
+//            if value is Int {
+//                let valueInt : Int = try AJRExpression.valueAsInteger(value, with: context)
+//                return try op.performIntOperator(withValue: valueInt)
+//            }
+//        }
         if let op = self as? AJRBoolUnaryOperator {
             if value is Bool {
                 let valueBool = try AJRExpression.valueAsBool(value, with: context)

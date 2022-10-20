@@ -38,6 +38,8 @@
 		217160742900CEE5001F2D4C /* AJRVariables.ajrplugindata in Resources */ = {isa = PBXBuildFile; fileRef = 217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */; };
 		217160762900CF2E001F2D4C /* AJRVariableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217160752900CF2E001F2D4C /* AJRVariableType.swift */; };
 		217160772900CF2E001F2D4C /* AJRVariableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217160752900CF2E001F2D4C /* AJRVariableType.swift */; };
+		2171607F2900DBB3001F2D4C /* AJRVariableTypeInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */; };
+		217160802900DBB3001F2D4C /* AJRVariableTypeInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */; };
 		21FCD9D2270CE7DA0049E558 /* NSFileWrapper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */; };
 		21FCD9D3270CE7DA0049E558 /* NSFileWrapper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
@@ -872,6 +874,7 @@
 		210F8F8D273F381E004A939D /* AJRCountedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRCountedSet.swift; sourceTree = "<group>"; };
 		217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AJRVariables.ajrplugindata; sourceTree = "<group>"; };
 		217160752900CF2E001F2D4C /* AJRVariableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableType.swift; sourceTree = "<group>"; };
+		2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeInteger.swift; sourceTree = "<group>"; };
 		21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFileWrapper+Extensions.swift"; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* AJRFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundation_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* AJRFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AJRFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1418,6 +1421,7 @@
 				217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */,
 				FA8B8FE028FF777100650F23 /* AJRVariable.swift */,
 				217160752900CF2E001F2D4C /* AJRVariableType.swift */,
+				2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */,
 			);
 			path = Variables;
 			sourceTree = "<group>";
@@ -2627,6 +2631,7 @@
 				FABCE5B610D6D0E9009DF59C /* NSCoder+Extensions.m in Sources */,
 				FA5FAA3223695AB80027F178 /* NSURLQueryItem+Extensions.m in Sources */,
 				FA0587D5192FEB57002913B6 /* NSOutputStream+Extensions.m in Sources */,
+				2171607F2900DBB3001F2D4C /* AJRVariableTypeInteger.swift in Sources */,
 				FA311C5228ED2417006BE0FB /* AJRSimpleExpression.swift in Sources */,
 				FA09AEBE217D501B0095FBC5 /* NSUnit+Extensions.m in Sources */,
 				210F8F8E273F381E004A939D /* AJRCountedSet.swift in Sources */,
@@ -2727,6 +2732,7 @@
 				FA311C6228ED2802006BE0FB /* AJRCollectionFunctions.swift in Sources */,
 				FA2AC5EC196615F10052EB20 /* AJRActivity.m in Sources */,
 				FA311C2728ED08AA006BE0FB /* AJRMutableSet.swift in Sources */,
+				217160802900DBB3001F2D4C /* AJRVariableTypeInteger.swift in Sources */,
 				FADDA130229BB6DB00257007 /* XMLNamedNode.swift in Sources */,
 				217160772900CF2E001F2D4C /* AJRVariableType.swift in Sources */,
 				FA2AC5ED196615F10052EB20 /* AJRMain.m in Sources */,
