@@ -5,7 +5,7 @@
         <attribute name="name" type="string" required="YES" />
     </extension-point>
     
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeBool" name="Bool" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeBoolean" name="Boolean" />
     <ajrvariabletype class="AJRFoundation.AJRVariableTypeInteger" name="Integer" />
     <ajrvariabletype class="AJRFoundation.AJRVariableTypeFloatingPoint" name="Floating Point" />
     <ajrvariabletype class="AJRFoundation.AJRVariableTypeString" name="String" />

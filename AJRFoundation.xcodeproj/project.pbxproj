@@ -541,6 +541,16 @@
 		FA8B8FDF28FF700700650F23 /* AJRStackFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FDD28FF700700650F23 /* AJRStackFrame.swift */; };
 		FA8B8FE128FF777100650F23 /* AJRVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FE028FF777100650F23 /* AJRVariable.swift */; };
 		FA8B8FE228FF777100650F23 /* AJRVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FE028FF777100650F23 /* AJRVariable.swift */; };
+		FA8B8FEC2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FEB2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift */; };
+		FA8B8FED2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FEB2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift */; };
+		FA8B8FEF2900F50000650F23 /* AJRVariableTypeBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FEE2900F50000650F23 /* AJRVariableTypeBoolean.swift */; };
+		FA8B8FF02900F50000650F23 /* AJRVariableTypeBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FEE2900F50000650F23 /* AJRVariableTypeBoolean.swift */; };
+		FA8B8FF22900F8C000650F23 /* AJRVariableTypeString.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF12900F8C000650F23 /* AJRVariableTypeString.swift */; };
+		FA8B8FF32900F8C000650F23 /* AJRVariableTypeString.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF12900F8C000650F23 /* AJRVariableTypeString.swift */; };
+		FA8B8FF52900FA4600650F23 /* AJRVariableTypeCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF42900FA4600650F23 /* AJRVariableTypeCollections.swift */; };
+		FA8B8FF62900FA4600650F23 /* AJRVariableTypeCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF42900FA4600650F23 /* AJRVariableTypeCollections.swift */; };
+		FA8B8FF82900FF3300650F23 /* AJRVariableTypeDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */; };
+		FA8B8FF92900FF3300650F23 /* AJRVariableTypeDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */; };
 		FA8BBA1D0EE4677B00C92598 /* NSBundle+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA8BBA1B0EE4677B00C92598 /* NSBundle+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA8BBA1E0EE4677B00C92598 /* NSBundle+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */; };
 		FA8E370725C5182400EB554F /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E370625C5182400EB554F /* Sequence+Extensions.swift */; };
@@ -1161,6 +1171,11 @@
 		FA8B8FD228FA533F00650F23 /* AJRLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRLiteral.swift; sourceTree = "<group>"; };
 		FA8B8FDD28FF700700650F23 /* AJRStackFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRStackFrame.swift; sourceTree = "<group>"; };
 		FA8B8FE028FF777100650F23 /* AJRVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariable.swift; sourceTree = "<group>"; };
+		FA8B8FEB2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeFloatingPoint.swift; sourceTree = "<group>"; };
+		FA8B8FEE2900F50000650F23 /* AJRVariableTypeBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeBoolean.swift; sourceTree = "<group>"; };
+		FA8B8FF12900F8C000650F23 /* AJRVariableTypeString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeString.swift; sourceTree = "<group>"; };
+		FA8B8FF42900FA4600650F23 /* AJRVariableTypeCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeCollections.swift; sourceTree = "<group>"; };
+		FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeDate.swift; sourceTree = "<group>"; };
 		FA8BBA1B0EE4677B00C92598 /* NSBundle+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
 		FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
 		FA8E370625C5182400EB554F /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
@@ -1418,10 +1433,15 @@
 		2171607D2900D87D001F2D4C /* Variables */ = {
 			isa = PBXGroup;
 			children = (
-				217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */,
 				FA8B8FE028FF777100650F23 /* AJRVariable.swift */,
+				217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */,
 				217160752900CF2E001F2D4C /* AJRVariableType.swift */,
+				FA8B8FEE2900F50000650F23 /* AJRVariableTypeBoolean.swift */,
+				FA8B8FF42900FA4600650F23 /* AJRVariableTypeCollections.swift */,
+				FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */,
+				FA8B8FEB2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift */,
 				2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */,
+				FA8B8FF12900F8C000650F23 /* AJRVariableTypeString.swift */,
 			);
 			path = Variables;
 			sourceTree = "<group>";
@@ -2542,6 +2562,7 @@
 				FA311C4928ED1948006BE0FB /* AJRFunctionExpression.swift in Sources */,
 				FA4FD59B0E8BEBBF00F05C19 /* NSScanner+Extensions.m in Sources */,
 				FA4FD59D0E8BEBBF00F05C19 /* NSString+Extensions.m in Sources */,
+				FA8B8FF52900FA4600650F23 /* AJRVariableTypeCollections.swift in Sources */,
 				FADDA11D229BB6DB00257007 /* XMLDTDAttributeDeclarationNode.swift in Sources */,
 				FA311C3428ED101C006BE0FB /* AJRUnaryOperator.swift in Sources */,
 				FA5FAA1A2368D0550027F178 /* AJRXMLCollectionPlaceholder.m in Sources */,
@@ -2572,6 +2593,7 @@
 				FA6A98AC239AF21E0096806F /* NSPointerArray+Extensions.m in Sources */,
 				FA311C7028ED2B02006BE0FB /* AJRAddOperator.swift in Sources */,
 				FAD091FC20CE4E83004320F5 /* AJRRuntime.m in Sources */,
+				FA8B8FEC2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift in Sources */,
 				FA311C3A28ED12D0006BE0FB /* CharacterSet+Extensions.swift in Sources */,
 				FA311C8228ED2B33006BE0FB /* AJRGreaterThanOperator.swift in Sources */,
 				FA8B8FD328FA533F00650F23 /* AJRLiteral.swift in Sources */,
@@ -2661,7 +2683,9 @@
 				FA311C3128ED1001006BE0FB /* AJROperator.swift in Sources */,
 				FA311C6D28ED2A4A006BE0FB /* AJRTrigonometryFunctions.swift in Sources */,
 				FA471ED1195C986A009A6455 /* NSInputStream+Extensions.m in Sources */,
+				FA8B8FF22900F8C000650F23 /* AJRVariableTypeString.swift in Sources */,
 				FA07C8C0220FBE060077A0B5 /* AJRFunctions.swift in Sources */,
+				FA8B8FF82900FF3300650F23 /* AJRVariableTypeDate.swift in Sources */,
 				FA311C2828ED08AA006BE0FB /* AJRMutableArray.swift in Sources */,
 				FA0F560A25E477DD00DD0F3D /* AJREditableObject.m in Sources */,
 				FADDA12D229BB6DB00257007 /* XMLElement.swift in Sources */,
@@ -2702,6 +2726,7 @@
 				FA57AFB1231E0E4C0020C1E5 /* AJRFunctionsMRR.m in Sources */,
 				FADDA134229BB71800257007 /* XMLNode+Extensions.swift in Sources */,
 				FA6FFEBA220560A10083357D /* String+Extensions.swift in Sources */,
+				FA8B8FEF2900F50000650F23 /* AJRVariableTypeBoolean.swift in Sources */,
 				FA311CA028ED2DB4006BE0FB /* DateComponents+Extensions.swift in Sources */,
 				FAA3263D1405C21800A620E8 /* AJRFractionFormatter.m in Sources */,
 				FA311C1128ECF9F5006BE0FB /* AJRKeyValueCoding.swift in Sources */,
@@ -2740,6 +2765,7 @@
 				FA0F560925E477DD00DD0F3D /* AJREditingContext.m in Sources */,
 				FA6FFE9C2202CE070083357D /* Dispatch+Extensions.swift in Sources */,
 				FADDA135229BB71800257007 /* XMLNode+Extensions.swift in Sources */,
+				FA8B8FED2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift in Sources */,
 				FA311C3228ED1001006BE0FB /* AJROperator.swift in Sources */,
 				FA5EFBD420DF7BCB006C48B0 /* AJRPlugInExtension.m in Sources */,
 				FACDA27121FC15E60008753B /* NSThread+Extensions.m in Sources */,
@@ -2791,6 +2817,7 @@
 				FA2AC617196615F20052EB20 /* AJRAutoreleasedMemory.m in Sources */,
 				FADDA124229BB6DB00257007 /* XMLNodeWithChildrenLinux.swift in Sources */,
 				FA6FFE8222010F500083357D /* AJRLogging.swift in Sources */,
+				FA8B8FF02900F50000650F23 /* AJRVariableTypeBoolean.swift in Sources */,
 				FA53F00520B27457003C99D8 /* AJROrderedCompletionQueue.m in Sources */,
 				FA2AC619196615F20052EB20 /* AJRCaseInsensitiveString.m in Sources */,
 				FA2AC61A196615F20052EB20 /* AJRClassEnumerator.m in Sources */,
@@ -2840,6 +2867,7 @@
 				FA07C8CD220FC8A20077A0B5 /* NSObject+Extensions.swift in Sources */,
 				FA2AC633196615F20052EB20 /* AJRXMLArchiver.m in Sources */,
 				FA2C1708258C63FA007FD1B2 /* NSKeyedArchiver+Extensions.m in Sources */,
+				FA8B8FF32900F8C000650F23 /* AJRVariableTypeString.swift in Sources */,
 				FA09AEBF217D555D0095FBC5 /* AJRUnitsFormatter.m in Sources */,
 				FA2AC634196615F20052EB20 /* AJRXMLUnarchiver.m in Sources */,
 				FA07C860220D62A40077A0B5 /* AJRTranslator+Extensions.swift in Sources */,
@@ -2866,6 +2894,7 @@
 				FADDA137229BB71800257007 /* XMLElement+Extensions.swift in Sources */,
 				FA2AC645196615F20052EB20 /* NSError+Extensions.m in Sources */,
 				FA2AC646196615F20052EB20 /* NSFileHandle+Extensions.m in Sources */,
+				FA8B8FF92900FF3300650F23 /* AJRVariableTypeDate.swift in Sources */,
 				FA2AC647196615F20052EB20 /* NSFileManager+Extensions.m in Sources */,
 				FA311C1C28ECFE39006BE0FB /* Double+Extensions.swift in Sources */,
 				FA311C2F28ED0F66006BE0FB /* AJRConstant.swift in Sources */,
@@ -2895,6 +2924,7 @@
 				FACEC40222D30E65008AA6DB /* AJRTimeIntervalFormatter+Extensions.swift in Sources */,
 				FA2AC655196615F20052EB20 /* NSScanner+Extensions.m in Sources */,
 				FA2AC656196615F20052EB20 /* NSSet+Extensions.m in Sources */,
+				FA8B8FF62900FA4600650F23 /* AJRVariableTypeCollections.swift in Sources */,
 				FADDA12C229BB6DB00257007 /* XMLNode.swift in Sources */,
 				FA311C7128ED2B02006BE0FB /* AJRAddOperator.swift in Sources */,
 				FA2AC657196615F20052EB20 /* NSString+Extensions.m in Sources */,

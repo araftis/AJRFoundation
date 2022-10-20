@@ -8,17 +8,17 @@
 import Foundation
 
 @objcMembers
-open class AJRGreaterThanOrEqualToOperator : AJROperator, AJRIntegerOperator, AJRDoubleOperator, AJRStringOperator {
+open class AJRGreaterThanOrEqualToOperator : AJROperator, AJRIntegerOperator, AJRFloatingPointOperator, AJRStringOperator {
     
-    public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
+    public func performIntegerOperator(left: Int, right: Int) throws -> Any? {
         return left >= right
     }
     
-    public func performDoubleOperator(withLeft left: Double, andRight right: Double) throws -> Any? {
+    public func performFloatingPointOperator(left: Double, right: Double) throws -> Any? {
         return left >= right
     }
     
-    public func performStringOperator(withLeft left: String?, andRight right: String?) throws -> Any? {
+    public func performStringOperator(left: String?, right: String?) throws -> Any? {
         if left == nil && right == nil {
             return true
         }

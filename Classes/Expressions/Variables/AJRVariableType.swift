@@ -73,12 +73,12 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
     
     // MARK: - Operator Support
     
-    open func possiblyPerform(operator: AJROperator, left: Any?, right: Any?, context: AJREvaluationContext, consumed: inout Bool) throws -> Any? {
+    open func possiblyPerform(operator: AJROperator, left: Any?, right: Any?, consumed: inout Bool) throws -> Any? {
         consumed = false
         return nil
     }
     
-    open func possiblyPerform(operator: AJROperator, value: Any?, context: AJREvaluationContext, consumed: inout Bool) throws -> Any? {
+    open func possiblyPerform(operator: AJROperator, value: Any?, consumed: inout Bool) throws -> Any? {
         consumed = false
         return nil
     }
@@ -98,32 +98,4 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
     public func encode(with coder: AJRXMLCoder) {
     }
     
-}
-
-@objcMembers
-open class AJRVariableTypeBool : AJRVariableType {
-}
-
-@objcMembers
-open class AJRVariableTypeFloatingPoint : AJRVariableType {
-}
-
-@objcMembers
-open class AJRVariableTypeString : AJRVariableType {
-}
-
-@objcMembers
-open class AJRVariableTypeArray : AJRVariableType {
-}
-
-@objcMembers
-open class AJRVariableTypeSet : AJRVariableType {
-}
-
-@objcMembers
-open class AJRVariableTypeDictionary : AJRVariableType {
-}
-
-@objcMembers
-open class AJRVariableTypeDate : AJRVariableType {
 }

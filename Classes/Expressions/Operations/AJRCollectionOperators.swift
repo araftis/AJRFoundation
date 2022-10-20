@@ -34,7 +34,7 @@ import Foundation
 @objcMembers
 open class AJRIntersectOperator : AJROperator, AJRCollectionOperator {
 
-    public func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any? {
+    public func performCollectionOperator(left: (any AJRCollection)?, right: (any AJRCollection)?) throws -> Any? {
         if let left = left,
            let right = right {
             return left.intersect(right)
@@ -47,7 +47,7 @@ open class AJRIntersectOperator : AJROperator, AJRCollectionOperator {
 @objcMembers
 open class AJRUnionOperator : AJROperator, AJRCollectionOperator {
 
-    public func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any? {
+    public func performCollectionOperator(left: (any AJRCollection)?, right: (any AJRCollection)?) throws -> Any? {
         if let left = left {
             if let right = right {
                 return left.union(right)

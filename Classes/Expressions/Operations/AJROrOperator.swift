@@ -8,13 +8,13 @@
 import Foundation
 
 @objcMembers
-open class AJROrOperator : AJROperator, AJRBoolOperator, AJRCollectionOperator {
+open class AJROrOperator : AJROperator, AJRBooleanOperator, AJRCollectionOperator {
 
-    public func performBoolOperator(withLeft left: Bool, andRight right: Bool) throws -> Any? {
+    public func performBooleanOperator(left: Bool, right: Bool) throws -> Any? {
         return left || right
     }
     
-    public func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any? {
+    public func performCollectionOperator(left: (any AJRCollection)?, right: (any AJRCollection)?) throws -> Any? {
         if let left = left {
             if let right = right {
                 return left.union(right)

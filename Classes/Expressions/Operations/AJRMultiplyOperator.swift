@@ -8,13 +8,13 @@
 import Foundation
 
 @objcMembers
-open class AJRMultiplyOperator : AJROperator, AJRIntegerOperator, AJRDoubleOperator {
+open class AJRMultiplyOperator : AJROperator, AJRIntegerOperator, AJRFloatingPointOperator {
     
-    public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
+    public func performIntegerOperator(left: Int, right: Int) throws -> Any? {
         return left * right
     }
     
-    public func performDoubleOperator(withLeft left: Double, andRight right: Double) throws -> Any? {
+    public func performFloatingPointOperator(left: Double, right: Double) throws -> Any? {
         return left * right
     }
     

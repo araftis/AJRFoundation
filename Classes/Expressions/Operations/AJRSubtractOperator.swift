@@ -8,21 +8,21 @@
 import Foundation
 
 @objcMembers
-open class AJRSubtractOperator : AJROperator, AJRIntegerOperator, AJRDoubleOperator, AJRIntegerUnaryOperator, AJRFloatingPointUnaryOperator, AJRDateOperator, AJRCollectionOperator {
+open class AJRSubtractOperator : AJROperator, AJRIntegerOperator, AJRFloatingPointOperator, AJRIntegerUnaryOperator, AJRFloatingPointUnaryOperator, AJRDateOperator, AJRCollectionOperator {
     
-    public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
+    public func performIntegerOperator(left: Int, right: Int) throws -> Any? {
         return left - right
     }
     
-    public func performDoubleOperator(withLeft left: Double, andRight right: Double) throws -> Any? {
+    public func performFloatingPointOperator(left: Double, right: Double) throws -> Any? {
         return left - right
     }
     
-    public func performIntOperator(withValue value: Int) throws -> Any? {
+    public func performIntegerOperator(value: Int) throws -> Any? {
         return -value
     }
     
-    public func performDoubleOperator(withValue value: Double) throws -> Any? {
+    public func performFloatingPointOperator(value: Double) throws -> Any? {
         return -value
     }
 
@@ -35,24 +35,24 @@ open class AJRSubtractOperator : AJROperator, AJRIntegerOperator, AJRDoubleOpera
                               second: components.second == nil ? nil : -components.second!)
     }
     
-    public func performDateOperator(withLeft left: AJRTimeZoneDate, andRight right: AJRTimeZoneDate) throws -> Any? {
+    public func performDateOperator(left: AJRTimeZoneDate, right: AJRTimeZoneDate) throws -> Any? {
         return Calendar(identifier: .gregorian).dateComponents([.year, .month, .day, .hour, .minute, .second], from: left, to: right)
     }
     
-    public func performDateOperator(withLeft left: AJRTimeZoneDate, andRight right: DateComponents) throws -> Any? {
+    public func performDateOperator(left: AJRTimeZoneDate, right: DateComponents) throws -> Any? {
         return Calendar.current.date(byAdding: invertComponents(right), to: left, wrappingComponents: false)
     }
     
-    public func performDateOperator(withLeft left: DateComponents, andRight right: AJRTimeZoneDate) throws -> Any? {
+    public func performDateOperator(left: DateComponents, right: AJRTimeZoneDate) throws -> Any? {
         let rightComponents = Calendar(identifier: .gregorian).dateComponents(from: right)
         return Calendar(identifier: .gregorian).dateComponents([.year, .month, .day, .hour, .minute, .second], from: left, to: rightComponents)
     }
     
-    public func performDateOperator(withLeft left: DateComponents, andRight right: DateComponents) throws -> Any? {
+    public func performDateOperator(left: DateComponents, right: DateComponents) throws -> Any? {
         return Calendar(identifier: .gregorian).dateComponents([.year, .month, .day, .hour, .minute, .second], from: right, to: left)
     }
 
-    public func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any? {
+    public func performCollectionOperator(left: (any AJRCollection)?, right: (any AJRCollection)?) throws -> Any? {
         if let left = left {
             if let right = right {
                 return left.subtract(right)

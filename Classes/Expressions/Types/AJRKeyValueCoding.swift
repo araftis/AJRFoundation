@@ -57,6 +57,7 @@ public enum ValueConversionError : Error {
     case valueIsNotABool(String)
     case valueIsNotANumber(String)
     case valueIsNotADate(String)
+    case valueIsNotACollection(String)
 
 }
 
@@ -242,6 +243,26 @@ public struct Conversion {
         }
 
         return returnValue as? DateComponents
+    }
+
+    /**
+     Returns the input as a collection.
+
+     If `force` is `true`, then we turn a non-collection into a collection of a single object. If `false`, then we'll throw an error.
+     */
+    public static func valueAsCollection(_ value: Any?, force: Bool) throws -> (any AJRCollection)? {
+        var returnValue : (any AJRCollection)? = nil
+
+        // Iterate an expression values until we get a basic value of some sort returned.
+        if let value = value as? (any AJRCollection) {
+            returnValue = value
+        } else if force, let value {
+            returnValue = [value]
+        } else {
+            throw ValueConversionError.valueIsNotACollection("Could not convert \(value ?? "nil") to a collection.")
+        }
+
+        return returnValue
     }
 
 }

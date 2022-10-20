@@ -8,9 +8,9 @@
 import Foundation
 
 @objcMembers
-open class AJRNotOperator : AJRUnaryOperator, AJRBoolUnaryOperator {
+open class AJRNotOperator : AJRUnaryOperator, AJRBooleanUnaryOperator {
     
-    public func performBoolOperator(withValue value: Bool) throws -> Any? {
+    public func performBooleanOperator(value: Bool) throws -> Any? {
         return !value
     }
     

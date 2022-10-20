@@ -10,7 +10,7 @@ import Foundation
 @objcMembers
 open class AJRModulusOperator : AJROperator, AJRIntegerOperator {
     
-    public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
+    public func performIntegerOperator(left: Int, right: Int) throws -> Any? {
         if right == 0 {
             throw AJRFunctionError.invalidArgument("Attempt to divide by 0.")
         }

@@ -8,16 +8,16 @@
 import Foundation
 
 @objcMembers
-open class AJRDivideOperator : AJROperator, AJRIntegerOperator, AJRDoubleOperator {
+open class AJRDivideOperator : AJROperator, AJRIntegerOperator, AJRFloatingPointOperator {
     
-    public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
+    public func performIntegerOperator(left: Int, right: Int) throws -> Any? {
         if right == 0 {
             throw AJRFunctionError.invalidArgument("Attempt to divide by 0.")
         }
         return Double(left) / Double(right) // Always promote to Double, because we're a pretty loose type system
     }
     
-    public func performDoubleOperator(withLeft left: Double, andRight right: Double) throws -> Any? {
+    public func performFloatingPointOperator(left: Double, right: Double) throws -> Any? {
         if right == 0.0 {
             throw AJRFunctionError.invalidArgument("Attempt to divide by 0.0.")
         }

@@ -8,15 +8,15 @@
 import Foundation
 
 @objcMembers
-open class AJRExclusiveOrOperator : AJROperator, AJRBoolOperator, AJRCollectionOperator {
+open class AJRExclusiveOrOperator : AJROperator, AJRBooleanOperator, AJRCollectionOperator {
 
-    public func performBoolOperator(withLeft left: Bool, andRight right: Bool) throws -> Any? {
+    public func performBooleanOperator(left: Bool, right: Bool) throws -> Any? {
         let leftBool = left
         let rightBool = right
         return (leftBool && !rightBool) || (!leftBool && rightBool)
     }
 
-    public func performCollectionOperator(withLeft left: (any AJRCollection)?, andRight right: (any AJRCollection)?) throws -> Any? {
+    public func performCollectionOperator(left: (any AJRCollection)?, right: (any AJRCollection)?) throws -> Any? {
         if let left = left {
             if let right = right {
                 return left.symmetricDifference(right)

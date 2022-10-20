@@ -8,9 +8,9 @@
 import Foundation
 
 @objcMembers
-open class AJRAddOperator : AJROperator, AJRStringOperator, AJRIntegerOperator, AJRDoubleOperator, AJRDateOperator {
+open class AJRAddOperator : AJROperator, AJRStringOperator, AJRIntegerOperator, AJRFloatingPointOperator, AJRDateOperator {
 
-    public func performStringOperator(withLeft left: String?, andRight right: String?) throws -> Any? {
+    public func performStringOperator(left: String?, right: String?) throws -> Any? {
         if left == nil {
             return right
         }
@@ -20,11 +20,11 @@ open class AJRAddOperator : AJROperator, AJRStringOperator, AJRIntegerOperator, 
         return left! + right!
     }
     
-    public func performIntOperator(withLeft left: Int, andRight right: Int) throws -> Any? {
+    public func performIntegerOperator(left: Int, right: Int) throws -> Any? {
         return left + right
     }
     
-    public func performDoubleOperator(withLeft left: Double, andRight right: Double) throws -> Any? {
+    public func performFloatingPointOperator(left: Double, right: Double) throws -> Any? {
         return left + right
     }
     
@@ -32,19 +32,19 @@ open class AJRAddOperator : AJROperator, AJRStringOperator, AJRIntegerOperator, 
         return value
     }
     
-    public func performDateOperator(withLeft left: AJRTimeZoneDate, andRight right: AJRTimeZoneDate) throws -> Any? {
+    public func performDateOperator(left: AJRTimeZoneDate, right: AJRTimeZoneDate) throws -> Any? {
         throw AJROperatorError.invalidInput("Only date components can be added to dates.")
     }
     
-    public func performDateOperator(withLeft left: AJRTimeZoneDate, andRight right: DateComponents) throws -> Any? {
+    public func performDateOperator(left: AJRTimeZoneDate, right: DateComponents) throws -> Any? {
         return Calendar.current.date(byAdding: right, to: left, wrappingComponents: true)
     }
     
-    public func performDateOperator(withLeft left: DateComponents, andRight right: AJRTimeZoneDate) throws -> Any? {
+    public func performDateOperator(left: DateComponents, right: AJRTimeZoneDate) throws -> Any? {
         return Calendar.current.date(byAdding: left, to: right, wrappingComponents: true)
     }
     
-    public func performDateOperator(withLeft left: DateComponents, andRight right: DateComponents) throws -> Any? {
+    public func performDateOperator(left: DateComponents, right: DateComponents) throws -> Any? {
         return left.dateComponents(byAdding: right)
     }
     
