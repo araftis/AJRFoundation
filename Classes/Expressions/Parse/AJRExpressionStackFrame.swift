@@ -1,41 +1,41 @@
 /*
- AJRExpressionStackFrame.swift
- AJRFoundation
+AJRExpressionStackFrame.swift
+AJRFoundation
 
- Copyright © 2021, AJ Raftis and AJRFoundation authors
- All rights reserved.
+Copyright © 2022, AJ Raftis and AJRFoundation authors
+All rights reserved.
 
- Redistribution and use in source and binary forms, with or without modification,
- are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
 
- * Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
- * Neither the name of AJRFoundation nor the names of its contributors may be
-   used to endorse or promote products derived from this software without
-   specific prior written permission.
+* Redistributions of source code must retain the above copyright notice, this 
+  list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright notice, 
+  this list of conditions and the following disclaimer in the documentation 
+  and/or other materials provided with the distribution.
+* Neither the name of AJRFoundation nor the names of its contributors may be 
+  used to endorse or promote products derived from this software without 
+  specific prior written permission.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL AJ RAFTIS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
- OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL AJ RAFTIS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 import Foundation
 
 @objcMembers
 open class AJRExpressionStackFrame : NSObject {
-    
+
     class AJRStackToken: CustomStringConvertible {
-        
+
         var token : AJRExpressionToken? = nil
         var expression : AJREvaluation? = nil
         var `operator` : AJROperator? {
@@ -44,28 +44,28 @@ open class AJRExpressionStackFrame : NSObject {
             }
             return nil
         }
-        
+
         init(token: AJRExpressionToken) {
             self.token = token
         }
-        
+
         init(expression: AJREvaluation) {
             self.expression = expression
         }
-        
+
         var isOperator : Bool {
             return token != nil && token!.type == .operator
         }
-        
+
         var isUnaryOperator : Bool {
             return token != nil && token!.type == .operator && token!.value is AJRUnaryOperator
         }
-        
+
         // Is this still used, and if it is, then shouldn't it be replace with the check for a unary operator?
         var isPossibleUnaryOperator : Bool {
             return token != nil && token!.type == .operator && (token!.value as! AJROperator).canActAsUnary
         }
-        
+
         var nonunaryOperatorExpression : AJROperatorExpression? {
             if let expression = expression as? AJROperatorExpression {
                 if !expression.protected && !(expression.operator is AJRUnaryOperator) {
@@ -74,11 +74,11 @@ open class AJRExpressionStackFrame : NSObject {
             }
             return nil
         }
-        
+
         var simpleExpression : AJRSimpleExpression {
             return expression as! AJRSimpleExpression
         }
-        
+
         public var description: String {
             var string = "<\(type(of:self)): "
             if let token = token {
@@ -89,18 +89,18 @@ open class AJRExpressionStackFrame : NSObject {
             string += ">"
             return string
         }
-        
+
         public func resolvedValue<T>() -> T {
             if let op = self.operator {
                 return op as! T
             }
             return expression as! T
         }
-        
+
     }
 
     internal var tokenStack = [AJRStackToken]()
-    
+
     // MARK: - Creation
 
     public override init() {
@@ -111,7 +111,7 @@ open class AJRExpressionStackFrame : NSObject {
     public func stackTopIsOperator() -> Bool {
         return tokenStack.last?.isOperator ?? false
     }
-    
+
     func transform(value: AJRExpressionToken) throws -> AJRStackToken {
         if value.type == .literal {
             // We need to transform.
@@ -127,7 +127,7 @@ open class AJRExpressionStackFrame : NSObject {
         // Nothing to transform, so just return the value.
         return AJRStackToken(expression: AJRLiteralValue(value: value.value))
     }
-    
+
     func shouldBreakUpExpression(_ value: AJRStackToken, dueTo operator: AJROperator) -> Bool {
         if let expression = value.nonunaryOperatorExpression {
             let preceeding = expression.operator
@@ -137,7 +137,7 @@ open class AJRExpressionStackFrame : NSObject {
     }
 
     // MARK: - Manipulating the stack
-    
+
     private func DEBUG_STACK() -> Void {
     }
 
@@ -146,7 +146,7 @@ open class AJRExpressionStackFrame : NSObject {
         if value.type == .openParen || value.type == .closeParen {
             throw AJRExpressionParserError.invalidToken("Attempt to push a parenthesis operator onto the expression stack. This isn't allowed")
         }
-        
+
         // Add a token with some simple error checking...
         if tokenStack.count == 0 {
             // Nothing on the stack yet, so anything is good.
@@ -185,7 +185,7 @@ open class AJRExpressionStackFrame : NSObject {
             }
         }
     }
-    
+
     public func add(expression: AJRExpression) throws -> Void {
         // Add a token with some simple error checking...
         if tokenStack.count == 0 {
@@ -204,10 +204,10 @@ open class AJRExpressionStackFrame : NSObject {
             }
         }
     }
-    
+
     public func reduce() throws -> Void {
         // So figure out how we're going to reduce.
-        
+
         // First, the last item on the stack should be a literal of some kind
         if stackTopIsOperator() {
             throw AJRExpressionParserError.invalidReductionState("Attempt to reduce operator with invalid stack state: \(tokenStack)")
@@ -223,7 +223,7 @@ open class AJRExpressionStackFrame : NSObject {
             if tokenStack[tokenStack.count - 2].isUnaryOperator {
                 // We're good, so create a unary expression
                 let expression : AJRUnaryExpression = AJRUnaryExpression(value: tokenStack.last!.resolvedValue(), operator: tokenStack[tokenStack.count - 2].resolvedValue()!)
-                
+
                 // Consume the last two objects
                 tokenStack.removeLast(2)
                 // And replace with our new expression
@@ -260,7 +260,7 @@ open class AJRExpressionStackFrame : NSObject {
             var value1 = tokenStack[tokenStack.count - 3]
             var `operator` = tokenStack[tokenStack.count - 2]
             var value2 = tokenStack[tokenStack.count - 1]
-            
+
 //            RadarCore.log.debug("value1: \(value1)")
 //            RadarCore.log.debug("operator: \(`operator`)")
 //            RadarCore.log.debug("value2: \(value2)")
@@ -270,12 +270,12 @@ open class AJRExpressionStackFrame : NSObject {
             if !value1.isOperator && `operator`.isOperator && !value2.isOperator {
                 // So in theory, we're good, and we can make an expression.
                 var expression : AJRSimpleExpression
-                
+
                 if shouldBreakUpExpression(value1, dueTo:`operator`.operator!) {
                     // This indicates that the preceeding expression has a lower order of precedence to
                     // our current operator, so we'll break it up, but it back on the stack, and reduce
                     // the new operator instead.
-                    
+
                     // Retain the values, so that they don't get release.
                     // Remove the top three items from the stack.
                     tokenStack.removeLast(3)
@@ -292,7 +292,7 @@ open class AJRExpressionStackFrame : NSObject {
                     `operator` = tokenStack[tokenStack.count - 2]
                     value2 = tokenStack[tokenStack.count - 1]
                 }
-                
+
                 expression = AJRSimpleExpression(left: value1.resolvedValue(), operator: `operator`.operator!, right: value2.resolvedValue())
                 // Clear the objects from our stack.
                 tokenStack.removeLast(3)
@@ -318,9 +318,9 @@ open class AJRExpressionStackFrame : NSObject {
         }
         throw AJRExpressionParserError.failedToFullyReduce("AJRExpression failed to fully reduce: \(tokenStack)")
     }
-    
+
     // MARK: - CustomStringConvertible
-    
+
     public override var description: String {
         var string = "<\(type(of: self)): stack:\n"
         for frame in tokenStack {

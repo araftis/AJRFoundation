@@ -2,7 +2,7 @@
 AJRPlugInElement.h
 AJRFoundation
 
-Copyright © 2021, AJ Raftis and AJRFoundation authors
+Copyright © 2022, AJ Raftis and AJRFoundation authors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

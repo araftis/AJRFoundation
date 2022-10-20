@@ -1,38 +1,38 @@
 /*
- AJRExpressionParser.swift
- AJRFoundation
+AJRExpressionParser.swift
+AJRFoundation
 
- Copyright © 2021, AJ Raftis and AJRFoundation authors
- All rights reserved.
+Copyright © 2022, AJ Raftis and AJRFoundation authors
+All rights reserved.
 
- Redistribution and use in source and binary forms, with or without modification,
- are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
 
- * Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
- * Neither the name of AJRFoundation nor the names of its contributors may be
-   used to endorse or promote products derived from this software without
-   specific prior written permission.
+* Redistributions of source code must retain the above copyright notice, this 
+  list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright notice, 
+  this list of conditions and the following disclaimer in the documentation 
+  and/or other materials provided with the distribution.
+* Neither the name of AJRFoundation nor the names of its contributors may be 
+  used to endorse or promote products derived from this software without 
+  specific prior written permission.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL AJ RAFTIS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
- OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL AJ RAFTIS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 import Foundation
 
 public enum AJRExpressionParserError : Error {
-    
+
     case invalidToken(String)
     case unexpectedTokenSequence(String)
     case invalidReductionState(String)
@@ -54,7 +54,7 @@ public enum AJRExpressionParserError : Error {
 public class AJRExpressionParser : NSObject {
 
     // MARK: - Character Sets
-    
+
     static var whitespaceSet = CharacterSet.whitespacesAndNewlines
     static var argumentNumberStartSet = CharacterSet(charactersIn: "+-0123456789")
     static var numberStartSet = CharacterSet(charactersIn: "0123456789")
@@ -65,7 +65,7 @@ public class AJRExpressionParser : NSObject {
     static var operatorSet = CharacterSet()
 
     // MARK: - Properties
-    
+
     public var string : String
     public var length : String.Index
     public var position : String.Index
@@ -73,9 +73,9 @@ public class AJRExpressionParser : NSObject {
     public var arguments : [Any?]
     public var argumentIndex : Int
     internal var _expression: AJREvaluation?
-    
+
     // MARK: - Creation
-    
+
     public init(string: String) throws {
         AJRExpression.initialize() // Make sure all the operators, functions, and constants are registered
         self.string = string
@@ -96,9 +96,9 @@ public class AJRExpressionParser : NSObject {
         try self.init(string: format)
         self.arguments = arguments
     }
-    
+
     // MARK: - Utilities
-    
+
     internal func nextArgument<T>() throws -> T? {
         if argumentIndex >= arguments.count {
             throw AJRExpressionParserError.insufficientArguments("Not enough arguments were provided by caller.")
@@ -113,15 +113,15 @@ public class AJRExpressionParser : NSObject {
         }
         throw AJRExpressionParserError.invalidType("Argument was not of a valid type: \(type(of:T.self))")
     }
-    
+
     // MARK: - Parse
-    
+
     internal func readWhitespace() throws -> Void {
         while (position < length) && AJRExpressionParser.whitespaceSet.contains(string[position]) {
             position = string.index(after: position)
         }
     }
-    
+
     internal enum ForcedType : Character, CaseIterable {
         case none = "\u{0000}"
         case integer = "i"
@@ -133,15 +133,15 @@ public class AJRExpressionParser : NSObject {
         case day = "d"
         case year = "y"
     }
-    
+
     internal func readNumber() throws -> AJRExpressionToken {
         let start = position
         var hasDecimal = false
-        
+
         // Make sure we move over a +/-
         while position < length {
             let character = string[position]
-            
+
             if !AJRExpressionParser.numberSet.contains(character) {
                 break
             }
@@ -152,10 +152,10 @@ public class AJRExpressionParser : NSObject {
                 }
                 hasDecimal = true
             }
-            
+
             position = string.index(after: position)
         }
-        
+
         // See if we have a modifier
         var forcedType = ForcedType.none
         if position < length {
@@ -218,46 +218,46 @@ public class AJRExpressionParser : NSObject {
 
     internal func readOperator() throws -> AJRExpressionToken {
         let start = position
-        
+
         while position < length && AJRExpressionParser.operatorSet.contains(string[position]) {
             position = string.index(after:position)
         }
-        
+
         // Get the token from the stream
         let stringValue = String(string[start..<position])
-        
+
         // See if it's an operator
         if let `operator` = AJROperator.operatorForToken(stringValue) {
             return AJRExpressionToken.token(type: .operator, value:`operator`)
         }
-        
+
         // Fell through, so treat it as a literal. Note, we'll never be a constant, like we have in the readLiteral code, because constants are registered as literals, which means having a constant will cause us to enter the readLiteral code rather than the readOperator code.
         return AJRExpressionToken.token(type: .literal, value: stringValue)
     }
-    
+
     internal func readLiteral() throws -> AJRExpressionToken {
         let start = position
-    
+
         while position < length && (AJRExpressionParser.literalSet.contains(string[position]) || string[position] == "." || string[position] == "@") {
             position = string.index(after: position)
         }
-    
+
         // Get the token from the stream
         let stringValue = String(string[start..<position])
-    
+
         if position < length && string[position] == "(" {
             // We have a function declaration.
             let function = AJRFunction.function(for: stringValue)
-    
+
             // Consume the opening parenthesis.
             position = string.index(after: position)
-    
+
             if let function = function {
                 return AJRExpressionToken.token(type: .function, value: function.copy())
             }
             throw AJRExpressionParserError.unknownFunction("Unknown function: \(stringValue)")
         }
-    
+
         // See if it's an operator
         if let `operator` = AJROperator.operatorForToken(stringValue) {
             return AJRExpressionToken.token(type: .operator, value: `operator`)
@@ -268,7 +268,7 @@ public class AJRExpressionParser : NSObject {
 
     public func readString(startCharacter: Character) throws -> AJRExpressionToken {
         var buffer = ""
-        
+
         position = string.index(after: position) // skip past the opening quote
         while position < length {
             var character = string[position]
@@ -305,13 +305,13 @@ public class AJRExpressionParser : NSObject {
             buffer.append(character)
             position = string.index(after: position)
         }
-    
+
         return AJRExpressionToken.token(type: .string, value: buffer)
     }
 
     public func token(forValue value: Any?) throws -> AJRExpressionToken {
         var token: AJRExpressionToken? = nil
-        
+
         if value == nil {
             token = AJRExpressionToken.token(type: .number, value: nil)
         } else if value is (any BinaryInteger) || value is (any BinaryFloatingPoint) {
@@ -330,15 +330,15 @@ public class AJRExpressionParser : NSObject {
         } else {
             throw AJRExpressionParserError.invalidState("Found a value we couldn't handle. This shouldn't happen: \(value!)")
         }
-        
+
         return token!
     }
-    
+
     internal func readArgument(expandingConstants expandConstants: Bool) throws -> AJRExpressionToken? {
         if position >= length {
             throw AJRExpressionParserError.missingModifier("No modifier to %%")
         }
-    
+
         let character = string[position]
         position = string.index(after: position)
         if character == "d" {
@@ -361,7 +361,7 @@ public class AJRExpressionParser : NSObject {
     public func nextToken() throws -> AJRExpressionToken? {
         // Ignore any leading whitespace
         try readWhitespace()
-        
+
         if position < length {
             let character = string[position]
             if character == "(" {
@@ -390,7 +390,7 @@ public class AJRExpressionParser : NSObject {
                 throw AJRExpressionParserError.invalidCharacter("Unexpected character in input: \(character.unicodeScalars) '\(character)'")
             }
         }
-        
+
         return nil
     }
 
@@ -399,13 +399,13 @@ public class AJRExpressionParser : NSObject {
         if _expression == nil {
             stack = [AJRExpressionStackFrame]()
             stack.append(AJRExpressionStackFrame())
-    
+
             while let token = try nextToken() {
                 // Used by a lot below...
                 let frame = stack.last!
-    
+
                 switch token.type {
-                    
+
                 case .string: fallthrough
                 case .number: fallthrough
                 case .literal: fallthrough
@@ -419,7 +419,7 @@ public class AJRExpressionParser : NSObject {
 
                 case .openParen:
                     stack.append(AJRExpressionStackFrame())
-                    
+
                 case .closeParen:
                     if stack.count <= 1 {
                         throw AJRExpressionParserError.unbalancedParentheses("Unbalanced parentheses in expression")
@@ -434,7 +434,7 @@ public class AJRExpressionParser : NSObject {
                             throw AJRExpressionParserError.invalidState("We expected to pop an expresion but something else was found.")
                         }
                     }
-                    
+
                 case .function:
                     stack.append(AJRExpressionFunctionStackFrame(function: token.value as! AJRFunction))
 
@@ -448,7 +448,7 @@ public class AJRExpressionParser : NSObject {
                     }
                 }
             }
-    
+
             // Modified the below line to check for one than one item on the _stack.
             // If no parenthesis
             // were used then there will only be one item on the _stack.
@@ -461,15 +461,15 @@ public class AJRExpressionParser : NSObject {
                 // didn't close it.
                 throw AJRExpressionParserError.invalidInput("Illegal expression string, probably caused by an unclosed parenthesis.")
             }
-    
+
             _expression = try stack.last!.expression()
             stack.removeAll()
         }
-    
+
         // We either threw an error, or expression is now initialized
         return _expression!
     }
-    
+
     // MARK: - Building Expressions
 
     @objc(expressionForString:error:)
@@ -487,14 +487,14 @@ public class AJRExpressionParser : NSObject {
     }
 
     // MARK: - Literals
-    
+
     public class func addLiteralToken(_ token: String) -> Void {
         if token.count > 0 {
             literalSet.insert(charactersIn: token)
             literalStartSet.insert(character: token[token.startIndex])
         }
     }
-    
+
     public class func addOperatorToken(_ token: String) -> Void {
         if token.rangeOfCharacter(from: literalStartSet) != nil {
             addLiteralToken(token)

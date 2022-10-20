@@ -36,7 +36,7 @@ while ( $#files > 0 )
     if ( "$line" == "/*" ) then
         if ( "$possibleFile" == "$file:t" ) then
             echo -n "Replacing License..."
-            set line = `grep -n "*/" "$file" | sed 's/:\*\///g' | head -1`
+            set line = `egrep -n "^( )*\*\/" AJRFoundation.h | sed 's/:.*$//g' | head -1`
             set line = `expr $line + 1`
             tail +$line "$file" >> "$temp"
             set copyIfNeeded = true
