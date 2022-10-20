@@ -180,3 +180,33 @@ open class AJRIterateFunction : AJRFunction {
     }
     
 }
+
+@objcMembers
+open class AJRFirstFunction : AJRFunction {
+
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
+        try context.check(argumentCount:1)
+
+        if let collection = try context.collection(at:0),
+           collection.semantic == .valueOrdered {
+            return collection.first ?? NSNull()
+        }
+        throw AJRFunctionError.invalidArgument("First argument to first() must be collection of ordered objects.")
+    }
+
+}
+
+@objcMembers
+open class AJRRestFunction : AJRFunction {
+
+    public override func evaluate(with context: AJREvaluationContext) throws -> Any {
+        try context.check(argumentCount:1)
+
+        if let collection = try context.collection(at:0),
+           let collection = collection as? Array<Any> {
+            return Array<Any>(collection.dropFirst())
+        }
+        throw AJRFunctionError.invalidArgument("First argument to contains() must be an array.")
+    }
+
+}

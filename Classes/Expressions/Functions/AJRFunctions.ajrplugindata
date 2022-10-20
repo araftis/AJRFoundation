@@ -33,6 +33,8 @@
     <ajrfunction class="AJRFoundation.AJRCountFunction" name="count" prototype="count()" />
     <ajrfunction class="AJRFoundation.AJRContainsFunction" name="contains" prototype="contains(value)" />
     <ajrfunction class="AJRFoundation.AJRIterateFunction" name="iterate" prototype="iterate(collection, function)" />
+    <ajrfunction class="AJRFoundation.AJRFirstFunction" name="first" prototype="first(collection)" />
+    <ajrfunction class="AJRFoundation.AJRRestFunction" name="rest" prototype="rest(collection)" />
 
     <!-- String Functions -->
     <ajrfunction class="AJRFoundation.AJRHasPrefixFunction" name="hasPrefix" prototype="hasPrefix(string, prefix) -> Bool" />

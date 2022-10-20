@@ -325,6 +325,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self _testExpression:@"dictionary(\"one\", 1, \"two\", 2, \"three\", 3) intersect dictionary(\"three\", 3, \"four\", 4, \"five\", 5)" withObject:nil expectedResult:@{@"three":@(3)}];
     [self _testExpression:@"dictionary(\"one\", 1, \"two\", 2, \"three\", 3) intersect set(3, 4, 5)" withObject:nil expectedResult:[NSSet setWithArray:@[@(3)]]];
     [self _testExpression:@"set(3, 4, 5) intersect dictionary(\"one\", 1, \"two\", 2, \"three\", 3)" withObject:nil expectedResult:[NSSet setWithArray:@[@(3)]]];
+
+    // Functional Language Support
+    [self _testExpression:@"first(array(1, 2, 3, 4))" withObject:nil expectedResult:@1];
+    [self _testExpression:@"rest(array(1, 2, 3, 4))" withObject:nil expectedResult:@[@2, @3, @4]];
 }
 
 - (void)testRandomAdvancedStuff {
