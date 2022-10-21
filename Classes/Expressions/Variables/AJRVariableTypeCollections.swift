@@ -58,14 +58,28 @@ open class AJRVariableTypeArray : AJRVariableType {
         return nil
     }
 
+    open override func value(from string: String) throws -> Any? {
+        throw ValueConversionError.valueIsNotACollection("Cannot convert strings to collections. This should probably be \"fixed\".")
+    }
+
 }
 
 @objcMembers
 open class AJRVariableTypeSet : AJRVariableType {
     // NOTE: Let AJRVariableTypeArray deal with operations, since it's all the same code for each collection type.
+
+    open override func value(from string: String) throws -> Any? {
+        throw ValueConversionError.valueIsNotACollection("Cannot convert strings to collections. This should probably be \"fixed\".")
+    }
+
 }
 
 @objcMembers
 open class AJRVariableTypeDictionary : AJRVariableType {
     // NOTE: Let AJRVariableTypeArray deal with operations, since it's all the same code for each collection type.
+
+    open override func value(from string: String) throws -> Any? {
+        throw ValueConversionError.valueIsNotACollection("Cannot convert strings to collections. This should probably be \"fixed\".")
+    }
+
 }

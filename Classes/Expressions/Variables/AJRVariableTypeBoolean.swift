@@ -70,4 +70,8 @@ open class AJRVariableTypeBoolean : AJRVariableType {
         return nil
     }
 
+    open override func value(from string: String) throws -> Any? {
+        return try Conversion.valueAsBool(string)
+    }
+
 }

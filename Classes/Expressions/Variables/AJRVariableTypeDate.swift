@@ -81,4 +81,8 @@ open class AJRVariableTypeDate : AJRVariableType {
         return nil
     }
 
+    open override func value(from string: String) throws -> Any? {
+        return try Conversion.valueAsDate(string)
+    }
+
 }

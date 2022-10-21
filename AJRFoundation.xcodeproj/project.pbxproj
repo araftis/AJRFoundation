@@ -314,8 +314,6 @@
 		FA311C5328ED2417006BE0FB /* AJRSimpleExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA311C5128ED2417006BE0FB /* AJRSimpleExpression.swift */; };
 		FA311C5528ED246E006BE0FB /* AJRUnaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA311C5428ED246D006BE0FB /* AJRUnaryExpression.swift */; };
 		FA311C5628ED246E006BE0FB /* AJRUnaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA311C5428ED246D006BE0FB /* AJRUnaryExpression.swift */; };
-		FA311C5828ED24C4006BE0FB /* AJRBooleanConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA311C5728ED24C4006BE0FB /* AJRBooleanConstants.swift */; };
-		FA311C5928ED24C4006BE0FB /* AJRBooleanConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA311C5728ED24C4006BE0FB /* AJRBooleanConstants.swift */; };
 		FA311C5B28ED2500006BE0FB /* AJRMathConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA311C5A28ED2500006BE0FB /* AJRMathConstants.swift */; };
 		FA311C5C28ED2500006BE0FB /* AJRMathConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA311C5A28ED2500006BE0FB /* AJRMathConstants.swift */; };
 		FA311C5E28ED2739006BE0FB /* AJRBasicMathFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA311C5D28ED2738006BE0FB /* AJRBasicMathFunctions.swift */; };
@@ -999,7 +997,6 @@
 		FA311C4E28ED23D2006BE0FB /* AJROperatorExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJROperatorExpression.swift; sourceTree = "<group>"; };
 		FA311C5128ED2417006BE0FB /* AJRSimpleExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRSimpleExpression.swift; sourceTree = "<group>"; };
 		FA311C5428ED246D006BE0FB /* AJRUnaryExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRUnaryExpression.swift; sourceTree = "<group>"; };
-		FA311C5728ED24C4006BE0FB /* AJRBooleanConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRBooleanConstants.swift; sourceTree = "<group>"; };
 		FA311C5A28ED2500006BE0FB /* AJRMathConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRMathConstants.swift; sourceTree = "<group>"; };
 		FA311C5D28ED2738006BE0FB /* AJRBasicMathFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRBasicMathFunctions.swift; sourceTree = "<group>"; };
 		FA311C6028ED2802006BE0FB /* AJRCollectionFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRCollectionFunctions.swift; sourceTree = "<group>"; };
@@ -2100,7 +2097,6 @@
 			isa = PBXGroup;
 			children = (
 				FA2A14CA1CA4AD9F0024AEC2 /* AJRConstants.ajrplugindata */,
-				FA311C5728ED24C4006BE0FB /* AJRBooleanConstants.swift */,
 				FA311C2D28ED0F66006BE0FB /* AJRConstant.swift */,
 				FA311C5A28ED2500006BE0FB /* AJRMathConstants.swift */,
 			);
@@ -2659,7 +2655,6 @@
 				210F8F8E273F381E004A939D /* AJRCountedSet.swift in Sources */,
 				FA311C8B28ED2B46006BE0FB /* AJRLessThanOrEqualToOperator.swift in Sources */,
 				FA311C6728ED295D006BE0FB /* AJRMiscFunctions.swift in Sources */,
-				FA311C5828ED24C4006BE0FB /* AJRBooleanConstants.swift in Sources */,
 				FADDA121229BB6DB00257007 /* XMLDTDElementContent.swift in Sources */,
 				FA29F7182631287E002B953A /* HTMLEntities.swift in Sources */,
 				FADDA136229BB71800257007 /* XMLElement+Extensions.swift in Sources */,
@@ -2806,7 +2801,6 @@
 				FA6FFE96220276F40083357D /* Array+Extensions.swift in Sources */,
 				FA8F1EB820C6075400D62576 /* AJRFileOutputStream.m in Sources */,
 				FA2C1714258C6409007FD1B2 /* NSKeyedUnarchiver+Extensions.m in Sources */,
-				FA311C5928ED24C4006BE0FB /* AJRBooleanConstants.swift in Sources */,
 				FA311C6E28ED2A4A006BE0FB /* AJRTrigonometryFunctions.swift in Sources */,
 				FA311C3828ED1281006BE0FB /* AJRExpressionParser.swift in Sources */,
 				FA76ABD2221D4B77008FA786 /* URL+Extensions.swift in Sources */,

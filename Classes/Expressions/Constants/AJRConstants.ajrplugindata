@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <plugindata owner="com.ajr.framework.AJRFoundation" version="1">
     <extension-point name="ajrconstant" class="AJRFoundation.AJRConstant" registrySelector="registerConstant:properties:">
-        <attribute name="class" type="class" required="YES" />
+        <attribute name="class" type="class" required="YES" defaultValue="AJRFoundation.AJRConstant" />
         <attribute name="preferredToken" type="string" />
+        <attribute name="type" type="string" />
+        <attribute name="value" type="string" />
         <element name="token" key="tokens" type="array">
             <attribute name="name" type="string" />
         </element>
@@ -15,11 +17,11 @@
     <ajrconstant class="AJRFoundation.AJREConstant">
         <token name="e" />
     </ajrconstant>
-    <ajrconstant class="AJRFoundation.AJRTrueConstant">
+    <ajrconstant type="Boolean" value="true">
         <token name="true" />
         <token name="yes" />
     </ajrconstant>
-    <ajrconstant class="AJRFoundation.AJRFalseConstant">
+    <ajrconstant type="Boolean" value="false">
         <token name="false" />
         <token name="no" />
     </ajrconstant>

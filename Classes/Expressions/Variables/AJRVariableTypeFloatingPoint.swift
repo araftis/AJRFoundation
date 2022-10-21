@@ -71,4 +71,9 @@ open class AJRVariableTypeFloatingPoint : AJRVariableType {
         return nil
     }
 
+    open override func value(from string: String) throws -> Any? {
+        let double : Double = try Conversion.valueAsFloatingPoint(string)
+        return double
+    }
+
 }

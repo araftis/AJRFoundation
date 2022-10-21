@@ -79,7 +79,7 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
         let instance = variableType.init(from: properties)
         
         typesByClass[NSStringFromClass(variableType)] = instance
-        typesByName[instance.name] = instance
+        typesByName[instance.name.lowercased()] = instance
         types.append(instance)
         
         AJRLog.in(domain: AJRPlugInManagerLoggingDomain, level: .debug, message: "Registered variable type: \(variableType) (\(instance.name))")
@@ -92,7 +92,24 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
     
     @objc(variableTypeForName:)
     public class func variableType(for name: String) -> AJRVariableType? {
-        return typesByName[name];
+        return typesByName[name.lowercased()];
+    }
+
+    // MARK: - Conversion
+
+    /**
+     Converts the `string` to a value of the receiver type.
+
+     This is used for things like property list serialization where the type may be stored as a string. This allows the type to be converted back into an appropriate system type.
+
+     - parameter string: The string containing a representation of the value.
+
+     - returns The value, or possibly `nil`.
+
+     - throws A conversion error if `string` cannot be made into a representation of the type.
+     */
+    open func value(from string: String) throws -> Any? {
+        throw ValueConversionError.conversionNotImplemented("\(type(of:self)) needs to implement \(#function)")
     }
     
     // MARK: - Operator Support

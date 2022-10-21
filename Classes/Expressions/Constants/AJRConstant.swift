@@ -39,6 +39,13 @@ open class AJRConstant : NSObject, AJREvaluation, NSCopying {
     public class func registerConstant(_ constantClass : AJRConstant.Type, properties: [String:Any]) -> Void {
         if let tokens = properties["tokens"] as? [[String:Any]] {
             let constantInstance = constantClass.init()
+            let type = properties["type"] as? String
+            let value = properties["value"] as? String
+            assert((type == nil && value == nil) || (type != nil && value != nil), "In ajrconstant, if you provide \"type\" or \"value\" you must provide both.")
+            if let type = type, let value = value {
+                constantInstance.delayedType = type
+                constantInstance.delayedValue = value
+            }
             for token in tokens {
                 if let tokenName = token["name"] as? String {
                     constants[tokenName] = constantInstance
@@ -51,7 +58,31 @@ open class AJRConstant : NSObject, AJREvaluation, NSCopying {
 
     // MARK: - Properties
 
-    open var hashableValue : AnyHashable? { return nil }
+    // These are necessary, because we can't access these during constant registration, because they may not exist due to order of initialization. As such, we'll cash the values, and then nil them out when the value is accessed for the first time.
+    internal var delayedType : String? = nil
+    internal var delayedValue : String? = nil
+
+    /// Holds the underlying value when the constant is created via type/value.
+    internal var underlyingValue : AnyHashable? = nil
+    open var hashableValue : AnyHashable? {
+        if let delayedType, let delayedValue {
+            if let variableType = AJRVariableType.variableType(for: delayedType) {
+                do {
+                    underlyingValue = try variableType.value(from: delayedValue) as? AnyHashable
+                    if underlyingValue == nil {
+                        AJRLog.warning("The value type created for \"\(delayedType)\" wasn't hashable, but must be.")
+                    }
+                } catch {
+                    AJRLog.warning("Failed to create variable of type \"\(delayedType)\" from string value: \"\(delayedValue)\".")
+                }
+                self.delayedType = nil
+                self.delayedValue = nil
+            } else {
+                AJRLog.warning("Unknown variable type \"\(delayedType)\" for constant \"\(preferredToken)\". This will likely result in odd behavior.")
+            }
+        }
+        return underlyingValue
+    }
     open var value : Any? { return hashableValue }
     open var tokens : [String]
     open var preferredToken : String {

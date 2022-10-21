@@ -54,6 +54,7 @@ public extension AJRKeyValueCoding {
 
 public enum ValueConversionError : Error {
 
+    case conversionNotImplemented(String)
     case valueIsNotABool(String)
     case valueIsNotANumber(String)
     case valueIsNotADate(String)

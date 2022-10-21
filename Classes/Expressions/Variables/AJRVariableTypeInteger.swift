@@ -83,4 +83,9 @@ open class AJRVariableTypeInteger : AJRVariableType {
         return nil
     }
     
+    open override func value(from string: String) throws -> Any? {
+        let value : Int = try Conversion.valueAsInteger(string)
+        return value
+    }
+
 }
