@@ -82,7 +82,7 @@ open class AJRLiteral : NSObject, AJREvaluation, NSCoding, AJREquatable, AJRXMLC
             return try AJRExpression.value(symbol, with: context) ?? NSNull()
         } else {
             // We don't define this as a symbol, so we treat it as a key path and resolve via context's rootObject.
-            return getValue(forKeyPath: name, on: context.rootObject) ?? NSNull()
+            return getValue(forKeyPath: name, on: context) ?? NSNull()
         }
     }
 

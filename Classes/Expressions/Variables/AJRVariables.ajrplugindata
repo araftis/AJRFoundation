@@ -3,6 +3,7 @@
     <extension-point name="ajrvariabletype" class="AJRFoundation.AJRVariableType" registrySelector="registerVariableType:properties:">
         <attribute name="class" type="class" required="YES" />
         <attribute name="name" type="string" required="YES" />
+        <attribute name="availableInUI" type="boolean" required="YES" defaultValue="YES" />
     </extension-point>
     
     <ajrvariabletype class="AJRFoundation.AJRVariableTypeBoolean" name="Boolean" />
@@ -13,4 +14,5 @@
     <ajrvariabletype class="AJRFoundation.AJRVariableTypeSet" name="Set" />
     <ajrvariabletype class="AJRFoundation.AJRVariableTypeDictionary" name="Dictionary" />
     <ajrvariabletype class="AJRFoundation.AJRVariableTypeDate" name="Date" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeObject" name="Object" availableInUI="NO" />
 </plugindata>

@@ -51,6 +51,7 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
     open var localizedDisplayName : String {
         return translator[name]
     }
+    open var availableInUI : Bool = false
     
     // MARK: - Creation
     
@@ -64,6 +65,7 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
         if let name = properties["name"] as? String {
             self.name = name
         }
+        self.availableInUI = properties["availableInUI", false]
     }
     
     // MARK: - Factory
@@ -109,6 +111,19 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
      - throws A conversion error if `string` cannot be made into a representation of the type.
      */
     open func value(from string: String) throws -> Any? {
+        throw ValueConversionError.conversionNotImplemented("\(type(of:self)) needs to implement \(#function)")
+    }
+
+    /**
+     Converts the type back into a string.
+
+     This is the inverse operation for `color(from:)`. As such, the returned value should be able to be converted back into the correct value by calling `color(from:)`.
+
+     - parameter value: The value to convert to string. The vaue is non-null, because `null` values will be handled externally.
+
+     - returns A string representation of value.
+     */
+    open func string(from value: Any) throws -> Any? {
         throw ValueConversionError.conversionNotImplemented("\(type(of:self)) needs to implement \(#function)")
     }
     

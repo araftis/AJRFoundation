@@ -42,6 +42,17 @@ public protocol AJRStringUnaryOperator {
 @objcMembers
 open class AJRVariableTypeString : AJRVariableType {
 
+    // MARK: - Conversion
+
+    open override func value(from string: String) throws -> Any? {
+        return string
+    }
+    open override func string(from value: Any) throws -> Any? {
+        return value as? String
+    }
+
+    // MARK: - Operator Support
+
     open override func possiblyPerform(operator: AJROperator, left: Any?, right: Any?, consumed: inout Bool) throws -> Any? {
         if let op = `operator` as? AJRStringOperator {
             let leftString : String = try Conversion.valueAsString(left)

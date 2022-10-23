@@ -549,6 +549,8 @@
 		FA8B8FF62900FA4600650F23 /* AJRVariableTypeCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF42900FA4600650F23 /* AJRVariableTypeCollections.swift */; };
 		FA8B8FF82900FF3300650F23 /* AJRVariableTypeDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */; };
 		FA8B8FF92900FF3300650F23 /* AJRVariableTypeDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */; };
+		FA8B90102904CBFE00650F23 /* AJRVariableTypeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B900F2904CBFE00650F23 /* AJRVariableTypeObject.swift */; };
+		FA8B90112904CBFE00650F23 /* AJRVariableTypeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B900F2904CBFE00650F23 /* AJRVariableTypeObject.swift */; };
 		FA8BBA1D0EE4677B00C92598 /* NSBundle+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA8BBA1B0EE4677B00C92598 /* NSBundle+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA8BBA1E0EE4677B00C92598 /* NSBundle+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */; };
 		FA8E370725C5182400EB554F /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E370625C5182400EB554F /* Sequence+Extensions.swift */; };
@@ -1173,6 +1175,7 @@
 		FA8B8FF12900F8C000650F23 /* AJRVariableTypeString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeString.swift; sourceTree = "<group>"; };
 		FA8B8FF42900FA4600650F23 /* AJRVariableTypeCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeCollections.swift; sourceTree = "<group>"; };
 		FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeDate.swift; sourceTree = "<group>"; };
+		FA8B900F2904CBFE00650F23 /* AJRVariableTypeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeObject.swift; sourceTree = "<group>"; };
 		FA8BBA1B0EE4677B00C92598 /* NSBundle+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
 		FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
 		FA8E370625C5182400EB554F /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
@@ -1438,6 +1441,7 @@
 				FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */,
 				FA8B8FEB2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift */,
 				2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */,
+				FA8B900F2904CBFE00650F23 /* AJRVariableTypeObject.swift */,
 				FA8B8FF12900F8C000650F23 /* AJRVariableTypeString.swift */,
 			);
 			path = Variables;
@@ -2542,6 +2546,7 @@
 				FA8E370725C5182400EB554F /* Sequence+Extensions.swift in Sources */,
 				FA4FD5790E8BEBBF00F05C19 /* AJRFormat.m in Sources */,
 				FA904BB120CCE26200DB89F2 /* AJRMutableOrderedDictionary.m in Sources */,
+				FA8B90102904CBFE00650F23 /* AJRVariableTypeObject.swift in Sources */,
 				FA4FD57B0E8BEBBF00F05C19 /* AJRFunctions.m in Sources */,
 				FAD0920220CF108E004320F5 /* AJRVariableEnumerator.m in Sources */,
 				FA8B8FB628F25ADC00650F23 /* AJRCollectionOperators.swift in Sources */,
@@ -2900,6 +2905,7 @@
 				FA2AC64B196615F20052EB20 /* NSMutableArray+Extensions.m in Sources */,
 				FA311C4428ED15F7006BE0FB /* AJRExpressionFunctionStackFrame.swift in Sources */,
 				FAD091F520CE42AE004320F5 /* AJRPropertyEnumerator.m in Sources */,
+				FA8B90112904CBFE00650F23 /* AJRVariableTypeObject.swift in Sources */,
 				FA2AC64C196615F20052EB20 /* NSMutableDictionary+Extensions.m in Sources */,
 				FA2AC64D196615F20052EB20 /* NSMutableString+Extensions.m in Sources */,
 				FA2AC64F196615F20052EB20 /* NSMutableURLRequest+Extensions.m in Sources */,

@@ -59,6 +59,8 @@ public enum ValueConversionError : Error {
     case valueIsNotANumber(String)
     case valueIsNotADate(String)
     case valueIsNotACollection(String)
+    /// This is kind of the catch all case.
+    case invalidInputValue(String)
 
 }
 
@@ -393,6 +395,23 @@ internal func processSpecialKey<T: Collection>(_ key: String, on collection: T) 
     return nil
 }
 
+internal func getValue(forKeyPath path: String, on context: AJREvaluationContext) -> Any? {
+    var value: Any? = context.rootObject // We'll assume this to start.
+    var modifiedPath = path
+
+    // We're going to have a little bit of duplicate work here in an attempt to determine if we're a key path, and therefore that we should check the store.
+    if let range = path.range(of: ".") {
+        let key = String(path.prefix(upTo: range.lowerBound))
+        // Since we're a key path, let's see if we can find an object named 'key' in the store.
+        if let possibleObject = try? AJRExpression.value(context.symbol(named: key), with: context) {
+            value = possibleObject
+            modifiedPath = String(path.suffix(from: range.upperBound))
+        }
+    }
+
+    return getValue(forKeyPath: modifiedPath, on: value)
+}
+
 internal func getValue(forKeyPath path: String, on value: Any?) -> Any? {
     var newValue: Any? = nil
     let key: String
@@ -424,6 +443,8 @@ internal func getValue(forKeyPath path: String, on value: Any?) -> Any? {
         newValue = objects[key]
     } else if value == nil || value is NSNull {
         newValue = nil
+    } else if let value = value as? AnyObject {
+        newValue = value.value(forKey: key)
     } else if let value = value as? AJRKeyValueCoding {
         newValue = value.value(forKeyPath: path)
     } else {
