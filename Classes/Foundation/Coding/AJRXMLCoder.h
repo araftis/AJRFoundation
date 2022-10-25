@@ -72,6 +72,7 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 - (void)encodeUInt64:(uint64_t)number forKey:(NSString *)key;
 - (void)encodeFloat:(float)number forKey:(NSString *)key;
 - (void)encodeDouble:(double)number forKey:(NSString *)key;
+- (void)encodeCGFloat:(CGFloat)number forKey:(NSString *)key;
 - (void)encodeBytes:(const uint8_t *)bytes length:(NSUInteger)length;
 - (void)encodeBytes:(const uint8_t *)bytes length:(NSUInteger)length forKey:(NSString *)key;
 - (void)encodeRange:(NSRange)range forKey:(NSString *)key;
@@ -104,6 +105,7 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 - (void)decodeUInt64ForKey:(NSString *)key setter:(nullable void (^)(uint64_t value))setter;
 - (void)decodeFloatForKey:(NSString *)key setter:(nullable void (^)(float value))setter;
 - (void)decodeDoubleForKey:(NSString *)key setter:(nullable void (^)(double value))setter;
+- (void)decodeCGFloatForKey:(NSString *)key setter:(nullable void (^)(CGFloat value))setter;
 - (void)decodeBytesForKey:(NSString *)key setter:(nullable void (^)(uint8_t *, NSUInteger length))setter;
 - (void)decodeBytesUsingSetter:(nullable void (^)(uint8_t *, NSUInteger length))setter;
 - (void)decodeRangeForKey:(NSString *)key setter:(void (^)(NSRange range))setter;

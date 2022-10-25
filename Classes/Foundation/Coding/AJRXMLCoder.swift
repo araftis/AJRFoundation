@@ -61,4 +61,13 @@ public extension AJRXMLCoder {
         }
     }
 
+    func decodeTypedObject<T>(forKey key: String, setter: @escaping (_ value: T?) -> Void) {
+        decodeObject(forKey: key) { value in
+            if value == nil {
+                setter(nil)
+            } else if let value = value as? T {
+                setter(value)
+            }
+        }
+    }
 }

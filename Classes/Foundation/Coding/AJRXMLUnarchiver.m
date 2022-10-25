@@ -582,6 +582,16 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     } forKey:key];
 }
 
+- (void)decodeCGFloatForKey:(NSString *)key setter:(void (^)(CGFloat value))setter {
+    [[_stack lastObject] setSetter:^BOOL(id rawValue, NSError *__autoreleasing *error) {
+        return [self callBlock:^{
+            if (setter != NULL) {
+                setter([rawValue doubleValue]);
+            }
+        } catchingExceptionUsingError:error];
+    } forKey:key];
+}
+
 - (void)decodeBytesForKey:(NSString *)key setter:(void (^)(uint8_t *, NSUInteger length))setter {
     [[_stack lastObject] setSetter:^BOOL(NSString *rawValue, NSError **error) {
         NSError *localError = nil;

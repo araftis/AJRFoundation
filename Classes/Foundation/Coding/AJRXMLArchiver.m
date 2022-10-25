@@ -349,6 +349,10 @@ typedef void (^AJRXMLObjectEncoder)(void);
     [_outputStream addAttribute:key withValue:[AJRXMLCoderGetDoubleFormatter() stringFromNumber:@(number)]];
 }
 
+- (void)encodeCGFloat:(CGFloat)number forKey:(NSString *)key {
+    [_outputStream addAttribute:key withValue:[AJRXMLCoderGetDoubleFormatter() stringFromNumber:@(number)]];
+}
+
 - (void)encodeBytes:(const uint8_t *)bytes length:(NSUInteger)length forKey:(NSString *)key {
     [[self currentScope] addObjectEncoder:^{
         [self beginScopeForKey:key scope:^{
