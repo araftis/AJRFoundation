@@ -128,6 +128,9 @@ NSString * const AJRXMLCodingLogDomain = @"AJRXMLCodingLogDomain";
 - (void)encodeFloat:(float)number forKey:(NSString *)key {
 }
 
+- (void)encodeCGFloat:(CGFloat)number forKey:(NSString *)key {
+}
+
 - (void)encodeDouble:(double)number forKey:(NSString *)key {
 }
 
@@ -229,6 +232,9 @@ NSString * const AJRXMLCodingLogDomain = @"AJRXMLCodingLogDomain";
 }
 
 - (void)decodeDoubleForKey:(NSString *)key setter:(void (^)(double value))setter {
+}
+
+- (void)decodeCGFloatForKey:(NSString *)key setter:(void (^)(CGFloat value))setter {
 }
 
 - (void)decodeBytesForKey:(NSString *)key setter:(void (^)(uint8_t *, NSUInteger length))setter {
