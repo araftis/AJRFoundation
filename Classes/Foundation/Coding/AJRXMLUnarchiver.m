@@ -797,7 +797,11 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         }
 
         // Call decodeWithXMLCoder. This allows the object to register all the "setter" handlers it'll need.
-        [object decodeWithXMLCoder:self];
+        if ([object respondsToSelector:@selector(decodeWithXMLCoder:)]) {
+            [object decodeWithXMLCoder:self];
+        } else {
+            AJRLogWarning(@"No mapping from \"%@\" to a class that supports XML decoding.", elementName);
+        }
         
         // If the object is the root object, it'll be at stack frame 0 with just one object on the stack. When this happens, we want to ignore attributes with the "xmlns" key, because those are added by the archiver to make the XML valid, but they're ignorable as far as the objects in the XML are concerned.
         BOOL isRootObject = _stack.count == 1;

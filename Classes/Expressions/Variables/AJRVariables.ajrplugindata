@@ -6,13 +6,13 @@
         <attribute name="availableInUI" type="boolean" required="YES" defaultValue="YES" />
     </extension-point>
     
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeBoolean" name="Boolean" />
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeInteger" name="Integer" />
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeFloatingPoint" name="Floating Point" />
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeString" name="String" />
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeArray" name="Array" />
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeSet" name="Set" />
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeDictionary" name="Dictionary" />
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeDate" name="Date" />
-    <ajrvariabletype class="AJRFoundation.AJRVariableTypeObject" name="Object" availableInUI="NO" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeBoolean" name="boolean" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeInteger" name="integer" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeFloatingPoint" name="floatingPoint" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeString" name="string" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeArray" name="array" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeSet" name="set" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeDictionary" name="dictionary" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeDate" name="date" />
+    <ajrvariabletype class="AJRFoundation.AJRVariableTypeObject" name="object" availableInUI="NO" />
 </plugindata>

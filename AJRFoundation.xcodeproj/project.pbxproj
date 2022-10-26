@@ -40,6 +40,22 @@
 		217160772900CF2E001F2D4C /* AJRVariableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217160752900CF2E001F2D4C /* AJRVariableType.swift */; };
 		2171607F2900DBB3001F2D4C /* AJRVariableTypeInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */; };
 		217160802900DBB3001F2D4C /* AJRVariableTypeInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */; };
+		2171608A2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2171608D2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings */; };
+		2171608B2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2171608D2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings */; };
+		217160922908BE4E001F2D4C /* AJRVariableTypeDictionary.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160952908BE4E001F2D4C /* AJRVariableTypeDictionary.strings */; };
+		217160932908BE4E001F2D4C /* AJRVariableTypeDictionary.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160952908BE4E001F2D4C /* AJRVariableTypeDictionary.strings */; };
+		2171609A2908BECA001F2D4C /* AJRVariableTypeDate.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2171609D2908BECA001F2D4C /* AJRVariableTypeDate.strings */; };
+		2171609B2908BECA001F2D4C /* AJRVariableTypeDate.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2171609D2908BECA001F2D4C /* AJRVariableTypeDate.strings */; };
+		217160A22908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160A52908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings */; };
+		217160A32908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160A52908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings */; };
+		217160AA2908BF82001F2D4C /* AJRVariableTypeInteger.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160AD2908BF82001F2D4C /* AJRVariableTypeInteger.strings */; };
+		217160AB2908BF82001F2D4C /* AJRVariableTypeInteger.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160AD2908BF82001F2D4C /* AJRVariableTypeInteger.strings */; };
+		217160B22908BFB9001F2D4C /* AJRVariableTypeString.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160B52908BFB9001F2D4C /* AJRVariableTypeString.strings */; };
+		217160B32908BFB9001F2D4C /* AJRVariableTypeString.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160B52908BFB9001F2D4C /* AJRVariableTypeString.strings */; };
+		217160BE2908C09E001F2D4C /* AJRVariableTypeSet.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160C12908C09E001F2D4C /* AJRVariableTypeSet.strings */; };
+		217160BF2908C09E001F2D4C /* AJRVariableTypeSet.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160C12908C09E001F2D4C /* AJRVariableTypeSet.strings */; };
+		217160C92908C148001F2D4C /* AJRVariableTypeArray.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160B92908C06C001F2D4C /* AJRVariableTypeArray.strings */; };
+		217160CA2908C148001F2D4C /* AJRVariableTypeArray.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217160B92908C06C001F2D4C /* AJRVariableTypeArray.strings */; };
 		21FCD9D2270CE7DA0049E558 /* NSFileWrapper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */; };
 		21FCD9D3270CE7DA0049E558 /* NSFileWrapper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
@@ -885,6 +901,22 @@
 		217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AJRVariables.ajrplugindata; sourceTree = "<group>"; };
 		217160752900CF2E001F2D4C /* AJRVariableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableType.swift; sourceTree = "<group>"; };
 		2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeInteger.swift; sourceTree = "<group>"; };
+		2171608C2908BDB3001F2D4C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeBoolean.strings; sourceTree = "<group>"; };
+		2171608E2908BDB9001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeBoolean.strings; sourceTree = "<group>"; };
+		217160942908BE4E001F2D4C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeDictionary.strings; sourceTree = "<group>"; };
+		217160962908BE50001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeDictionary.strings; sourceTree = "<group>"; };
+		2171609C2908BECA001F2D4C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeDate.strings; sourceTree = "<group>"; };
+		2171609E2908BECC001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeDate.strings; sourceTree = "<group>"; };
+		217160A42908BEFD001F2D4C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeFloatingPoint.strings; sourceTree = "<group>"; };
+		217160A62908BEFE001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeFloatingPoint.strings; sourceTree = "<group>"; };
+		217160AC2908BF82001F2D4C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeInteger.strings; sourceTree = "<group>"; };
+		217160AE2908BF83001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeInteger.strings; sourceTree = "<group>"; };
+		217160B42908BFB9001F2D4C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeString.strings; sourceTree = "<group>"; };
+		217160B62908BFBB001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeString.strings; sourceTree = "<group>"; };
+		217160B82908C06C001F2D4C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeArray.strings; sourceTree = "<group>"; };
+		217160BA2908C070001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeArray.strings; sourceTree = "<group>"; };
+		217160C02908C09E001F2D4C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeSet.strings; sourceTree = "<group>"; };
+		217160C22908C0A0001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeSet.strings; sourceTree = "<group>"; };
 		21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFileWrapper+Extensions.swift"; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* AJRFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundation_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* AJRFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AJRFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1437,12 +1469,20 @@
 				217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */,
 				217160752900CF2E001F2D4C /* AJRVariableType.swift */,
 				FA8B8FEE2900F50000650F23 /* AJRVariableTypeBoolean.swift */,
+				2171608D2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings */,
 				FA8B8FF42900FA4600650F23 /* AJRVariableTypeCollections.swift */,
+				217160B92908C06C001F2D4C /* AJRVariableTypeArray.strings */,
+				217160952908BE4E001F2D4C /* AJRVariableTypeDictionary.strings */,
+				217160C12908C09E001F2D4C /* AJRVariableTypeSet.strings */,
 				FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */,
+				2171609D2908BECA001F2D4C /* AJRVariableTypeDate.strings */,
 				FA8B8FEB2900F20900650F23 /* AJRVariableTypeFloatingPoint.swift */,
+				217160A52908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings */,
 				2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */,
+				217160AD2908BF82001F2D4C /* AJRVariableTypeInteger.strings */,
 				FA8B900F2904CBFE00650F23 /* AJRVariableTypeObject.swift */,
 				FA8B8FF12900F8C000650F23 /* AJRVariableTypeString.swift */,
+				217160B52908BFB9001F2D4C /* AJRVariableTypeString.strings */,
 			);
 			path = Variables;
 			sourceTree = "<group>";
@@ -2469,12 +2509,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				217160B22908BFB9001F2D4C /* AJRVariableTypeString.strings in Resources */,
 				FA2FF99120955E5B001518D6 /* AJRFunctions.ajrplugindata in Resources */,
+				217160922908BE4E001F2D4C /* AJRVariableTypeDictionary.strings in Resources */,
+				217160BE2908C09E001F2D4C /* AJRVariableTypeSet.strings in Resources */,
 				FA2FF99A20958F45001518D6 /* AJROperators.ajrplugindata in Resources */,
 				FA2A14CB1CA4AD9F0024AEC2 /* AJRConstants.ajrplugindata in Resources */,
+				2171608A2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings in Resources */,
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+				217160A22908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings in Resources */,
 				FAA535A2103F4652008C0DF7 /* AJRSharedStrings.strings in Resources */,
+				217160C92908C148001F2D4C /* AJRVariableTypeArray.strings in Resources */,
 				217160732900CEE5001F2D4C /* AJRVariables.ajrplugindata in Resources */,
+				217160AA2908BF82001F2D4C /* AJRVariableTypeInteger.strings in Resources */,
+				2171609A2908BECA001F2D4C /* AJRVariableTypeDate.strings in Resources */,
 				FADDA18D22A3555100257007 /* AJRValueTransformers.ajrplugindata in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2486,8 +2534,16 @@
 				FA2FF99220955E5B001518D6 /* AJRFunctions.ajrplugindata in Resources */,
 				217160742900CEE5001F2D4C /* AJRVariables.ajrplugindata in Resources */,
 				FA2AC6F31966169A0052EB20 /* AJRSharedStrings.strings in Resources */,
+				217160932908BE4E001F2D4C /* AJRVariableTypeDictionary.strings in Resources */,
+				2171608B2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings in Resources */,
+				217160A32908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings in Resources */,
 				FA2FF99B20958F45001518D6 /* AJROperators.ajrplugindata in Resources */,
+				217160BF2908C09E001F2D4C /* AJRVariableTypeSet.strings in Resources */,
+				2171609B2908BECA001F2D4C /* AJRVariableTypeDate.strings in Resources */,
 				FADDA18E22A3555100257007 /* AJRValueTransformers.ajrplugindata in Resources */,
+				217160AB2908BF82001F2D4C /* AJRVariableTypeInteger.strings in Resources */,
+				217160B32908BFB9001F2D4C /* AJRVariableTypeString.strings in Resources */,
+				217160CA2908C148001F2D4C /* AJRVariableTypeArray.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3097,6 +3153,79 @@
 				089C1667FE841158C02AAC07 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2171608D2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2171608C2908BDB3001F2D4C /* en */,
+				2171608E2908BDB9001F2D4C /* es */,
+			);
+			name = AJRVariableTypeBoolean.strings;
+			sourceTree = "<group>";
+		};
+		217160952908BE4E001F2D4C /* AJRVariableTypeDictionary.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				217160942908BE4E001F2D4C /* en */,
+				217160962908BE50001F2D4C /* es */,
+			);
+			name = AJRVariableTypeDictionary.strings;
+			sourceTree = "<group>";
+		};
+		2171609D2908BECA001F2D4C /* AJRVariableTypeDate.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2171609C2908BECA001F2D4C /* en */,
+				2171609E2908BECC001F2D4C /* es */,
+			);
+			name = AJRVariableTypeDate.strings;
+			sourceTree = "<group>";
+		};
+		217160A52908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				217160A42908BEFD001F2D4C /* en */,
+				217160A62908BEFE001F2D4C /* es */,
+			);
+			name = AJRVariableTypeFloatingPoint.strings;
+			sourceTree = "<group>";
+		};
+		217160AD2908BF82001F2D4C /* AJRVariableTypeInteger.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				217160AC2908BF82001F2D4C /* en */,
+				217160AE2908BF83001F2D4C /* es */,
+			);
+			name = AJRVariableTypeInteger.strings;
+			sourceTree = "<group>";
+		};
+		217160B52908BFB9001F2D4C /* AJRVariableTypeString.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				217160B42908BFB9001F2D4C /* en */,
+				217160B62908BFBB001F2D4C /* es */,
+			);
+			name = AJRVariableTypeString.strings;
+			sourceTree = "<group>";
+		};
+		217160B92908C06C001F2D4C /* AJRVariableTypeArray.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				217160B82908C06C001F2D4C /* en */,
+				217160BA2908C070001F2D4C /* es */,
+			);
+			name = AJRVariableTypeArray.strings;
+			path = "/Users/AJ/New Source/Frameworks/AJRFoundation/Classes/Expressions/Variables";
+			sourceTree = "<absolute>";
+		};
+		217160C12908C09E001F2D4C /* AJRVariableTypeSet.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				217160C02908C09E001F2D4C /* en */,
+				217160C22908C0A0001F2D4C /* es */,
+			);
+			name = AJRVariableTypeSet.strings;
 			sourceTree = "<group>";
 		};
 		FA53B77A17A2D87F0009D370 /* InfoPlist.strings */ = {

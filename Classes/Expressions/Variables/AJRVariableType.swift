@@ -75,14 +75,19 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
     /// Indexes by the variable's name.
     internal static var typesByName = [String:AJRVariableType]();
     /// The ordered variable types. Right now, this is just the order in which the variable types are registered, which is the order in which they are defined in the plug-in data file. That could change in the future.
-    internal(set) public static var types = [AJRVariableType]()
+    internal static var _types = [AJRVariableType]()
+    public static var types : [AJRVariableType] {
+        return _types.sorted { lhs, rhs in
+            return lhs.localizedDisplayName < rhs.localizedDisplayName
+        }
+    }
     
     public class func registerVariableType(_ variableType: AJRVariableType.Type, properties: [String:Any]) -> Void {
         let instance = variableType.init(from: properties)
         
         typesByClass[NSStringFromClass(variableType)] = instance
         typesByName[instance.name.lowercased()] = instance
-        types.append(instance)
+        _types.append(instance)
         
         AJRLog.in(domain: AJRPlugInManagerLoggingDomain, level: .debug, message: "Registered variable type: \(variableType) (\(instance.name))")
     }
