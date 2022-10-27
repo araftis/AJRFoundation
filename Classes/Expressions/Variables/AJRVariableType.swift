@@ -67,6 +67,10 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
         }
         self.availableInUI = properties["availableInUI", false]
     }
+
+    open func createDefaultValue() -> Any? {
+        return nil
+    }
     
     // MARK: - Factory
     
@@ -157,6 +161,12 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
     
     /// We don't do anything. Just encoding our class type is sufficient.
     public func encode(with coder: AJRXMLCoder) {
+    }
+
+    // MARK: - NSObject
+
+    open override var description: String {
+        return name
     }
     
 }

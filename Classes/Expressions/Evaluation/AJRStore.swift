@@ -37,12 +37,32 @@ public enum AJRStoreError : Error {
 
 }
 
+@objc
+public protocol AJRStoreVariableDelegate : NSObjectProtocol {
+
+    @objc optional func createVariable(named name: String, type: AJRVariableType, with value: Any?, in store: AJRStore) -> AJRVariable?
+
+    @objc optional func store(_ store: AJRStore, willAddVariable variable: AJRVariable) -> Bool
+    @objc optional func store(_ store: AJRStore, didAddVariable variable: AJRVariable) -> Void
+    @objc optional func store(_ store: AJRStore, willRemoveVariable variable: AJRVariable) -> Bool
+    @objc optional func store(_ store: AJRStore, didRemoveVariable variable: AJRVariable) -> Void
+
+}
+
 @objcMembers
 open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying {
 
     // MARK: - Properties
 
-    public var symbols : [String:AJREvaluation]
+    public var symbols : [String:AJREvaluation] {
+        willSet {
+            willChangeValue(forKey: "symbols")
+        }
+        didSet {
+            didChangeValue(forKey: "symbols")
+        }
+    }
+    public weak var variableDelegate : AJRStoreVariableDelegate?
 
     // MARK: - Creation
 
@@ -81,16 +101,114 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
         return symbols[name]
     }
 
+    public func orderedName(at index: Int) -> String? {
+        let names = symbols.keys.sorted()
+        return names[index]
+    }
+
+    public func orderedSymbol(at index: Int) -> AJREvaluation? {
+        if let name = orderedName(at: index) {
+            return symbols[name]
+        }
+        return nil
+    }
+
+    /**
+     Create a new variable of the given name and value.
+
+     If this method succeeds, it will return the newly created variable. Otherwise, it will return nil. The `name` of the variable will be treated as a "basename", and may have a number appended to the end. This happens when a variable of a given name already exists in the store.
+
+     The newly created variable will be added to the store.
+
+     - parameter name: The name of the variable.
+     - parameter value: The value of the variable.
+
+     - returns The newly created variable, or `nil` if no variable was created.
+     */
+    public func createVariable(named name: String, type: AJRVariableType, value: Any?) -> AJRVariable? {
+        let name = symbols.keys.nextName(basedOn: name)
+        let variable : AJRVariable?
+
+        if let variableDelegate {
+            if variableDelegate .responds(to: #selector(createVariable(named:type:value:))) {
+                variable = variableDelegate.createVariable?(named: name, type: type, with: value, in: self)
+            } else {
+                variable = AJRVariable(name: name, type: type, value: value)
+            }
+        } else {
+            variable = AJRVariable(name: name, type: type, value: value)
+        }
+
+        if let variable {
+            addOrReplaceSymbol(named: name, value: variable)
+        }
+
+        return variable
+    }
+
     public func addSymbol(named name: String, value: AJREvaluation) throws -> Void {
         if symbols[name] == nil {
-            symbols[name] = value
+            addOrReplaceSymbol(named: name, value: value)
         } else {
             throw AJRStoreError.alreadyDefined("Symbol \"\(name)\" is already defined.")
         }
     }
 
+    public func addVariable(_ variable: AJRVariable) throws -> Void {
+        try addSymbol(named: variable.name, value: variable)
+    }
+
     public func addOrReplaceSymbol(named name: String, value: AJREvaluation) -> Void {
+        if let value = value as? AJRVariable {
+            if !(variableDelegate?.store?(self, willAddVariable: value) ?? true) {
+                return
+            }
+        }
+
+        //willChangeValue(forKey: "symbols")
+        willChangeValue(forKey: "symbols", withSetMutation: .union, using: [name])
         symbols[name] = value
+        didChangeValue(forKey: "symbols", withSetMutation: .union, using: [name])
+        //didChangeValue(forKey: "symbols")
+
+        if let value = value as? AJRVariable {
+            variableDelegate?.store?(self, didAddVariable: value)
+        }
+    }
+
+    public func addOrReplaceVariable(_ variable: AJRVariable) -> Void {
+        addOrReplaceSymbol(named: variable.name, value: variable)
+    }
+
+    @discardableResult
+    public func removeSymbol(named name: String) -> AJREvaluation? {
+        let returnValue = symbols[name]
+        // Only need to remove it, if it exists.
+        if returnValue != nil {
+            if let value = returnValue as? AJRVariable {
+                if !(variableDelegate?.store?(self, willRemoveVariable: value) ?? true) {
+                    // Don't remove the symbol.
+                    return nil
+                }
+            }
+            willChangeValue(forKey: "symbols")
+            willChangeValue(forKey: "symbols", withSetMutation: .minus, using: [name])
+            symbols.removeValue(forKey: name)
+            didChangeValue(forKey: "symbols", withSetMutation: .minus, using: [name])
+            didChangeValue(forKey: "symbols")
+            if let value = returnValue as? AJRVariable {
+                variableDelegate?.store?(self, didRemoveVariable: value)
+            }
+        }
+        return returnValue
+    }
+
+    @discardableResult
+    public func removeVariable(_ variable: AJRVariable) -> AJRVariable? {
+        if let variable = symbols[variable.name] as? AJRVariable {
+            return removeSymbol(named: variable.name) as? AJRVariable
+        }
+        return nil
     }
 
     // MARK: - Sequence
@@ -158,4 +276,3 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
     }
 
 }
-

@@ -70,8 +70,19 @@ open class AJRVariableTypeBoolean : AJRVariableType {
         return nil
     }
 
+    public override func createDefaultValue() -> Any? {
+        return true
+    }
+
     open override func value(from string: String) throws -> Any? {
         return try Conversion.valueAsBool(string)
+    }
+
+    open override func string(from value: Any) throws -> Any? {
+        if let value = value as? Bool {
+            return value.description
+        }
+        throw ValueConversionError.valueIsNotABool("Input value to \(#function) is not a boolean.")
     }
 
 }

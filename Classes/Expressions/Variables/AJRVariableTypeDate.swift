@@ -81,8 +81,20 @@ open class AJRVariableTypeDate : AJRVariableType {
         return nil
     }
 
+    public override func createDefaultValue() -> Any? {
+        return AJRTimeZoneDate(timeIntervalSinceNow: 0, timeZone: TimeZone.current)
+    }
+
     open override func value(from string: String) throws -> Any? {
         return try Conversion.valueAsDate(string)
+    }
+
+    open override func string(from value: Any) throws -> Any? {
+        let formatter = ISO8601DateFormatter()
+        if let value = value as? Date {
+            return formatter.string(from: value)
+        }
+        throw ValueConversionError.valueIsNotADate("Invalid input: \(value)")
     }
 
 }

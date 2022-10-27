@@ -44,6 +44,10 @@ open class AJRVariableTypeString : AJRVariableType {
 
     // MARK: - Conversion
 
+    open override func createDefaultValue() -> Any? {
+        return "new value"
+    }
+
     open override func value(from string: String) throws -> Any? {
         return string
     }

@@ -58,6 +58,10 @@ open class AJRVariableTypeArray : AJRVariableType {
         return nil
     }
 
+    public override func createDefaultValue() -> Any? {
+        return Array<Any>()
+    }
+
     open override func value(from string: String) throws -> Any? {
         throw ValueConversionError.valueIsNotACollection("Cannot convert strings to collections. This should probably be \"fixed\".")
     }
@@ -68,6 +72,10 @@ open class AJRVariableTypeArray : AJRVariableType {
 open class AJRVariableTypeSet : AJRVariableType {
     // NOTE: Let AJRVariableTypeArray deal with operations, since it's all the same code for each collection type.
 
+    public override func createDefaultValue() -> Any? {
+        return Set<AnyHashable>()
+    }
+
     open override func value(from string: String) throws -> Any? {
         throw ValueConversionError.valueIsNotACollection("Cannot convert strings to collections. This should probably be \"fixed\".")
     }
@@ -77,6 +85,10 @@ open class AJRVariableTypeSet : AJRVariableType {
 @objcMembers
 open class AJRVariableTypeDictionary : AJRVariableType {
     // NOTE: Let AJRVariableTypeArray deal with operations, since it's all the same code for each collection type.
+
+    public override func createDefaultValue() -> Any? {
+        return Dictionary<AnyHashable, Any>()
+    }
 
     open override func value(from string: String) throws -> Any? {
         throw ValueConversionError.valueIsNotACollection("Cannot convert strings to collections. This should probably be \"fixed\".")

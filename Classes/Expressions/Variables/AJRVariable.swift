@@ -41,19 +41,22 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
     
     // MARK: - Properties
 
-    public static let UnsetPlaceholderName = "<unset>"
+    public static let UnsetPlaceholderName = "var"
 
     open var name : String
-    open var value : AJREvaluation?
+    open var value : Any?
+    open var variableType : AJRVariableType
 
     // MARK: - Creation
 
+    // Really, this is only meant to be called as part of unarchiving.
     required public convenience override init() {
-        self.init(name: AJRVariable.UnsetPlaceholderName)
+        self.init(name: AJRVariable.UnsetPlaceholderName, type: AJRVariableType())
     }
 
-    public init(name: String, value: AJREvaluation? = nil) {
+    public init(name: String, type: AJRVariableType, value: Any? = nil) {
         self.name = name
+        self.variableType = type
         self.value = value
     }
 
@@ -83,11 +86,17 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
         } else {
             return nil
         }
-        self.value = coder.decodeObject(forKey: "value") as? AJREvaluation
+        if let typeName = coder.decodeObject(forKey: "type") as? String {
+            self.variableType = AJRVariableType.variableType(for: typeName)!
+        } else {
+            self.variableType = AJRVariableType()
+        }
+        self.value = coder.decodeObject(forKey: "value")
     }
 
     public func encode(with coder: NSCoder) {
         coder.encode(name, forKey: "name")
+        coder.encode(variableType.name, forKey: "type")
         coder.encode(value, forKey: "value")
     }
 
@@ -99,15 +108,19 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
                 self.name = name
             }
         }
-        coder.decodeObject(forKey: "value") { value in
-            if let value = value as? AJREvaluation {
-                self.value = value
+        coder.decodeVariableType(forKey: "type") { value in
+            if let value {
+                self.variableType = value
             }
+        }
+        coder.decodeObject(forKey: "value") { value in
+            self.value = value
         }
     }
 
     open func encode(with coder: AJRXMLCoder) {
         coder.encode(name, forKey: "name")
+        coder.encode(variableType, forKey: "type")
         coder.encode(value, forKey: "value")
     }
 
@@ -117,9 +130,19 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
         let copy = type(of:self).init()
 
         copy.name = name
-        copy.value = value?.copy(with: zone) as? AJREvaluation
+        copy.variableType = variableType
+        if let value = value as? NSCopying {
+            copy.value = value.copy(with: zone)
+        } else {
+            copy.value = value
+        }
 
         return copy
     }
 
+    // MARK: - NSObject
+
+    open override var description: String {
+        return "<\(self.descriptionPrefix), name: \(name), type: \(variableType), value: \(value ?? "nil")>";
+    }
 }

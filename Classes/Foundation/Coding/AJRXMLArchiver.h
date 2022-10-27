@@ -34,6 +34,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class AJRXMLOutputStream;
+
 @interface AJRXMLArchiver : AJRXMLCoder
 
 + (instancetype)archiverWithOutputStream:(NSOutputStream *)outputStream;
@@ -47,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)archiveRootObject:(id <AJRXMLCoding>)rootObject toFile:(NSString *)path error:(NSError **)error;
 + (BOOL)archiveRootObject:(id <AJRXMLCoding>)rootObject toOutputStream:(NSOutputStream *)outputStream error:(NSError **)error;
 + (nullable NSData *)archivedDataWithRootObject:(id <AJRXMLCoding>)rootObject;
+
+@property (nonatomic,readonly) AJRXMLOutputStream *outputStream;
 
 - (void)encodeObjectReference:(id)object;
 - (void)encodeObjectReference:(nullable id)object forKey:(NSString *)key;

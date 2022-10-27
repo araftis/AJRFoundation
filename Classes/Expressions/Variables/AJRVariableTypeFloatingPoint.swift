@@ -71,9 +71,20 @@ open class AJRVariableTypeFloatingPoint : AJRVariableType {
         return nil
     }
 
+    open override func createDefaultValue() -> Any? {
+        return 0.0
+    }
+
     open override func value(from string: String) throws -> Any? {
         let double : Double = try Conversion.valueAsFloatingPoint(string)
         return double
+    }
+
+    open override func string(from value: Any) throws -> Any? {
+        if value is (any BinaryFloatingPoint) || value is (any BinaryInteger) {
+            return try Conversion.valueAsString(value)
+        }
+        throw ValueConversionError.valueIsNotANumber("Input isn't a valid floating point value: \(value)")
     }
 
 }

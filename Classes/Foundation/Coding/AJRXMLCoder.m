@@ -178,6 +178,9 @@ NSString * const AJRXMLCodingLogDomain = @"AJRXMLCodingLogDomain";
 - (void)encodeURLBookmark:(NSURL *)url forKey:(NSString *)key {
 }
 
+- (void)encodeVariableType:(AJRVariableType *)type forKey:(NSString *)key {
+}
+
 //- (void)encodeArray:(NSArray *)array forKey:(NSString *)key objectEncoder:(void (^)(id object))objectEncoder {
 //}
 //
@@ -256,6 +259,9 @@ NSString * const AJRXMLCodingLogDomain = @"AJRXMLCodingLogDomain";
 }
 
 - (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
+}
+
+- (void)decodeVariableTypeForKey:(NSString *)key setter:(nullable void (^)(AJRVariableType * _Nullable))setter {
 }
 
 - (void)finalizeDecodeWithBlock:(AJRXMLUnarchiverFinalizer)finalizer {

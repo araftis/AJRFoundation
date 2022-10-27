@@ -40,6 +40,8 @@ extern NSString * const AJRXMLCodingLogDomain;
 typedef void (^AJRXMLUnarchiverFinalizer)(void);
 typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _Nullable * _Nullable error);
 
+@class AJRVariableType;
+
 @interface NSObject (AJRXMLCoding)
 
 @property (nonatomic,class,readonly) NSString *ajr_nameForXMLArchiving;
@@ -88,6 +90,7 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 - (void)encodeComment:(NSString *)text;
 - (void)encodeURL:(NSURL *)url forKey:(NSString *)key;
 - (void)encodeURLBookmark:(NSURL *)url forKey:(NSString *)key;
+- (void)encodeVariableType:(AJRVariableType *)type forKey:(NSString *)key;
 
 - (void)finalizeDecodeWithBlock:(AJRXMLUnarchiverFinalizer)finalizer;
 - (void)decodeObjectForKey:(NSString *)key setter:(nullable void (^)(id _Nullable object))setter;
@@ -114,6 +117,7 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 - (void)decodeTextUsingSetter:(void (^)(NSString *))setter;
 - (void)decodeURLForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter;
 - (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter;
+- (void)decodeVariableTypeForKey:(NSString *)key setter:(nullable void (^)(AJRVariableType * _Nullable))setter;
 
 @end
 

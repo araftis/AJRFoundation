@@ -49,6 +49,9 @@ extern NSString * const AJRXMLDecodingLoggingDomain;
 
 @property (nonatomic,assign) BOOL warnOfUndecodedKeys;
 
+- (void)addSetter:(AJRXMLUnarchiverGenericSetter)setter forKey:(NSString *)key;
+- (BOOL)callBlock:(void (^)(void))block catchingExceptionUsingError:(NSError **)error;
+
 @end
 
 NS_ASSUME_NONNULL_END

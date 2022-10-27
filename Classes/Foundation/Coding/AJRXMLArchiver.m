@@ -37,6 +37,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJRXMLOutputStream.h"
 #import "AJRFunctions.h"
 #import "NSData+Extensions.h"
+#import <AJRFoundation/AJRFoundation-Swift.h>
 
 typedef void (^AJRXMLEncodingBlock)(void);
 
@@ -96,7 +97,7 @@ typedef void (^AJRXMLObjectEncoder)(void);
 
 - (id)initWithStream:(NSStream *)stream {
     if ((self = [super initWithStream:stream])) {
-        _outputStream = [[AJRXMLOutputStream alloc] initWithStream:[self outputStream]];
+        _outputStream = [[AJRXMLOutputStream alloc] initWithStream:(NSOutputStream *)[self stream]];
         [_outputStream setPrettyOutput:YES];
         _scopes = [[NSMutableArray alloc] init];
         _objectIDsByObject = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPointerPersonality valueOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPersonality capacity:100];
@@ -171,8 +172,8 @@ typedef void (^AJRXMLObjectEncoder)(void);
     return [self archivedDataWithRootObject:rootObject forKey:nil];
 }
 
-- (NSOutputStream *)outputStream {
-    return (NSOutputStream *)[self stream];
+- (AJRXMLOutputStream *)outputStream {
+    return _outputStream;
 }
 
 #pragma mark - Encoding
@@ -460,6 +461,10 @@ typedef void (^AJRXMLObjectEncoder)(void);
     } else {
         AJRLog(AJRXMLCodingLogDomain, AJRLogLevelError, @"Failed to encode URL as bookmark. This will likely result in an incomplete archive: %@", url);
     }
+}
+
+- (void)encodeVariableType:(AJRVariableType *)type forKey:(NSString *)key {
+    [_outputStream addAttribute:key withValue:type.name];
 }
 
 @end

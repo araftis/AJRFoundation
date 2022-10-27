@@ -41,6 +41,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "NSData+Base64.h"
 #import "NSError+Extensions.h"
 #import "NSObject+Extensions.h"
+#import <AJRFoundation/AJRFoundation-Swift.h>
 
 NSString * const AJRXMLDecodingErrorDomain = @"AJRXMLDecodingErrorDomain";
 NSString * const AJRXMLDecodingLoggingDomain = @"AJRXMLDecodingLoggingDomain";
@@ -402,6 +403,10 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
 
 #pragma mark - AJRXMLCoding
 
+- (void)addSetter:(AJRXMLUnarchiverGenericSetter)setter forKey:(NSString *)key {
+    [[_stack lastObject] setSetter:setter forKey:key];
+}
+
 - (BOOL)callBlock:(void (^)(void))block catchingExceptionUsingError:(NSError **)error {
     NSError *localError = nil;
     @try {
@@ -694,6 +699,17 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         localError = [NSError errorWithDomain:AJRXMLCodingErrorDomain format:@"Unable to decode value for URL: %@", rawValue];
         AJRSetOutParameter(error, localError);
         return NO;
+    } forKey:key];
+}
+
+- (void)decodeVariableTypeForKey:(NSString *)key setter:(nullable void (^)(AJRVariableType * _Nullable))setter {
+    [[_stack lastObject] setSetter:^BOOL(id rawValue, NSError *__autoreleasing *error) {
+        return [self callBlock:^{
+            if (setter != NULL) {
+                AJRVariableType *type = [AJRVariableType variableTypeForName: rawValue];
+                setter(type);
+            }
+        } catchingExceptionUsingError:error];
     } forKey:key];
 }
 

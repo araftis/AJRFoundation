@@ -82,10 +82,21 @@ open class AJRVariableTypeInteger : AJRVariableType {
         }
         return nil
     }
-    
+
+    open override func createDefaultValue() -> Any? {
+        return 0
+    }
+
     open override func value(from string: String) throws -> Any? {
         let value : Int = try Conversion.valueAsInteger(string)
         return value
+    }
+
+    open override func string(from value: Any) throws -> Any? {
+        if value is (any BinaryInteger) || value is (any BinaryFloatingPoint) {
+            return try Conversion.valueAsString(value)
+        }
+        throw ValueConversionError.valueIsNotANumber("Input isn't a valid number: \(value)")
     }
 
 }

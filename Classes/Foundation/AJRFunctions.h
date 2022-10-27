@@ -92,8 +92,8 @@ extern NSString *AJRFindExecutable(NSString *executableName);
 #pragma mark - Geometry String Conversion
 
 extern NSString *AJRStringFromRect(CGRect rect);
-extern NSString *AJRStringFromSize(CGSize rect);
-extern NSString *AJRStringFromPoint(CGPoint rect);
+extern NSString *AJRStringFromSize(CGSize size);
+extern NSString *AJRStringFromPoint(CGPoint point);
 extern CGRect AJRRectFromString(NSString *string);
 extern CGSize AJRSizeFromString(NSString *string);
 extern CGPoint AJRPointFromString(NSString *string);

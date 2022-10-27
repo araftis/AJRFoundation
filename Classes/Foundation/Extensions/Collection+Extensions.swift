@@ -122,6 +122,20 @@ public extension Collection {
 
 }
 
+public extension Collection where Element == String {
+
+    func nextName(basedOn name: String) -> String {
+        var newName = name
+        var index : Int = 0
+        while self.contains(newName) {
+            index += 1
+            newName = name + String(index)
+        }
+        return newName
+    }
+
+}
+
 public protocol AJRCollection : Collection {
 
     // MARK: - Basic Generic Access
