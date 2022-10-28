@@ -40,12 +40,23 @@ public enum AJRStoreError : Error {
 @objc
 public protocol AJRStoreVariableDelegate : NSObjectProtocol {
 
-    @objc optional func createVariable(named name: String, type: AJRVariableType, with value: Any?, in store: AJRStore) -> AJRVariable?
+    @objc(createVariableWithName:type:value:inStore:)
+    optional func createVariable(name name: String, type: AJRVariableType, value: Any?, in store: AJRStore) -> AJRVariable?
 
     @objc optional func store(_ store: AJRStore, willAddVariable variable: AJRVariable) -> Bool
     @objc optional func store(_ store: AJRStore, didAddVariable variable: AJRVariable) -> Void
     @objc optional func store(_ store: AJRStore, willRemoveVariable variable: AJRVariable) -> Bool
     @objc optional func store(_ store: AJRStore, didRemoveVariable variable: AJRVariable) -> Void
+
+}
+
+@objc
+public protocol AJRStoreDelegate : NSObjectProtocol {
+
+    @objc optional func store(_ store: AJRStore, willAddValue value: AJREvaluation) -> Bool
+    @objc optional func store(_ store: AJRStore, didAddValue value: AJREvaluation) -> Void
+    @objc optional func store(_ store: AJRStore, willRemoveValue value: AJREvaluation) -> Bool
+    @objc optional func store(_ store: AJRStore, didRemoveValue value: AJREvaluation) -> Void
 
 }
 
@@ -62,7 +73,15 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
             didChangeValue(forKey: "symbols")
         }
     }
+    internal var _orderedNames : [String]? = nil
+    public var orderedNames : [String] {
+        if _orderedNames == nil {
+            _orderedNames = symbols.keys.sorted()
+        }
+        return _orderedNames!
+    }
     public weak var variableDelegate : AJRStoreVariableDelegate?
+    public weak var delegate : AJRStoreDelegate?
 
     // MARK: - Creation
 
@@ -101,14 +120,19 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
         return symbols[name]
     }
 
-    public func orderedName(at index: Int) -> String? {
-        let names = symbols.keys.sorted()
-        return names[index]
+    public func orderedName(at index: Int) -> String {
+        return orderedNames[index]
     }
 
     public func orderedSymbol(at index: Int) -> AJREvaluation? {
-        if let name = orderedName(at: index) {
-            return symbols[name]
+        return symbols[orderedName(at: index)]
+    }
+
+    public func orderedIndex(for value: AJREvaluation?) -> Int? {
+        for (index, name) in orderedNames.enumerated() {
+            if symbols[name] === value {
+                return index
+            }
         }
         return nil
     }
@@ -127,12 +151,11 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
      */
     public func createVariable(named name: String, type: AJRVariableType, value: Any?) -> AJRVariable? {
         let name = symbols.keys.nextName(basedOn: name)
-        let variable : AJRVariable?
+        var variable : AJRVariable? = nil
 
         if let variableDelegate {
-            if variableDelegate .responds(to: #selector(createVariable(named:type:value:))) {
-                variable = variableDelegate.createVariable?(named: name, type: type, with: value, in: self)
-            } else {
+            variable = variableDelegate.createVariable?(name: name, type: type, value: value, in: self)
+            if variable == nil {
                 variable = AJRVariable(name: name, type: type, value: value)
             }
         } else {
@@ -164,16 +187,21 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
                 return
             }
         }
+        if !(delegate?.store?(self, willAddValue: value) ?? true) {
+            return
+        }
 
         //willChangeValue(forKey: "symbols")
         willChangeValue(forKey: "symbols", withSetMutation: .union, using: [name])
         symbols[name] = value
+        _orderedNames = nil
         didChangeValue(forKey: "symbols", withSetMutation: .union, using: [name])
         //didChangeValue(forKey: "symbols")
 
         if let value = value as? AJRVariable {
             variableDelegate?.store?(self, didAddVariable: value)
         }
+        delegate?.store?(self, didAddValue: value)
     }
 
     public func addOrReplaceVariable(_ variable: AJRVariable) -> Void {
@@ -191,14 +219,20 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
                     return nil
                 }
             }
+            if !(delegate?.store?(self, willRemoveValue: returnValue!) ?? true) {
+                // Don't remove the symbol.
+                return nil
+            }
             willChangeValue(forKey: "symbols")
             willChangeValue(forKey: "symbols", withSetMutation: .minus, using: [name])
             symbols.removeValue(forKey: name)
+            _orderedNames = nil
             didChangeValue(forKey: "symbols", withSetMutation: .minus, using: [name])
             didChangeValue(forKey: "symbols")
             if let value = returnValue as? AJRVariable {
                 variableDelegate?.store?(self, didRemoveVariable: value)
             }
+            delegate?.store?(self, didRemoveValue: returnValue!)
         }
         return returnValue
     }

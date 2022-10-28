@@ -449,3 +449,34 @@ public extension Array where Element == AJRInvalidation {
     }
     
 }
+
+
+// Original code from: https://medium.com/@apstygo/implementing-weak-arrays-with-property-wrappers-in-swift-680e2b3c9fca
+
+public final class WeakObject<T: AnyObject> {
+    private(set) weak var value: T?
+    public init(_ v: T) {
+        value = v
+    }
+}
+
+@propertyWrapper
+public struct Weak<Element> where Element: AnyObject {
+
+    internal var storage = [WeakObject<Element>]()
+
+    public var wrappedValue : [Element] {
+        get {
+            storage.compactMap { $0.value }
+        }
+        set {
+            storage = newValue.map { WeakObject($0) }
+        }
+    }
+
+    public init() {
+    }
+
+}
+
+

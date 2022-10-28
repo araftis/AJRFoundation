@@ -31,6 +31,13 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
+@objc
+public protocol AJRVariableListener {
+
+    func variable(_ variable: AJRVariable, didChange edit: AJRVariable.ChangeType)
+
+}
+
 /**
  This is pretty much an `AJRLiteral`, but with a name.
 
@@ -38,14 +45,35 @@ import Foundation
  */
 @objcMembers
 open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
-    
+
+    @objc(AJRVariableChangeType)
+    public enum ChangeType : Int {
+        case name
+        case variableType
+        case value
+    }
+
     // MARK: - Properties
 
     public static let UnsetPlaceholderName = "var"
 
-    open var name : String
-    open var value : Any?
-    open var variableType : AJRVariableType
+    open var name : String {
+        didSet {
+            notifyListeners(ofChange: .name)
+        }
+    }
+    open var value : Any? {
+        didSet {
+            notifyListeners(ofChange: .value)
+        }
+    }
+    open var variableType : AJRVariableType {
+        didSet {
+            notifyListeners(ofChange: .variableType)
+        }
+    }
+
+    @Weak open var listeners : [AJRVariableListener]
 
     // MARK: - Creation
 
@@ -78,6 +106,23 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
         return false
     }
 
+    // MARK: - Change Listeners
+
+    open func addListener(_ listener: AJRVariableListener) {
+        listeners.append(listener)
+    }
+
+    open func removeListener(_ listener: AJRVariableListener) {
+        // TODO: I'm not sure this will work with the wrapper.
+        listeners.remove(identicalTo: listener)
+    }
+
+    open func notifyListeners(ofChange change: ChangeType) {
+        for listener in listeners {
+            listener.variable(self, didChange: change)
+        }
+    }
+
     // MARK: - NSCoding
 
     required public init?(coder: NSCoder) {
@@ -101,6 +146,10 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
     }
 
     // MARK: - AJRXMLCoding
+
+    open class override var ajr_nameForXMLArchiving: String {
+        return "variable"
+    }
 
     open func decode(with coder: AJRXMLCoder) {
         coder.decodeObject(forKey: "name") { name in
