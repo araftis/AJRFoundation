@@ -126,7 +126,7 @@ public struct Conversion {
         return returnValue as! T
     }
 
-    internal static func valueAsFloatingPoint<T: BinaryFloatingPoint>(_ valueIn: Any?) throws -> T {
+    public static func valueAsFloatingPoint<T: BinaryFloatingPoint>(_ valueIn: Any?) throws -> T {
         var returnValue = valueIn
 
         if returnValue == nil {

@@ -34,7 +34,8 @@ import Foundation
 @objc
 public protocol AJRVariableListener {
 
-    func variable(_ variable: AJRVariable, didChange edit: AJRVariable.ChangeType)
+    func variable(_ variable: AJRVariable, willChange change: AJRVariable.ChangeType)
+    func variable(_ variable: AJRVariable, didChange change: AJRVariable.ChangeType)
 
 }
 
@@ -47,10 +48,18 @@ public protocol AJRVariableListener {
 open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
 
     @objc(AJRVariableChangeType)
-    public enum ChangeType : Int {
+    public enum ChangeType : Int, AJRXMLEncodableEnum {
         case name
         case variableType
         case value
+
+        public var description: String {
+            switch self {
+            case .name: return "name"
+            case .variableType: return "variableType"
+            case .value: return "value"
+            }
+        }
     }
 
     // MARK: - Properties
@@ -58,18 +67,27 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
     public static let UnsetPlaceholderName = "var"
 
     open var name : String {
+        willSet {
+            notifyListeners(ofWillChange: .name)
+        }
         didSet {
-            notifyListeners(ofChange: .name)
+            notifyListeners(ofDidChange: .name)
         }
     }
     open var value : Any? {
+        willSet {
+            notifyListeners(ofWillChange: .value)
+        }
         didSet {
-            notifyListeners(ofChange: .value)
+            notifyListeners(ofDidChange: .value)
         }
     }
     open var variableType : AJRVariableType {
+        willSet {
+            notifyListeners(ofWillChange: .variableType)
+        }
         didSet {
-            notifyListeners(ofChange: .variableType)
+            notifyListeners(ofDidChange: .variableType)
         }
     }
 
@@ -117,7 +135,15 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
         listeners.remove(identicalTo: listener)
     }
 
-    open func notifyListeners(ofChange change: ChangeType) {
+    open func notifyListeners(ofWillChange change: ChangeType) {
+        willChangeValue(forKey: change.description)
+        for listener in listeners {
+            listener.variable(self, willChange: change)
+        }
+    }
+
+    open func notifyListeners(ofDidChange change: ChangeType) {
+        didChangeValue(forKey: change.description)
         for listener in listeners {
             listener.variable(self, didChange: change)
         }
