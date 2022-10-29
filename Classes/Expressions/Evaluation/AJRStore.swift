@@ -41,7 +41,7 @@ public enum AJRStoreError : Error {
 public protocol AJRStoreVariableDelegate : NSObjectProtocol {
 
     @objc(createVariableWithName:type:value:inStore:)
-    optional func createVariable(name name: String, type: AJRVariableType, value: Any?, in store: AJRStore) -> AJRVariable?
+    optional func createVariable(name: String, type: AJRVariableType, value: Any?, in store: AJRStore) -> AJRVariable?
 
     @objc optional func store(_ store: AJRStore, willAddVariable variable: AJRVariable) -> Bool
     @objc optional func store(_ store: AJRStore, didAddVariable variable: AJRVariable) -> Void
