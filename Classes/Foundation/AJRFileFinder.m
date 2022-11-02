@@ -36,17 +36,21 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "AJRLogging.h"
 #import "NSMutableArray+Extensions.h"
 #import "NSString+Extensions.h"
+#import "NSURL+Extensions.h"
 
-static NSMutableArray<NSString *> *_environmentPaths = nil;
+static NSMutableArray<NSURL *> *_environmentPaths = nil;
 
 @implementation AJRFileFinder {
-    NSMutableOrderedSet<NSString *> *_searchPaths;
+    NSMutableOrderedSet<NSURL *> *_searchPaths;
 }
 
 + (void)initialize {
     [[[NSProcessInfo processInfo] environment] enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *object, BOOL *stop) {
         if ([key caseInsensitiveCompare:@"path"] == NSOrderedSame) {
-            _environmentPaths = [[object componentsSeparatedByString:@":"] mutableCopy];
+            _environmentPaths = [NSMutableArray array];
+            [[object componentsSeparatedByString:@":"] enumerateObjectsUsingBlock:^(NSString *path, NSUInteger index, BOOL *stop) {
+                [_environmentPaths addObject:[NSURL fileURLWithPath:path]];
+            }];
             *stop = YES;
         }
     }];
@@ -68,19 +72,24 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     return [[self alloc] initForHeaderFilesInSDK:sdkMask];
 }
 
-+ (NSArray<NSString *> *)findFiles:(NSString *)filename {
++ (NSArray<NSURL *> *)findFiles:(NSString *)filename {
     return [[[self alloc] init] findFiles:filename];
 }
 
-+ (NSArray<NSString *> *)findFiles:(NSString *)filename inSubpath:(NSString *)path {
++ (NSArray<NSURL *> *)findFiles:(NSString *)filename inSubpath:(NSString *)path {
     return [[[self alloc] init] findFiles:filename inSubpath:path];
 }
 
-+ (NSArray<NSString *> *)findFilesForSubpath:(NSString *)path andExtension:(NSString *)extension {
++ (NSArray<NSURL *> *)findFilesForSubpath:(NSString *)path andExtension:(NSString *)extension {
     return [[[self alloc] initWithSubpath:path andExtension:extension] findFiles];
 }
 
-+ (NSArray<NSString *> *)findInEnvironmentPathExecutablesNamed:(NSString *)executableName {
++ (nullable NSURL *)findApplicationNamed:(NSString *)applicationName {
+    return [[[[self alloc] initForApplications] findFiles:applicationName] firstObject];
+}
+
+
++ (NSArray<NSURL *> *)findInEnvironmentPathExecutablesNamed:(NSString *)executableName {
     return [[[self alloc] initForExecutablesInEnvironmentPath] findFiles:executableName];
 }
 
@@ -111,10 +120,26 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
         [self addSearchPaths:NSAllLibrariesDirectory inDomains:NSAllDomainsMask];
         [self addSearchPaths:NSApplicationSupportDirectory inDomains:NSAllDomainsMask];
         [self addSearchPaths:NSCachesDirectory inDomains:NSAllDomainsMask];
-        [self addSearchPaths:@[NSBundle.mainBundle.builtInPlugInsPath]];
-        [self addSearchPaths:@[NSBundle.mainBundle.resourcePath]];
+        [self addSearchPaths:@[NSBundle.mainBundle.builtInPlugInsURL]];
+        [self addSearchPaths:@[NSBundle.mainBundle.resourceURL]];
     }
     
+    return self;
+}
+
+- (id)initForApplications {
+    if ((self = [super init])) {
+        self.extension = @"app";
+        self.subpath = nil;
+        self.searchCurrentDirectory = NO;
+        self.allowDuplicates = YES;
+        self.searchHome = NO;
+        self.caseSensitive = NO;
+        self.searchEnvironmentPath = NO;
+        self.sorted = NO;
+        [self addSearchPaths:NSApplicationDirectory inDomains:NSAllDomainsMask];
+        [self addSearchPaths:NSDeveloperApplicationDirectory inDomains:NSAllDomainsMask];
+    }
     return self;
 }
 
@@ -122,7 +147,9 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     if ((self = [self initWithSubpath:nil andExtension:nil])) {
         self.allowDuplicates = YES;
         [self addDeveloperSDKs:AJRDeveloperSDKAll];
-        [self addSearchPaths:@[@"/usr/include", @"/usr/local/include", @"/opt/local/include"]];
+        [self addSearchPaths:@[[NSURL fileURLWithPath:@"/usr/include"],
+                               [NSURL fileURLWithPath:@"/usr/local/include"],
+                               [NSURL fileURLWithPath:@"/opt/local/include"]]];
     }
     return self;
 }
@@ -138,7 +165,7 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
 
 #pragma mark - Global Properties
 
-+ (NSString *)developerPath {
++ (NSURL *)developerPath {
 #if defined(AJRFoundation_iOS)
     // iOS will never have a developer path (well, at least for now).
     return nil;
@@ -158,7 +185,7 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
             developerPath = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
         }
     });
-    return developerPath;
+    return [NSURL fileURLWithPath:developerPath];
 #endif
 }
 
@@ -178,8 +205,8 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     return variable;
 }
 
-- (NSString *)_pathBySubstitutingVariablesInPath:(NSString *)input {
-    NSMutableString *string = [input mutableCopy];
+- (NSURL *)_pathBySubstitutingVariablesInPath:(NSURL *)input {
+    NSMutableString *string = [[input path] mutableCopy];
 
     NSString *variable;
     NSRange variableRange;
@@ -194,13 +221,13 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
         }
         [string replaceCharactersInRange:variableRange withString:value];
     }
-    return [string stringByStandardizingPath];
+    return [[NSURL fileURLWithPath:string] URLByStandardizingPath];
 }
 
-- (BOOL)_insert:(NSString *)filenameIn into:(NSMutableArray<NSString *> *)array {
+- (BOOL)_insert:(NSURL *)filenameIn into:(NSMutableArray<NSURL *> *)array {
     BOOL inserted = NO;
     if (filenameIn != nil) {
-        NSString *filename = [filenameIn stringByStandardizingPath];
+        NSURL *filename = [filenameIn URLByStandardizingPath];
 
         if (!_allowDuplicates) {
             NSString *name = [filename lastPathComponent];
@@ -220,27 +247,30 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     return inserted;
 }
 
-- (NSString *)pathForFilename:(NSString *)file inPath:(NSString *)path {
-    NSString *fullPath = [[self _pathBySubstitutingVariablesInPath:path] stringByAppendingPathComponent:file];
+- (NSURL *)pathForFilename:(NSString *)file inPath:(NSURL *)path {
+    NSURL *fullPath = [[self _pathBySubstitutingVariablesInPath:path] URLByAppendingPathComponent:file];
+
+    if (_extension != NULL) {
+        fullPath = [fullPath URLByAppendingPathExtension:_extension];
+    }
     
-    return [[NSFileManager defaultManager] fileExistsAtPath:fullPath] ? fullPath : nil;
+    return [[NSFileManager defaultManager] fileExistsAtPath:fullPath.path] ? fullPath : nil;
 }
 
-- (BOOL)_filesInto:(NSMutableArray *)files withExtension:(NSString *)ext inPath:(NSString *)pathIn {
+- (BOOL)_filesInto:(NSMutableArray *)files withExtension:(NSString *)ext inPath:(NSURL *)pathIn {
     BOOL inserted = NO;
-    NSString *path = [self _pathBySubstitutingVariablesInPath:pathIn];
-    NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:path];
-    NSString *name;
+    NSURL *path = [self _pathBySubstitutingVariablesInPath:pathIn];
+    NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtURL:path includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsSubdirectoryDescendants | NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles errorHandler:nil];
+    NSURL *name;
     NSString *currentExtension;
     
     // now search for files with the given extension.
     while ((name = [enumerator nextObject])) {
-        [enumerator skipDescendents];
         currentExtension = [name pathExtension];
         if ([currentExtension length]) {
             if (_caseSensitive) {
                 if ([currentExtension isEqualToString:ext]) {
-                    if ([self _insert:[path stringByAppendingPathComponent:name] into:files]) {
+                    if ([self _insert:name into:files]) {
                         inserted = YES;
                         if (_findFirstOnly) {
                             break;
@@ -249,7 +279,7 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
                 }
             } else {
                 if ([currentExtension caseInsensitiveCompare:ext] == NSOrderedSame) {
-                    if ([self _insert:[path stringByAppendingPathComponent:name] into:files]) {
+                    if ([self _insert:name into:files]) {
                         inserted = YES;
                         if (_findFirstOnly) {
                             break;
@@ -263,15 +293,15 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     return inserted;
 }
 
-- (void)_searchCallingBlock:(void (^)(NSString *path, BOOL *stop))block {
+- (void)_searchCallingBlock:(void (^)(NSURL *path, BOOL *stop))block {
     BOOL stop = NO;
     
     if (_searchHome) {
-        block(NSHomeDirectory(), &stop);
+        block(AJRHomeDirectoryURL(), &stop);
     }
     
     if (!stop) {
-        for (NSString *path in _searchPaths) {
+        for (NSURL *path in _searchPaths) {
             block(path, &stop);
             if (stop) {
                 break;
@@ -280,29 +310,29 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     }
     
     if (!stop && _searchCurrentDirectory) {
-        block(NSFileManager.defaultManager.currentDirectoryPath, &stop);
+        block([NSURL fileURLWithPath:NSFileManager.defaultManager.currentDirectoryPath], &stop);
     }
     
     if (!stop && _searchEnvironmentPath) {
-        for (NSString *path in _environmentPaths) {
+        for (NSURL *path in _environmentPaths) {
             block(path, &stop);
         }
     }
 }
 
-- (NSArray<NSString *> *)findFiles:(NSString *)filename {
-    NSMutableArray<NSString *> *foundPaths = [NSMutableArray array];
+- (NSArray<NSURL *> *)findFiles:(NSString *)filename {
+    NSMutableArray<NSURL *> *foundPaths = [NSMutableArray array];
     
-    [self _searchCallingBlock:^(NSString *path, BOOL *stop) {
+    [self _searchCallingBlock:^(NSURL *path, BOOL *stop) {
         *stop = [self _insert:[self pathForFilename:filename inPath:path] into:foundPaths] && self->_findFirstOnly;
     }];
     
     return foundPaths;
 }
 
-- (NSArray<NSString *> *)findFiles:(NSString *)filename inSubpath:(NSString *)path {
+- (NSArray<NSURL *> *)findFiles:(NSString *)filename inSubpath:(NSString *)path {
     NSString *savedSubpath = self.subpath;
-    NSArray<NSString *> *result;
+    NSArray<NSURL *> *result;
     
     self.subpath = path;
     result = [self findFiles:filename];
@@ -311,10 +341,10 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     return result;
 }
 
-- (NSArray<NSString *> *)findFiles {
-    NSMutableArray<NSString *> *files = [NSMutableArray array];
+- (NSArray<NSURL *> *)findFiles {
+    NSMutableArray<NSURL *> *files = [NSMutableArray array];
     
-    [self _searchCallingBlock:^(NSString *path, BOOL *stop) {
+    [self _searchCallingBlock:^(NSURL *path, BOOL *stop) {
         *stop = [self _filesInto:files withExtension:self->_extension inPath:path] && self->_findFirstOnly;
     }];
     
@@ -323,7 +353,7 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
 
 #pragma mark - Search Criteria
 
-- (NSArray<NSString *> *)searchPaths {
+- (NSArray<NSURL *> *)searchPaths {
     return _searchPaths.array;
 }
 
@@ -340,8 +370,8 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     }];
 }
 
-- (NSArray<NSString *> *)pathsForPathDirectory:(NSSearchPathDirectory)directory mask:(NSSearchPathDomainMask) mask {
-    NSMutableArray<NSString *> *paths = [NSMutableArray array];
+- (NSArray<NSURL *> *)pathsForPathDirectory:(NSSearchPathDirectory)directory mask:(NSSearchPathDomainMask) mask {
+    NSMutableArray<NSURL *> *paths = [NSMutableArray array];
     BOOL includeSharedLibrarySubpath = (directory == NSApplicationSupportDirectory
                                         || directory == NSLibraryDirectory
                                         || directory == NSAllLibrariesDirectory
@@ -353,7 +383,7 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
             workPath = [workPath stringByAppendingPathComponent:@"$(SHARED_SUBPATH)"];
         }
         workPath = [workPath stringByAppendingPathComponent:@"$(SUBPATH)"];
-        [paths addObject:workPath];
+        [paths addObject:[NSURL fileURLWithPath:workPath]];
     }
     
     return paths;
@@ -371,20 +401,20 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     }];
 }
 
-- (void)addSearchPaths:(NSArray<NSString *> *)paths {
+- (void)addSearchPaths:(NSArray<NSURL *> *)paths {
     [self _modifySearchPathsUsingBlock:^(NSMutableOrderedSet *searchPaths) {
-        for (NSString *path in paths) {
-            [searchPaths addObject:[path stringByAppendingPathComponent:@"$(SUBPATH)"]];
+        for (NSURL *path in paths) {
+            [searchPaths addObject:[path URLByAppendingPathComponent:@"$(SUBPATH)"]];
         }
     }];
 }
 
-- (void)removeSearchPaths:(NSArray<NSString *> *)paths {
+- (void)removeSearchPaths:(NSArray<NSURL *> *)paths {
     [self _modifySearchPathsUsingBlock:^(NSMutableOrderedSet *searchPaths) {
-        for (NSString *path in paths) {
-            NSString *work = path;
-            if (![work hasSuffix:@"$(SUBPATH)"]) {
-                work = [work stringByAppendingPathComponent:@"$(SUBPATH)"];
+        for (NSURL *path in paths) {
+            NSURL *work = path;
+            if (![work.lastPathComponent hasSuffix:@"$(SUBPATH)"]) {
+                work = [work URLByAppendingPathComponent:@"$(SUBPATH)"];
             }
             [searchPaths removeObject:work];
         }
@@ -392,12 +422,12 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
 }
 
 - (void)addBundle:(NSBundle *)bundle {
-    NSMutableArray<NSString *> *paths = [NSMutableArray array];
+    NSMutableArray<NSURL *> *paths = [NSMutableArray array];
     
-    [paths addObject:bundle.builtInPlugInsPath];
-    [paths addObject:bundle.resourcePath];
-    [paths addObject:bundle.sharedFrameworksPath];
-    [paths addObject:bundle.privateFrameworksPath];
+    [paths addObject:bundle.builtInPlugInsURL];
+    [paths addObject:bundle.resourceURL];
+    [paths addObject:bundle.sharedFrameworksURL];
+    [paths addObject:bundle.privateFrameworksURL];
     
     [self addSearchPaths:paths];
 }
@@ -413,17 +443,17 @@ static NSMutableArray<NSString *> *_environmentPaths = nil;
     }
 }
 
-- (void)_addPathsForDeveloperSDKNamed:(NSString *)name to:(NSMutableArray<NSString *> *)paths {
-    NSString *developerPath = AJRFileFinder.developerPath;
+- (void)_addPathsForDeveloperSDKNamed:(NSString *)name to:(NSMutableArray<NSURL *> *)paths {
+    NSURL *developerPath = AJRFileFinder.developerPath;
     if (developerPath != nil) {
         NSString *platform = AJRFormat(@"%@.platform", name);
         NSString *sdk = AJRFormat(@"%@.sdk", name);
-        [paths addObject:[developerPath stringByAppendingPathComponents:@[@"Platforms", platform, @"Developer", @"SDKs", sdk, @"usr", @"include"]]];
+        [paths addObject:[developerPath URLByAppendingPathComponents:@[@"Platforms", platform, @"Developer", @"SDKs", sdk, @"usr", @"include"]]];
     }
 }
 
 - (void)addDeveloperSDKs:(AJRDeveloperSDK)mask {
-    NSMutableArray<NSString *> *paths = [NSMutableArray array];
+    NSMutableArray<NSURL *> *paths = [NSMutableArray array];
     if (mask & AJRDeveloperSDKMacOSX) {
         [self _addPathsForDeveloperSDKNamed:@"MacOSX" to:paths];
     }

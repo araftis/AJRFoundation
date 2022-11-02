@@ -144,7 +144,7 @@ NSString *AJRGetEnvironmentVariable(NSString *var) {
     return returnValue;
 }
 
-NSString *AJRFindExecutable(NSString *execName) {
+NSURL *AJRFindExecutable(NSString *execName) {
     return [[AJRFileFinder findInEnvironmentPathExecutablesNamed:execName] firstObject];
 }
 

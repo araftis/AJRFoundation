@@ -40,27 +40,27 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @implementation AJRFileFinderTests
 
 - (void)testDeveloperPath {
-    NSString *path = [AJRFileFinder developerPath];
+    NSURL *path = [AJRFileFinder developerPath];
     XCTAssert(path != nil);
 }
 
 - (void)testSimpleHeaderSearch {
     AJRFileFinder *fileFinder = [AJRFileFinder fileFinderForHeaderFilesInSDK:AJRDeveloperSDKAll];
     
-    NSArray<NSString *> *paths = [fileFinder findFiles:@"stdlib.h"];
-    XCTAssert(paths.count > 0);
+    NSArray<NSURL *> *urls = [fileFinder findFiles:@"stdlib.h"];
+    XCTAssert(urls.count > 0);
 
     fileFinder.allowDuplicates = NO;
-    paths = [fileFinder findFiles:@"stdlib.h"];
-    XCTAssert(paths.count == 1);
+    urls = [fileFinder findFiles:@"stdlib.h"];
+    XCTAssert(urls.count == 1);
     
     fileFinder.caseSensitive = YES;
-    paths = [fileFinder findFiles:@"stdlib.h"];
-    XCTAssert(paths.count == 1);
+    urls = [fileFinder findFiles:@"stdlib.h"];
+    XCTAssert(urls.count == 1);
 
     fileFinder.findFirstOnly = YES;
-    paths = [fileFinder findFiles:@"curl.h" inSubpath:@"curl"];
-    XCTAssert(paths.count == 1);
+    urls = [fileFinder findFiles:@"curl.h" inSubpath:@"curl"];
+    XCTAssert(urls.count == 1);
 }
 
 - (void)testLibrarySearching {
@@ -68,10 +68,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     // We have to add this manually, because in a unit test, the main bundle is actually to the xctest agent.
     [fileFinder addAllBundles];
-    NSArray<NSString *> *paths = [fileFinder findFiles];
+    NSArray<NSURL *> *urls = [fileFinder findFiles];
     BOOL found = NO;
-    for (NSString *path in paths) {
-        if ([path hasSuffix:@"Resources/AJRPlugInManagerTestBundle.bundle"]) {
+    for (NSURL *url in urls) {
+        if ([url.path hasSuffix:@"Resources/AJRPlugInManagerTestBundle.bundle"]) {
             found = YES;
             break;
         }
@@ -79,41 +79,41 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert(found);
     
     [fileFinder removeAllSearchPaths];
-    paths = [fileFinder findFiles];
-    XCTAssert(paths.count == 0);
+    urls = [fileFinder findFiles];
+    XCTAssert(urls.count == 0);
     
     [fileFinder addBundle:[NSBundle bundleForClass:self.class]];
-    paths = [fileFinder findFiles];
-    XCTAssert(paths.count == 1);
+    urls = [fileFinder findFiles];
+    XCTAssert(urls.count == 1);
     
     fileFinder.extension = @"BUNDLE";
     fileFinder.findFirstOnly = YES;
-    paths = [fileFinder findFiles];
-    XCTAssert(paths.count == 1);
+    urls = [fileFinder findFiles];
+    XCTAssert(urls.count == 1);
     
     fileFinder.caseSensitive = YES;
     fileFinder.findFirstOnly = YES;
-    paths = [fileFinder findFiles];
-    XCTAssert(paths.count == 0);
+    urls = [fileFinder findFiles];
+    XCTAssert(urls.count == 0);
     
     [fileFinder addSearchPaths:NSLibraryDirectory inDomains:NSUserDomainMask];
     fileFinder.sharedFolderSubpath = nil;
     fileFinder.extension = @"bundle";
     fileFinder.caseSensitive = YES;
     fileFinder.findFirstOnly = YES;
-    paths = [fileFinder findFiles];
-    XCTAssert(paths.count == 1);
+    urls = [fileFinder findFiles];
+    XCTAssert(urls.count == 1);
 }
 
 - (void)testErrorHandling {
     AJRFileFinder *fileFinder = [AJRFileFinder fileFinder];
     
-    [fileFinder addSearchPaths:@[@"/$(BAD)"]];
+    [fileFinder addSearchPaths:@[[NSURL fileURLWithPath:@"/$(BAD)"]]];
     
     NSOutputStream *output = [NSOutputStream outputStreamToMemory];
     AJRLogSetOutputStream(output, AJRLogLevelWarning);
-    NSArray<NSString *> *paths = [fileFinder findFiles:@"test"];
-    XCTAssert(paths.count == 0);
+    NSArray<NSURL *> *urls = [fileFinder findFiles:@"test"];
+    XCTAssert(urls.count == 0);
     
     AJRLogSetOutputStream(nil, AJRLogLevelWarning);
     XCTAssert([[output ajr_dataAsStringUsingEncoding:NSUTF8StringEncoding] containsString:@"<WARNING>: Unknown variable in path: BAD"]);
@@ -124,25 +124,25 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     fileFinder.searchHome = YES;
     
-    NSArray<NSString *> *paths = [fileFinder findFiles:@".cshrc"];
-    XCTAssert(paths.count == 1);
+    NSArray<NSURL *> *urls = [fileFinder findFiles:@".cshrc"];
+    XCTAssert(urls.count == 1);
     
     [NSFileManager.defaultManager changeCurrentDirectoryPath:NSTemporaryDirectory()];
     NSString *temp = NSFileManager.defaultManager.temporaryFilename;
     XCTAssert([[NSData data] writeToFile:temp atomically:YES]);
     
     fileFinder.searchCurrentDirectory = YES;
-    paths = [fileFinder findFiles:[temp lastPathComponent]];
-    XCTAssert(paths.count == 1);
+    urls = [fileFinder findFiles:[temp lastPathComponent]];
+    XCTAssert(urls.count == 1);
     
     [NSFileManager.defaultManager removeItemAtPath:temp error:NULL];
     
-    paths = [fileFinder findFiles:[temp lastPathComponent]];
-    XCTAssert(paths.count == 0);
+    urls = [fileFinder findFiles:[temp lastPathComponent]];
+    XCTAssert(urls.count == 0);
     
     fileFinder.searchEnvironmentPath = YES;
-    paths = [fileFinder findFiles:@"more"];
-    XCTAssert([paths containsObject:@"/usr/bin/more"]);
+    urls = [fileFinder findFiles:@"more"];
+    XCTAssert([urls containsObject:[NSURL fileURLWithPath:@"/usr/bin/more"]]);
 }
 
 - (void)testClassConveniences {
@@ -166,20 +166,20 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     XCTAssert([NSFileManager.defaultManager createFileAtPath:path3 contents:[NSData data] attributes:@{NSFilePosixPermissions:@(0644)}]);
     XCTAssert([NSFileManager.defaultManager createFileAtPath:path4 contents:[NSData data] attributes:@{NSFilePosixPermissions:@(0644)}]);
 
-    NSArray<NSString *> *paths = [AJRFileFinder findFiles:@"test-to-find"];
-    XCTAssert(paths.count == 1 && [paths[0] isEqualToString:path]);
+    NSArray<NSURL *> *paths = [AJRFileFinder findFiles:@"test-to-find"];
+    XCTAssert(paths.count == 1 && [paths[0] isEqualToURL:[NSURL fileURLWithPath:path]]);
     paths = [AJRFileFinder findFiles:@"test-to-find-2"];
     XCTAssert(paths.count == 0);
 
     paths = [AJRFileFinder findFiles:@"test-to-find-2" inSubpath:@"Subdirectory"];
-    XCTAssert(paths.count == 1 && [paths[0] isEqualToString:path2]);
+    XCTAssert(paths.count == 1 && [paths[0] isEqualToURL:[NSURL fileURLWithPath:path2]]);
     paths = [AJRFileFinder findFiles:@"test-to-find" inSubpath:@"Subdirectory"];
     XCTAssert(paths.count == 0);
 
     paths = [AJRFileFinder findFilesForSubpath:@"Subdirectory" andExtension:@"csh"];
     XCTAssert(paths.count == 2);
-    XCTAssert([paths containsObject:path3]);
-    XCTAssert([paths containsObject:path4]);
+    XCTAssert([paths containsObject:[NSURL fileURLWithPath:path3]]);
+    XCTAssert([paths containsObject:[NSURL fileURLWithPath:path4]]);
 
     [NSFileManager.defaultManager removeItemAtPath:directory error:NULL];
 }
@@ -202,16 +202,24 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     [finder addSearchPaths:NSLibraryDirectory inDomains:NSAllDomainsMask];
     XCTAssert(finder.searchPaths.count > 0);
-    for (NSString *path in finder.searchPaths) {
-        [finder removeSearchPaths:@[path.stringByDeletingLastPathComponent]];
+    for (NSURL *path in finder.searchPaths) {
+        [finder removeSearchPaths:@[[path URLByDeletingLastPathComponent]]];
     }
     XCTAssert(finder.searchPaths.count == 0);
 }
 
 - (void)testEnvironmentPaths {
     AJRFileFinder *finder = [AJRFileFinder fileFinderForExecutablesInEnvironmentPath];
-    NSArray<NSString *> *paths = [finder findFiles:@"more"];
-    XCTAssert([paths containsObject:@"/usr/bin/more"]);
+    NSArray<NSURL *> *paths = [finder findFiles:@"more"];
+    XCTAssert([paths containsObject:[NSURL fileURLWithPath:@"/usr/bin/more"]]);
+
+    paths = [AJRFileFinder findInEnvironmentPathExecutablesNamed:@"less"];
+    XCTAssert([paths containsObject:[NSURL fileURLWithPath:@"/usr/bin/less"]]);
+}
+
+- (void)testFindApplications {
+    NSURL *url = [AJRFileFinder findApplicationNamed:@"TextEdit"];
+    XCTAssert(url != nil);
 }
 
 @end

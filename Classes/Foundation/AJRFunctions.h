@@ -85,9 +85,9 @@ extern NSString * _Nullable AJRGetEnvironmentVariable(NSString *variable);
  
  @param executableName The name of the executable to find.
  
- @result The full path to the executable.
+ @result The full URL to the executable.
  */
-extern NSString *AJRFindExecutable(NSString *executableName);
+extern NSURL *AJRFindExecutable(NSString *executableName);
 
 #pragma mark - Geometry String Conversion
 

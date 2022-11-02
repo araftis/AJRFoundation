@@ -1058,7 +1058,7 @@
 		FA3DE2700F14010E00C0E2C2 /* NSHost+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSHost+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; wrapsLines = 1; };
 		FA3DE2710F14010E00C0E2C2 /* NSHost+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSHost+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
 		FA3DF3300F16678700C0E2C2 /* NSURL+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
-		FA3DF3310F16678700C0E2C2 /* NSURL+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
+		FA3DF3310F16678700C0E2C2 /* NSURL+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA42F79C20CF75A4001AF25E /* AJRFoundationPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRFoundationPrivate.h; sourceTree = "<group>"; };
 		FA471ECE195C986A009A6455 /* NSInputStream+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInputStream+Extensions.h"; sourceTree = "<group>"; };
 		FA471ECF195C986A009A6455 /* NSInputStream+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInputStream+Extensions.m"; sourceTree = "<group>"; };

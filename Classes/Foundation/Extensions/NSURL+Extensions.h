@@ -70,6 +70,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic,readonly) BOOL isTemporary;
 
+- (NSURL *)URLByAppendingPathComponents:(NSArray<NSString *> *)components;
+
+- (NSURL *)URLByAppendingPathComponents:(NSArray<NSString *> *)components lastIsDirectory:(BOOL)flag;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -142,18 +142,18 @@ typedef NS_OPTIONS(uint32_t, AJRDeveloperSDK) {
 
 #pragma mark - Global Properties
 
-@property (nonatomic,class,readonly,nullable) NSString *developerPath;
+@property (nonatomic,class,readonly,nullable) NSURL *developerPath;
 
 #pragma mark - Searching
  
 /*!
  @seealso findFiles:
 
- @discussion Searches the standard Library paths for <CODE> filename</CODE>.
+ @discussion Searches the standard Library paths for <CODE>filename</CODE>.
 
  @result If it finds the file, it returns the full path to the file. Otherwise, it returns <CODE>nil</CODE>.
  */
-+ (NSArray<NSString *> *)findFiles:(NSString *)filename;
++ (NSArray<NSURL *> *)findFiles:(NSString *)filename;
 
 /*!
  @seealso +findFile
@@ -162,7 +162,7 @@ typedef NS_OPTIONS(uint32_t, AJRDeveloperSDK) {
 
  @result If it finds the file, it returns the full path to the file, otherwise, it returns <CODE>nil</CODE>.
  */
-+ (NSArray<NSString *> *)findFiles:(NSString *)filename inSubpath:(NSString *)path;
++ (NSArray<NSURL *> *)findFiles:(NSString *)filename inSubpath:(NSString *)path;
 
 /*!
  @seealso -findFilesForSubpath:andExtension:
@@ -171,52 +171,60 @@ typedef NS_OPTIONS(uint32_t, AJRDeveloperSDK) {
 
  @result Returns a alphabetically sorted array of pathnames.
  */
-+ (NSArray<NSString *> *)findFilesForSubpath:(nullable NSString *)path andExtension:(NSString *)anExtension;
++ (NSArray<NSURL *> *)findFilesForSubpath:(nullable NSString *)path andExtension:(NSString *)anExtension;
+
+/*!
+ @discussion Retuns the first application of the given name. Note that `application` should be supplied with no `.app` extension.
+
+ @param applicationName The name of the application without the `.app` extension.
+
+ @result The URL to the applicaiton or `nil` if it couldn't be found. */
++ (nullable NSURL *)findApplicationNamed:(NSString *)applicationName;
 
 /*!
  Searches the user's PATH set in their environment for the executable of the provided name. This may return multiple values if the executable exists in multiple locations. This only searches the current directory if the search path includes '.'. You can change that by setting searchCurrentDirectory to YES.
  
  @returns An array of paths to executables named executableName.
  */
-+ (NSArray<NSString *> *)findInEnvironmentPathExecutablesNamed:(NSString *)executableName;
++ (NSArray<NSURL *> *)findInEnvironmentPathExecutablesNamed:(NSString *)executableName;
 
 /*!
  @discussion Checks for the existance of <CODE>file</CODE> in <CODE>path</CODE> an returns the full path name for the file if it exists.
 
  @result The full path name to the <CODE>file</CODE> if it exists in <CODE>path</CODE> or <CODE>nil</CODE>.
  */
-- (NSString *)pathForFilename:(NSString *)file inPath:(NSString *)path;
+- (NSURL *)pathForFilename:(NSString *)file inPath:(NSURL *)path;
 
 /*!
  @seealso -findFiles, +findFiles:
 
  @discussion Searches via it's current search criteria for <CODE> filename</CODE>. If it finds the file, it returns the full path to the first occurance. If it fails to find the file, it returns <CODE>nil</CODE>. If you need to find all instances of a file, you should use <CODE>findFiles</CODE> with uniqueing turned off.
  */
-- (NSArray<NSString *> *)findFiles:(NSString *)filename;
+- (NSArray<NSURL *> *)findFiles:(NSString *)filename;
 
 /*!
  @discussion Searches the list of directories for <CODE>file</CODE> located with <CODE>path</CODE>.
 
  @result The fully qualified path if found, or <CODE>nil</CODE> if no file can be found.
  */
-- (NSArray<NSString *> *)findFiles:(NSString *)filename inSubpath:(NSString *)path;
+- (NSArray<NSURL *> *)findFiles:(NSString *)filename inSubpath:(NSString *)path;
 
 /*!
  @seealso -findFiles:, +findFiles
 
  @discussion Returns an array of files as defined by the current search criteria. The order and uniqueness of the array is also controlled by user settings. By default, the array filenames will be unique and sorted.
  */
-- (NSArray<NSString *> *)findFiles;
+- (NSArray<NSURL *> *)findFiles;
 
 #pragma mark - Setting search criteria
 
-@property (nonatomic,readonly) NSArray<NSString *> *searchPaths;
+@property (nonatomic,readonly) NSArray<NSURL *> *searchPaths;
 
 - (void)removeAllSearchPaths;
 - (void)addSearchPaths:(NSSearchPathDirectory)paths inDomains:(NSSearchPathDomainMask)mask;
 - (void)removeSearchPaths:(NSSearchPathDirectory)paths inDomains:(NSSearchPathDomainMask)mask;
-- (void)addSearchPaths:(NSArray<NSString *> *)paths;
-- (void)removeSearchPaths:(NSArray<NSString *> *)paths;
+- (void)addSearchPaths:(NSArray<NSURL *> *)paths;
+- (void)removeSearchPaths:(NSArray<NSURL *> *)paths;
 
 - (void)addBundle:(NSBundle *)bundle;
 - (void)addAllBundles;

@@ -160,7 +160,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 - (void)testFindExecutable {
-    XCTAssert([AJRFindExecutable(@"ls") isEqualToString:@"/bin/ls"]);
+    XCTAssert([AJRFindExecutable(@"ls") isEqualToURL:[NSURL fileURLWithPath:@"/bin/ls"]]);
 }
 
 - (void)testGeometryToStrings {
