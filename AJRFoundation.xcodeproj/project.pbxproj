@@ -928,7 +928,7 @@
 		FA0587E1193037A3002913B6 /* AJRXMLCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRXMLCoder.h; sourceTree = "<group>"; };
 		FA0587E2193037A3002913B6 /* AJRXMLCoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRXMLCoder.m; sourceTree = "<group>"; };
 		FA06EA970EA9BC4D009DE0F8 /* NSFileManager+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
-		FA06EA980EA9BC4D009DE0F8 /* NSFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
+		FA06EA980EA9BC4D009DE0F8 /* NSFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA07C858220D111E0077A0B5 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
 		FA07C85E220D62A40077A0B5 /* AJRTranslator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AJRTranslator+Extensions.swift"; sourceTree = "<group>"; };
 		FA07C8A3220EB9DB0077A0B5 /* NSCoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCoder+Extensions.swift"; sourceTree = "<group>"; };
@@ -1209,7 +1209,7 @@
 		FA8B8FF72900FF3300650F23 /* AJRVariableTypeDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeDate.swift; sourceTree = "<group>"; };
 		FA8B900F2904CBFE00650F23 /* AJRVariableTypeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeObject.swift; sourceTree = "<group>"; };
 		FA8BBA1B0EE4677B00C92598 /* NSBundle+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
-		FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
+		FA8BBA1C0EE4677B00C92598 /* NSBundle+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA8E370625C5182400EB554F /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		FA8F1EA020C36E5600D62576 /* AJRConversionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRConversionsTests.m; sourceTree = "<group>"; };
 		FA8F1EA220C4AD9B00D62576 /* NSOutputStream+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSOutputStream+ExtensionsTests.m"; sourceTree = "<group>"; usesTabs = 0; };
