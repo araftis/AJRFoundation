@@ -96,22 +96,22 @@ typedef void (*AJRRegistryClassAndPropertiesIMP)(id class, SEL _cmd, Class exten
                 warn = YES;
             }
         } else if (!class && properties) {
-			Method method = class_getClassMethod([self extensionPointClass], [self registrySelector]);
+            Method method = class_getClassMethod([self extensionPointClass], [self registrySelector]);
             if (method) {
-				switch (method_getNumberOfArguments(method)) {
-					case 3: {
-						AJRRegistryPropertiesIMP implementation = (AJRRegistryPropertiesIMP)[[self extensionPointClass] methodForSelector:[self registrySelector]];
-						implementation([self extensionPointClass], [self registrySelector], properties);
-						break;
-					}
-					case 4: {
-						AJRRegistryNameAndPropertiesIMP implementation = (AJRRegistryNameAndPropertiesIMP)[[self extensionPointClass] methodForSelector:[self registrySelector]];
-						implementation([self extensionPointClass], [self registrySelector], properties[@"name"], properties);
-						break;
-					}
-					default:
-						AJRLogWarning(@"Factory registry method is expected to have one or two arguments, but has %d instead.", method_getNumberOfArguments(method) - 2);
-				}
+                switch (method_getNumberOfArguments(method)) {
+                    case 3: {
+                        AJRRegistryPropertiesIMP implementation = (AJRRegistryPropertiesIMP)[[self extensionPointClass] methodForSelector:[self registrySelector]];
+                        implementation([self extensionPointClass], [self registrySelector], properties);
+                        break;
+                    }
+                    case 4: {
+                        AJRRegistryNameAndPropertiesIMP implementation = (AJRRegistryNameAndPropertiesIMP)[[self extensionPointClass] methodForSelector:[self registrySelector]];
+                        implementation([self extensionPointClass], [self registrySelector], properties[@"name"], properties);
+                        break;
+                    }
+                    default:
+                        AJRLogWarning(@"Factory registry method is expected to have one or two arguments, but has %d instead.", method_getNumberOfArguments(method) - 2);
+                }
             } else {
                 warn = YES;
             }
@@ -179,7 +179,7 @@ typedef void (*AJRRegistryClassAndPropertiesIMP)(id class, SEL _cmd, Class exten
 - (AJRPlugInExtension *)extensionForClassName:(NSString *)className {
     return [self extensionForClass:NSClassFromString(className)];
 }
-            
+
 - (AJRPlugInExtension *)extensionForName:(NSString *)name {
     return [_extensionsByName objectForKey:name] ?: [self extensionForClassName:name];
 }

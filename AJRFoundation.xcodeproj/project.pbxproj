@@ -1271,7 +1271,7 @@
 		FABE1F47152F94DF006D3FCA /* AJRPlugInManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRPlugInManager.h; sourceTree = "<group>"; };
 		FABE1F48152F94DF006D3FCA /* AJRPlugInManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRPlugInManager.m; sourceTree = "<group>"; };
 		FABE1F4B152F95CE006D3FCA /* AJRPlugInExtensionPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRPlugInExtensionPoint.h; sourceTree = "<group>"; };
-		FABE1F4C152F95CE006D3FCA /* AJRPlugInExtensionPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRPlugInExtensionPoint.m; sourceTree = "<group>"; usesTabs = 1; };
+		FABE1F4C152F95CE006D3FCA /* AJRPlugInExtensionPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRPlugInExtensionPoint.m; sourceTree = "<group>"; usesTabs = 0; };
 		FAC351DC22C003990070C5C9 /* NSLock+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLock+Extensions.swift"; sourceTree = "<group>"; };
 		FAC4DF240ED49D1C00897E9B /* AJRActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRActivity.h; sourceTree = "<group>"; };
 		FAC4DF250ED49D1C00897E9B /* AJRActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRActivity.m; sourceTree = "<group>"; };
