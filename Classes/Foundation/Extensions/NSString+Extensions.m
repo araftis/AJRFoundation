@@ -44,6 +44,7 @@
 #define COMMON_DIGEST_FOR_OPENSSL
 #import <CommonCrypto/CommonDigest.h>
 #define SHA1 CC_SHA1
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @implementation NSString (AJRExtensions)
 
@@ -63,10 +64,9 @@
     NSString *extension = [self pathExtension];
     NSString *mimeType = nil;
     if (extension) {
-        CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[self pathExtension], NULL);
-        if (uti) {
-            mimeType = CFBridgingRelease(UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType));
-            CFRelease(uti);
+        UTType *type = [UTType typeWithFilenameExtension:self.pathExtension];
+        if (type != nil) {
+            mimeType = type.preferredMIMEType;
         }
     }
     return mimeType;

@@ -42,6 +42,7 @@
 #import "NSScanner+Extensions.h"
 
 #import <objc/runtime.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 NSFileHandle *AJRStdErr = nil;
 NSFileHandle *AJRStdOut = nil;
@@ -827,7 +828,10 @@ void _AJRHandleSoftAssertion_impl(volatile const void *owner, NSString *function
 NSString *AJRUTIForPathExtension(NSString *extension) {
     NSString *UTI = nil;
     if ([extension length] > 0) {
-        UTI = CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL));
+        UTType *type = [UTType typeWithFilenameExtension:extension];
+        if (type != nil) {
+            UTI = type.identifier;
+        }
     }
     return UTI;
 }

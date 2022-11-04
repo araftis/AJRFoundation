@@ -118,10 +118,10 @@
     const struct mach_header_64 *header = [self machOHeaderWithSlide:&slide];
     
     if (header) {
-        uint64_t length;
+        unsigned long length;
         const char *segname = [type cStringUsingEncoding:NSUTF8StringEncoding];
         const char *sectname = [name cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *bytes = getsectdatafromheader_64(header, segname, sectname, &length);
+        const uint8_t *bytes = getsectiondata(header, segname, sectname, &length);
         
         if (bytes != NULL) {
             data = [NSData dataWithBytes:bytes + slide length:length];
