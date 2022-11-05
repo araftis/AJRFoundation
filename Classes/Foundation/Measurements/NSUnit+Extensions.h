@@ -47,6 +47,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSUnitLength (Extensions)
 
+@property (nonatomic,class,readonly) NSUnitLength *defaultShortUnitForLocale;   // For example: inches
+@property (nonatomic,class,readonly) NSUnitLength *defaultUnitForLocale;        // For example: feet
+@property (nonatomic,class,readonly) NSUnitLength *defaultLongUnitForLocale;    // For example: miles
+
 @property (class,nonatomic,readonly) NSUnitLength *points;
 @property (class,nonatomic,readonly) NSUnitLength *picas;
 

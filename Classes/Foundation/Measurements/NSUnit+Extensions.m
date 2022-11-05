@@ -48,7 +48,8 @@ typedef NSUnit * (*AJRUnitConstructor)(id sender, SEL _cmd);
     dispatch_once(&onceToken, ^{
         unitClasses = [NSMutableSet set];
         for (Class class in [AJRClassEnumerator classEnumerator]) {
-            if ([class isSubclassOfClass:NSUnit.class] && class != NSUnit.class && class != NSDimension.class) {
+            // IMPORTANT NOTE: Using AJRClassIsKindOfClass avoids tripping +initialize on objects, which can cause strange behavior if this code is triggerred during early start up.
+            if (AJRClassIsKindOfClass(class, NSUnit.class) && class != NSUnit.class && class != NSDimension.class) {
                 [unitClasses addObject:class];
             }
         }
@@ -75,8 +76,9 @@ static NSMutableDictionary<NSString *, NSUnit *> *ajr_unitIdentifierToUnit;
                         NSUnit *unit = constructor(unitClass, method_getName(method));
                         objc_setAssociatedObject(unit, @selector(identifier), name, OBJC_ASSOCIATION_RETAIN);
                         [ajr_unitClassToIndentifiers addObject:name toSetForKey:(id<NSCopying>)unitClass];
-                        AJRSoftAssert(ajr_unitIdentifierToUnit[name] == nil, @"Multiple units are using the identifier: \"%@\"", name);
-                        ajr_unitIdentifierToUnit[name] = unit;
+                        if (ajr_unitIdentifierToUnit[name] == nil) {
+                            ajr_unitIdentifierToUnit[name] = unit;
+                        }
                     }
                 }
             }
@@ -135,6 +137,21 @@ static NSMutableDictionary<NSString *, NSUnit *> *ajr_unitIdentifierToUnit;
 @end
 
 @implementation NSUnitLength (Extensions)
+
+// TODO: This should default to the user's locale.
++ (NSUnitLength *)defaultShortUnitForLocale {
+    return NSUnitLength.inches;
+}
+
+// TODO: This should default to the user's locale.
++ (NSUnitLength *)defaultUnitForLocale {
+    return NSUnitLength.feet;
+}
+
+// TODO: This should default to the user's locale.
++ (NSUnitLength *)defaultLongUnitForLocale {
+    return NSUnitLength.miles;
+}
 
 + (NSUnitLength *)points {
     static NSUnitLength *points = nil;
