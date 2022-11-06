@@ -60,6 +60,24 @@
     return string;
 }
 
+static NSDictionary<NSString *, NSArray<NSNumber *> *> *_fractions = @{
+    @"¼":@[@(1.0),@(4.0)],
+    @"½":@[@(1.0),@(2.0)],
+    @"¾":@[@(3.0),@(4.0)],
+    @"⅓":@[@(1.0),@(3.0)],
+    @"⅔":@[@(2.0),@(3.0)],
+    @"⅕":@[@(1.0),@(5.0)],
+    @"⅖":@[@(2.0),@(5.0)],
+    @"⅗":@[@(3.0),@(5.0)],
+    @"⅘":@[@(4.0),@(5.0)],
+    @"⅙":@[@(1.0),@(6.0)],
+    @"⅚":@[@(5.0),@(6.0)],
+    @"⅛":@[@(1.0),@(8.0)],
+    @"⅜":@[@(3.0),@(8.0)],
+    @"⅝":@[@(5.0),@(8.0)],
+    @"⅞":@[@(7.0),@(8.0)],
+};
+
 - (BOOL)getObjectValue:(__autoreleasing id *)obj forString:(NSString *)string errorDescription:(NSString *__autoreleasing *)error {
     static NSCharacterSet *dividerCharacterSet = nil;
     static dispatch_once_t onceToken;
@@ -67,7 +85,8 @@
         dividerCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"/⁄"];
     });
     NSScanner *scanner;
-    NSInteger initial = 0, whole = 0, numerator = 0, denominator = 0;
+    __block NSInteger numerator = 0, denominator = 0;
+    double initial = 0, whole = 0.0;
     
     if (_prefix && [string hasPrefix:_prefix]) {
         string = [string substringFromIndex:[_prefix length]];
@@ -77,23 +96,37 @@
     }
     
     scanner = [[NSScanner alloc] initWithString:string];
-    if ([scanner scanInteger:&initial]) {
+    if ([scanner scanDouble:&initial]) {
         NSNumber *value;
         BOOL hadWhole = NO;
         
-        if ([scanner scanCharactersFromSet:dividerCharacterSet intoString:NULL]) {
-            // We didn't have a whole portion.
-            numerator = initial;
-            // This might not scan a number, which is OK, because then denominator will be 0, and we won't try to turn that into a value.
-            [scanner scanInteger:&denominator];
+        // See if we have a "unicode fraction"
+        [_fractions enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSArray<NSNumber *> *values, BOOL *stop) {
+            if ([scanner scanString:key intoString:NULL]) {
+                numerator = values[0].integerValue;
+                denominator = values[1].integerValue;
+                *stop = YES;
+            }
+        }];
+        
+        if (numerator == 0 && denominator == 0) {
+            if ([scanner scanCharactersFromSet:dividerCharacterSet intoString:NULL]) {
+                // We didn't have a whole portion.
+                numerator = initial;
+                // This might not scan a number, which is OK, because then denominator will be 0, and we won't try to turn that into a value.
+                [scanner scanInteger:&denominator];
+            } else {
+                // We did have a whole portion, apparently.
+                whole = initial;
+                hadWhole = YES;
+                // We're only doing limited error checking in that as long as we scan an integer followed by the divider set, then we'll just try and scan the demominator. If that fails, the denominator is 0, which we won't try to change into a value.
+                if ([scanner scanInteger:&numerator] && [scanner scanCharactersFromSet:dividerCharacterSet intoString:NULL]) {
+                    [scanner scanInteger:&denominator];
+                }
+            }
         } else {
-            // We did have a whole portion, apparently.
             whole = initial;
             hadWhole = YES;
-            // We're only doing limited error checking in that as long as we scan an integer followed by the divider set, then we'll just try and scan the demominator. If that fails, the denominator is 0, which we won't try to change into a value.
-            if ([scanner scanInteger:&numerator] && [scanner scanCharactersFromSet:dividerCharacterSet intoString:NULL]) {
-                [scanner scanInteger:&denominator];
-            }
         }
         
         if (denominator) {

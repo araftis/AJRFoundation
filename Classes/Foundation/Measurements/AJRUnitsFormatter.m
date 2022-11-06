@@ -31,57 +31,104 @@
 
 #import "AJRUnitsFormatter.h"
 
+#import "AJRFormat.h"
+#import "AJRFractionFormatter.h"
 #import "NSUnit+Extensions.h"
-
-#import <AJRFoundation/AJRFoundation.h>
 
 @implementation AJRUnitsFormatter {
     NSNumberFormatter *_formatter;
 }
 
-- (void)ajr_commonInit {
-    _formatter = [[NSNumberFormatter alloc] init];
-    [_formatter setPositiveFormat:@"#,##0.###"];
-    [_formatter setNegativeFormat:@"-#,##0.###"];
+// MARK: - Utilities
+
+- (NSNumberFormatter *)createNumberFormatter {
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setPositiveFormat:@"#,##0.###"];
+    [formatter setNegativeFormat:@"-#,##0.###"];
+    return formatter;
 }
+
+- (NSNumberFormatter *)createFractionFormatter {
+    return [[AJRFractionFormatter alloc] init];
+}
+
+- (NSUnit *)unitForLocale:(NSLocale *)locale {
+    if (locale == nil) {
+        locale = NSLocale.currentLocale;
+    }
+    if (locale == nil) {
+        locale = NSLocale.systemLocale;
+    }
+    if ([[locale objectForKey:NSLocaleUsesMetricSystem] boolValue]) {
+        return [NSUnitLength centimeters];
+    }
+    return [NSUnitLength inches];
+}
+
+// MARK: - Creation
 
 - (id)init {
     if ((self = [super init])) {
-        [self ajr_commonInit];
         _units = [NSUnitLength points];
-        _displayUnits = [NSUnitLength inches];
+        _displayUnits = [self unitForLocale:NSLocale.currentLocale];
+    }
+    return self;
+}
+
+- (id)initWithUnits:(NSUnit *)units {
+    if ((self = [super init])) {
+        _units = units;
+        _displayUnits = nil;
     }
     return self;
 }
 
 - (id)initWithUnits:(NSUnit *)units displayUnits:(NSUnit *)displayUnits {
     if ((self = [super init])) {
-        [self ajr_commonInit];
         _units = units;
         _displayUnits = displayUnits;
     }
     return self;
 }
 
+// MARK: - Properties
+
+- (NSUnit *)displayUnits {
+    return _displayUnits ?: _units;
+}
+
+- (NSNumberFormatter *)numberFormatter {
+    if (_formatter == nil) {
+        if (_displayInchesAsFrations && [self.displayUnits.identifier isEqualToString:@"inches"]) {
+            _formatter = [self createFractionFormatter];
+        } else {
+            _formatter = [self createNumberFormatter];
+        }
+    }
+    return _formatter;
+}
+
+// MARK: - Formatter
+
 - (NSString *)stringForObjectValue:(id)obj {
     double value = [(NSNumber *)obj doubleValue];
-    NSMeasurement *measurement = [[NSMeasurement alloc] initWithDoubleValue:value unit:_units];
-    measurement = [measurement measurementByConvertingToUnit:_displayUnits];
-    return AJRFormat(@"%@ %@", [_formatter stringFromNumber:@([measurement doubleValue])], [_displayUnits symbol]);
+    NSMeasurement *measurement = [[NSMeasurement alloc] initWithDoubleValue:value unit:self.units];
+    measurement = [measurement measurementByConvertingToUnit:self.displayUnits];
+    return AJRFormat(@"%@ %@", [self.numberFormatter stringFromNumber:@([measurement doubleValue])], [self.displayUnits symbol]);
 }
 
 - (BOOL)getObjectValue:(out id *)object forString:(NSString *)string errorDescription:(out NSString **)error {
     double value = [string doubleValue];
-    NSMeasurement *measurement = [[NSMeasurement alloc] initWithDoubleValue:value unit:_displayUnits];
-    measurement = [measurement measurementByConvertingToUnit:_units];
+    NSMeasurement *measurement = [[NSMeasurement alloc] initWithDoubleValue:value unit:self.displayUnits];
+    measurement = [measurement measurementByConvertingToUnit:self.units];
     *object = @([measurement doubleValue]);
     return YES;
 }
 
-#pragma mark - NSObject
+// MARK: - NSObject
 
 - (NSString *)description {
-    return AJRFormat(@"<%C: %p: baseUnits: %@, displayUnits: %@>", self, self, [_units identifier], [_displayUnits identifier]);
+    return AJRFormat(@"<%C: %p: baseUnits: %@, displayUnits: %@>", self, self, [self.units identifier], [self.displayUnits identifier]);
 }
 
 @end

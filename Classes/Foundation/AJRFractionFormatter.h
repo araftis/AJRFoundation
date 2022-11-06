@@ -33,7 +33,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AJRFractionFormatter : NSFormatter
+@interface AJRFractionFormatter : NSNumberFormatter
 
 @property (nonatomic,assign) NSUInteger minimumDenominator;
 @property (nullable,nonatomic,strong) NSString *prefix;

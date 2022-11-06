@@ -49,7 +49,15 @@
     XCTAssert([formatter valueFromFraction:@"-1" error:&localError] == -1.0);
     XCTAssert([formatter valueFromFraction:@"1 1/2" error:&localError] == 1.5);
     XCTAssert([formatter valueFromFraction:@"-1 1/2" error:&localError] == -1.5);
+    XCTAssert([formatter valueFromFraction:@"1½" error:&localError] == 1.5);
+    XCTAssert([formatter valueFromFraction:@"-1½" error:&localError] == -1.5);
+    XCTAssert([formatter valueFromFraction:@"1 ½" error:&localError] == 1.5);
+    XCTAssert([formatter valueFromFraction:@"-1 ½" error:&localError] == -1.5);
     XCTAssert([formatter valueFromFraction:@"-1 1/2" error:&localError] == -1.5);
+    XCTAssert([formatter valueFromFraction:@"1.5" error:&localError] == 1.5);
+    XCTAssert([formatter valueFromFraction:@"-1.5" error:&localError] == -1.5);
+    XCTAssert([formatter valueFromFraction:@"1.5 1/2" error:&localError] == 2.0);
+    XCTAssert([formatter valueFromFraction:@"-1.5 1/2" error:&localError] == -2.0);
     XCTAssert(isnan([formatter valueFromFraction:@"bad" error:&localError]) && localError != nil);
     
     formatter.prefix = @"test";
