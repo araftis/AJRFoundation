@@ -95,3 +95,11 @@ open class AJRVariableTypeDictionary : AJRVariableType {
     }
 
 }
+
+public extension AJRVariableType {
+
+    static let array = AJRVariableType.variableType(for: AJRVariableTypeArray.self)!
+    static let set = AJRVariableType.variableType(for: AJRVariableTypeSet.self)!
+    static let dictionary = AJRVariableType.variableType(for: AJRVariableTypeDictionary.self)!
+    
+}

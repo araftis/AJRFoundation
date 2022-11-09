@@ -77,3 +77,9 @@ open class AJRVariableTypeString : AJRVariableType {
     }
 
 }
+
+public extension AJRVariableType {
+
+    static let string = AJRVariableType.variableType(for: AJRVariableTypeString.self)!
+
+}

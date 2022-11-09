@@ -56,3 +56,9 @@ open class AJRVariableTypeObject: AJRVariableType {
     }
 
 }
+
+public extension AJRVariableType {
+
+    static let object = AJRVariableType.variableType(for: AJRVariableTypeObject.self)!
+
+}

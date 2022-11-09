@@ -100,3 +100,9 @@ open class AJRVariableTypeInteger : AJRVariableType {
     }
 
 }
+
+public extension AJRVariableType {
+
+    static let integer = AJRVariableType.variableType(for: AJRVariableTypeInteger.self)!
+
+}

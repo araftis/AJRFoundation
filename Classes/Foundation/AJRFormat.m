@@ -713,9 +713,9 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                         strcat(cFormat, "*");
                         strcat(cFormat, cType);
                         if ((flags & AJRLongType) || (flags & AJRLongLongType)) {
-                            sprintf(tempBuffer, cFormat, width, longDoubleValue);
+                            snprintf(tempBuffer, 80, cFormat, width, longDoubleValue);
                         } else {
-                            sprintf(tempBuffer, cFormat, width, floatValue);
+                            snprintf(tempBuffer, 80, cFormat, width, floatValue);
                         }
                     } else if ((width == NSNotFound) && (precision != NSNotFound)) {
                         strcat(cFormat, ".*");

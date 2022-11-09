@@ -88,3 +88,9 @@ open class AJRVariableTypeFloatingPoint : AJRVariableType {
     }
 
 }
+
+public extension AJRVariableType {
+
+    static let floatingPoint = AJRVariableType.variableType(for: AJRVariableTypeFloatingPoint.self)!
+
+}

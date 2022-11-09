@@ -98,3 +98,9 @@ open class AJRVariableTypeDate : AJRVariableType {
     }
 
 }
+
+public extension AJRVariableType {
+
+    static let date = AJRVariableType.variableType(for: AJRVariableTypeDate.self)!
+
+}

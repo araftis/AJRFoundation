@@ -86,3 +86,9 @@ open class AJRVariableTypeBoolean : AJRVariableType {
     }
 
 }
+
+public extension AJRVariableType {
+
+    static let boolean = AJRVariableType.variableType(for: AJRVariableTypeBoolean.self)!
+
+}
