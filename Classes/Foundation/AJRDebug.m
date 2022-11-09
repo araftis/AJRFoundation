@@ -32,8 +32,15 @@
 #import "AJRDebug.h"
 
 #import "AJRFunctions.h"
+#import "AJRRuntime.h"
 
 #import <objc/runtime.h>
+
+@interface NSObject ()
+
+- (id)_initWithObserver:(id)observer property:(id)property options:(NSUInteger)options context:(void *)context originalObservable:(id)originalObservable;
+
+@end
 
 @implementation AJRDebug
 
@@ -46,6 +53,7 @@ typedef id (*InitObservableIMP)(id, SEL, id, id, NSUInteger, void *);
 // This code, while it mostly works, causes some unexpected crashes, and since it's only for debug purposes, I've commented it out for now. Should I need this again in the future, I'll dig into details of the crash more closely.
 
 + (void)load {
+//    AJRSwizzleMethods(objc_getClass("NSKeyValueObservance"), @selector(_initWithObserver:property:options:context:originalObservable:), objc_getClass("AJRDebug"), @selector(ajr_initWithObserver:property:options:context:originalObservable:));
 //    Method method1 = class_getInstanceMethod(NSClassFromString(@"NSKeyValueObservance"), @selector(_initWithObserver:property:options:context:originalObservable:));
 //    if (method1) {
 //        originalInitIMP = (InitObservableIMP)method_getImplementation(method1);
@@ -64,9 +72,10 @@ typedef id (*InitObservableIMP)(id, SEL, id, id, NSUInteger, void *);
 //    }
 //    originalIMP(self, _cmd, observer, keyPath, options, context);
 //}
-//
+
 //- (id)ajr_initWithObserver:(id)observer property:(id)property options:(NSUInteger)options context:(void *)context originalObservable:(id)originalObservable {
-//    return originalInitIMP(self, _cmd, observer, property, options, context);
+//    AJRPrintf(@"<%C: %p>: %@\n", observer, observer, property);
+//    return [self ajr_initWithObserver:observer property:property options:options context:context originalObservable:originalObservable];
 //}
 
 @end

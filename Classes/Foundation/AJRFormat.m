@@ -44,21 +44,21 @@ typedef NS_ENUM(uint8_t, AJRFormatStage) {
 };
 
 #define _AJRExpandBufferIfNeeded(length) { \
-        while (outputBufferPosition + length >= outputBufferMaxLength) { \
-            outputBufferMaxLength += 1024; \
-            outputBuffer = (wchar_t *)NSZoneRealloc(NULL, outputBuffer, sizeof(wchar_t) * outputBufferMaxLength); \
-        } \
-    }
+while (outputBufferPosition + length >= outputBufferMaxLength) { \
+outputBufferMaxLength += 1024; \
+outputBuffer = (wchar_t *)NSZoneRealloc(NULL, outputBuffer, sizeof(wchar_t) * outputBufferMaxLength); \
+} \
+}
 
 #define _AJRPad(count) { \
-        wchar_t pad = (flags & AJRZeroPadding) ? '0' : ' '; \
-        NSInteger rCount = (count); \
-        while (rCount) { \
-            outputBuffer[outputBufferPosition] = pad; \
-            outputBufferPosition++; \
-            rCount--; \
-        } \
-    }
+wchar_t pad = (flags & AJRZeroPadding) ? '0' : ' '; \
+NSInteger rCount = (count); \
+while (rCount) { \
+outputBuffer[outputBufferPosition] = pad; \
+outputBufferPosition++; \
+rCount--; \
+} \
+}
 
 #if defined(AJRFoundation_iOS)
 static NSString *NSStringFromPoint(CGPoint point) {
@@ -144,29 +144,29 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
     BOOL booleanValue = NO;
     BOOL doingBooleanType = NO;
     BOOL useCapitals = NO;
-	NSTimeZone *timeZoneForFormat = nil;
+    NSTimeZone *timeZoneForFormat = nil;
     NSTimeInterval timeIntervalValue = 0.0;
     NSRange parameterRange;
-	wchar_t *inputBuffer;
-	
-	// format.length should always be sufficient, since we're converting to UTF-32, which, if anything will convert two character input characters to single characters.
-	inputBuffer = (wchar_t *)NSZoneMalloc(NULL, sizeof(wchar_t) * format.length);
-	[format getBytes:inputBuffer maxLength:sizeof(wchar_t) * format.length usedLength:&length encoding:NSUTF32LittleEndianStringEncoding options:0 range:(NSRange){0, [format length]} remainingRange:NULL];
-	length /= sizeof(wchar_t); // Because the above returns the length in bytes, but wchar_t, which is what we really want.
+    wchar_t *inputBuffer;
+
+    // format.length should always be sufficient, since we're converting to UTF-32, which, if anything will convert two character input characters to single characters.
+    inputBuffer = (wchar_t *)NSZoneMalloc(NULL, sizeof(wchar_t) * format.length);
+    [format getBytes:inputBuffer maxLength:sizeof(wchar_t) * format.length usedLength:&length encoding:NSUTF32LittleEndianStringEncoding options:0 range:(NSRange){0, [format length]} remainingRange:NULL];
+    length /= sizeof(wchar_t); // Because the above returns the length in bytes, but wchar_t, which is what we really want.
     
     outputBuffer = (wchar_t *)NSZoneMalloc(NULL, sizeof(wchar_t) * outputBufferMaxLength);
     
     range.location = 0;
     range.length = 0;
     for (position = 0; position < length; position++) {
-		character = CFSwapInt32LittleToHost(inputBuffer[position]);
+        character = CFSwapInt32LittleToHost(inputBuffer[position]);
         if (stage == AJRFormatStageAPriori) {
             if (character == '%') {
                 range.length = position - range.location;
                 _AJRExpandBufferIfNeeded(range.length);
-				for (NSInteger x = 0; x <  range.length; x++) {
-					outputBuffer[outputBufferPosition + x] = inputBuffer[range.location + x];
-				}
+                for (NSInteger x = 0; x <  range.length; x++) {
+                    outputBuffer[outputBufferPosition + x] = inputBuffer[range.location + x];
+                }
                 range.location = position + 1;
                 outputBufferPosition += range.length;
                 stage = AJRFormatStageFlags;
@@ -208,18 +208,18 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                         flags |= AJRShowPlus;
                         range.location++;
                         break;
-					case '!':
-						timeZoneForFormat = va_arg(ap, NSTimeZone *);
-						if (![timeZoneForFormat isKindOfClass:[NSTimeZone class]]) {
-							AJRLog(nil, AJRLogLevelWarning, @"Flag parameter to %s wasn't an NSTimeZone object.", __FUNCTION__);
-							timeZoneForFormat = nil;
-						}
-						range.location++;
-						break;
-//                    case ',':
-//                        flags |= AJRGroupThousands;
-//                        range.location++;
-//                        break;
+                    case '!':
+                        timeZoneForFormat = va_arg(ap, NSTimeZone *);
+                        if (![timeZoneForFormat isKindOfClass:[NSTimeZone class]]) {
+                            AJRLog(nil, AJRLogLevelWarning, @"Flag parameter to %s wasn't an NSTimeZone object.", __FUNCTION__);
+                            timeZoneForFormat = nil;
+                        }
+                        range.location++;
+                        break;
+                        //                    case ',':
+                        //                        flags |= AJRGroupThousands;
+                        //                        range.location++;
+                        //                        break;
                     case '(':
                         stage = AJRFormatStageParameter;
                         parameterRange.location = position;
@@ -327,7 +327,7 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                         numericBase = 16;
                         prefix = flags & AJRAlternateForm ? "0x" : NULL;
                         isSigned = NO;
-						displayDigits = useCapitals ? _ajrHEXIDECIMALDigits : _ajrHexidecimalDigits;
+                        displayDigits = useCapitals ? _ajrHEXIDECIMALDigits : _ajrHexidecimalDigits;
                         break;
                     case 'X':
                         numericBase = 16;
@@ -443,9 +443,9 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                         break;
                     case 'D':
                         dateValue = va_arg(ap, NSDate *);
-						if (![dateValue isKindOfClass:[NSDate class]]) {
-							AJRLog(nil, AJRLogLevelWarning, @"Parameter to %s wasn't an NSDate object.", __FUNCTION__);
-						}
+                        if (![dateValue isKindOfClass:[NSDate class]]) {
+                            AJRLog(nil, AJRLogLevelWarning, @"Parameter to %s wasn't an NSDate object.", __FUNCTION__);
+                        }
                         break;
                     default:
                         _AJRExpandBufferIfNeeded(1);
@@ -532,14 +532,14 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                         }
                         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                         [formatter setDateFormat:formatString];
-						if (timeZoneForFormat != nil) {
-							[formatter setTimeZone:timeZoneForFormat];
-						}
+                        if (timeZoneForFormat != nil) {
+                            [formatter setTimeZone:timeZoneForFormat];
+                        }
                         value = [formatter stringFromDate:dateValue];
                     } else {
                         value = [objectValue description];
                     }
-					// This may seem a little cumbersome, but if you ask for a string's length, and that string contains Unicode values greater than 0xFFFF, NSString will return 2 for each character. So, if instead, we ask for the length in bytes for our encoding, and divide by 4 (since we're looking at 32 bit values), then we'll get the actual length we want.
+                    // This may seem a little cumbersome, but if you ask for a string's length, and that string contains Unicode values greater than 0xFFFF, NSString will return 2 for each character. So, if instead, we ask for the length in bytes for our encoding, and divide by 4 (since we're looking at 32 bit values), then we'll get the actual length we want.
                     NSInteger length = [value lengthOfBytesUsingEncoding:NSUTF32LittleEndianStringEncoding] / sizeof(wchar_t);
 
                     if ((precision != NSNotFound) && (length > precision)) {
@@ -550,7 +550,7 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                         _AJRPad(width - length);
                     }
                     _AJRExpandBufferIfNeeded(length);
-					[value getBytes:outputBuffer + outputBufferPosition maxLength:outputBufferMaxLength * sizeof(wchar_t) usedLength:NULL encoding:NSUTF32LittleEndianStringEncoding options:0 range:(NSRange){0, value.length} remainingRange:NULL];
+                    [value getBytes:outputBuffer + outputBufferPosition maxLength:outputBufferMaxLength * sizeof(wchar_t) usedLength:NULL encoding:NSUTF32LittleEndianStringEncoding options:0 range:(NSRange){0, value.length} remainingRange:NULL];
                     outputBufferPosition += length;
                     if ((flags & AJRLeftJustified) && (width != NSNotFound) && (length < width)) {
                         _AJRExpandBufferIfNeeded(width - length);
@@ -705,9 +705,9 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                     if ((width == NSNotFound) && (precision == NSNotFound)) {
                         strcat(cFormat, cType);
                         if ((flags & AJRLongType) || (flags & AJRLongLongType)) {
-                            sprintf(tempBuffer, cFormat, longDoubleValue);
+                            snprintf(tempBuffer, 80, cFormat, longDoubleValue);
                         } else {
-                            sprintf(tempBuffer, cFormat, floatValue);
+                            snprintf(tempBuffer, 80, cFormat, floatValue);
                         }
                     } else if ((width != NSNotFound) && (precision == NSNotFound)) {
                         strcat(cFormat, "*");
@@ -721,17 +721,17 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                         strcat(cFormat, ".*");
                         strcat(cFormat, cType);
                         if ((flags & AJRLongType) || (flags & AJRLongLongType)) {
-                            sprintf(tempBuffer, cFormat, precision, longDoubleValue);
+                            snprintf(tempBuffer, 80, cFormat, precision, longDoubleValue);
                         } else {
-                            sprintf(tempBuffer, cFormat, precision, floatValue);
+                            snprintf(tempBuffer, 80, cFormat, precision, floatValue);
                         }
                     } else if ((width != NSNotFound) && (precision != NSNotFound)) {
                         strcat(cFormat, "*.*");
                         strcat(cFormat, cType);
                         if ((flags & AJRLongType) || (flags & AJRLongLongType)) {
-                            sprintf(tempBuffer, cFormat, width, precision, longDoubleValue);
+                            snprintf(tempBuffer, 80, cFormat, width, precision, longDoubleValue);
                         } else {
-                            sprintf(tempBuffer, cFormat, width, precision, floatValue);
+                            snprintf(tempBuffer, 80, cFormat, width, precision, floatValue);
                         }
                     }
                     
@@ -771,29 +771,29 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                     _AJRExpandBufferIfNeeded(neededLength);
                     //fprintf(stderr, "%d\n", neededLength);
                     
-					if (isNegative) {
-						outputBuffer[outputBufferPosition++] = '-';
-					}
+                    if (isNegative) {
+                        outputBuffer[outputBufferPosition++] = '-';
+                    }
                     number = _ajrIntegerToString(hours, 10, _ajrDecimalDigits, integerBuffer);
-					if (hourLength < 2) {
-						outputBuffer[outputBufferPosition++] = '0';
-					}
+                    if (hourLength < 2) {
+                        outputBuffer[outputBufferPosition++] = '0';
+                    }
                     for (x = 0; x < strlen(number); x++) {
                         outputBuffer[outputBufferPosition++] = number[x];
                     }
                     outputBuffer[outputBufferPosition++] = ':';
-					if (minutes < 10) {
-						outputBuffer[outputBufferPosition++] = '0';
-					} else {
-						outputBuffer[outputBufferPosition++] = (wchar_t)('0' + (minutes / 10));
-					}
+                    if (minutes < 10) {
+                        outputBuffer[outputBufferPosition++] = '0';
+                    } else {
+                        outputBuffer[outputBufferPosition++] = (wchar_t)('0' + (minutes / 10));
+                    }
                     outputBuffer[outputBufferPosition++] = '0' + (minutes % 10);
                     outputBuffer[outputBufferPosition++] = ':';
-					if (seconds < 10) {
-						outputBuffer[outputBufferPosition++] = '0';
-					} else {
-						outputBuffer[outputBufferPosition++] = (wchar_t)('0' + (seconds / 10));
-					}
+                    if (seconds < 10) {
+                        outputBuffer[outputBufferPosition++] = '0';
+                    } else {
+                        outputBuffer[outputBufferPosition++] = (wchar_t)('0' + (seconds / 10));
+                    }
                     outputBuffer[outputBufferPosition++] = '0' + (seconds % 10);
                     if (precision != NSNotFound) {
                         NSInteger length;
@@ -802,11 +802,11 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
                         length = strlen(number);
                         //fprintf(stderr, "%d, %d, %s\n", precision, length, number);
                         outputBuffer[outputBufferPosition++] = '.';
-						if (length <= precision) {
-							for (x = 0; x < precision - length; x++) {
-								outputBuffer[outputBufferPosition++] = _ajrDecimalDigits[0];
-							}
-						}
+                        if (length <= precision) {
+                            for (x = 0; x < precision - length; x++) {
+                                outputBuffer[outputBufferPosition++] = _ajrDecimalDigits[0];
+                            }
+                        }
                         for (x = length > precision ? 1 : 0; x < length; x++) {
                             outputBuffer[outputBufferPosition++] = number[x];
                         }
@@ -856,13 +856,13 @@ NSString *AJRFormatv(NSString *format, va_list ap) {
             outputBufferMaxLength += 1024;
             outputBuffer = (wchar_t *)NSZoneRealloc(NULL, outputBuffer, sizeof(wchar_t) * outputBufferMaxLength);
         }
-		for (NSInteger x = 0; x < range.length; x++) {
-			outputBuffer[outputBufferPosition + x] = inputBuffer[range.location + x];
-		}
+        for (NSInteger x = 0; x < range.length; x++) {
+            outputBuffer[outputBufferPosition + x] = inputBuffer[range.location + x];
+        }
         outputBufferPosition += range.length;
     }
     
-	return [[NSString alloc] initWithBytesNoCopy:outputBuffer length:outputBufferPosition * sizeof(wchar_t) encoding:NSUTF32LittleEndianStringEncoding freeWhenDone:YES];
+    return [[NSString alloc] initWithBytesNoCopy:outputBuffer length:outputBufferPosition * sizeof(wchar_t) encoding:NSUTF32LittleEndianStringEncoding freeWhenDone:YES];
 }
 
 NSString *AJRFormat(NSString *format, ...) {

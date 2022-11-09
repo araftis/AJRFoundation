@@ -34,6 +34,7 @@
 #import "AJRAutoreleasedMemory.h"
 #import "AJRFormat.h"
 #import "AJRFunctions.h"
+#import "AJRLogging.h"
 
 @class _AJRRuntimeType;
 
@@ -679,6 +680,8 @@ void AJRSwizzleMethods(Class originalClass, SEL originalSelector, Class replacem
             method_setImplementation(method1, imp2);
             method_setImplementation(method2, imp1);
         }
+    } else {
+        AJRLogWarning(@"Failed to Swizzle, as %C does not implement %S.", originalClass, originalSelector);
     }
 }
 

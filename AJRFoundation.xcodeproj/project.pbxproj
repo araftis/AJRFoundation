@@ -1067,7 +1067,7 @@
 		FA4FD4240E8BEBBF00F05C19 /* AJRAutoreleasedMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRAutoreleasedMemory.h; sourceTree = "<group>"; };
 		FA4FD4250E8BEBBF00F05C19 /* AJRAutoreleasedMemory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRAutoreleasedMemory.m; sourceTree = "<group>"; };
 		FA4FD4260E8BEBBF00F05C19 /* AJRFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFormat.h; sourceTree = "<group>"; };
-		FA4FD4270E8BEBBF00F05C19 /* AJRFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRFormat.m; sourceTree = "<group>"; usesTabs = 1; };
+		FA4FD4270E8BEBBF00F05C19 /* AJRFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRFormat.m; sourceTree = "<group>"; usesTabs = 0; };
 		FA4FD4280E8BEBBF00F05C19 /* AJRFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFunctions.h; sourceTree = "<group>"; };
 		FA4FD4290E8BEBBF00F05C19 /* AJRFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AJRFunctions.m; sourceTree = "<group>"; usesTabs = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		FA4FD43B0E8BEBBF00F05C19 /* AJRUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRUnicode.h; sourceTree = "<group>"; };
