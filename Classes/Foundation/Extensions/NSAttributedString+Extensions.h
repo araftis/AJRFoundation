@@ -33,6 +33,7 @@
 
 @interface NSAttributedString (Extensions) <AJRXMLCoding>
 
-- (NSUInteger)wordCount;
+@property (nonatomic,readonly) NSUInteger wordCount;
+@property (nonatomic,readonly) NSRange allRange;
 
 @end

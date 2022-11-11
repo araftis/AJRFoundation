@@ -39,6 +39,7 @@
 #import "AJRXMLCollectionPlaceholder.h"
 #import "NSError+Extensions.h"
 #import "NSObject+Extensions.h"
+#import <AJRFoundation/AJRFoundation-Swift.h>
 
 @interface NSObject ()
 
@@ -457,6 +458,18 @@ const NSComparator AJRSimpleCompare = ^NSComparisonResult(id first, id second) {
             [object invalidate];
         }
     }
+}
+
+#pragma mark - Variables
+
+- (BOOL)containsVariable:(AJRVariable *)variable {
+    return [self ajr_firstObjectPassingTest:^BOOL(id object) {
+        AJRVariable *other = AJRObjectIfKindOfClass(object, AJRVariable);
+        if (other != nil && [other.name isEqualToString:variable.name]) {
+            return YES;
+        }
+        return NO;
+    }] != nil;
 }
 
 @end

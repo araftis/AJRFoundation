@@ -47,6 +47,10 @@
     return [[self string] wordCount];
 }
 
+- (NSRange)allRange {
+    return (NSRange){0, [self length]};
+}
+
 - (void)encodeWithXMLCoder:(nonnull AJRXMLCoder *)coder {
     [coder encodeObject:AJRDataFromCodableObject(self) forKey:@"data"];
 }

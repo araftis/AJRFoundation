@@ -35,6 +35,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class AJRVariable;
+
 extern const NSComparator AJRSimpleCompare;
 
 @interface NSArray<ObjectType> (AJRFoundationExtensions) <AJRXMLEncoding>
@@ -159,6 +161,10 @@ extern const NSComparator AJRSimpleCompare;
  @discussion Calls -[AJRInvalidation invalidate] on all objects in the receiver.
  */
 - (void)invalidateObjects;
+
+#pragma mark - Variables
+
+- (BOOL)containsVariable:(AJRVariable *)variable;
 
 @end
 
