@@ -237,7 +237,7 @@ static NSMutableDictionary *_stringTables = nil;
 #pragma NSKeyValueCoding
 
 - (id)valueForKey:(NSString *)key {
-    return [self valueForKey:key defaultValue:key];
+    return [self valueForKey:key defaultValue:nil];
 }
 
 - (id)valueForKey:(NSString *)key defaultValue:(NSString *)defaultValue {
@@ -288,7 +288,11 @@ static NSMutableDictionary *_stringTables = nil;
     }
     // If we're still nil, then just return default value.
     if (value == nil || [value isEqualToString:AJRNoTranslationString]) {
-        value = [NSString stringWithFormat:@"»%@«", defaultValue];
+        if (defaultValue == nil) {
+            value = [NSString stringWithFormat:@"»%@«", key];
+        } else {
+            value = defaultValue;
+        }
     }
     
     [_cache setObject:value forKey:key];

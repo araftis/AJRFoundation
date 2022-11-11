@@ -45,7 +45,7 @@ extern NSString * const AJRTanslatorDidChangeLanguageNotification;
 - (instancetype)initForClass:(Class)class stringTableNames:(NSArray<NSString *> *)stringTableNames;
 
 - (id)valueForKey:(NSString *)key;
-- (id)valueForKey:(NSString *)key defaultValue:(NSString *)defaultValue;
+- (id)valueForKey:(NSString *)key defaultValue:(nullable NSString *)defaultValue;
 
 - (void)addAlternateBundle:(NSBundle *)bundle;
 - (void)removeAlternateBundle:(NSBundle *)bundle;

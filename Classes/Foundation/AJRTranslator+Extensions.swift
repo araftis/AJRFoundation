@@ -35,10 +35,16 @@ public extension AJRTranslator {
     
     subscript(key: String) -> String {
         get {
-            return value(forKey: key) as! String
+            return value(forKey: key) as? String ?? key
         }
     }
-    
+
+    subscript(key: String, defaultValue: String) -> String {
+        get {
+            return value(forKey: key, defaultValue: defaultValue) as? String ?? key
+        }
+    }
+
 }
 
 public extension NSObject {
