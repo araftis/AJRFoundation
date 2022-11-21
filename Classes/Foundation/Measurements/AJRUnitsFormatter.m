@@ -32,6 +32,7 @@
 #import "AJRUnitsFormatter.h"
 
 #import "AJRFormat.h"
+#import "AJRFunctions.h"
 #import "AJRFractionFormatter.h"
 #import "NSUnit+Extensions.h"
 
@@ -118,11 +119,16 @@
 }
 
 - (BOOL)getObjectValue:(out id *)object forString:(NSString *)string errorDescription:(out NSString **)error {
-    double value = [string doubleValue];
-    NSMeasurement *measurement = [[NSMeasurement alloc] initWithDoubleValue:value unit:self.displayUnits];
-    measurement = [measurement measurementByConvertingToUnit:self.units];
-    *object = @([measurement doubleValue]);
-    return YES;
+    NSNumber *number = [self.numberFormatter numberFromString:string];
+
+    if (number) {
+        double value = number.doubleValue;
+        NSMeasurement *measurement = [[NSMeasurement alloc] initWithDoubleValue:value unit:self.displayUnits];
+        measurement = [measurement measurementByConvertingToUnit:self.units];
+        *object = @([measurement doubleValue]);
+        return YES;
+    }
+    return NO;
 }
 
 // MARK: - NSObject
