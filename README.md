@@ -10,7 +10,7 @@ On the other hand, while most classes have been modernized, some will definitely
 
 Many of the classes are documented. Many aren't. If you a class looks useful to you, feel free to contact me if it's not documented, and I can probably add documentation fairly quickly. Every once in a while, I will take time to document a few classes here and there, but a lot of the code was written without documentation, and I just haven't had the time to go back and get everything well documented.
 
-## Contributed
+## Contributions
 
 I'm open to other developers contributing code. If you have some bug fixes, documentation, or new classes you'd like to see add, please contact me about doing a pull request.
 

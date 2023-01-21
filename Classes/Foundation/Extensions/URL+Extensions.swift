@@ -30,6 +30,7 @@
  */
 
 import Foundation
+import UniformTypeIdentifiers
 
 public extension URL {
     
@@ -53,5 +54,9 @@ public extension URL {
     var pathUTI : String? {
         return (self as NSURL).pathUTI
     }
-    
+
+    var pathType : UTType? {
+        return UTType(filenameExtension: pathExtension)
+    }
+
 }

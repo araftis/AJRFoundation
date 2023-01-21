@@ -3360,6 +3360,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDK_DIR)/usr/include/libxml2";
 				INSTALL_PATH = "@rpath";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DAJR_DEBUG";
 				SDKROOT = macosx;
@@ -3406,6 +3407,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDK_DIR)/usr/include/libxml2";
 				INSTALL_PATH = "@rpath";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
