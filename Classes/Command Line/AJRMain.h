@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString * const AJRMainWillRunNotification;
 extern NSString * const AJRMainDidRunNotification;
 extern NSString * const AJRMainWillTerminateNotification;
-extern NSString * const    AJRMainTerminateCodeKey;
+extern NSString * const AJRMainTerminateCodeKey;
 extern NSString * const AJRMainWillProcessArgumentsNotification;
 extern NSString * const AJRMainDidProcessArgumentsNotification;
 

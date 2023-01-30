@@ -41,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSUnit *)unitsForKey:(NSString *)key defaultValue:(nullable NSUnit *)defaultValue;
 - (void)setUnits:(nullable NSUnit *)units forKey:(NSString *)key;
 
+- (BOOL)boolForKey:(NSString *)key defaultValue:(BOOL)defaultValue;
+
 @end
 
 NS_ASSUME_NONNULL_END

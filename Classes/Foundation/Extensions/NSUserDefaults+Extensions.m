@@ -65,4 +65,12 @@
 	[self setObject:[units identifier] forKey:key];
 }
 
+- (BOOL)boolForKey:(NSString *)key defaultValue:(BOOL)defaultValue {
+	NSString *value = [self stringForKey:key];
+	if (value) {
+		return value.boolValue;
+	}
+	return defaultValue;
+}
+
 @end
