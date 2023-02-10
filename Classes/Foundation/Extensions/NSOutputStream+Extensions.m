@@ -54,19 +54,23 @@
 #pragma mark - Writing
 
 - (BOOL)writeBytes:(nonnull const void *)bytes length:(size_t)length bytesWritten:(out nullable size_t *)bytesWrittenOut error:(out NSError * _Nullable __autoreleasing * _Nullable)error {
-    NSError *localError = nil;
-    NSInteger bytesWritten = [self write:bytes maxLength:length];
-    BOOL success = bytesWritten >= 0;
-    
-    if (success) {
-        AJRSetOutParameter(bytesWrittenOut, bytesWritten);
-    } else {
-        localError = [self streamError];
-        if (localError == nil && self.streamStatus != NSStreamStatusOpen) {
-            localError = [NSError errorWithDomain:NSCocoaErrorDomain message:@"Stream not open"];
+    // Only try to write if we're writing more than 0 bytes. Trying to write zero bytes causes us to close the stream.
+    if (length > 0) {
+        NSError *localError = nil;
+        NSInteger bytesWritten = [self write:bytes maxLength:length];
+        BOOL success = bytesWritten >= 0;
+
+        if (success) {
+            AJRSetOutParameter(bytesWrittenOut, bytesWritten);
+        } else {
+            localError = [self streamError];
+            if (localError == nil && self.streamStatus != NSStreamStatusOpen) {
+                localError = [NSError errorWithDomain:NSCocoaErrorDomain message:@"Stream not open"];
+            }
         }
+        return AJRAssertOrPropagateError(success, error, localError);
     }
-    return AJRAssertOrPropagateError(success, error, localError);
+    return YES;
 }
 
 - (NSInteger)writeUnicodeBOM {

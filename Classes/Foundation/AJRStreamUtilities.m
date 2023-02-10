@@ -705,20 +705,24 @@ BOOL AJRWriteUInteger(id <AJRByteWriter> writer, NSUInteger value, AJREndianness
 }
 
 BOOL AJRWriteString(id <AJRByteWriter> writer, NSString *string, size_t *bytesWritten, NSError **error) {
-    NSData *data = [string dataUsingEncoding:writer.encoding allowLossyConversion:YES];
-    const uint8_t *bytes = [data bytes];
-    if ([data length] >= 2
-        && ((bytes[0] == 0xFF && bytes[1] == 0xFE)
-            || (bytes[0] == 0xFE && bytes[1] == 0xFF))) {
-        if ([data length] >= 4
-            && bytes[2] == 0x00
-            && bytes[3] == 0x00) {
-            data = [data subdataWithRange:(NSRange){4, [data length] - 4}];
-        } else {
-            data = [data subdataWithRange:(NSRange){2, [data length] - 2}];
+    // If the string is zero length, don't go through all the work of trying to write it.
+    if (string.length > 0) {
+        NSData *data = [string dataUsingEncoding:writer.encoding allowLossyConversion:YES];
+        const uint8_t *bytes = [data bytes];
+        if ([data length] >= 2
+            && ((bytes[0] == 0xFF && bytes[1] == 0xFE)
+                || (bytes[0] == 0xFE && bytes[1] == 0xFF))) {
+            if ([data length] >= 4
+                && bytes[2] == 0x00
+                && bytes[3] == 0x00) {
+                data = [data subdataWithRange:(NSRange){4, [data length] - 4}];
+            } else {
+                data = [data subdataWithRange:(NSRange){2, [data length] - 2}];
+            }
         }
+        return [writer writeBytes:data.bytes length:data.length bytesWritten:bytesWritten error:error];
     }
-    return [writer writeBytes:data.bytes length:data.length bytesWritten:bytesWritten error:error];
+    return YES;
 }
 
 static char _spaces[] = "                                                                                                                                                                                                        ";
