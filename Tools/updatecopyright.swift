@@ -3,7 +3,7 @@
  updatecopyright.swift
  AJRFoundation
 
- Copyright © 2022, AJ Raftis and AJRFoundation authors
+ Copyright © 2023, AJ Raftis and AJRFoundation authors
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification,
