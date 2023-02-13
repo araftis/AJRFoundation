@@ -321,6 +321,9 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
                     // So, oddly, and only sometimes, Web* classes are causing an allocation error when we try to call ajr_nameForXMLArchiving. Not good, but what can we do? This is a hacky workaround, but it's got us running.
                     // TODO: Figure out why this crashes Papel, but not AI Explorer.
                     continue;
+                } else if (strncmp(class_getName(runtimeClass), "NSKVONotifying", 14) == 0) {
+                    // These can be safely ignored, in fact, if they aren't bad things happen.
+                    continue;
                 }
                 NSString *name = [runtimeClass ajr_nameForXMLArchiving];
                 if (name != nil) {
