@@ -77,8 +77,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable,nonatomic,class,readonly) NSSet<NSString *> *propertiesToIgnore;
 /*!
  Overridden by some subclasses to populate additional properties for observation. Generally needed by Swift objects, which don't necessarily follow Obj-C rules for properties.
+
+ @param propertiesSet The properties that can be observered.
+ @param editableFriends Properties that refer to AJREditableObject.
  */
-+ (void)populatePropertiesToObserve:(NSMutableSet<NSString *> *)propertiesSet;
++ (void)populatePropertiesToObserve:(NSMutableSet<NSString *> *)propertiesSet editableFriends:(NSMutableSet<NSString *> *)editableFriends;
+/*!
+ A set of properties that should be observed on the receiver.
+ */
 @property (nonatomic,class,readonly) NSSet<NSString *> *propertiesToObserve;
 
 /*! When inserting a new object into an editing context, you may want to call this, to indicate that all the keys on the objects, at the time of insert, should be considered edited. This doesn't happen by default, because it can create a bunch of extra work when it's sometimes not necessary. */

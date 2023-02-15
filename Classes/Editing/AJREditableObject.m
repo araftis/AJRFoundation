@@ -34,6 +34,7 @@
 #import "AJREditingContext.h"
 #import "AJRFunctions.h"
 #import "AJRMutableCountedDictionary.h"
+#import "AJRRuntime.h"
 #import "NSPointerArray+Extensions.h"
 
 #if !defined(AJRFoundation_iOS)
@@ -45,6 +46,7 @@
 
 static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToIgnoreByClass = nil;
 static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByClass = nil;
+static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsPropertiesByClass = nil;
 
 @interface AJREditableObject ()
 
@@ -63,6 +65,7 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByCl
     if (_propertiesToIgnoreByClass == nil) {
         _propertiesToIgnoreByClass = [[NSMutableDictionary alloc] init];
         _propertiesToObserveByClass = [[NSMutableDictionary alloc] init];
+        _editableFriendsPropertiesByClass = [[NSMutableDictionary alloc] init];
     }
 }
 
@@ -114,7 +117,7 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByCl
     return set;
 }
 
-+ (void)populatePropertiesToObserve:(NSMutableSet *)propertiesSet {
++ (void)populatePropertiesToObserve:(NSMutableSet *)propertiesSet editableFriends:(NSMutableSet<NSString *> *)editableFriends {
     unsigned int count;
     objc_property_t	*properties;
     NSSet *ignore = [[self class] propertiesToIgnore];
@@ -126,24 +129,44 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByCl
         if (![ignore containsObject:name]) {
             [propertiesSet addObject:name];
         }
+        const char *props = property_getAttributes(properties[x]);
+        if (props != NULL) {
+            if (strlen(props) > 2 && props[1] == '@' && props[2] == '"') {
+                // This means we have an object type, and we've been returned it's actual class name.
+                char *stop = strchr(props + 3, '"');
+                if (stop != NULL) {
+                    NSInteger length = stop - props - 3;
+                    char buffer[1024];
+                    strncpy(buffer, props + 3, MIN(length, 1023));
+                    Class found = objc_getClass(buffer);
+                    if (found != Nil && AJRIsKindOfClass(found, [AJREditableObject class])) {
+                        [editableFriends addObject:name];
+                    }
+                }
+            }
+        }
     }
 
     free(properties);
 
     Class superclass = self;
     while ((superclass = [superclass superclass]) && superclass != [AJREditableObject class]) {
-        [superclass populatePropertiesToObserve:propertiesSet];
+        [superclass populatePropertiesToObserve:propertiesSet editableFriends:editableFriends];
     }
 }
 
 + (NSSet<NSString *> *)propertiesToObserve {
     NSSet<NSString *> *set = nil;
+    NSSet<NSString *> *friendsSet = nil;
 
     @synchronized (_propertiesToObserveByClass) {
         set = [_propertiesToObserveByClass objectForKey:[self class]];
+        friendsSet = [_editableFriendsPropertiesByClass objectForKey:[self class]];
+
         if (set == nil) {
             set = [NSMutableSet set];
-            [self populatePropertiesToObserve:(NSMutableSet *)set];
+            friendsSet = [NSMutableSet set];
+            [self populatePropertiesToObserve:(NSMutableSet *)set editableFriends:(NSMutableSet *)friendsSet];
             [_propertiesToObserveByClass setObject:set forKey:(id)[self class]];
         }
     }
