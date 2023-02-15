@@ -104,9 +104,11 @@
 - (void)addObject:(AJREditableObject *)object {
     if (![_objects containsObject:object]) {
         if ([object editingContext] == nil) {
+            [object willAddToEditingContext:self];
             [_objects addObject:object];
             [object setEditingContext:self];
             [object addObserver:self];
+            [object didAddToEditingContext:self];
         } else if ([object editingContext] != self) {
             AJRLogError(@"Attempt to add object %@ to two different editing contexts", object);
         }
@@ -119,6 +121,7 @@
 
 - (void)forgetObject:(AJREditableObject *)object {
     if ([_objects containsObject:object]) {
+        [object willRemoveFromEditingContext:self];
         [self willChangeValueForKey:@"editedObjects"];
         [self willChangeValueForKey:@"hasEdits"];
         [_objects removeObject:object];
@@ -127,6 +130,7 @@
         [object removeObserver:self];
         [self didChangeValueForKey:@"hasEdits"];
         [self didChangeValueForKey:@"editedObjects"];
+        [object didRemoveFromEditingContext:self];
     }
 }
 
@@ -158,7 +162,8 @@
 
 - (void)object:(id)object didEditKey:(NSString *)key withChange:(NSDictionary *)change {
     AJRLogDebug(@"edit: %@", key);
-
+    AJRPrintf(@"edit: %@\n", key);
+    
     if (_delegateRespondsToDidObserveEdit) {
         if (key) {
             NSValue *localKey;

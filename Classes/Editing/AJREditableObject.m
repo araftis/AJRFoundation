@@ -94,7 +94,7 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByCl
 @synthesize editingContext = _editingContext;
 
 + (NSSet *)propertiesToIgnore {
-    return nil;
+    return [NSSet setWithObjects:@"ajr_nameForXMLArchiving", nil];
 }
 
 + (NSSet *)propertiesToIgnoreForClass:(Class)class {
@@ -377,6 +377,22 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_propertiesToObserveByCl
     [copy setEditedKeys:self.editedKeys];
 
     return copy;
+}
+
+#pragma mark - Lifecycle
+
+- (void)willAddToEditingContext:(AJREditingContext *)context {
+}
+
+- (void)didAddToEditingContext:(AJREditingContext *)context {
+}
+
+- (void)willRemoveFromEditingContext:(AJREditingContext *)context {
+    // Do nothing by default
+}
+
+- (void)didRemoveFromEditingContext:(AJREditingContext *)context {
+    // Do nothing by default
 }
 
 @end

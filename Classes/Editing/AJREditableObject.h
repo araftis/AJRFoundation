@@ -114,6 +114,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)undoValue:(id)value forKey:(NSString *)key;
 
+#pragma mark - Lifecycle
+
+- (void)willAddToEditingContext:(AJREditingContext *)context;
+- (void)didAddToEditingContext:(AJREditingContext *)context;
+- (void)willRemoveFromEditingContext:(AJREditingContext *)context;
+- (void)didRemoveFromEditingContext:(AJREditingContext *)context;
+
 @end
 
 NS_ASSUME_NONNULL_END
