@@ -33,6 +33,7 @@
 
 #import "AJREditingContext.h"
 #import "AJRFunctions.h"
+#import "AJRLogging.h"
 #import "AJRMutableCountedDictionary.h"
 #import "AJRRuntime.h"
 #import "NSPointerArray+Extensions.h"
@@ -97,7 +98,11 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsProperti
 @synthesize editingContext = _editingContext;
 
 + (NSSet *)propertiesToIgnore {
-    return [NSSet setWithObjects:@"ajr_nameForXMLArchiving", nil];
+    return [NSSet setWithObjects:@"ajr_nameForXMLArchiving", @"superclass", @"description", @"debugDescription", @"hash", nil];
+}
+
++ (NSSet<NSString *> *)editableFriendPropertiesToIgnore {
+    return nil;
 }
 
 + (NSSet *)propertiesToIgnoreForClass:(Class)class {
@@ -118,9 +123,24 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsProperti
 }
 
 + (void)populatePropertiesToObserve:(NSMutableSet *)propertiesSet editableFriends:(NSMutableSet<NSString *> *)editableFriends {
+    // First, let's see if we've already populated for the given class. If we have, we can just add the what we've already found. This is definitely worth while to short circuit, because scanning the properties can be a little expensive.
+    NSSet<NSString *> *p1 = _propertiesToObserveByClass[self];
+    NSSet<NSString *> *f1 = _editableFriendsPropertiesByClass[self];
+    if (p1 != nil || f1 != nil) {
+        if (p1 != nil) {
+            [propertiesSet unionSet:p1];
+        }
+        if (f1 != nil) {
+            [editableFriends unionSet:f1];
+        }
+        return;
+    }
+    
+    // Otherwise, we need to do things the hard way.
     unsigned int count;
     objc_property_t	*properties;
-    NSSet *ignore = [[self class] propertiesToIgnore];
+    NSSet *ignore = [self propertiesToIgnore];
+    NSSet *ignoreFriends = [self editableFriendPropertiesToIgnore];
 
     properties = class_copyPropertyList([self class], &count);
 
@@ -128,37 +148,52 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsProperti
         NSString *name = [NSString stringWithUTF8String:property_getName(properties[x])];
         if (![ignore containsObject:name]) {
             [propertiesSet addObject:name];
-        }
-        const char *props = property_getAttributes(properties[x]);
-        if (props != NULL) {
-            if (strlen(props) > 2 && props[1] == '@' && props[2] == '"') {
-                // This means we have an object type, and we've been returned it's actual class name.
-                char *stop = strchr(props + 3, '"');
-                if (stop != NULL) {
-                    NSInteger length = stop - props - 3;
-                    char buffer[1024];
-                    strncpy(buffer, props + 3, MIN(length, 1023));
-                    Class found = objc_getClass(buffer);
-                    if (found != Nil && AJRIsKindOfClass(found, [AJREditableObject class])) {
-                        [editableFriends addObject:name];
-                    }
-                }
-            }
-        }
-    }
+            if (![ignoreFriends containsObject:name]) {
+                const char *props = property_getAttributes(properties[x]);
+                if (props != NULL) {
+                    if (strlen(props) > 2 && props[1] == '@' && props[2] == '"') {
+                        // This means we have an object type, and we've been returned it's actual class name.
+                        BOOL isReadOnly = strstr(props, ",R") != NULL;
+                        BOOL isWeak = strstr(props, ",W") != NULL;
+                        if (!isWeak && !isReadOnly) {
+                            // We're not going to track weak references as friends, so again, short circuit here if the property is weak, without even checking its class. We ignore weak, because we assume we're not allowing full circular references, but instead we'll have a parent and child relationship where the parent will have a strong reference to the child, but the child a weak reference to the parent. As such, the parent will add the child to its editing context, but the child will not try to do the same with its parent.
+                            char *stop = strchr(props + 3, '"');
+                            if (stop != NULL) {
+                                NSInteger length = stop - props - 3;
+                                char buffer[1024];
+                                strncpy(buffer, props + 3, MIN(length, 1023));
+                                buffer[length] = '\0';
+                                Class found = objc_getClass(buffer);
+                                if (found != Nil && AJRIsKindOfClass(found, [AJREditableObject class])) {
+                                    [editableFriends addObject:name];
+                                    AJRPrintf(@"%@: %@: %s: %s\n", self, isWeak ? @"Weak" : @"Strong", property_getName(properties[x]), props);
+                                }
+                            } // stop != NULL
+                        } // !isWeak && !isReadonly
+                    } // property defines class
+                } // props != NULL (property attributes)
+            } // ![ignoreFriends containsObject:name]
+        } // ![ignore containsObject:name]
+    } // foreach property.
 
     free(properties);
-
+    
     Class superclass = self;
     while ((superclass = [superclass superclass]) && superclass != [AJREditableObject class]) {
-        [superclass populatePropertiesToObserve:propertiesSet editableFriends:editableFriends];
+        NSMutableSet<NSString *> *newClassProperties = [NSMutableSet set];
+        NSMutableSet<NSString *> *newFriendsProperties = [NSMutableSet set];
+        [superclass populatePropertiesToObserve:newClassProperties editableFriends:newFriendsProperties];
+        _propertiesToObserveByClass[(id)superclass] = newClassProperties;
+        _editableFriendsPropertiesByClass[(id)superclass] = newFriendsProperties;
+        [propertiesSet unionSet:newClassProperties];
+        [editableFriends unionSet:newFriendsProperties];
     }
 }
 
 + (NSSet<NSString *> *)propertiesToObserve {
     NSSet<NSString *> *set = nil;
     NSSet<NSString *> *friendsSet = nil;
-
+    
     @synchronized (_propertiesToObserveByClass) {
         set = [_propertiesToObserveByClass objectForKey:[self class]];
         friendsSet = [_editableFriendsPropertiesByClass objectForKey:[self class]];
@@ -168,11 +203,20 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsProperti
             friendsSet = [NSMutableSet set];
             [self populatePropertiesToObserve:(NSMutableSet *)set editableFriends:(NSMutableSet *)friendsSet];
             [_propertiesToObserveByClass setObject:set forKey:(id)[self class]];
+            [_editableFriendsPropertiesByClass setObject:friendsSet forKey:(id)[self class]];
         }
     }
 
     return set;
 }
+
++ (NSSet<NSString *> *)editableFriendProperties {
+    // Force the population of editableFriends.
+    [self propertiesToObserve];
+    
+    return [_editableFriendsPropertiesByClass objectForKey:[self class]];
+}
+
 
 #pragma mark - Identity
 
@@ -188,6 +232,17 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsProperti
     return primaryKey;
 }
 
+#pragma mark - Friends
+
+- (void)enumerateFriendsUsingBlock:(void (^)(AJREditableObject *friend))block {
+    for (NSString *property in [self.class editableFriendProperties]) {
+        AJREditableObject *friend = AJRObjectIfKindOfClass([self valueForKey:property], AJREditableObject);
+        if (friend != nil) {
+            block(friend);
+        }
+    }
+}
+
 #pragma mark - Tracking
 
 - (void)setSuppressCount:(NSInteger)count {
@@ -201,12 +256,20 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsProperti
 - (void)startTrackingEdits {
     @synchronized (self) {
         [self setSuppressCount:[self suppressCount] + 1];
+        // Start tracking edits on our friends, too.
+        [self enumerateFriendsUsingBlock:^(AJREditableObject *friend) {
+            [friend startTrackingEdits];
+        }];
     }
 }
 
 - (void)stopTrackingEdits {
     @synchronized (self) {
         [self setSuppressCount:[self suppressCount] - 1];
+        // Stop tracking edits on our friends, too.
+        [self enumerateFriendsUsingBlock:^(AJREditableObject *friend) {
+            [friend stopTrackingEdits];
+        }];
     }
 }
 
@@ -221,6 +284,9 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsProperti
 - (void)pauseObservation {
     @synchronized (self) {
         [self setPauseCount:[self pauseCount] + 1];
+        [self enumerateFriendsUsingBlock:^(AJREditableObject *friend) {
+            [friend pauseObservation];
+        }];
     }
 }
 
@@ -230,7 +296,15 @@ static NSMutableDictionary<Class, NSSet<NSString *> *> *_editableFriendsProperti
         if (pauseCount > 0) {
             [self setPauseCount:[self pauseCount] - 1];
         }
+        [self enumerateFriendsUsingBlock:^(AJREditableObject *friend) {
+            [friend resumeObservation];
+        }];
     }
+}
+
+- (void)synchronizeObservationStateWithFriend:(AJREditableObject *)friend {
+    [friend setPauseCount:[self pauseCount]];
+    [friend setSuppressCount:[self suppressCount]];
 }
 
 - (NSMutableSet<NSString *> *)mutableEditedKeys {

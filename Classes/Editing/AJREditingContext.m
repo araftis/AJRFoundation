@@ -109,6 +109,19 @@
             [object setEditingContext:self];
             [object addObserver:self];
             [object didAddToEditingContext:self];
+            
+            // Now see about editable friends
+            NSSet<NSString *> *friendProperties = [[object class] editableFriendProperties];
+            if ([friendProperties count]) {
+                AJRPrintf(@"%C: Add %@\n", object, [[friendProperties allObjects] componentsJoinedByString:@", "]);
+                for (NSString *property in friendProperties) {
+                    AJREditableObject *friend = AJRObjectIfKindOfClass([object valueForKey:property], AJREditableObject);
+                    if (friend != nil) {
+                        [self addObject:friend];
+                        [object synchronizeObservationStateWithFriend:friend];
+                    }
+                }
+            }
         } else if ([object editingContext] != self) {
             AJRLogError(@"Attempt to add object %@ to two different editing contexts", object);
         }
@@ -131,6 +144,18 @@
         [self didChangeValueForKey:@"hasEdits"];
         [self didChangeValueForKey:@"editedObjects"];
         [object didRemoveFromEditingContext:self];
+
+        // Now see about editable friends
+        NSSet<NSString *> *friendProperties = [[object class] editableFriendProperties];
+        if ([friendProperties count]) {
+            AJRPrintf(@"%C: Forget %@\n", object, [[friendProperties allObjects] componentsJoinedByString:@", "]);
+            for (NSString *property in friendProperties) {
+                AJREditableObject *friend = AJRObjectIfKindOfClass([object valueForKey:property], AJREditableObject);
+                if (friend != nil) {
+                    [self forgetObject:friend];
+                }
+            }
+        }
     }
 }
 

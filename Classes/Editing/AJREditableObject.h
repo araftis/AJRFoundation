@@ -69,12 +69,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)resumeObservation;
 
 /*!
+ Synchronizes `friend` with the receiver's tracking and observation states. This is mostly useful when a friend is changed, as the new friend will get the current state of the receiver. You shouldn't normally need to call this method, as it'll generally be called for you.
+ 
+ @param friend The object to sync to our state.
+ */
+- (void)synchronizeObservationStateWithFriend:(AJREditableObject *)friend;
+
+/*!
  Subclasses can override this method to provide a set of properties that should not be tracked.
  Otherwise, anything declared as a property will be tracked.
  
  @result The set of properties to ignore. May be nil.
  */
 @property (nullable,nonatomic,class,readonly) NSSet<NSString *> *propertiesToIgnore;
+/*!
+ This represents an additional subset, beyond `propertiesToIgnore`, that should be ignored as far as automating adding or removing from the receivers editing context. This is `nil` by default.
+ */
+@property (nullable,nonatomic,class,readonly) NSSet<NSString *> *editableFriendPropertiesToIgnore;
 /*!
  Overridden by some subclasses to populate additional properties for observation. Generally needed by Swift objects, which don't necessarily follow Obj-C rules for properties.
 
@@ -86,6 +97,14 @@ NS_ASSUME_NONNULL_BEGIN
  A set of properties that should be observed on the receiver.
  */
 @property (nonatomic,class,readonly) NSSet<NSString *> *propertiesToObserve;
+/*!
+ A set of properties that should be managed as friends. "Friends" are basically object's that need to be managed in the receiver's editing context, but which aren't otherwise managed externally. This often represents a parent/child relationship in your object graph, where the child also needs to be managed. By default, this will be populated with all properties that are:
+ 
+ 1. Not weak (since we properties are generally managed somewhere else),
+ 2. Are not in the set `editableFriendPropertiesToIgnore`.
+ 3. Are properties to an object that is a subclass of AJREditableObject.
+ */
+@property (nonatomic,class,readonly) NSSet<NSString *> *editableFriendProperties;
 
 /*! When inserting a new object into an editing context, you may want to call this, to indicate that all the keys on the objects, at the time of insert, should be considered edited. This doesn't happen by default, because it can create a bunch of extra work when it's sometimes not necessary. */
 - (void)noteAllKeysEdited;
