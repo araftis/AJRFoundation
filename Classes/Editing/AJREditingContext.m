@@ -187,7 +187,6 @@
 
 - (void)object:(id)object didEditKey:(NSString *)key withChange:(NSDictionary *)change {
     AJRLogDebug(@"edit: %@", key);
-    AJRPrintf(@"edit: %@\n", key);
     
     if (_delegateRespondsToDidObserveEdit) {
         if (key) {

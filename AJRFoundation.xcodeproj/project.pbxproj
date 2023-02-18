@@ -59,6 +59,7 @@
 		21FCD9D2270CE7DA0049E558 /* NSFileWrapper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */; };
 		21FCD9D3270CE7DA0049E558 /* NSFileWrapper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */; };
 		21FFE376299DD75B00A79F8F /* ObjCObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FFE375299DD75B00A79F8F /* ObjCObservable.swift */; };
+		21FFE378299EDA4900A79F8F /* AJREditableFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FFE377299EDA4900A79F8F /* AJREditableFriend.swift */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FA0587CF192FE402002913B6 /* AJRXMLOutputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0587CD192FE402002913B6 /* AJRXMLOutputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA0587D0192FE402002913B6 /* AJRXMLOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0587CE192FE402002913B6 /* AJRXMLOutputStream.m */; };
@@ -922,6 +923,7 @@
 		217160C22908C0A0001F2D4C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeSet.strings; sourceTree = "<group>"; };
 		21FCD9D1270CE7DA0049E558 /* NSFileWrapper+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFileWrapper+Extensions.swift"; sourceTree = "<group>"; };
 		21FFE375299DD75B00A79F8F /* ObjCObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCObservable.swift; sourceTree = "<group>"; };
+		21FFE377299EDA4900A79F8F /* AJREditableFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJREditableFriend.swift; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* AJRFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRFoundation_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* AJRFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AJRFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA0587CD192FE402002913B6 /* AJRXMLOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRXMLOutputStream.h; sourceTree = "<group>"; };
@@ -1518,6 +1520,7 @@
 				FA0F560325E477DD00DD0F3D /* AJREditableObject.m */,
 				FA0F560125E477DD00DD0F3D /* AJREditingContext.h */,
 				FA0F560225E477DD00DD0F3D /* AJREditingContext.m */,
+				21FFE377299EDA4900A79F8F /* AJREditableFriend.swift */,
 			);
 			path = Editing;
 			sourceTree = "<group>";
@@ -2757,6 +2760,7 @@
 				FA311C6428ED2912006BE0FB /* AJRLogicFunctions.swift in Sources */,
 				FA6FFE95220276F40083357D /* Array+Extensions.swift in Sources */,
 				FA311C0E28ECF90D006BE0FB /* AJRExpression.swift in Sources */,
+				21FFE378299EDA4900A79F8F /* AJREditableFriend.swift in Sources */,
 				FA07C8CC220FC8A20077A0B5 /* NSObject+Extensions.swift in Sources */,
 				FAB7DEA1255217FD00FAD684 /* OrderedSet.swift in Sources */,
 				FACDA25921FAD86C0008753B /* AJRNullArrayTransformer.swift in Sources */,
