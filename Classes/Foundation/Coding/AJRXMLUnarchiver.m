@@ -819,7 +819,13 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         if ([object respondsToSelector:@selector(decodeWithXMLCoder:)]) {
             [object decodeWithXMLCoder:self];
         } else {
-            AJRLogWarning(@"No mapping from \"%@\" to a class that supports XML decoding.", elementName);
+            NSString *selector = nil;
+            if ([NSStringFromClass(object.class) rangeOfString:@"."].location != NSNotFound) {
+                selector = AJRFormat(@"%C.decode(with:)", object);
+            } else {
+                selector = AJRFormat(@"-[%C decodeWithXMCoder:]", object);
+            }
+            AJRLogWarning(@"%C does not support XML decoding. It needs to implement %@", object, selector);
         }
         
         // If the object is the root object, it'll be at stack frame 0 with just one object on the stack. When this happens, we want to ignore attributes with the "xmlns" key, because those are added by the archiver to make the XML valid, but they're ignorable as far as the objects in the XML are concerned.

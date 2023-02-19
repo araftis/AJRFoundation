@@ -66,8 +66,8 @@ NSDictionary *uuTestSet = nil;
 }
 
 - (void)testEncoding {
-    NSData        *someData = [@"applestore:apple123" dataUsingEncoding:NSUTF8StringEncoding];
-    NSString    *string = [someData ajr_base64EncodedString];
+    NSData *someData = [@"applestore:apple123" dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *string = [someData ajr_base64EncodedString];
     
     AJRPrintf(@"encoded string: %@\n", string);
     XCTAssertTrue([string isEqualToString:@"YXBwbGVzdG9yZTphcHBsZTEyMw="], @"Encoding string isn't what it should be.");
