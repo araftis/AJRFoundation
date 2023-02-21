@@ -108,24 +108,55 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*!
  @abstract Wraps a string to a desired width.
+ 
  @discussion Returns a new string which will be broken into lines not more than <CODE>width</CODE> characters wide. The lines will be split using the supplied <CODE>separator</CODE> string and it will only split URL's if flag it YES. This is intended for spliting strings when the string must be used to output formatter text. Most commonly, this method is used to format strings for HTML output when autogenerating HTML is some manner.
+ 
+ Note that `width` doesn't include the length of `prefix` or `separator`, so if you pass characters other than newline in those, you'll need adjust your width accordingly.
+ 
+ @param width The maximum width of a line of the string.
+ @param prefix A string to prepend to each line, including the first.
+ @param separator The string used to separate lines. Note that while this method is intended to divide strings into multiple lines, you can actually split strings by any predefined max width with any given separator, which may or may not contain a newline.
+ @param flag If YES, URL's may be split, otherwise the algorithm attempts recognize URL's and it will not split them. Note that if a URL is greater than width, you might get back a line wider than width if you pass is YES.
+ 
+ @return The string potentially split over multiple lines.
+ */
+- (NSString *)stringByWrappingToWidth:(NSInteger)width prefix:(NSString *)prefix lineSeparator:(NSString *)separator splitURLs:(BOOL)flag NS_SWIFT_NAME(byWrapping(to:prefix:lineSeparator:splitURLs:));
+
+/*!
+ @abstract Wraps a string to a desired width.
+ 
+ @discussion This method simply calls `[self stringByWrappingToWidth:width prefix:@"" withLineSeparator:separator splitURLs:YES]`.
+ 
  @param width The maximum width of a line of the string.
  @param separator The string used to separate lines. Note that while this method is intended to divide strings into multiple lines, you can actually split strings by any predefined max width with any given separator, which may or may not contain a newline.
  @param flag If YES, URL's may be split, otherwise the algorithm attempts recognize URL's and it will not split them. Note that if a URL is greater than width, you might get back a line wider than width if you pass is YES.
+
+ @return The string potentially split over multiple lines.
  */
-- (NSString*)stringByWrappingToWidth:(NSInteger)width withLineSeparator:(NSString *)separator splitURLs:(BOOL)flag;
+- (NSString*)stringByWrappingToWidth:(NSInteger)width withLineSeparator:(NSString *)separator splitURLs:(BOOL)flag NS_SWIFT_NAME(byWrapping(to:lineSeparator:splitURLs:));
 
 /*!
  @abstract Wraps a string to a desired width.
- @discussion This method simply calls <CODE>[self stringByWrappingToWidth:width withLineSeparator:separator splitURLs:YES]</CODE>.
+ 
+ @discussion This method simply calls `[self stringByWrappingToWidth:width prefix:@"" withLineSeparator:separator splitURLs:YES]`.
+ 
+ @param width The maximum width of a line of the string.
+ @param separator The string used to separate lines. Note that while this method is intended to divide strings into multiple lines, you can actually split strings by any predefined max width with any given separator, which may or may not contain a newline.
+
+ @return The string potentially split over multiple lines.
  */
-- (NSString*)stringByWrappingToWidth:(NSInteger)width withLineSeparator:(NSString *)separator;
+- (NSString *)stringByWrappingToWidth:(NSInteger)width withLineSeparator:(NSString *)separator NS_SWIFT_NAME(byWrapping(to:lineSeparator:));
 
 /*!
  @abstract Wraps a string to a desired width.
+ 
  @discussion This method simply calls <CODE>[self stringByWrappingToWidth:width withLineSeparator:\@"\n"];</CODE>.
+ 
+ @param width The maximum width of a line of the string.
+
+ @return The string potentially split over multiple lines.
  */
-- (NSString*)stringByWrappingToWidth:(NSInteger)width;
+- (NSString *)stringByWrappingToWidth:(NSInteger)width NS_SWIFT_NAME(byWrapping(to:));
 
 /*!
  @abstract Attempts to remove a prefix from a string.

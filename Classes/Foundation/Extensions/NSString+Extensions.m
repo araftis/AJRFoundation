@@ -74,12 +74,12 @@
 
 - (NSString *)canonicalizedPath {
     NSString *path = self;
-
+    
     if (![path isAbsolutePath]) {
         path = [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingPathComponent:path];
     }
     path = [path stringByStandardizingPath];
-
+    
     return path;
 }
 
@@ -90,7 +90,7 @@
 - (NSString *)stringWithPathRelativeTo:(NSString *)anchorPath {
     NSArray *pathComponents = [self pathComponents];
     NSArray *anchorComponents = [anchorPath pathComponents];
-
+    
     NSInteger componentsInCommon = MIN([pathComponents count], [anchorComponents count]);
     for (NSInteger i = 0, n = componentsInCommon; i < n; i++) {
         if (![[pathComponents objectAtIndex:i] isEqualToString:[anchorComponents objectAtIndex:i]]) {
@@ -98,16 +98,16 @@
             break;
         }
     }
-
+    
     NSUInteger numberOfParentComponents = [anchorComponents count] - componentsInCommon;
     NSUInteger numberOfPathComponents = [pathComponents count] - componentsInCommon;
-
+    
     NSMutableArray *relativeComponents = [NSMutableArray arrayWithCapacity:numberOfParentComponents + numberOfPathComponents];
     for (NSInteger i = 0; i < numberOfParentComponents; i++) {
         [relativeComponents addObject:@".."];
     }
     [relativeComponents addObjectsFromArray:[pathComponents subarrayWithRange:NSMakeRange(componentsInCommon, numberOfPathComponents)]];
-
+    
     return [NSString pathWithComponents:relativeComponents];
 }
 
@@ -125,17 +125,17 @@
     if ([self length] > 1) {
         return [NSString stringWithFormat:@"%@%@", [[self substringToIndex:1] capitalizedString], [self substringFromIndex:1]];
     }
-
+    
     return [self capitalizedString];
 }
 
 - (NSString *)titlecaseString COMMON_DIGEST_FOR_OPENSSL {
     NSMutableString *newString = [self mutableCopy];
-
+    
     [newString enumerateSubstringsInRange:(NSRange){0, [newString length]} options:NSStringEnumerationByWords usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
         [newString replaceCharactersInRange:substringRange withString:[[substring lowercaseString] capitalizedString]];
     }];
-
+    
     return newString;
 }
 
@@ -148,11 +148,11 @@
     const wchar_t *buffer = (wchar_t *)data.bytes;
     NSInteger length = data.length / 4;
     NSString *newString = nil;
-
+    
     if (data != nil && data.length > 0) {
         wchar_t *outputBuffer = NSZoneMalloc(NULL, sizeof(wchar_t) * length);
         NSInteger y = 0;
-
+        
         for (NSInteger x = 0; x < length; x++) {
             wchar_t c = buffer[x];
             if ([set longCharacterIsMember:c]) {
@@ -166,14 +166,14 @@
         newString = [[NSString alloc] initWithBytes:outputBuffer length:y * sizeof(wchar_t) encoding:AJRUTF32StringEncodingMatchingArchitecture];
         NSZoneFree(NULL, outputBuffer);
     }
-
+    
     return newString ?: @"";
 }
 
 - (NSString*)stringByDeletingTrailingCharactersInSet:(NSCharacterSet *)characterSet {
     NSString *substring = self;
     NSRange characterRange;
-
+    
     while (1) {
         characterRange = [substring rangeOfCharacterFromSet:characterSet options:NSBackwardsSearch];
         if (characterRange.length && characterRange.location + characterRange.length == [substring length]) {
@@ -182,14 +182,14 @@
             break;
         }
     }
-
+    
     return substring;
 }
 
 - (NSString *)stringByDeletingLeadingCharactersInSet:(NSCharacterSet *)characterSet {
     NSScanner *scanner = [NSScanner scannerWithString:self];
     [scanner setCharactersToBeSkipped:nil];
-
+    
     if ([scanner scanCharactersFromSet:characterSet intoString:NULL]) {
         return [self substringFromIndex:[scanner scanLocation]];
     } else {
@@ -201,7 +201,7 @@
     if ([self hasPrefix:other]) {
         return [self substringFromIndex:[other length]];
     }
-
+    
     return self;
 }
 
@@ -209,7 +209,7 @@
     if ([self hasSuffix:other]) {
         return [self substringToIndex:self.length - other.length];
     }
-
+    
     return self;
 }
 
@@ -228,7 +228,7 @@
     });
     NSRange subrange = NSMakeRange(0, width);
     NSString *substring = [line substringWithRange:subrange];
-
+    
     if (!flag && [line hasPrefix:@"http://"]) {
         subrange = [line rangeOfCharacterFromSet:splitCharacterSet];
         if (subrange.length) {
@@ -239,11 +239,11 @@
             return [line length];
         }
     }
-
+    
     subrange = [substring rangeOfCharacterFromSet:splitCharacterSet options:NSBackwardsSearch];
     if (subrange.location != NSNotFound) {
         width = subrange.location + subrange.length;
-
+        
         if (!flag) {
             NSRange one = [substring rangeOfString:@"<" options:NSBackwardsSearch];
             if (one.location != NSNotFound && one.location > width) {
@@ -256,7 +256,7 @@
                 }
             }
         }
-
+        
         return width;
     } else {
         return width;
@@ -264,10 +264,14 @@
 }
 
 - (NSString*)stringByWrappingToWidth:(NSInteger)width withLineSeparator:(NSString *)separator {
-    return [self stringByWrappingToWidth:width withLineSeparator:separator splitURLs:YES];
+    return [self stringByWrappingToWidth:width prefix:@"" lineSeparator:separator splitURLs:YES];
 }
 
 - (NSString*)stringByWrappingToWidth:(NSInteger)width withLineSeparator:(NSString *)separator splitURLs:(BOOL)flag {
+    return [self stringByWrappingToWidth:width prefix:@"" lineSeparator:separator splitURLs:flag];
+}
+
+- (NSString*)stringByWrappingToWidth:(NSInteger)width prefix:(NSString *)prefix lineSeparator:(NSString *)separator splitURLs:(BOOL)flag {
     NSMutableArray *lines = [[self componentsSeparatedByString:separator] mutableCopy];
     NSMutableString *newString = [NSMutableString string];
     NSInteger i;
@@ -276,17 +280,20 @@
     for (i = 0; i < count; i++) {
         NSString *line = [lines objectAtIndex:i];
 
-        if (![line length] && i + 1 < count) {
+        if ([line length] == 0 && i + 1 < count) {
+            [newString appendString:prefix];
             [newString appendString:separator];
         }
         while ([line length] > width) {
             NSInteger splitPoint = [self splitPointForLine:line width:width splitURLs:flag];
 
+            [newString appendString:prefix];
             [newString appendString:[[line substringToIndex:splitPoint] stringByDeletingTrailingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
             line = [[line substringFromIndex:splitPoint] stringByDeletingLeadingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             [newString appendString:separator];
         }
         if ([line length]) {
+            [newString appendString:prefix];
             [newString appendString:line];
             if (i + 1 < count) {
                 [newString appendString:separator];

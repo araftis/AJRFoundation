@@ -127,5 +127,9 @@ public extension String {
     subscript(_ range: NSRange) -> SubSequence {
         return self[self.index(self.startIndex, offsetBy: range.location) ... self.index(self.startIndex, offsetBy: range.location + range.length - 1)]
     }
+    
+    func byWrapping(to width: Int, prefix: String, lineSeparator: String = "\n", splitURLs: Bool = true) -> String {
+        return (self as NSString).byWrapping(to: width, prefix: prefix, lineSeparator: lineSeparator, splitURLs: splitURLs)
+    }
 
 }
