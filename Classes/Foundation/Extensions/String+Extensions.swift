@@ -132,4 +132,23 @@ public extension String {
         return (self as NSString).byWrapping(to: width, prefix: prefix, lineSeparator: lineSeparator, splitURLs: splitURLs)
     }
 
+    internal static let spaces = "                                                                                                                                                                                                                                                                                                            "
+
+    init(indent: Int, width: Int = 4) {
+        // This let's us optimize the creation, if the indent is less than 300.
+        let fullWidth = indent * width
+        if fullWidth < String.spaces.count {
+            self.init(String.spaces.prefix(fullWidth))
+        } else if width < String.spaces.count {
+            let substring = String.spaces.prefix(width)
+            var tabbed : String = ""
+            for _ in 0 ..< indent {
+                tabbed += substring
+            }
+            self.init(tabbed)
+        } else {
+            preconditionFailure("The tab width must be less than \(String.spaces.count)")
+        }
+    }
+
 }
