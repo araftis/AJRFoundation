@@ -152,3 +152,17 @@ public extension String {
     }
 
 }
+
+public extension StringProtocol {
+    
+    var firstLetterCapitalized : String {
+        if count <= 1 {
+            return self.capitalized
+        }
+        let initial = self.prefix(1).capitalized
+        let remainder = self.suffix(from: index(startIndex, offsetBy: 1))
+        let string = initial + remainder
+        return string
+    }
+    
+}
