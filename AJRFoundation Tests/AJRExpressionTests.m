@@ -159,7 +159,7 @@
 
 
 - (void)testObjectExpressions {
-    NSDictionary    *dictionary;
+    NSDictionary *dictionary;
     
     dictionary = @{
         @"zero":@(0),
