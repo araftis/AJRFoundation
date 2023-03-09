@@ -52,7 +52,7 @@
     AJRPlugInExtensionPoint *extensionPoint = [plugInManager extensionPointForName:@"ajrconstant"];
     XCTAssert(extensionPoint != nil);
     XCTAssert([[extensionPoint extensions] count] != 0); // Because we know we should have some constants.
-    XCTAssert([extensionPoint extensionForName:@"AJRPIConstant"]);
+    XCTAssert([extensionPoint extensionForName:@"AJRFoundation.AJRPIConstant"]);
 }
 
 - (BOOL)array:(NSMutableArray<NSString *> *)warnings hasWarningWithText:(NSString *)text {
