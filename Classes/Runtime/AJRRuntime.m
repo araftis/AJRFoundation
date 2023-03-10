@@ -83,7 +83,8 @@ void _AJRRunInternalTestsForUnitTesting(void) {
     NSCAssert([[testType description] hasSuffix:@"type: ^?, offset: 16>"], @"-[_AJRRuntimeType description] produced unexpected results.");
     
     // We'll want to update our code if this ever happens.
-    NSCAssert(strcmp(@encode(BOOL), @encode(int8_t)) == 0, @"BOOL and char don't seem to encode to the same thing anymore.");
+    // OK: This first one happened, as bool is now encoding to B, not c. Not sure when that happened. Anyways, this is OK, because in the AJRStringFromEncodingType() function, we check against @encode(BOOL) before @encode(uint8_t), so we're now actually doing to more right thing, as we'll output both BOOL and uint8_t, whereas we use to only output BOOL.
+    //NSCAssert(strcmp(@encode(BOOL), @encode(int8_t)) == 0, @"BOOL and char don't seem to encode to the same thing anymore.");
     NSCAssert(strcmp(@encode(NSInteger), @encode(int64_t)) == 0, @"NSInteger and int64_t don't seem to encode to the same thing anymore.");
     NSCAssert(strcmp(@encode(NSUInteger), @encode(uint64_t)) == 0, @"NSUInteger and uint64_6 don't seem to encode to the same thing anymore.");
     

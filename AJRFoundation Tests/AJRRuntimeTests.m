@@ -376,7 +376,7 @@ NS_ASSUME_NONNULL_END
 }
 
 - (void)testMisc {
-    // This throws hard ajrsertions on failure.
+    // This throws hard assertions on failure.
     _AJRRunInternalTestsForUnitTesting();
 }
 
