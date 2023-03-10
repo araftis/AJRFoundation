@@ -311,7 +311,7 @@ NS_ASSUME_NONNULL_END
     NSInteger count = 0, countWithSuper = 0;
     objc_property_t property;
     while ((property = [propertyEnumerator nextProperty])) {
-        AJRPrintf(@"%@\n", AJRStringFromProperty(property, [propertyEnumerator isClassProperty]));
+        AJRPrintf(@"%@\n", AJRStringFromProperty(property, [propertyEnumerator propertyIsClassProperty]));
         count++;
     }
 
@@ -319,7 +319,7 @@ NS_ASSUME_NONNULL_END
     [propertyEnumerator setEnumeratesSuperclasses:YES];
     NSValue *propertyValue;
     while ((propertyValue = [propertyEnumerator nextObject])) {
-        AJRPrintf(@"%@\n", AJRStringFromProperty([propertyValue pointerValue], [propertyEnumerator isClassProperty]));
+        AJRPrintf(@"%@\n", AJRStringFromProperty([propertyValue pointerValue], [propertyEnumerator propertyIsClassProperty]));
         countWithSuper++;
     }
     XCTAssert([propertyEnumerator nextObject] == nil, @"Hum, we went past the end?");

@@ -535,7 +535,7 @@ NSString *AJRClassInterfaceFromClass(Class class) {
     objc_property_t property;
     BOOL hadProperty = NO;
     while ((property = [propertyEnumerator nextProperty])) {
-        [string appendString:AJRStringFromProperty(property, [propertyEnumerator isClassProperty])];
+        [string appendString:AJRStringFromProperty(property, [propertyEnumerator propertyIsClassProperty])];
         [string appendString:@"\n"];
         hadProperty = YES;
     }

@@ -147,8 +147,7 @@
             || (callStack.count > 2 && [callStack[1] containsString:@"_accessibilityConvenienceSupportedAttributes"])) {
             // Don't call if CalLogMaster is present, because that's Apple's code, and they're calling us with a nil value, which is defined as illegal, but won't techinically break anything.
         } else {
-            AJRLog(nil, AJRLogLevelWarning, @"Called -[%C addObjectsFromArray:] with a (%C), which isn't an array:\n", self, array);
-            AJRLog(nil, AJRLogLevelWarning, @"%@\n", NSThread.callStackSymbols);
+            AJRLog(nil, AJRLogLevelWarning, @"Called -[%C addObjectsFromArray:] with a (%C), which isn't an array:\n%@\n", self, array, NSThread.callStackSymbols);
         }
     }
     [self ajr_addObjectsFromArray:array];

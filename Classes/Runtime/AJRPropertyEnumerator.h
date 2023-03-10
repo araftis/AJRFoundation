@@ -46,7 +46,34 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable id)nextObject;
 - (nullable objc_property_t)nextProperty;
 
-@property (nonatomic,readonly) BOOL isClassProperty;
+// MARK: - Querying the Property
+
+/// Returns the name of the property.
+@property (nonatomic,readonly,nullable) NSString *propertyName;
+/// Returns `YES` if the class is a class property.
+@property (nonatomic,readonly) BOOL propertyIsClassProperty;
+/// Returns `YES` if the property is copy on assign.
+@property (nonatomic,readonly) BOOL propertyIsCopy;
+/// Returns `YES` if the property is a strong (retain) reference.
+@property (nonatomic,readonly) BOOL propertyIsStrong;
+/// Returns `YES` for read only properties.
+@property (nonatomic,readonly) BOOL propertyIsReadOnly;
+/// Returns `YES` for weakly declared properties.
+@property (nonatomic,readonly) BOOL propertyIsWeak;
+/// Returns `YES` if the property is atomic.
+@property (nonatomic,readonly) BOOL propertyIsNonatomic;
+/// Returns `YES` if the property is declared dynamic.
+@property (nonatomic,readonly) BOOL propertyIsDynamic;
+/// Returns `YES` if the property is garbage collectable. Will always be `NO`, but here for legacy's sake.
+@property (nonatomic,readonly) BOOL propertyIsGarbageCollectable;
+/// The encoding of the type. This is what's produced by `&at;encode()`.
+@property (nonatomic,readonly,nullable) NSString *propertyType;
+/// If the type is an object, this returns the class of the object.
+@property (nonatomic,readonly,nullable) Class propertyClass;
+/// Returns the getter selector.
+@property (nonatomic,readonly,nullable) SEL propertyGetter;
+/// Returns the setter selector.
+@property (nonatomic,readonly,nullable) SEL propertySetter;
 
 @end
 
