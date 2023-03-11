@@ -273,8 +273,7 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
 
     open override func isEqual(to object: Any?) -> Bool {
         if let object = object as? AJRStore {
-            return (super.isEqual(to: object)
-                    && AJRAnyEquals(symbols, object.symbols))
+            return AJRAnyEquals(symbols, object.symbols)
         }
         return false
     }
