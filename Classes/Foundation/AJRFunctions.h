@@ -71,6 +71,9 @@ extern void AJRPrintf(NSString * _Nullable format, ...);
  */
 extern NSString * _Nullable AJRPrettyPrintKey(NSString *key);
 
+extern NSString *AJRNameWithCamelCase(NSString *key);
+extern NSString *AJRNameWithUnderscores(NSString *key);
+
 /*!
  Returns the value for the given environment variable. Attempts to do so in a case insensitive manner, but this means if two environment variables exist, but only differ by case, then the incorrect value could be returned. Generally, only use this where the behavior of inconsistent environment variable definitions have been exhibited.
  
