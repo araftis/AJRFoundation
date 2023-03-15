@@ -65,9 +65,9 @@
     data = [bundle machOTextDataNamed:@"__not_found"];
     XCTAssert(data == nil);
     
-    bundle = [NSBundle bundleWithPath:@"/System/Library/Frameworks/Tcl.framework"];
+    // We have to use the main bundle here, because apparently the security framework is blocking us for accessing just any bundle's __TEXT segment.
+    bundle = [NSBundle mainBundle];
     XCTAssert(bundle != nil);
-    XCTAssert(!bundle.isLoaded);
     data = [bundle machODataOfType:@"__TEXT" named:@"__text"];
     XCTAssert(data != nil);
     

@@ -64,16 +64,17 @@
             NSUnit *unit = [unitClass baseUnit];
             AJRPrintf(@"%C: %@\n", unitClass, unit.identifier);
             XCTAssert(unit.identifier != nil);
-            XCTAssert([NSUnit unitForIdentifier:unit.identifier] == unit);
+            XCTAssert([[[NSUnit unitForIdentifier:unit.identifier] identifier] isEqualToString:unit.identifier]);
         }
         
         NSSet<NSString *> *subunits = [unitClass unitIdentifiers];
         XCTAssert(subunits.count != 0);
         for (NSString *subunit in subunits) {
+            AJRPrintf(@"    subunit: %@\n", subunit);
             NSUnit *unit = [NSUnit unitForIdentifier:subunit];
             XCTAssert(unit != nil);
             XCTAssert(unit.localizedName != nil);
-            XCTAssert([allUnits containsObject:subunit]);
+            XCTAssert([allUnits containsObject:subunit], @"Didn't find subunit: %@", subunit);
             [allUnits removeObject:subunit];
         }
     }

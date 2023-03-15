@@ -120,8 +120,8 @@ public func AJRAnyEquals(_ lhsIn: Any?, _ rhsIn: Any?) -> Bool {
         return false
     } else if let lhs = lhs as? AJREquatable, let rhs = rhs {
         return lhs.isEqual(to: rhs)
-    } else if let lhs = lhs as? AnyObject {
-        // Because AnyObjects are NSObjects, and they'll implement isEqual(to:)
+    } else if let lhs = lhs as? NSObject {
+        // Apparently AnyObject's may now be object's other than those subclassed from NSObject. Probably something I missed in a release note. Anyways, check against NSObject now.
         return lhs.isEqual(to: rhs)
     }
     

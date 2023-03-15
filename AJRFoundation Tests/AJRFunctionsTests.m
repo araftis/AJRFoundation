@@ -154,6 +154,26 @@
     XCTAssert([AJRPrettyPrintKey(@"a") isEqualToString:@"A"]);
 }
 
+- (void)testCamelCase {
+    XCTAssert([AJRNameWithCamelCase(@"This is a test") isEqualToString:@"thisIsATest"]);
+    XCTAssert([AJRNameWithCamelCase(@"ThisIsATest") isEqualToString:@"thisIsATest"]);
+    XCTAssert([AJRNameWithCamelCase(@"thisIsATest") isEqualToString:@"thisIsATest"]);
+    XCTAssert([AJRNameWithCamelCase(@"this_is_a_test") isEqualToString:@"thisIsATest"]);
+    XCTAssert([AJRNameWithCamelCase(@"") isEqualToString:@""]);
+    XCTAssert([AJRNameWithCamelCase(@"a") isEqualToString:@"a"]);
+    XCTAssert([AJRNameWithCamelCase(@"this") isEqualToString:@"this"]);
+}
+
+- (void)testNameWithUnderscores {
+    XCTAssert([AJRNameWithUnderscores(@"This is a test") isEqualToString:@"this_is_a_test"]);
+    XCTAssert([AJRNameWithUnderscores(@"ThisIsATest") isEqualToString:@"this_is_a_test"]);
+    XCTAssert([AJRNameWithUnderscores(@"thisIsATest") isEqualToString:@"this_is_a_test"]);
+    XCTAssert([AJRNameWithUnderscores(@"this_is_a_test") isEqualToString:@"this_is_a_test"]);
+    XCTAssert([AJRNameWithUnderscores(@"") isEqualToString:@""]);
+    XCTAssert([AJRNameWithUnderscores(@"a") isEqualToString:@"a"]);
+    XCTAssert([AJRNameWithUnderscores(@"this") isEqualToString:@"this"]);
+}
+
 - (void)testGetEnvironmentVariable {
     XCTAssert([AJRGetEnvironmentVariable(@"TEST_VARIABLE") isEqualToString:@"Test"]);
     XCTAssert([AJRGetEnvironmentVariable(@"test_variable") isEqualToString:@"Test"]);

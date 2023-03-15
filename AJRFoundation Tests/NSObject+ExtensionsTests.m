@@ -51,6 +51,10 @@
     return @"Hi mom!";
 }
 
++ (NSString *)description {
+    return @"Hi date!";
+}
+
 - (id)selectorOne {
     return @"one";
 }
@@ -81,6 +85,10 @@
 
 - (NSUInteger)hash {
     return 0;
+}
+
++ (NSUInteger)hash {
+    return 1;
 }
 
 @end

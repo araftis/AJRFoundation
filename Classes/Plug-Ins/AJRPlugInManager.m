@@ -298,7 +298,8 @@ static BOOL isInitializing = NO;
     
     if ([fails count] == 0) {
         [self _populateAttributes:attributes andElements:elements fromNode:node named:name sourceBundle:bundle failures:fails];
-        if ([fails count] == 0 && name != nil && className != nil) {
+        // We've already produced a warning about this, if it's relevant, in that they have a registry selector, but no class to call it on.
+        if ([fails count] == 0 && name != nil/* && className != nil*/) {
             [self registerExtensionPoint:className withName:name registrySelectorString:selectorName attributes:attributes elements:elements];
         }
     }

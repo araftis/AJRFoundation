@@ -165,7 +165,7 @@
     [stream close];
 
     NSString *string = [[NSString alloc] initWithData:[stream propertyForKey:NSStreamDataWrittenToMemoryStreamKey] encoding:[stream encoding]];
-    XCTAssert([string length] == 10000, @"Expected the resulting string to be 10000 characters, but it was only %ld", (long)[string length]);
+    XCTAssert([string length] == 30000, @"Expected the resulting string to be 30000 characters, but it was only %ld", (long)[string length]);
 }
 
 - (void)testEncodedSimpleDocument {

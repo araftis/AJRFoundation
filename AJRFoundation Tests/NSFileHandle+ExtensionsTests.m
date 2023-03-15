@@ -68,8 +68,9 @@
     NSFileHandle *file;
     
     file = [NSFileHandle fileHandleForWritingAtPath:path createIfNecessary:NO withPermissions:0666 error:&localError];
-    XCTAssert(file == nil);
-    XCTAssert(localError != nil);
+    // This is flipped, because the temp method used to not create the file, but it does now for security reasons.
+    XCTAssert(file != nil);
+    XCTAssert(localError == nil);
     
     path = @"/usr/share/terminfo/mom";
     file = [NSFileHandle fileHandleForWritingAtPath:path createIfNecessary:YES withPermissions:0666 error:&localError];

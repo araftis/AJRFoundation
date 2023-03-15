@@ -46,8 +46,9 @@ open class AJRVariableTypeArray : AJRVariableType {
     open override func possiblyPerform(operator: AJROperator, left: Any?, right: Any?, consumed: inout Bool) throws -> Any? {
         if let op = `operator` as? AJRCollectionOperator {
             do {
-                let leftCollection : (any AJRCollection)? = try Conversion.valueAsCollection(left, force: true)
-                let rightCollection : (any AJRCollection)? = try Conversion.valueAsCollection(right, force: true)
+                // NOTE: We can't "force" these, because forcing will convert something like "5" into "[5]", which will then make a collection operation valid for non-collections, whih isn't what we want.
+                let leftCollection : (any AJRCollection)? = try Conversion.valueAsCollection(left, force: false)
+                let rightCollection : (any AJRCollection)? = try Conversion.valueAsCollection(right, force: false)
                 consumed = true
                 return try op.performCollectionOperator(left: leftCollection, right: rightCollection)
             } catch (ValueConversionError.valueIsNotACollection(_)) {

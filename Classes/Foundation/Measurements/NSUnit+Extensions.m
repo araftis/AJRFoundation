@@ -33,7 +33,9 @@
 
 #import "AJRLogging.h"
 #import "AJRClassEnumerator.h"
+#import "AJRFunctions.h"
 #import "AJRMethodEnumerator.h"
+#import "AJRPropertyEnumerator.h"
 #import "NSArray+Extensions.h"
 #import "NSDictionary+Extensions.h"
 #import "NSMutableDictionary+Extensions.h"
@@ -49,7 +51,11 @@ typedef NSUnit * (*AJRUnitConstructor)(id sender, SEL _cmd);
         unitClasses = [NSMutableSet set];
         for (Class class in [AJRClassEnumerator classEnumerator]) {
             // IMPORTANT NOTE: Using AJRClassIsKindOfClass avoids tripping +initialize on objects, which can cause strange behavior if this code is triggerred during early start up.
-            if (AJRClassIsKindOfClass(class, NSUnit.class) && class != NSUnit.class && class != NSDimension.class) {
+            if (AJRClassIsKindOfClass(class, NSUnit.class)
+                && class != NSUnit.class
+                && class != NSDimension.class
+                && strncmp(class_getName(class), "MX", 2) != 0
+                && strncmp(class_getName(class), "_NSStatic_", 10) != 0) {
                 [unitClasses addObject:class];
             }
         }
@@ -66,22 +72,50 @@ static NSMutableDictionary<NSString *, NSUnit *> *ajr_unitIdentifierToUnit;
         ajr_unitClassToIndentifiers = [NSMutableDictionary dictionary];
         ajr_unitIdentifierToUnit = [NSMutableDictionary dictionary];
         for (Class unitClass in self.unitClasses) {
-            AJRMethodEnumerator *enumerator = [AJRMethodEnumerator methodEnumeratorWithClass:unitClass];
-            Method method = nil;
-            while ((method = [enumerator nextMethod])) {
-                if ([enumerator isClassMethod]) {
-                    NSString *name = NSStringFromSelector(method_getName(method));
-                    if (![name hasPrefix:@"_"] && strcmp("@16@0:8", method_getTypeEncoding(method)) == 0 && ![name isEqualToString:@"baseUnit"]) {
+            AJRPropertyEnumerator *enumerator = [AJRPropertyEnumerator propertyEnumeratorWithClass:unitClass];
+            objc_property_t property;
+            Class baseClass = objc_getClass("NSUnit");
+            while ((property = [enumerator nextProperty])) {
+                //AJRPrintf(@"%C: %s %s, class=%@\n", unitClass, property_getName(property), property_getAttributes(property), enumerator.propertyClass);
+                Class possible = enumerator.propertyClass;
+                if (![enumerator.propertyName isEqualToString:@"baseUnit"]
+                    && enumerator.propertyIsClassProperty
+                    && AJRClassIsKindOfClass(possible, baseClass)) {
+                    Method method = class_getClassMethod(possible, enumerator.propertyGetter);
+                    if (method != NULL) {
                         AJRUnitConstructor constructor = (AJRUnitConstructor)method_getImplementation(method);
-                        NSUnit *unit = constructor(unitClass, method_getName(method));
-                        objc_setAssociatedObject(unit, @selector(identifier), name, OBJC_ASSOCIATION_RETAIN);
-                        [ajr_unitClassToIndentifiers addObject:name toSetForKey:(id<NSCopying>)unitClass];
-                        if (ajr_unitIdentifierToUnit[name] == nil) {
-                            ajr_unitIdentifierToUnit[name] = unit;
+                        if (constructor != NULL) {
+                            NSUnit *unit = constructor(unitClass, enumerator.propertyGetter);
+                            if (unit != nil) {
+                                objc_setAssociatedObject(unit, @selector(identifier), enumerator.propertyName, OBJC_ASSOCIATION_RETAIN);
+                                [ajr_unitClassToIndentifiers addObject:enumerator.propertyName toSetForKey:(id<NSCopying>)unitClass];
+                                if (ajr_unitIdentifierToUnit[enumerator.propertyName] == nil) {
+                                    ajr_unitIdentifierToUnit[enumerator.propertyName] = unit;
+                                }
+                            }
                         }
                     }
                 }
             }
+//            AJRMethodEnumerator *enumerator = [AJRMethodEnumerator methodEnumeratorWithClass:unitClass];
+//            Method method = nil;
+//            while ((method = [enumerator nextMethod])) {
+//                if ([enumerator isClassMethod]) {
+//                    NSString *name = NSStringFromSelector(method_getName(method));
+//                    if (![name hasPrefix:@"_"] && strcmp("@16@0:8", method_getTypeEncoding(method)) == 0 && ![name isEqualToString:@"baseUnit"]) {
+//                        AJRUnitConstructor constructor = (AJRUnitConstructor)method_getImplementation(method);
+//                        NSUnit *unit = AJRObjectIfKindOfClass(constructor(unitClass, method_getName(method)), NSUnit);
+//                        // Because apparently, sometimes the contructors don't return an NSUnit.
+//                        if (unit != nil) {
+//                            objc_setAssociatedObject(unit, @selector(identifier), name, OBJC_ASSOCIATION_RETAIN);
+//                            [ajr_unitClassToIndentifiers addObject:name toSetForKey:(id<NSCopying>)unitClass];
+//                            if (ajr_unitIdentifierToUnit[name] == nil) {
+//                                ajr_unitIdentifierToUnit[name] = unit;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
     });
 }
@@ -105,8 +139,13 @@ static NSMutableDictionary<NSString *, NSUnit *> *ajr_unitIdentifierToUnit;
         // Return everything.
         return [[[self ajr_unitIdentifierToUnit] allKeys] ajr_uniqueObjects];
     } else {
+        Class toTry = self;
+        NSString *name = NSStringFromClass(toTry);
         // Just return the identitiers for the given class.
-        return [self ajr_unitClassToIdentifier][self];
+        if ([name hasPrefix:@"_NSStatic_"]) {
+            toTry = NSClassFromString([name substringFromIndex:10]);
+        }
+        return [self ajr_unitClassToIdentifier][toTry];
     }
 }
 

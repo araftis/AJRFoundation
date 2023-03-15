@@ -157,7 +157,7 @@
     [set addObjectsFromArray:@[@"one", @"two", @"three"]];
     XCTAssert([[output ajr_data] length] == 0);
     [set addObjectsFromArray:(id)[NSSet setWithArray:@[@"four", @"five", @"six"]]];
-    XCTAssert([[output ajr_dataAsStringUsingEncoding:NSUTF8StringEncoding] rangeOfString:@"<WARNING>: Called addObjectsFromArray: with a"].location != NSNotFound);
+    XCTAssert([[output ajr_dataAsStringUsingEncoding:NSUTF8StringEncoding] rangeOfString:@"<WARNING>: Called -[__NSSetM addObjectsFromArray:] with a"].location != NSNotFound);
     AJRLogSetOutputStream(nil, AJRLogLevelWarning);
 }
 

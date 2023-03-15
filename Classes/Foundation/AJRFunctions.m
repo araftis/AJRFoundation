@@ -129,6 +129,88 @@ NSString *AJRPrettyPrintKey(NSString *key) {
 }
 
 
+NSString *AJRNameWithCamelCase(NSString *key) {
+    NSCharacterSet *uppercase = [NSCharacterSet uppercaseLetterCharacterSet];
+    NSCharacterSet *lowercase = [NSCharacterSet lowercaseLetterCharacterSet];
+    NSCharacterSet *letters = [NSCharacterSet letterCharacterSet];
+    NSScanner *scanner;
+    NSMutableString *string = [NSMutableString string];
+    NSString *nextChunk = nil;
+    
+    if (key.length == 0) {
+        return @"";
+    } else if (key.length == 1) {
+        return key.lowercaseString;
+    } else {
+        key = [[[key substringToIndex:1] lowercaseString] stringByAppendingString:[key substringFromIndex:1]];
+    }
+    
+    scanner = [NSScanner scannerWithString:key];
+    BOOL capitalizeNext = NO;
+    while ([scanner scanUpToCharactersFromSet:lowercase.invertedSet intoString:&nextChunk]) {
+        [string appendString:capitalizeNext ? nextChunk.capitalizedString : nextChunk];
+        // Read off the extraneous data
+        [scanner scanUpToCharactersFromSet:letters intoString:NULL];
+        // Then try to read uppercase
+        if ([scanner scanCharactersFromSet:uppercase intoString:&nextChunk]) {
+            // We did read uppercase, so append it.
+            [string appendString:nextChunk];
+            // But don't capitalize the next chunk.
+            capitalizeNext = NO;
+        } else {
+            capitalizeNext = YES;
+        }
+    }
+    
+    return string;
+}
+
+
+NSString *AJRNameWithUnderscores(NSString *key) {
+    NSCharacterSet *uppercase = [NSCharacterSet uppercaseLetterCharacterSet];
+    NSCharacterSet *lowercase = [NSCharacterSet lowercaseLetterCharacterSet];
+    NSCharacterSet *letters = [NSCharacterSet letterCharacterSet];
+    NSScanner *scanner;
+    NSMutableString *string = [NSMutableString string];
+    NSString *nextChunk = nil;
+    
+    if (key.length == 0) {
+        return @"";
+    } else if (key.length == 1) {
+        return key.lowercaseString;
+    } else {
+        key = [[[key substringToIndex:1] lowercaseString] stringByAppendingString:[key substringFromIndex:1]];
+    }
+    
+    scanner = [NSScanner scannerWithString:key];
+    scanner.charactersToBeSkipped = letters.invertedSet;
+    BOOL appendUnderscore = NO;
+    while ([scanner scanCharactersFromSet:lowercase intoString:&nextChunk]) {
+        if (appendUnderscore) {
+            [string appendString:@"_"];
+        }
+        [string appendString:nextChunk.lowercaseString];
+        if ([scanner scanCharactersFromSet:uppercase intoString:&nextChunk]) {
+            // We did read uppercase, so append it.
+            [string appendString:@"_"];
+            NSString *lower = nextChunk.lowercaseString;
+            if (lower.length > 1) {
+                [string appendString:[lower substringToIndex:lower.length - 1]];
+                [string appendString:@"_"];
+                [string appendString:[lower substringFromIndex:lower.length - 1]];
+            } else {
+                [string appendString:lower];
+            }
+            appendUnderscore = NO;
+        } else {
+            appendUnderscore = YES;
+        }
+    }
+    
+    return string;
+}
+
+
 NSString *AJRGetEnvironmentVariable(NSString *var) {
     NSDictionary *environment = [[NSProcessInfo processInfo] environment];
     __block NSString *returnValue = [environment objectForKey:var];

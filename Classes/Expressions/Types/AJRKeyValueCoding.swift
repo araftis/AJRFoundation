@@ -402,8 +402,16 @@ internal func getValue(forKeyPath path: String, on context: AJREvaluationContext
     // We're going to have a little bit of duplicate work here in an attempt to determine if we're a key path, and therefore that we should check the store.
     if let range = path.range(of: ".") {
         let key = String(path.prefix(upTo: range.lowerBound))
-        // Since we're a key path, let's see if we can find an object named 'key' in the store.
+        
+        if value != nil {
+            // We have a root object, so let's try and evaluate the key path on it.
+            if let possibleObject = getValue(forKeyPath: path, on: value) {
+                return possibleObject
+            }
+        }
+        // Either we don't have a root object, or when we evaluated on the root object and didn't get a value. In this case, let's see if we can evaluate to a symbol in the evaluation context.
         if let possibleObject = try? AJRExpression.value(context.symbol(named: key), with: context) {
+            // We did eventually evaluate to a symbol, so let's use that.
             value = possibleObject
             modifiedPath = String(path.suffix(from: range.upperBound))
         }

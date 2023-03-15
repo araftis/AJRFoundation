@@ -588,7 +588,7 @@ void AJRAddWriterConveniencesToWriter(Class class) {
     
     // bytes
     _AJRAddMethod(class, @selector(writeBytes:length:error:), ^(id <AJRByteWriter> self, void *bytes, size_t length, NSError **error) {
-        [self writeBytes:bytes length:length bytesWritten:NULL error:error];
+        return [self writeBytes:bytes length:length bytesWritten:NULL error:error];
     }, AJRMethodSignature(@encode(BOOL), @encode(void *), @encode(size_t), @encode(NSError * _Nullable __autoreleasing *)));
     
     // strings

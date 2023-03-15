@@ -52,7 +52,7 @@
     AJRPlugInExtensionPoint *extensionPoint = [plugInManager extensionPointForName:@"ajrconstant"];
     XCTAssert(extensionPoint != nil);
     XCTAssert([[extensionPoint extensions] count] != 0); // Because we know we should have some constants.
-    XCTAssert([extensionPoint extensionForName:@"AJRPIConstant"]);
+    XCTAssert([extensionPoint extensionForName:@"AJRFoundation.AJRPIConstant"]);
 }
 
 - (BOOL)array:(NSMutableArray<NSString *> *)warnings hasWarningWithText:(NSString *)text {
@@ -84,8 +84,11 @@
     
     // Get the warning stream
     NSMutableArray<NSString *> *warnings = [[[warningStream ajr_dataAsStringUsingEncoding:NSUTF8StringEncoding] componentsSeparatedByString:@"\n"] mutableCopy];
+    [warnings removeObject:@""];
     NSMutableArray<NSString *> *infos = [[[infoStream ajr_dataAsStringUsingEncoding:NSUTF8StringEncoding] componentsSeparatedByString:@"\n"] mutableCopy];
+    [infos removeObject:@""];
     NSMutableArray<NSString *> *errors = [[[errorStream ajr_dataAsStringUsingEncoding:NSUTF8StringEncoding] componentsSeparatedByString:@"\n"] mutableCopy];
+    [errors removeObject:@""];
     XCTAssert([self array:infos hasWarningWithText:@"AJRPlugInManagerTestBundle loaded"], @"Apparently, our bundle didn't load.");
     XCTAssert([self array:warnings hasWarningWithText:@"There's already an extension-point named \"ajr_duplicated\" registered with the plug-in manager."]);
     XCTAssert([self array:warnings hasWarningWithText:@"Couldn't find class named \"AJRThisClassDoesntExist\" for extension-point \"ajr_non_existant_class\"."]);
@@ -99,6 +102,7 @@
     XCTAssert([self array:warnings hasWarningWithText:@"Unable to create attribute on extension-point \"ajr_bad_attributes\": "]);
     XCTAssert([self array:warnings hasWarningWithText:@"Unable to create attribute on extension-point \"ajr_bad_attributes\": "]);
     XCTAssert([self array:warnings hasWarningWithText:@"Unable to find class: \"AJRNotAnObjectClass\""]);
+    XCTAssert([self array:warnings hasWarningWithText:@"Failed to convert value \"AJRNotAnObjectClass\" to \"class\"."]);
     XCTAssert([self array:warnings hasWarningWithText:@"No \"name\" attribute specified for node: <element></element>"]);
     XCTAssert([self array:warnings hasWarningWithText:@"Unable to create element on extension-point \"ajr_good_test_with_class_sans_selector_with_fails\": <element></element>"]);
     XCTAssert([self array:warnings hasWarningWithText:@"Elements of type \"array\" should also define the \"plural\" key: <element name=\"test-set\" type=\"set\"><attribute name=\"test-string\" type=\"string\"></attribute></element>"]);
@@ -114,12 +118,13 @@
     XCTAssert([self array:warnings hasWarningWithText:@"Unable to find class \"_BAD_CLASS_\" specified by extension:"]);
     XCTAssert([self array:warnings hasWarningWithText:@"All extensions must define a name or a class, this node didn't: <ajr_good_test_with_class_sans_selector class=\"_BAD_CLASS_\""]);
     XCTAssert([self array:warnings hasWarningWithText:@"Unable to find class: \"_BAD_CLASS_\""]);
+    XCTAssert([self array:warnings hasWarningWithText:@"Failed to convert value \"_BAD_CLASS_\" to \"class\"."]);
 
     XCTAssert([self array:errors hasWarningWithText:@"Unable to load plug-in data: AJRPlugInManagerTestBundleWithError.ajrplugindata"]);
 
-    XCTAssert([errors count] == 1, @"We generated errors we didn't expect:\n%@", errors);
-    XCTAssert([warnings count] == 1, @"We generated warnings we didn't expect:\n%@", warnings);
-    XCTAssert([infos count] == 1, @"We generated infos we didn't expect:\n%@", infos);
+    XCTAssert([errors count] == 0, @"We generated errors we didn't expect:\n%@", errors);
+    XCTAssert([warnings count] == 0, @"We generated warnings we didn't expect:\n%@", warnings);
+    XCTAssert([infos count] == 0, @"We generated infos we didn't expect:\n%@", infos);
 
     // And reset the warning stream, because as a unit test, we should avoid side effects.
     AJRLogSetOutputStream(nil, AJRLogLevelInfo);

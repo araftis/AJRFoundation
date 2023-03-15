@@ -44,6 +44,7 @@ open class AJREvaluationContext : NSObject {
 
     open var rootObject : Any? = nil
     open var stackFrames = [AJRStackFrame]()
+    open var nameTransformer : (_ string: String) -> String
 
     // MARK: - Creation
 
@@ -63,6 +64,9 @@ open class AJREvaluationContext : NSObject {
     }
 
     public init(rootObject: Any? = nil, stackFrames: [AJRStackFrame]? = nil) {
+        self.nameTransformer = { string in
+            return string
+        }
         self.rootObject = rootObject
         if let stackFrames = stackFrames {
             self.stackFrames.append(contentsOf: stackFrames)
