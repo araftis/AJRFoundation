@@ -34,6 +34,15 @@
 
 /* Begin PBXBuildFile section */
 		210F8F8E273F381E004A939D /* AJRCountedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210F8F8D273F381E004A939D /* AJRCountedSet.swift */; };
+		2161936B29C3DE7F009C4B34 /* AJRPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2161936829C3DE7F009C4B34 /* AJRPattern.swift */; };
+		2161936C29C3DE7F009C4B34 /* AJRPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2161936829C3DE7F009C4B34 /* AJRPattern.swift */; };
+		2161936D29C3DE7F009C4B34 /* AJRLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2161936929C3DE7F009C4B34 /* AJRLexer.swift */; };
+		2161936E29C3DE7F009C4B34 /* AJRLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2161936929C3DE7F009C4B34 /* AJRLexer.swift */; };
+		2161936F29C3DE7F009C4B34 /* Swift.lexer in Resources */ = {isa = PBXBuildFile; fileRef = 2161936A29C3DE7F009C4B34 /* Swift.lexer */; };
+		2161937029C3DE7F009C4B34 /* Swift.lexer in Resources */ = {isa = PBXBuildFile; fileRef = 2161936A29C3DE7F009C4B34 /* Swift.lexer */; };
+		2161937329C3E2F1009C4B34 /* AJRStreamUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2161937229C3E2F1009C4B34 /* AJRStreamUtilities.swift */; };
+		2161937429C3E2F1009C4B34 /* AJRStreamUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2161937229C3E2F1009C4B34 /* AJRStreamUtilities.swift */; };
+		2161937629C3E474009C4B34 /* AJRLexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2161937529C3E474009C4B34 /* AJRLexerTests.swift */; };
 		217160732900CEE5001F2D4C /* AJRVariables.ajrplugindata in Resources */ = {isa = PBXBuildFile; fileRef = 217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */; };
 		217160742900CEE5001F2D4C /* AJRVariables.ajrplugindata in Resources */ = {isa = PBXBuildFile; fileRef = 217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */; };
 		217160762900CF2E001F2D4C /* AJRVariableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217160752900CF2E001F2D4C /* AJRVariableType.swift */; };
@@ -902,6 +911,11 @@
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		210F8F8D273F381E004A939D /* AJRCountedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRCountedSet.swift; sourceTree = "<group>"; };
+		2161936829C3DE7F009C4B34 /* AJRPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRPattern.swift; sourceTree = "<group>"; };
+		2161936929C3DE7F009C4B34 /* AJRLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRLexer.swift; sourceTree = "<group>"; };
+		2161936A29C3DE7F009C4B34 /* Swift.lexer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Swift.lexer; sourceTree = "<group>"; };
+		2161937229C3E2F1009C4B34 /* AJRStreamUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRStreamUtilities.swift; sourceTree = "<group>"; };
+		2161937529C3E474009C4B34 /* AJRLexerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRLexerTests.swift; sourceTree = "<group>"; };
 		217160722900CEE5001F2D4C /* AJRVariables.ajrplugindata */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AJRVariables.ajrplugindata; sourceTree = "<group>"; };
 		217160752900CF2E001F2D4C /* AJRVariableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableType.swift; sourceTree = "<group>"; };
 		2171607E2900DBB3001F2D4C /* AJRVariableTypeInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRVariableTypeInteger.swift; sourceTree = "<group>"; };
@@ -1469,6 +1483,24 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		2161936729C3DE51009C4B34 /* Parsing and Lexing */ = {
+			isa = PBXGroup;
+			children = (
+				2161937129C3DE88009C4B34 /* Lexers */,
+				2161936929C3DE7F009C4B34 /* AJRLexer.swift */,
+				2161936829C3DE7F009C4B34 /* AJRPattern.swift */,
+			);
+			path = "Parsing and Lexing";
+			sourceTree = "<group>";
+		};
+		2161937129C3DE88009C4B34 /* Lexers */ = {
+			isa = PBXGroup;
+			children = (
+				2161936A29C3DE7F009C4B34 /* Swift.lexer */,
+			);
+			path = Lexers;
+			sourceTree = "<group>";
+		};
 		2171607D2900D87D001F2D4C /* Variables */ = {
 			isa = PBXGroup;
 			children = (
@@ -1603,6 +1635,7 @@
 				FA206FE5195251F80065A290 /* Coding */,
 				FACCF9C10FB1F402004A40FA /* Extensions */,
 				FA09AEB2217D4BF10095FBC5 /* Measurements */,
+				2161936729C3DE51009C4B34 /* Parsing and Lexing */,
 				FACDA25421FAD8430008753B /* Transformers */,
 				FA4FD4240E8BEBBF00F05C19 /* AJRAutoreleasedMemory.h */,
 				FA4FD4250E8BEBBF00F05C19 /* AJRAutoreleasedMemory.m */,
@@ -1654,6 +1687,7 @@
 				FA6FFEB62203DEFA0083357D /* AJRSemaphores.h */,
 				FA7742F52357D6F20041824C /* AJRStreamUtilities.h */,
 				FA7742F62357D6F20041824C /* AJRStreamUtilities.m */,
+				2161937229C3E2F1009C4B34 /* AJRStreamUtilities.swift */,
 				FA15800C0EB529DC0094664B /* AJRTimeFormatter.h */,
 				FA15800D0EB529DC0094664B /* AJRTimeFormatter.m */,
 				FA59A98D228CD77D007FFB4F /* AJRTimeIntervalFormatter.h */,
@@ -1700,6 +1734,7 @@
 				FA6A98B3239B0E330096806F /* AJRGateTests.swift */,
 				FA6A98B5239B17480096806F /* AJRGateTests.m */,
 				FAD888BF1586ACFC004C0BF7 /* AJRHostTests.m */,
+				2161937529C3E474009C4B34 /* AJRLexerTests.swift */,
 				FA5E9AC115AF789300FA9856 /* AJRLoggingTests.m */,
 				FA30A5FF2334A51E006D4719 /* AJRLoggingTests.swift */,
 				FA5A2E8C23DB8FB100554DD4 /* AJRMemoryHandleTests.m */,
@@ -2525,6 +2560,7 @@
 				217160BE2908C09E001F2D4C /* AJRVariableTypeSet.strings in Resources */,
 				FA2FF99A20958F45001518D6 /* AJROperators.ajrplugindata in Resources */,
 				FA2A14CB1CA4AD9F0024AEC2 /* AJRConstants.ajrplugindata in Resources */,
+				2161936F29C3DE7F009C4B34 /* Swift.lexer in Resources */,
 				2171608A2908BDB3001F2D4C /* AJRVariableTypeBoolean.strings in Resources */,
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
 				217160A22908BEFD001F2D4C /* AJRVariableTypeFloatingPoint.strings in Resources */,
@@ -2551,6 +2587,7 @@
 				217160BF2908C09E001F2D4C /* AJRVariableTypeSet.strings in Resources */,
 				2171609B2908BECA001F2D4C /* AJRVariableTypeDate.strings in Resources */,
 				FADDA18E22A3555100257007 /* AJRValueTransformers.ajrplugindata in Resources */,
+				2161937029C3DE7F009C4B34 /* Swift.lexer in Resources */,
 				217160AB2908BF82001F2D4C /* AJRVariableTypeInteger.strings in Resources */,
 				217160B32908BFB9001F2D4C /* AJRVariableTypeString.strings in Resources */,
 				217160CA2908C148001F2D4C /* AJRVariableTypeArray.strings in Resources */,
@@ -2682,6 +2719,7 @@
 				FA99DF8B0EFCCD5200E4A979 /* NSXMLElement+Extensions.m in Sources */,
 				FA07C85F220D62A40077A0B5 /* AJRTranslator+Extensions.swift in Sources */,
 				FA311C9728ED2B6A006BE0FB /* AJRNotOperator.swift in Sources */,
+				2161936D29C3DE7F009C4B34 /* AJRLexer.swift in Sources */,
 				FA8B8FD028F8EB3100650F23 /* AJREvaluationContext.swift in Sources */,
 				FA3DE2730F14010E00C0E2C2 /* NSHost+Extensions.m in Sources */,
 				FA311C1528ECFAF7006BE0FB /* AJRTimeZoneDate.swift in Sources */,
@@ -2769,6 +2807,7 @@
 				FA311C5B28ED2500006BE0FB /* AJRMathConstants.swift in Sources */,
 				FA311C8E28ED2B4E006BE0FB /* AJRModulusOperator.swift in Sources */,
 				FA2C1707258C63FA007FD1B2 /* NSKeyedArchiver+Extensions.m in Sources */,
+				2161937329C3E2F1009C4B34 /* AJRStreamUtilities.swift in Sources */,
 				FA311C8828ED2B40006BE0FB /* AJRLessThanOperator.swift in Sources */,
 				FA311C4328ED15F7006BE0FB /* AJRExpressionFunctionStackFrame.swift in Sources */,
 				217160762900CF2E001F2D4C /* AJRVariableType.swift in Sources */,
@@ -2780,6 +2819,7 @@
 				FA6F16A813E1C58500A2C1E4 /* AJRMutableCaseInsensitiveDictionary.m in Sources */,
 				FA6F16AC13E1C62E00A2C1E4 /* AJRCaseInsensitiveString.m in Sources */,
 				FAAD99DC13F449E000917C90 /* AJRLogging.m in Sources */,
+				2161936B29C3DE7F009C4B34 /* AJRPattern.swift in Sources */,
 				FA8B8FC328F6319400650F23 /* NSArray+Extension.swift in Sources */,
 				FAD0920820CF1A75004320F5 /* AJRProtocolEnumerator.m in Sources */,
 				FACEC3F522CB0358008AA6DB /* NSRange+Extensions.swift in Sources */,
@@ -2896,6 +2936,7 @@
 				FA311C8328ED2B33006BE0FB /* AJRGreaterThanOperator.swift in Sources */,
 				FA2AC61D196615F20052EB20 /* AJRFileFinder.m in Sources */,
 				FA0F560B25E477DD00DD0F3D /* AJREditableObject.m in Sources */,
+				2161936C29C3DE7F009C4B34 /* AJRPattern.swift in Sources */,
 				FACEC3F622CB0358008AA6DB /* NSRange+Extensions.swift in Sources */,
 				FA2AC61E196615F20052EB20 /* AJRFractionFormatter.m in Sources */,
 				FA5EFBD820DF7BCB006C48B0 /* AJRPlugInManager.m in Sources */,
@@ -2976,6 +3017,7 @@
 				FA311C4428ED15F7006BE0FB /* AJRExpressionFunctionStackFrame.swift in Sources */,
 				FAD091F520CE42AE004320F5 /* AJRPropertyEnumerator.m in Sources */,
 				FA8B90112904CBFE00650F23 /* AJRVariableTypeObject.swift in Sources */,
+				2161936E29C3DE7F009C4B34 /* AJRLexer.swift in Sources */,
 				FA2AC64C196615F20052EB20 /* NSMutableDictionary+Extensions.m in Sources */,
 				FA2AC64D196615F20052EB20 /* NSMutableString+Extensions.m in Sources */,
 				FA2AC64F196615F20052EB20 /* NSMutableURLRequest+Extensions.m in Sources */,
@@ -3018,6 +3060,7 @@
 				FAD0920920CF1A75004320F5 /* AJRProtocolEnumerator.m in Sources */,
 				FA311C1928ECFCE5006BE0FB /* Date+Extensions.swift in Sources */,
 				FAB7DEA2255217FD00FAD684 /* OrderedSet.swift in Sources */,
+				2161937429C3E2F1009C4B34 /* AJRStreamUtilities.swift in Sources */,
 				FA311C3E28ED133D006BE0FB /* AJRExpressionStackFrame.swift in Sources */,
 				FADDA11C229BB6DB00257007 /* XMLDocument.swift in Sources */,
 				FA890FDC221FE68A0012B0F2 /* AJRPropertyListProvider.swift in Sources */,
@@ -3112,6 +3155,7 @@
 				FAA75F81234004EA00523F91 /* NSDictionary+ExtensionsTests.m in Sources */,
 				FADEADE319662DAF00BF6EB9 /* NSDate+ExtensionsTests.m in Sources */,
 				FA5FAA35236960B40027F178 /* NSXMLElement+ExtensionsTests.m in Sources */,
+				2161937629C3E474009C4B34 /* AJRLexerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

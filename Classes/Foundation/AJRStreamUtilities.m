@@ -104,7 +104,6 @@ void AJRAddReaderConveniencesToReader(Class class) {
     // readLine
     _AJRAddMethod(class, @selector(readLineReturningError:), ^(NSObject<AJRByteReader> *self, NSError **error) {
         NSString *string = AJRReadLine(self, error);
-        AJRPrintf(@"line: %@\n", string);
         return string;
     }, AJRMethodSignature(@encode(NSString *), @encode(NSError * _Nullable __autoreleasing *)));
 

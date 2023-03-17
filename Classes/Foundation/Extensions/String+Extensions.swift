@@ -49,6 +49,21 @@ public func >= (left: ComparisonResult, right: ComparisonResult) -> Bool {
 
 public extension StringProtocol {
 
+    /// Returns the range of the entire string as an NSRange. This is sometimes useful when working with API's that generally expect to work with NSString, of which there are still a few.
+    var fullNSRange : NSRange {
+        return NSRange(location: 0, length: self.utf16.count)
+    }
+
+    /// Returns the full range of the string.
+    var fullRange : Range<String.Index> {
+        return self.startIndex ..< self.endIndex
+    }
+
+    /// Checks if the receiver has the same prefix as `prefix` ignoring case.
+    ///
+    /// - parameter prefix The prefix to compare against.
+    ///
+    /// - returns `true` if the receiver has the prefix `prefix` regardless of case.
     func hasCaseInsensitivePrefix<T: StringProtocol>(_ prefix: T) -> Bool {
         if self.count >= prefix.count {
             let substring = String(self[startIndex..<self.index(startIndex, offsetBy: prefix.count)])
@@ -102,6 +117,16 @@ public extension StringProtocol {
         return self[self.index(self.startIndex, offsetBy: range.location) ... self.index(self.startIndex, offsetBy: range.location + range.length - 1)]
     }
 
+    var firstLetterCapitalized : String {
+        if count <= 1 {
+            return self.capitalized
+        }
+        let initial = self.prefix(1).capitalized
+        let remainder = self.suffix(from: index(startIndex, offsetBy: 1))
+        let string = initial + remainder
+        return string
+    }
+    
 }
 
 public extension String {
@@ -153,16 +178,3 @@ public extension String {
 
 }
 
-public extension StringProtocol {
-    
-    var firstLetterCapitalized : String {
-        if count <= 1 {
-            return self.capitalized
-        }
-        let initial = self.prefix(1).capitalized
-        let remainder = self.suffix(from: index(startIndex, offsetBy: 1))
-        let string = initial + remainder
-        return string
-    }
-    
-}
