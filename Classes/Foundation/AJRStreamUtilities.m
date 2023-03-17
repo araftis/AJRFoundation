@@ -103,8 +103,10 @@ void AJRAddReaderConveniencesToReader(Class class) {
     
     // readLine
     _AJRAddMethod(class, @selector(readLineReturningError:), ^(NSObject<AJRByteReader> *self, NSError **error) {
-        return AJRReadLine(self, error);
-    }, AJRMethodSignature(@encode(BOOL), @encode(NSError * _Nullable __autoreleasing *)));
+        NSString *string = AJRReadLine(self, error);
+        AJRPrintf(@"line: %@\n", string);
+        return string;
+    }, AJRMethodSignature(@encode(NSString *), @encode(NSError * _Nullable __autoreleasing *)));
 
     // int8_t & uint8_t
     _AJRAddMethod(class, @selector(readInt8:error:), ^(id <AJRByteReader> self, int8_t *value, NSError **error) {

@@ -77,7 +77,7 @@ Reads one unicode character in the streams inputEncoding setting into `character
 @returns The number of bytes read to read the character. If EOF is encountered, returns 0. If an error occurs, returns 0 and initializes `error` with the error that occurred.
 */
 - (size_t)readCharacter:(out uint32_t *)character error:(out NSError **)error;
-- (NSString *)readLineReturningError:(out NSError * _Nullable * _Nullable)error;
+- (nullable NSString *)readLineReturningError:(out NSError * _Nullable * _Nullable)error;
 
 - (BOOL)readInt8:(out int8_t *)value error:(out NSError * _Nullable * _Nullable)error;
 - (BOOL)readUInt8:(out uint8_t *)value error:(out NSError * _Nullable * _Nullable)error;
@@ -165,7 +165,7 @@ extern BOOL AJREncodingIs8Bit(NSStringEncoding encoding);
 extern void AJRAddReaderConveniencesToReader(Class class);
 
 extern BOOL AJRReadCharacter(id <AJRByteReader> reader, uint32_t *character, size_t *bytesRead, NSError *_Nullable *_Nullable error);
-extern NSString *AJRReadLine(NSObject<AJRByteReader> *reader, NSError *_Nullable *_Nullable error);
+extern NSString * _Nullable AJRReadLine(NSObject<AJRByteReader> *reader, NSError *_Nullable *_Nullable error);
 
 extern BOOL AJRReadInt8(id <AJRByteReader> reader, int8_t *value, NSError *_Nullable *_Nullable error);
 extern BOOL AJRReadUInt8(id <AJRByteReader> reader, uint8_t *value, NSError *_Nullable *_Nullable error);
