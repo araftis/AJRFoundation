@@ -9,13 +9,13 @@
  are permitted provided that the following conditions are met:
 
  * Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
+ list of conditions and the following disclaimer.
  * Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
  * Neither the name of AJRFoundation nor the names of its contributors may be
-   used to endorse or promote products derived from this software without
-   specific prior written permission.
+ used to endorse or promote products derived from this software without
+ specific prior written permission.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -47,30 +47,40 @@
     
     return class ?: defaultValue;
 }
-                              
+
 - (void)setClass:(Class)class forKey:(NSString *)key {
     [self setObject:NSStringFromClass(class) forKey:key];
 }
 
 - (NSUnit *)unitsForKey:(NSString *)key defaultValue:(NSUnit *)defaultValue {
-	NSUnit *value = defaultValue;
-	NSString *raw = [self stringForKey:key];
-	if (raw) {
-		value = [NSUnit unitForIdentifier:raw];
-	}
-	return value;
+    NSUnit *value = defaultValue;
+    NSString *raw = [self stringForKey:key];
+    if (raw) {
+        value = [NSUnit unitForIdentifier:raw];
+    }
+    return value;
 }
 
 - (void)setUnits:(NSUnit *)units forKey:(NSString *)key {
-	[self setObject:[units identifier] forKey:key];
+    [self setObject:[units identifier] forKey:key];
 }
 
 - (BOOL)boolForKey:(NSString *)key defaultValue:(BOOL)defaultValue {
-	NSString *value = [self stringForKey:key];
-	if (value) {
-		return value.boolValue;
-	}
-	return defaultValue;
+    NSString *value = [self stringForKey:key];
+    if (value) {
+        return value.boolValue;
+    }
+    return defaultValue;
+}
+
+- (float)floatForKey:(NSString *)key defaultValue:(float)defaultValue {
+    NSString *value = [self stringForKey:key];
+    return value == nil ? defaultValue : value.floatValue;
+}
+
+- (double)doubleForKey:(NSString *)key defaultValue:(double)defaultValue {
+    NSString *value = [self stringForKey:key];
+    return value == nil ? defaultValue : value.doubleValue;
 }
 
 @end

@@ -431,6 +431,7 @@
 		FA53F00320B27457003C99D8 /* AJROrderedCompletionQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = FA53F00020B27457003C99D8 /* AJROrderedCompletionQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA53F00420B27457003C99D8 /* AJROrderedCompletionQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FA53F00120B27457003C99D8 /* AJROrderedCompletionQueue.m */; };
 		FA53F00520B27457003C99D8 /* AJROrderedCompletionQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FA53F00120B27457003C99D8 /* AJROrderedCompletionQueue.m */; };
+		FA53FDB429C8053200855EB3 /* AJRFractionFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA53FDB329C8053200855EB3 /* AJRFractionFormatter.swift */; };
 		FA57AFB1231E0E4C0020C1E5 /* AJRFunctionsMRR.m in Sources */ = {isa = PBXBuildFile; fileRef = FA57AFB0231E0E4C0020C1E5 /* AJRFunctionsMRR.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FA58625019268CAC001F041A /* AJRXMLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA58624E19268CAC001F041A /* AJRXMLBuilder.swift */; };
 		FA59A98F228CD77D007FFB4F /* AJRTimeIntervalFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA59A98D228CD77D007FFB4F /* AJRTimeIntervalFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1113,6 +1114,7 @@
 		FA53B77F17A2D87F0009D370 /* AJRFoundation Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AJRFoundation Tests-Prefix.pch"; sourceTree = "<group>"; };
 		FA53F00020B27457003C99D8 /* AJROrderedCompletionQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJROrderedCompletionQueue.h; sourceTree = "<group>"; };
 		FA53F00120B27457003C99D8 /* AJROrderedCompletionQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJROrderedCompletionQueue.m; sourceTree = "<group>"; };
+		FA53FDB329C8053200855EB3 /* AJRFractionFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AJRFractionFormatter.swift; sourceTree = "<group>"; };
 		FA57AFB0231E0E4C0020C1E5 /* AJRFunctionsMRR.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRFunctionsMRR.m; sourceTree = "<group>"; };
 		FA58624E19268CAC001F041A /* AJRXMLBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AJRXMLBuilder.swift; sourceTree = "<group>"; };
 		FA59A98D228CD77D007FFB4F /* AJRTimeIntervalFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRTimeIntervalFormatter.h; sourceTree = "<group>"; };
@@ -1328,7 +1330,7 @@
 		FAD0921020CF2DE2004320F5 /* AJRProtocolPropertyEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRProtocolPropertyEnumerator.h; sourceTree = "<group>"; };
 		FAD0921120CF2DE2004320F5 /* AJRProtocolPropertyEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRProtocolPropertyEnumerator.m; sourceTree = "<group>"; };
 		FAD16A821422ABD400FCEB04 /* NSUserDefaults+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Extensions.h"; sourceTree = "<group>"; usesTabs = 1; };
-		FAD16A831422ABD400FCEB04 /* NSUserDefaults+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Extensions.m"; sourceTree = "<group>"; usesTabs = 1; };
+		FAD16A831422ABD400FCEB04 /* NSUserDefaults+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FAD38A3E25B2773600383EA3 /* NSDate+XMLCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+XMLCoding.h"; sourceTree = "<group>"; };
 		FAD38A3F25B2773600383EA3 /* NSDate+XMLCoding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+XMLCoding.m"; sourceTree = "<group>"; };
 		FAD888BF1586ACFC004C0BF7 /* AJRHostTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRHostTests.m; sourceTree = "<group>"; };
@@ -1655,6 +1657,7 @@
 				FA8F1EB420C6075400D62576 /* AJRFileOutputStream.m */,
 				FAA3263A1405C21800A620E8 /* AJRFractionFormatter.h */,
 				FAA3263B1405C21800A620E8 /* AJRFractionFormatter.m */,
+				FA53FDB329C8053200855EB3 /* AJRFractionFormatter.swift */,
 				FA4FD4260E8BEBBF00F05C19 /* AJRFormat.h */,
 				FA4FD4270E8BEBBF00F05C19 /* AJRFormat.m */,
 				FA4FD4280E8BEBBF00F05C19 /* AJRFunctions.h */,
@@ -2676,6 +2679,7 @@
 				FAD091F420CE42AE004320F5 /* AJRPropertyEnumerator.m in Sources */,
 				FAA37F180E9D2826004AEECF /* NSObject+Extensions.m in Sources */,
 				FA311C7628ED2B0E006BE0FB /* AJRDivideOperator.swift in Sources */,
+				FA53FDB429C8053200855EB3 /* AJRFractionFormatter.swift in Sources */,
 				FAA37F360E9D2946004AEECF /* AJRGate.m in Sources */,
 				FA06EA9A0EA9BC4D009DE0F8 /* NSFileManager+Extensions.m in Sources */,
 				FA206FEF195253350065A290 /* AJRXMLUnarchiver.m in Sources */,

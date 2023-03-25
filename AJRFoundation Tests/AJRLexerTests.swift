@@ -30,8 +30,17 @@ final class AJRLexerTests: XCTestCase {
             lexer.associate(name: "string-literal") { value, range in
                 print("string \(range): \(value)")
             }
-            lexer.associate(name: "id") { value, range in
-                print("id \(range): \(value)")
+            lexer.associate(name: "boolean-literal") { value, range in
+                print("boolean \(range): \(value)")
+            }
+            lexer.associate(name: "nil-literal") { value, range in
+                print("nil \(range): \(value)")
+            }
+            lexer.associate(name: "regular-expression-open-close") { value, range in
+                print("regx \(range): \(value)")
+            }
+            lexer.associate(name: "identifier") { value, range in
+                print("identifier \(range): \(value)")
             }
             lexer.associate(name: "operator") { value, range in
                 print("operator \(range): \(value)")
@@ -41,7 +50,7 @@ final class AJRLexerTests: XCTestCase {
 //            let expression = try lexer.buildInclusiveRegularExpression()
 //            print("expression: \(expression)")
 //
-            try lexer.lex(string: "alex + john - (raftis) on 6/16/19.71 is \"birthday\"")
+            try lexer.lex(string: "alex + `john` - (raftis) $on 6/$16/19.71 is \"birthday\" with #/some/# ##/more/## which is true but !false.")
         } catch {
             print("failed: \(error)")
         }

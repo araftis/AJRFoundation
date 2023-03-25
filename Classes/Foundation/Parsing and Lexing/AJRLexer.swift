@@ -132,7 +132,7 @@ open class AJRLexer: NSObject {
                 if subrange.length > 0 {
                     let otherText = string[subrange].trimmingCharacters(in: .whitespacesAndNewlines)
                     if !otherText.isEmpty {
-                        foundError = AJRLexerError.unknownText("Unknown text in input: \"\(otherText)\"")
+                        foundError = AJRLexerError.unknownText("Unknown text in input: \(otherText)")
                         stop.pointee = true
                     }
                 }
@@ -215,15 +215,15 @@ open class AJRLexer: NSObject {
             stream.open()
         }
         var lineNumber = 1
-        var rules = [String:String]()
+        var rules : OrderedDictionary<String,String> = OrderedDictionary<String,String>()
         var lines = [String:Int]()
 
-        var addBody : (String?, String?, Int) -> Void = { name, body, lineStart in
+        let addBody : (String?, String?, Int) -> Void = { name, body, lineStart in
             if let name, let body {
                 if let currentBody = rules[name] {
-                    rules[name] = currentBody + body
+                    rules[name] = currentBody + "|(\(body))"
                 } else {
-                    rules[name] = body
+                    rules[name] = "(\(body))"
                     lines[name] = lineStart
                 }
             }
@@ -233,26 +233,27 @@ open class AJRLexer: NSObject {
         var body : String? = nil
         var declaredLineStarted = 0
         while let line = try stream.readLine()?.trimmingCharacters(in: .whitespaces) {
-            var range = AJRLexer.identifierExpression.rangeOfFirstMatch(in: line, range: line.fullNSRange)
-            if line.isEmpty {
-                // Empty line, so just ignore.
-            } else if range.location != NSNotFound {
-                // Let's see if we're already doing name...
-                addBody(name, body, declaredLineStarted)
-
-                // Now get the info for the next rule.
-                let identifierRange = AJRLexer.identifierOnlyExpression.rangeOfFirstMatch(in: line, range: range)
-                declaredLineStarted = lineNumber
-                name = String(line[identifierRange])
-                body = String(line[NSRange(location: range.upperBound, length: line.count - range.upperBound)])
-            } else {
-                range = AJRLexer.commentExpression.rangeOfFirstMatch(in: line, range: line.fullNSRange)
+            if !line.isEmpty {
+                var range = AJRLexer.commentExpression.rangeOfFirstMatch(in: line, range: line.fullNSRange)
                 if range.location != NSNotFound {
                     // We can just ignore this line.
+                    print("comment: \(line)")
                 } else {
-                    // We have to append to buffer.
-                    if body != nil {
-                        body! += line
+                    range = AJRLexer.identifierExpression.rangeOfFirstMatch(in: line, range: line.fullNSRange)
+                    if range.location != NSNotFound {
+                        // Let's see if we're already doing name...
+                        addBody(name, body, declaredLineStarted)
+
+                        // Now get the info for the next rule.
+                        let identifierRange = AJRLexer.identifierOnlyExpression.rangeOfFirstMatch(in: line, range: range)
+                        declaredLineStarted = lineNumber
+                        name = String(line[identifierRange])
+                        body = String(line[NSRange(location: range.upperBound, length: line.count - range.upperBound)])
+                    } else {
+                        // We have to append to buffer.
+                        if body != nil {
+                            body! += line
+                        }
                     }
                 }
             }

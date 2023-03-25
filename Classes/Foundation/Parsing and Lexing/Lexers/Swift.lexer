@@ -5,71 +5,77 @@ close_paren → [\)}\]]
 
 // Symbols / Identifiers
 
-id_head → [A-Za-z_
-          {u00A8}
-          {u00AA}
-          {u00AD}
-          {u00AF}
-          {u00B2}-{u00B5}
-          {u00B7}-{u00BA}
-          {u00BC}-{u00BE}
-          {u00C0}-{u00D6}
-          {u00D8}-{u00F6}
-          {u00F8}-{u00FF}
-          {u0100}-{u02FF}
-          {u0370}-{u167F}
-          {u1681}-{u180D}
-          {u180F}-{u1DBF}
-          {u1E00}-{u1FFF}
-          {u200B}-{u200D}
-          {u202A}-{u202E}
-          {u203F}-{u2040}
-          {u2054}
-          {u2060}-{u206F}
-          {u2070}-{u20CF}
-          {u2100}-{u218F}
-          {u2460}-{u24FF}
-          {u2776}-{u2793}
-          {u2C00}-{u2DFF}
-          {u2E80}-{u2FFF}
-          {u3004}-{u3007}
-          {u3021}-{u302F}
-          {u3031}-{u303F}
-          {u3040}-{uD7FF}
-          {uF900}-{uFD3D}
-          {uFD40}-{uFDCF}
-          {uFDF0}-{uFE1F}
-          {uFE30}-{uFE44}
-          {uFE47}-{uFFFD}
-          {u00010000}-{u0001FFFD}
-          {u00020000}-{u0002FFFD}
-          {u00030000}-{u0003FFFD}
-          {u00040000}-{u0004FFFD}
-          {u00050000}-{u0005FFFD}
-          {u00060000}-{u0006FFFD}
-          {u00070000}-{u0007FFFD}
-          {u00080000}-{u0008FFFD}
-          {u00090000}-{u0009FFFD}
-          {u000A0000}-{u000AFFFD}
-          {u000B0000}-{u000BFFFD}
-          {u000C0000}-{u000CFFFD}
-          {u000D0000}-{u000DFFFD}
-          {u000E0000}-{u000EFFFD}
-          ]
-id_character → ({id_head})
-               |([0-9{u002D}{u003F}{u0021}
-                 {u0300}–{u036F}
-                 {u1DC0}–{u1DFF}
-                 {u20D0}–{u20FF}
-                 {uFE20}-{uFE2F}
-                 ])
-id → {id_head}{id_character}*
+identifier → {identifier_head}{identifier-characters}?
+identifier → `{identifier_head}{identifier-characters}?`
+identifier → {implicit-parameter-name}
+identifier → {property-wrapper-projection}
+identifier_head → [A-Za-z]
+identifier_head → _
+identifier_head → [{u00A8}
+                   {u00AA}
+                   {u00AD}
+                   {u00AF}
+                   {u00B2}-{u00B5}
+                   {u00B7}-{u00BA}
+                   {u00BC}-{u00BE}
+                   {u00C0}-{u00D6}
+                   {u00D8}-{u00F6}
+                   {u00F8}-{u00FF}
+                   {u0100}-{u02FF}
+                   {u0370}-{u167F}
+                   {u1681}-{u180D}
+                   {u180F}-{u1DBF}
+                   {u1E00}-{u1FFF}
+                   {u200B}-{u200D}
+                   {u202A}-{u202E}
+                   {u203F}-{u2040}
+                   {u2054}
+                   {u2060}-{u206F}
+                   {u2070}-{u20CF}
+                   {u2100}-{u218F}
+                   {u2460}-{u24FF}
+                   {u2776}-{u2793}
+                   {u2C00}-{u2DFF}
+                   {u2E80}-{u2FFF}
+                   {u3004}-{u3007}
+                   {u3021}-{u302F}
+                   {u3031}-{u303F}
+                   {u3040}-{uD7FF}
+                   {uF900}-{uFD3D}
+                   {uFD40}-{uFDCF}
+                   {uFDF0}-{uFE1F}
+                   {uFE30}-{uFE44}
+                   {uFE47}-{uFFFD}
+                   {u00010000}-{u0001FFFD}
+                   {u00020000}-{u0002FFFD}
+                   {u00030000}-{u0003FFFD}
+                   {u00040000}-{u0004FFFD}
+                   {u00050000}-{u0005FFFD}
+                   {u00060000}-{u0006FFFD}
+                   {u00070000}-{u0007FFFD}
+                   {u00080000}-{u0008FFFD}
+                   {u00090000}-{u0009FFFD}
+                   {u000A0000}-{u000AFFFD}
+                   {u000B0000}-{u000BFFFD}
+                   {u000C0000}-{u000CFFFD}
+                   {u000D0000}-{u000DFFFD}
+                   {u000E0000}-{u000EFFFD}]
+identifier-character → [0-9]
+identifier-character → [{u002D}{u003F}{u0021}{u0300}–{u036F}{u1DC0}–{u1DFF}{u20D0}–{u20FF}{uFE20}-{uFE2F}]
+identifier-character → {identifier_head}
+identifier-characters → {identifier-character}*
+implicit-parameter-name → \${decimal-digits}
+property-wrapper-projection → \${identifier-characters}
 
 // Literals
 
-possible_negative → [-]?
-numeric-literal → ({possible_negative}{floating-point-literal})
-                  |({possible_negative}{integer-literal})
+literal           → {numeric-literal}|{string-literal}|{regular-expression-literal}|{boolean-literal}|{nil-literal}
+
+possible_negative → -?
+numeric-literal   → ({possible_negative}{floating-point-literal})
+                   |({possible_negative}{integer-literal})
+boolean-literal   → true|false
+nil-literal       → nil
 
 // Decimal Numbers
 
@@ -122,12 +128,22 @@ quoted-text                      → {quoted-text-item}+
 quoted-text-item                 → ({escaped-character})|[^"{u000A}{u000D}]
 escape-sequence                  → \\
 escaped-character                → ({escape-sequence}0)
-                                   |({escape-sequence}\\)
-                                   |({escape-sequence}t)
-                                   |({escape-sequence}n)
-                                   |({escape-sequence}r)
-                                   |({escape-sequence}")
-                                   |({escape-sequence}')
+                                  |({escape-sequence}\\)
+                                  |({escape-sequence}t)
+                                  |({escape-sequence}n)
+                                  |({escape-sequence}r)
+                                  |({escape-sequence}")
+                                  |({escape-sequence}')
+
+// Regular Expressions
+
+regular-expression-literal → {regular-expression-literal-opening-delimiter}some {regular-expression-literal-closing-delimiter}
+regular-expression → some
+regular-expression-literal-opening-delimiter → {extended-regular-expression-literal-delimiter}/
+regular-expression-literal-closing-delimiter → /{extended-regular-expression-literal-delimiter}
+extended-regular-expression-literal-delimiter → #+
+regular-expression-open-close → {regular-expression-literal-opening-delimiter}|{regular-expression-literal-closing-delimiter}
+
 
 // Operators
 
