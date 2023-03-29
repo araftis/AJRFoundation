@@ -558,7 +558,7 @@ open class XMLDocument : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     }
     
     public static func == (lhs: XMLDocument, rhs: XMLDocument) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(rhs)
     }
     
     // MARK: - Copying

@@ -45,14 +45,15 @@ public enum AJRNumericError : Error {
 
 public protocol AJREquatable {
     
-    func isEqual(to other: Any?) -> Bool
+    func isEqual(_ other: Any?) -> Bool
     
 }
 
 public extension AJREquatable {
 
+    // So, I had to look this up, but isEqualTo: is used for things like scripting, namely AppleScript, and provides a secondary implementation if, for some reason, you need eqaulity to work differently between normal usage and scripting usage. We're going to make sure they're the same.
     func isEqual(_ other: Any?) -> Bool {
-        return self.isEqual(to: other)
+        return self.isEqual(other)
     }
 
 }
@@ -119,10 +120,10 @@ public func AJRAnyEquals(_ lhsIn: Any?, _ rhsIn: Any?) -> Bool {
     } else if (lhs == nil && rhs != nil) || (lhs != nil && rhs == nil) {
         return false
     } else if let lhs = lhs as? AJREquatable, let rhs = rhs {
-        return lhs.isEqual(to: rhs)
+        return lhs.isEqual(rhs)
     } else if let lhs = lhs as? NSObject {
         // Apparently AnyObject's may now be object's other than those subclassed from NSObject. Probably something I missed in a release note. Anyways, check against NSObject now.
-        return lhs.isEqual(to: rhs)
+        return lhs.isEqual(rhs)
     }
     
     AJRLog.warning("Trying to compare: \(type(of:lhs!)). Consider making this class conform to AJREquatable for better results.")
@@ -140,11 +141,13 @@ public func AJRAnyEquals(_ lhsIn: Any?, _ rhsIn: Any?) -> Bool {
 
 public func AJRAnyEquals<T: Equatable>(_ lhs: T?, _ rhs: T?) -> Bool {
     var result : Bool = false
-    // NOTE: nil is never equatable, so lhs and rhs will never both be nil. When that happens, the Any parameter version of AJREquals is called.
-    if (lhs == nil && rhs != nil) || (lhs != nil && rhs == nil) {
+    // NOTE: Apparently nil is now equalable...
+    if (lhs == nil && rhs == nil) {
+        result = true
+    } else if (lhs == nil && rhs != nil) || (lhs != nil && rhs == nil) {
         result = false
     } else if let lhs = lhs as? AJREquatable ,let rhs = rhs {
-        result = lhs.isEqual(to: rhs)
+        result = lhs.isEqual(rhs)
     } else if let lhs = lhs, let rhs = rhs {
         result = lhs == rhs
     }
@@ -206,6 +209,20 @@ public func AJRCompare<T>(_ left: T?, _ right: T?, _ comparator: (_ left: T, _ r
     return comparator(left!, right!)
 }
 
+internal func signedIntegerIsEqual(_ left: Any?, _ other: Any?) -> Bool {
+    var result = false
+    if let myself = left as? AJRValueForUntypedComparison, let other = other as? AJRValueForUntypedComparison {
+        do {
+            let left = try myself.signedValueForComparison()
+            let right = try other.signedValueForComparison()
+            result = left == right
+        } catch {
+            // We don't really care what the error was, just that an error occurred.
+        }
+    }
+    return result
+}
+
 extension SignedInteger {
     
     public func signedValueForComparison() throws -> Int64 {
@@ -225,18 +242,8 @@ extension SignedInteger {
 
     public var isFloatingPoint : Bool { return false }
     
-    public func isEqual(to other: Any?) -> Bool {
-        var result = false
-        if let myself = self as? AJRValueForUntypedComparison, let other = other as? AJRValueForUntypedComparison {
-            do {
-                let left = try myself.signedValueForComparison()
-                let right = try other.signedValueForComparison()
-                result = left == right
-            } catch {
-                // We don't really care what the error was, just that an error occurred.
-            }
-        }
-        return result
+    public func isEqual(_ other: Any?) -> Bool {
+        return signedIntegerIsEqual(self, other)
     }
     
     public func compare(to other: Any) -> AJRComparisonResult {
@@ -278,6 +285,20 @@ extension SignedInteger {
     
 }
 
+internal func unsignedIntegerIsEqual(_ left: Any?, _ other: Any?) -> Bool {
+    var result = false
+    if let myself = left as? AJRValueForUntypedComparison, let other = other as? AJRValueForUntypedComparison {
+        do {
+            let left = try myself.unsignedValueForComparison()
+            let right = try other.unsignedValueForComparison()
+            result = left == right
+        } catch {
+            // We don't really care what the error was, just that an error occurred.
+        }
+    }
+    return result
+}
+
 extension UnsignedInteger {
     
     public func signedValueForComparison() throws -> Int64 {
@@ -297,18 +318,8 @@ extension UnsignedInteger {
     
     public var isFloatingPoint : Bool { return false }
     
-    public func isEqual(to other: Any?) -> Bool {
-        var result = false
-        if let myself = self as? AJRValueForUntypedComparison, let other = other as? AJRValueForUntypedComparison {
-            do {
-                let left = try myself.unsignedValueForComparison()
-                let right = try other.unsignedValueForComparison()
-                result = left == right
-            } catch {
-                // We don't really care what the error was, just that an error occurred.
-            }
-        }
-        return result
+    public func isEqual(_ other: Any?) -> Bool {
+        return unsignedIntegerIsEqual(self, other)
     }
     
     public func compare(to other: Any) -> AJRComparisonResult {
@@ -355,16 +366,65 @@ extension UnsignedInteger {
     
 }
 
-extension Int : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension UInt : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension Int8 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension UInt8 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension Int16 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension UInt16 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension Int32 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension UInt32 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension Int64 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
-extension UInt64 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison { }
+extension Int : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return signedIntegerIsEqual(self, other)
+    }
+}
+
+extension UInt : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return unsignedIntegerIsEqual(self, other)
+    }
+}
+
+extension Int8 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return signedIntegerIsEqual(self, other)
+    }
+}
+
+extension UInt8 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return unsignedIntegerIsEqual(self, other)
+    }
+}
+
+extension Int16 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return signedIntegerIsEqual(self, other)
+    }
+}
+
+extension UInt16 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return unsignedIntegerIsEqual(self, other)
+    }
+}
+
+extension Int32 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return signedIntegerIsEqual(self, other)
+    }
+}
+
+extension UInt32 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return unsignedIntegerIsEqual(self, other)
+    }
+}
+
+extension Int64 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return signedIntegerIsEqual(self, other)
+    }
+}
+
+extension UInt64 : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
+    public func isEqual(_ other: Any?) -> Bool {
+        return unsignedIntegerIsEqual(self, other)
+    }
+}
 
 extension Float : AJRValueForUntypedDoubleComparison, AJRValueForUntypedComparison, AJREquatable, AJRComparable {
 
@@ -388,7 +448,7 @@ extension Float : AJRValueForUntypedDoubleComparison, AJRValueForUntypedComparis
     
     public var isFloatingPoint : Bool { return true }
     
-    public func isEqual(to other: Any?) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         var result = false
         if let other = other as? AJRValueForUntypedDoubleComparison {
             do {
@@ -465,7 +525,7 @@ extension NSNumber : AJRValueForUntypedDoubleComparison, AJRValueForUntypedCompa
     public var isFloatingPoint : Bool { return true }
 
 // I'm pretty sure we don't want this, but just in case...
-//    public func isEqual(to other: Any?) -> Bool {
+//    public func isEqual(_ other: Any?) -> Bool {
 //        var result = false
 //        if let other = other as? AJRValueForUntypedDoubleComparison {
 //            do {
@@ -524,7 +584,7 @@ extension Double : AJRValueForUntypedDoubleComparison, AJRValueForUntypedCompari
     
     public var isFloatingPoint : Bool { return true }
     
-    public func isEqual(to other: Any?) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         var result = false
         if let other = other as? AJRValueForUntypedDoubleComparison {
             do {
@@ -598,7 +658,7 @@ extension String : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJ
         return self.contains(".") || self.contains("e")
     }
     
-    public func isEqual(to other: Any?) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         var result = false
         if let other = other as? String {
             result = self == other
@@ -660,7 +720,7 @@ extension String : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJ
 
 extension Bool : AJREquatable, AJRComparable {
     
-    public func isEqual(to other: Any?) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         if let other = other as? Bool {
             // The brain dead case.
             return self == other
@@ -705,7 +765,7 @@ extension Bool : AJREquatable, AJRComparable {
 
 extension Date : AJREquatable, AJRComparable {
     
-    public func isEqual(to other: Any?) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         if let other = other as? Date {
             return self == other
         }
@@ -728,7 +788,7 @@ extension Date : AJREquatable, AJRComparable {
 
 extension Data : AJREquatable, AJRComparable {
     
-    public func isEqual(to other: Any?) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         if let other = other as? Data {
             return self == other
         }

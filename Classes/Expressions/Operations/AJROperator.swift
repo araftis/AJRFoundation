@@ -205,9 +205,9 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
         return "<\(type(of:self)): \(self.preferredToken) (\(precedence))>"
     }
 
-    // MARK: - Equatable
+    // MARK: - AJREquatable
 
-    open override func isEqual(to other: Any?) -> Bool {
+    open override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? AJROperator {
             return AJREqual(self.preferredToken, typed.preferredToken)
         }
@@ -215,7 +215,7 @@ open class AJROperator: NSObject, AJREquatable, NSCoding, AJRXMLCoding {
     }
 
     public static func == (lhs: AJROperator, rhs: AJROperator) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(rhs)
     }
 
     // MARK: - NSCoding

@@ -67,17 +67,13 @@ open class AJRLiteralValue : NSObject, AJREvaluation, AJREquatable, NSCoding, AJ
         return "nil"
     }
     
-    // MARK: - Equality
+    // MARK: - AJREquatable
 
-    public override func isEqual(to other: Any?) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? AJRLiteralValue {
             return AJRAnyEquals(value, typed.value)
         }
         return false
-    }
-
-    public override func isEqual(_ object: Any?) -> Bool {
-        return isEqual(to: object)
     }
 
     // MARK: - Hashable

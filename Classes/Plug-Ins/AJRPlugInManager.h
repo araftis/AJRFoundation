@@ -29,13 +29,13 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
+#import <AJRFoundation/AJRLogging.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class AJRPlugInAttribute, AJRPlugInElement, AJRPlugInExtensionPoint, AJRPlugInExtension;
 
-extern NSString * const AJRPlugInManagerLoggingDomain;
+extern const AJRLoggingDomain AJRLoggingDomainPlugInManager;
 extern NSString * const AJRPlugInManagerErrorDomain;
 
 typedef id _Nullable (^AJRPlugInValueTransformer)(NSString *rawValue, NSBundle * _Nullable bundle, NSError * _Nullable * _Nullable error);

@@ -282,7 +282,7 @@ public class XMLDTDElementContent : XMLNode {
      public var elementType : ElementContentType = .processedData
      public var _children : [XMLDTDElementContent]?
      */
-    public override func equal(toNode other: XMLNode) -> Bool {
+    public override func isEequal(_ other: Any?) -> Bool {
         if let typed = other as? XMLDTDElementContent {
             return (super.equal(toNode: other)
                 && AJRAnyEquals(occurance, typed.occurance)
@@ -294,7 +294,7 @@ public class XMLDTDElementContent : XMLNode {
     }
     
     public static func == (lhs: XMLDTDElementContent, rhs: XMLDTDElementContent) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(rhs)
     }
     
     // MARK: - Copying

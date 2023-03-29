@@ -260,7 +260,7 @@ open class XMLDTD : XMLNode, XMLNodeWithChildren {
     public var publicID : String?
     public var systemID : String?
 */
-    public override func equal(toNode other: XMLNode) -> Bool {
+    public override func isEqual(_ other: XMLNode) -> Bool {
         if let typed = other as? XMLDTD {
             return (super.equal(toNode: other)
                 && AJRAnyEquals(_children, typed._children)
@@ -276,7 +276,7 @@ open class XMLDTD : XMLNode, XMLNodeWithChildren {
     }
     
     public static func == (lhs: XMLDTD, rhs: XMLDTD) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(rhs)
     }
     
     // MARK: - Copying

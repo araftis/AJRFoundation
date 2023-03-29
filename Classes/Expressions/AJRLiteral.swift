@@ -51,15 +51,11 @@ open class AJRLiteral : NSObject, AJREvaluation, NSCoding, AJREquatable, AJRXMLC
 
     // MARK: - AJREquatable
 
-    open override func isEqual(to object: Any?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? AJRLiteral {
             return AJRAnyEquals(name, object.name)
         }
         return false
-    }
-
-    open override func isEqual(_ object: Any?) -> Bool {
-        return isEqual(to: object)
     }
 
     // MARK: - Hashable

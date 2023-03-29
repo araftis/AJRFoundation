@@ -84,9 +84,9 @@ open class AJRFunctionExpression : AJRExpression {
         return description
     }
 
-    public override func isEqual(to other: Any?) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? AJRFunctionExpression {
-            return (super.isEqual(to: other)
+            return (super.isEqual(other)
                 && AJRAnyEquals(function, typed.function)
             )
         }

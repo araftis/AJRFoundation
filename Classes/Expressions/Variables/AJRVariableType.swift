@@ -93,7 +93,7 @@ open class AJRVariableType : NSObject, AJRXMLCoding {
         typesByName[instance.name.lowercased()] = instance
         _types.append(instance)
         
-        AJRLog.in(domain: AJRPlugInManagerLoggingDomain, level: .debug, message: "Registered variable type: \(variableType) (\(instance.name))")
+        AJRLog.in(domain: .plugInManager, level: .debug, message: "Registered variable type: \(variableType) (\(instance.name))")
     }
     
     @objc(variableTypeForClass:)

@@ -30,15 +30,33 @@
  */
 
 #import <AJRFoundation/AJRXMLCoder.h>
+#import <AJRFoundation/AJRLogging.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const AJRXMLDecodingErrorDomain;
-extern NSString * const AJRXMLDecodingLoggingDomain;
+extern const AJRLoggingDomain AJRLoggingDomainXMLDecoding;
 
 @interface AJRXMLUnarchiver : AJRXMLCoder
 
+/*!
+ For the given `name`, attempts to find the class that will be used to decode the element in the XML stream.
+
+ @param name The name of the element that encodes the returned class.
+
+ @returns If found, returns the class that will be instantiated when decoding the give name.
+ */
 + (nullable Class)classForXMLName:(NSString *)name;
+
+/*!
+ Allows you to register an additional name for the class for decoding.
+
+ Some classes may actually want to map multiple names to themselves, and they can do this by calling this method. This is probably a rare-ish thing to do, but here when needed. Note that we coding, the instantiate class can get the name of the element in its `+[NSObject instantiateWithXMLCoding:]` method by calling `-[NSXMLCoder decodingName]`.
+
+ @param class The class to be registered.
+ @param name The name of the element in the XML stream.
+ */
++ (void)registerClass:(Class)class forName:(NSString *)name;
 
 + (nullable id)unarchivedObjectWithStream:(NSInputStream *)stream topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
 + (nullable id)unarchivedObjectWithData:(NSData *)data topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));

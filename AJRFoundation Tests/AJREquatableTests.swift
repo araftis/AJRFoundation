@@ -144,33 +144,33 @@ class AJREquatableTests: XCTestCase {
         XCTAssert(!AJRAnyEquals(leftString, rightString))
         
         // Booleans. NOTE: Not doing this via AJRAnyEqual, because some of the optimizations make it difficult to get to all code paths in Bool.isEqual().
-        XCTAssert(true.isEqual(to: true))
-        XCTAssert(!true.isEqual(to: false))
-        XCTAssert(true.isEqual(to: 1))
-        XCTAssert(!true.isEqual(to: 0))
-        XCTAssert(!true.isEqual(to: Date()))
-        let result = true.isEqual(to: "BAD")
+        XCTAssert(true.isEqual(true))
+        XCTAssert(!true.isEqual(false))
+        XCTAssert(true.isEqual(1))
+        XCTAssert(!true.isEqual(0))
+        XCTAssert(!true.isEqual(Date()))
+        let result = true.isEqual("BAD")
         XCTAssert(!result)
-        XCTAssert(true.isEqual(to: "true"))
-        XCTAssert(true.isEqual(to: "YES"))
-        XCTAssert(false.isEqual(to: "false"))
-        XCTAssert(false.isEqual(to: "NO"))
+        XCTAssert(true.isEqual("true"))
+        XCTAssert(true.isEqual("YES"))
+        XCTAssert(false.isEqual("false"))
+        XCTAssert(false.isEqual("NO"))
 
         // Some Dates
         let date1 = Date.init(timeIntervalSinceReferenceDate: 0.0)
         let date2 = Date.init(timeIntervalSinceReferenceDate: 1000.0)
-        XCTAssert(date1.isEqual(to: date1))
-        XCTAssert(!date1.isEqual(to: date2))
-        XCTAssert(!date1.isEqual(to: "BAD"))
+        XCTAssert(date1.isEqual(date1))
+        XCTAssert(!date1.isEqual(date2))
+        XCTAssert(!date1.isEqual("BAD"))
         
         // Some Data
         var i1 = UInt64(1)
         var i2 = UInt64(10)
         let data1 = Data(bytes: &i1, count: 8)
         let data2 = Data(bytes: &i2, count: 8)
-        XCTAssert(data1.isEqual(to: data1))
-        XCTAssert(!data1.isEqual(to: data2))
-        XCTAssert(!data1.isEqual(to: "BAD"))
+        XCTAssert(data1.isEqual(data1))
+        XCTAssert(!data1.isEqual(data2))
+        XCTAssert(!data1.isEqual("BAD"))
     }
     
     func testMisc() -> Void {

@@ -143,7 +143,7 @@ public class XMLDTDAttributeDeclarationNode : XMLDTDNode {
     
     // MARK: - Equatable
     
-    public override func equal(toNode other: XMLNode) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? XMLDTDAttributeDeclarationNode {
             return (super.equal(toNode: other)
                 && AJRAnyEquals(enumerations, typed.enumerations)
@@ -155,7 +155,7 @@ public class XMLDTDAttributeDeclarationNode : XMLDTDNode {
     }
     
     public static func == (lhs: XMLDTDAttributeDeclarationNode, rhs: XMLDTDAttributeDeclarationNode) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(rhs)
     }
     
     // MARK: - Copying

@@ -394,27 +394,16 @@ open class XMLNode: NSObject, NSCopying, AJREquatable {
         return []
     }
     
-    // MARK: - Equatable
+    // MARK: - AJREquatable
     
-    public func equal(toNode other: XMLNode) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         return (AJRAnyEquals(name, other.name)
             && AJRAnyEquals(uri, other.uri)
             && AJRAnyEquals(kind, other.kind)
             && AJRAnyEquals(objectValue, other.objectValue)
         )
     }
-    
-    public func isEqual(to other: Any) -> Bool {
-        if Self.self == type(of:other) {
-            return equal(toNode: other as! XMLNode)
-        }
-        return false
-    }
-    
-    public static func == (lhs: XMLNode, rhs: XMLNode) -> Bool {
-        return lhs.isEqual(to:rhs)
-    }
-    
+        
     // MARK: - Copying
     
     public func copy(with zone: NSZone? = nil) -> Any {

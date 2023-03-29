@@ -115,9 +115,9 @@ open class AJRConstant : NSObject, AJREvaluation, NSCopying {
 
     // MARK: - Equality
 
-    open override func isEqual(to other: Any?) -> Bool {
+    open override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? AJRConstant {
-            return (super.isEqual(to: typed)
+            return (super.isEqual(typed)
                     && AJREqual(tokens, typed.tokens)
                     && AJREqual(value, typed.value)
             )

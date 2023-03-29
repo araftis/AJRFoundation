@@ -130,6 +130,10 @@
             && [_stringValue isEqual:((AJRSimpleTestClass *)other)->_stringValue]);
 }
 
+- (NSUInteger)hash {
+    return [_stringValue hash];
+}
+
 + (NSString *)ajr_nameForXMLArchiving {
     return @"simpleTestClass";
 }

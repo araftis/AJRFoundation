@@ -480,7 +480,7 @@ public class XMLElement : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     
     // MARK: - Equatable
     
-    public override func equal(toNode other: XMLNode) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? XMLElement {
             return (super.equal(toNode: other)
                 && AJRAnyEquals(_children, typed._children)
@@ -492,7 +492,7 @@ public class XMLElement : XMLNode, XMLParserDelegate, XMLNodeWithChildren {
     }
     
     public static func == (lhs: XMLElement, rhs: XMLElement) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(rhs)
     }
     
     // MARK: - Copying

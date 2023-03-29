@@ -330,7 +330,7 @@ public class XMLDTDNode : XMLNode {
 
     // MARK: - Equatable
     
-    public override func equal(toNode other: XMLNode) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? XMLDTDNode {
             return (super.equal(toNode: other)
                 && AJRAnyEquals(dtdKind, typed.dtdKind)
@@ -342,7 +342,7 @@ public class XMLDTDNode : XMLNode {
     }
     
     public static func == (lhs: XMLDTDNode, rhs: XMLDTDNode) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(rhs)
     }
     
     // MARK: - Copying

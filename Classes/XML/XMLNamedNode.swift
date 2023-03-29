@@ -133,12 +133,12 @@ public class XMLNamedNode : XMLNode {
     
     // MARK: - Equatable
     
-    public override func equal(toNode other: XMLNode) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         return super.equal(toNode: other) && AJRAnyEquals(stringValue, other.stringValue)
     }
     
     public static func == (lhs: XMLNamedNode, rhs: XMLNamedNode) -> Bool {
-        return lhs.isEqual(to:rhs)
+        return lhs.isEqual(rhs)
     }
     
     // MARK: - Copying

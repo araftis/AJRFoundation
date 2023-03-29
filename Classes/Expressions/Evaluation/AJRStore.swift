@@ -271,15 +271,11 @@ open class AJRStore : NSObject, AJREquatable, AJRXMLCoding, Sequence, NSCopying 
 
     // MARK: - AJREquatable
 
-    open override func isEqual(to object: Any?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? AJRStore {
             return AJRAnyEquals(symbols, object.symbols)
         }
         return false
-    }
-
-    open override func isEqual(_ object: Any?) -> Bool {
-        return isEqual(to: object)
     }
 
     // MARK: - AJRXMLCoding

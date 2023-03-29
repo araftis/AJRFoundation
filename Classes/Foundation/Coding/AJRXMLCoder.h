@@ -92,6 +92,9 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 - (void)encodeURLBookmark:(NSURL *)url forKey:(NSString *)key;
 - (void)encodeVariableType:(AJRVariableType *)type forKey:(NSString *)key;
 
+/// The name of the element being encoded. Not normaly needed, but some advanced usages might want access to this.
+@property (nullable,nonatomic,strong) NSString *encodingName;
+
 - (void)finalizeDecodeWithBlock:(AJRXMLUnarchiverFinalizer)finalizer;
 - (void)decodeObjectForKey:(NSString *)key setter:(nullable void (^)(id _Nullable object))setter;
 - (void)decodeObjectUsingSetter:(nullable void (^)(id object))setter;
@@ -118,6 +121,16 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 - (void)decodeURLForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter;
 - (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter;
 - (void)decodeVariableTypeForKey:(NSString *)key setter:(nullable void (^)(AJRVariableType * _Nullable))setter;
+
+/// The name of the element being decoding. Not normaly needed, but some advanced usages might want access to this.
+@property (nullable,nonatomic,strong) NSString *decodingName;
+
+/**
+ If called, the current group will attempt to decode greedily, which means that as soon as a key's setted value is know, the setter will be called. We normally decode lazily, which is preferred.
+
+ This only applies to the currently active group, so current the `-[NSCoding decodeWithXMLCoder:]` implementation.
+ */
+- (void)decodeGreedily;
 
 @end
 

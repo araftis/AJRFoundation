@@ -44,7 +44,7 @@
 #import <AJRFoundation/AJRFoundation-Swift.h>
 
 NSString * const AJRXMLDecodingErrorDomain = @"AJRXMLDecodingErrorDomain";
-NSString * const AJRXMLDecodingLoggingDomain = @"AJRXMLDecodingLoggingDomain";
+NSString * const AJRLoggingDomainXMLDecoding = @"AJRXMLDecodingLoggingDomain";
 
 static NSString * const AJRXMLGenericKeySentinel = @"__GENERIC__";
 static NSString * const AJRXMLTextKeySentinel = @"__TEXT__";
@@ -65,6 +65,8 @@ static NSString * const AJRXMLTextKeySentinel = @"__TEXT__";
 @property (nonatomic,strong) AJRXMLUnarchiverFinalizer finalizer;
 @property (nonatomic,readonly) AJRMutableOrderedDictionary<NSString *, void (^)(void)> *keysToGroupDecoders;
 @property (nonatomic,strong) NSMutableDictionary<NSString *, NSString *> *unassociatedRawValues;
+@property (nonatomic,strong) NSDictionary<NSString *, NSString *> *rawAttributes;
+@property (nonatomic,assign) BOOL decodeGreedily;
 
 - (BOOL)isGroupKey:(NSString *)key;
 
@@ -129,12 +131,16 @@ static NSString * const AJRXMLTextKeySentinel = @"__TEXT__";
 @property (nonatomic,assign) BOOL hadRawValueInXML;
 @property (nonatomic,strong) NSMutableArray<id> *childValues;
 @property (nonatomic,readonly) NSString *characters;
+@property (nonatomic,readonly) BOOL hasFired;
+@property (nonatomic,assign) NSInteger firedCount;
 
 + (instancetype)setterNodeWithSetter:(AJRXMLUnarchiverGenericSetter)setter;
 
 - (void)addChildValue:(id)child;
 
 - (void)appendCharacters:(NSString *)characters;
+
+- (BOOL)fireWithValue:(id)value error:(NSError **)error;
 
 @end
 
@@ -181,6 +187,25 @@ static NSString * const AJRXMLTextKeySentinel = @"__TEXT__";
     return _rawValue == [NSNull null] ? nil : _rawValue;
 }
 
+- (BOOL)hasFired {
+    if (_childValues) {
+        return _firedCount == _childValues.count;
+    }
+    return _firedCount == 1;
+}
+
+- (BOOL)fireWithValue:(id)value error:(NSError **)error {
+    if (!self.hasFired) {
+        _firedCount += 1;
+        if (_setter != nil) {
+            return _setter(value, error);
+        }
+        AJRSetOutParameter(error, [NSError errorWithDomain:AJRXMLDecodingErrorDomain message:@"Tried to fired a setter with no setter set."]);
+        return NO;
+    }
+    return YES;
+}
+
 @end
 
 @implementation AJRXMLUnarchiverFrame
@@ -203,7 +228,14 @@ static NSString * const AJRXMLTextKeySentinel = @"__TEXT__";
 }
 
 - (void)setSetter:(AJRXMLUnarchiverGenericSetter)setter forKey:(NSString *)key {
-    _keysToSetters[key] = [AJRXMLUnarchiverSetterNode setterNodeWithSetter:setter];
+    AJRXMLUnarchiverSetterNode *node = [AJRXMLUnarchiverSetterNode setterNodeWithSetter:setter];
+    _keysToSetters[key] = node;
+    if (_decodeGreedily && _rawAttributes[key] != nil) {
+        NSError *localError = nil;
+        if (![node fireWithValue:_rawAttributes[key] error:&localError]) {
+            AJRLog(AJRLoggingDomainXMLDecoding, AJRLogLevelWarning, @"When greedily decoding key \"%@\", we encountered an error: %@", key, localError.localizedDescription);
+        }
+    }
     NSString *unassociatedValue = _unassociatedRawValues[key];
     if (unassociatedValue != nil) {
         // We have a value that wasn't previously associated with a node, so let's associate it now.
@@ -261,16 +293,16 @@ static NSString * const AJRXMLTextKeySentinel = @"__TEXT__";
                 if (node.setter != NULL) {
                     if (key == AJRXMLGenericKeySentinel) {
                         for (id value in node.childValues) {
-                            if (!node.setter(value, &localError)) {
+                            if (![node fireWithValue:value error:&localError]) {
                                 break;
                             }
                         }
                     } else if (key == AJRXMLTextKeySentinel) {
-                        if (!node.setter(node.characters, &localError)) {
+                        if (![node fireWithValue:node.characters error:&localError]) {
                             break;
                         }
                     } else {
-                        if (node.hadRawValueInXML && !node.setter(node.rawValue, &localError)) {
+                        if (node.hadRawValueInXML && ![node fireWithValue:node.rawValue error:&localError]) {
                             break;
                         }
                     }
@@ -306,9 +338,10 @@ static NSString * const AJRXMLTextKeySentinel = @"__TEXT__";
     id<AJRXMLCoding> _rootObject;
 }
 
-static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
+// This is private, and it actually is mutable.
+static NSMutableDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
 
-+ (NSDictionary<NSString *, Class> *)xmlNamesToClasses {
++ (NSMutableDictionary<NSString *, Class> *)xmlNamesToClasses {
     if (_xmlNamesToClasses == nil) {
         Method base = class_getClassMethod(objc_getClass("NSObject"), @selector(ajr_nameForXMLArchiving));
         NSMutableDictionary<NSString *, Class> *work = [NSMutableDictionary dictionary];
@@ -351,6 +384,16 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         possible = NSClassFromString(name);
     }
     return possible;
+}
+
++ (void)registerClass:(Class)class forName:(NSString *)name {
+    NSMutableDictionary *map = [self xmlNamesToClasses];
+    Class current = map[name];
+    if (current != Nil) {
+        AJRLog(AJRXMLCodingLogDomain, AJRLogLevelWarning, @"Class %C has already registered the xml name \"%@\", but %C is also trying to do this. This is likely going to cause problems in your document.", current, name, class);
+    } else {
+        [map setObject:class forKey:name];
+    }
 }
 
 + (nullable id)unarchivedObjectWithStream:(NSInputStream *)stream topLevelClass:(Class)class error:(NSError **)error {
@@ -716,6 +759,10 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     } forKey:key];
 }
 
+- (void)decodeGreedily {
+    [[_stack lastObject] setDecodeGreedily:YES];
+}
+
 #pragma mark - NSXMLParserDelegate
 
 - (nullable Class)resolveClassForAttributeValue:(nullable NSString *)possibleClassName orElementName:(nullable NSString *)elementName error:(NSError * _Nullable * _Nullable)error {
@@ -743,6 +790,9 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(nullable NSString *)namespaceURI qualifiedName:(nullable NSString *)qName attributes:(NSDictionary<NSString *, NSString *> *)attributeDict {
     NSError *localError = nil; // An error we can use in various places below.
 
+    // Make sure this starts off as nil.
+    self.decodingName = nil;
+
     // We'll do a real quick short circuit here.
     if ([elementName hasPrefix:@"nil:"]) {
         if (elementName.length > 4) {
@@ -765,6 +815,7 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         objectClass = _topLevelClass;
     } else {
         objectClass = [self resolveClassForAttributeValue:attributeDict[@"ajr:class"] orElementName:elementName error:&localError];
+        self.decodingName = elementName;
     }
     if (objectClass == nil) {
         // We failed to find a class. There's no way we can unarchive in this situation, so abort.
@@ -804,6 +855,7 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     // Mark the frame as being a reference object. This is important, because we'll use this flag to prevent "finalizing" the object, which can happen with self referential object graphs, which an object can contain an object which points back to the source object.
     frame.isReferenceObject = referenceID != nil;
     frame.objectID = objectID;
+    frame.rawAttributes = attributeDict;
     // Add the frame to our stack.
     [_stack addObject:frame];
 
@@ -852,7 +904,7 @@ static NSDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
         _objectsByID[frame.objectID] = frame.object;
     }
     if (_warnOfUndecodedKeys && frame.unassociatedRawValues.count != 0) {
-        AJRLog(AJRXMLDecodingLoggingDomain, AJRLogLevelWarning, @"Some XML keys were not decoded: %@", [frame.unassociatedRawValues.allKeys componentsJoinedByString:@", "]);
+        AJRLog(AJRLoggingDomainXMLDecoding, AJRLogLevelWarning, @"Some XML keys were not decoded: %@", [frame.unassociatedRawValues.allKeys componentsJoinedByString:@", "]);
     }
     [_stack removeLastObject];
 

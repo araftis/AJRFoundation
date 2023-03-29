@@ -72,9 +72,9 @@ public class AJRSimpleExpression : AJROperatorExpression {
     }
 
     @objc
-    public override func isEqual(to other: Any?) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? AJRSimpleExpression {
-            return (super.isEqual(to: other)
+            return (super.isEqual(other)
                 && AJRAnyEquals(left, typed.left)
                 && AJRAnyEquals(right, typed.right)
             )

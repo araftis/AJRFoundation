@@ -205,7 +205,9 @@ public struct AJRTimeZoneDate : Comparable, Equatable, Hashable, AJREquatable {
         date.hash(into: &hasher)
         timeZone.hash(into: &hasher)
     }
-    
+
+    // MARK: - AJREquatable
+
     /// Compare two `Date` values.
     public func compare(_ other: AJRTimeZoneDate) -> ComparisonResult {
         return date.compare(other.date)
@@ -215,7 +217,7 @@ public struct AJRTimeZoneDate : Comparable, Equatable, Hashable, AJREquatable {
         return date.compare(other)
     }
     
-    public func isEqual(to other: Any?) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         if let other = other as? AJRTimeZoneDate {
             return self == other
         } else if let otherDate = other as? Date {

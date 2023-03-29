@@ -124,7 +124,7 @@
         const uint8_t *bytes = getsectiondata(header, segname, sectname, &length);
         
         if (bytes != NULL) {
-            data = [NSData dataWithBytes:bytes + slide length:length];
+            data = [NSData dataWithBytes:bytes length:length];
         } else {
             AJRLog(nil, AJRLogLevelWarning, @"Failed to find section named \"%@\" in segment \"%@\" in header %p.", name, type, header);
         }

@@ -33,7 +33,7 @@ import Foundation
 
 extension Character : AJREquatable {
 
-    public func isEqual(to other: Any?) -> Bool {
+    public func isEqual(_ other: Any?) -> Bool {
         if let other = other as? Character {
             return self == other
         }

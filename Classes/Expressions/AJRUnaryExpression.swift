@@ -69,9 +69,9 @@ public class AJRUnaryExpression : AJROperatorExpression {
     
     // MARK: - Equatable
     
-    public override func isEqual(to other: Any?) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let other = other as? AJRUnaryExpression {
-            return (super.isEqual(to: other)
+            return (super.isEqual(other)
                 && AJREqual(self.value, other.value)
             )
         }

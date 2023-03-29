@@ -47,6 +47,8 @@ typedef NS_ENUM(int8_t, AJRLogLevel) {
     AJRLogLevelDebug = LOG_DEBUG
 };
 
+typedef NSString *AJRLoggingDomain NS_EXTENSIBLE_STRING_ENUM;
+
 /*! Sets the output stream for the specified log level. If stream is nil, this reset the specified log level back to the default stream. If level is AJRLogLevelDefault and stream is nil, the output stream is reset back to stderr. Finally, if the stream is not open, the functions attempts to open the stream.
  @param stream The output stream to write the log info. If nil, reset to use the default stream or stderr.
  @param level The level who's stream is set.
@@ -67,16 +69,16 @@ extern void AJRLogSetUsesSyslog(BOOL flag);
  */
 extern BOOL AJRLogGetUsesSyslog(void);
 
-extern void AJRLog_fv(NSString * _Nullable domain, AJRLogLevel level, NSString *format, va_list ap);
-extern void AJRLog(NSString * _Nullable domain, AJRLogLevel level, NSString *format, ...);
-extern void AJRSimpleLog(NSString * _Nullable domain, AJRLogLevel level, NSString *message);
+extern void AJRLog_fv(AJRLoggingDomain _Nullable domain, AJRLogLevel level, NSString *format, va_list ap);
+extern void AJRLog(AJRLoggingDomain _Nullable domain, AJRLogLevel level, NSString *format, ...);
+extern void AJRSimpleLog(AJRLoggingDomain _Nullable domain, AJRLogLevel level, NSString *message);
 
 extern void AJRLogSetGlobalLogLevel(AJRLogLevel level);
 extern AJRLogLevel AJRLogGetGlobalLogLevel(void);
-extern void AJRLogSetLogLevel(AJRLogLevel level, NSString *domain);
-extern AJRLogLevel AJRLogGetLogLevel(NSString * _Nullable domain);
+extern void AJRLogSetLogLevel(AJRLogLevel level, AJRLoggingDomain domain);
+extern AJRLogLevel AJRLogGetLogLevel(AJRLoggingDomain _Nullable domain);
 
-extern BOOL AJRLogShouldOutputForDomain(NSString * _Nullable domain, AJRLogLevel level);
+extern BOOL AJRLogShouldOutputForDomain(AJRLoggingDomain _Nullable domain, AJRLogLevel level);
 
 extern NSInteger AJRLogGetDefaultCount(void);
 extern NSInteger AJRLogGetEmergencyCount(void);

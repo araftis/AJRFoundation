@@ -467,4 +467,8 @@ typedef void (^AJRXMLObjectEncoder)(void);
     [_outputStream addAttribute:key withValue:type.name];
 }
 
+- (NSString *)encodingName {
+    return [[_scopes lastObject] key];
+}
+
 @end

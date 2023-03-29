@@ -119,7 +119,9 @@ extension DateComponents : AJREquatable {
         return left == right
     }
     
-    public func isEqual(to other: Any?) -> Bool {
+    // MARK: - AJREquatable
+
+    public func isEqual(_ other: Any?) -> Bool {
         if let other = other as? DateComponents {
             return _equal(.era, to: other)
             && _equal(.year, to: other)

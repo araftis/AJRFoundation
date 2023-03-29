@@ -91,20 +91,15 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation, AJRXM
     // MARK: - Equatable
 
     @objc
-    public override func isEqual(to other: Any?) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let typed = other as? AJRExpression {
             return AJRAnyEquals(protected, typed.protected)
         }
         return false
     }
 
-    @objc
-    public override func isEqual(_ object: Any?) -> Bool {
-        return isEqual(to: object)
-    }
-
     public static func == (lhs: AJRExpression, rhs: AJRExpression) -> Bool {
-        return lhs.isEqual(to: rhs)
+        return lhs.isEqual(rhs)
     }
 
     // MARK: - Hashable

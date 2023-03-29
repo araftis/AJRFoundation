@@ -115,9 +115,9 @@ open class AJRVariable : NSObject, AJREquatable, AJRXMLCoding, AJREvaluation {
 
     // MARK: - AJREquatable
 
-    open override func isEqual(to object: Any?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? AJRVariable {
-            return (super.isEqual(to: object)
+            return (super.isEqual(object)
                     && AJRAnyEquals(name, object.name)
                     && AJRAnyEquals(value, object.value))
         }

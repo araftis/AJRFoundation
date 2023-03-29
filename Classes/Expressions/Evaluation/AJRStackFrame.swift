@@ -122,17 +122,13 @@ open class AJRStackFrame : NSObject, AJREquatable, AJRXMLCoding {
 
     // MARK: - AJREquatable
 
-    open override func isEqual(to other: Any?) -> Bool {
+    open override func isEqual(_ other: Any?) -> Bool {
         if let other = other as? AJRStackFrame {
-            return (super.isEqual(to: other)
+            return (super.isEqual(other)
                     && AJRAnyEquals(store, other.store)
                     && AJRAnyEquals(arguments, other.arguments))
         }
         return false
-    }
-
-    open override func isEqual(_ object: Any?) -> Bool {
-        return isEqual(to: object)
     }
 
     // MARK: - AJRXMLCoding

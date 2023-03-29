@@ -43,7 +43,7 @@
 
 #import <objc/runtime.h>
 
-NSString * const AJRPlugInManagerLoggingDomain = @"AJRPlugInManager";
+const AJRLoggingDomain AJRLoggingDomainPlugInManager = @"AJRPlugInManager";
 NSString * const AJRPlugInManagerErrorDomain = @"AJRPlugInManager";
 
 static NSMutableDictionary<NSString *, AJRPlugInValueTransformer> *AJRGetValueTransformers(void) {
@@ -84,17 +84,17 @@ static id AJRValueForString(NSString *raw, NSString *type, NSBundle *bundle, NSE
     } else if ([type isEqualToString:@"class"]) {
         value = NSClassFromString(raw);
         if (value == Nil) {
-            AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Unable to find class: \"%@\"", raw);
+            AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Unable to find class: \"%@\"", raw);
         }
     } else if ([type isEqualToString:@"url"]) {
         value = [NSURL URLWithString:raw];
         if (value == nil) {
-            AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Unable to create URL from: \"%@\"", raw);
+            AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Unable to create URL from: \"%@\"", raw);
         }
     } else if (AJRGetValueTransformers()[type] != nil) {
         value = AJRGetValueTransformers()[type](raw, bundle, &localError);
     } else {
-        AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Asked to produce a value for an unknown type: %@, returning \"%@\" as string.\n", type, raw);
+        AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Asked to produce a value for an unknown type: %@, returning \"%@\" as string.\n", type, raw);
         value = raw;
     }
     
@@ -156,7 +156,7 @@ static BOOL isInitializing = NO;
     AJRPlugInExtensionPoint *extensionPoint = [_extensionPoints objectForKey:name];
     
     if (extensionPoint && [extensionPoint registered]) {
-        AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"There's already an extension-point named \"%@\" registered with the plug-in manager.", name);
+        AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"There's already an extension-point named \"%@\" registered with the plug-in manager.", name);
     } else {
         if (!extensionPoint) {
             extensionPoint = [[AJRPlugInExtensionPoint alloc] init];
@@ -164,7 +164,7 @@ static BOOL isInitializing = NO;
         if (extensionPointClassName) {
             extensionPoint.extensionPointClass = NSClassFromString(extensionPointClassName);
             if (extensionPoint.extensionPointClass == Nil) {
-                AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Couldn't find class named \"%@\" for extension-point \"%@\".", extensionPointClassName, name);
+                AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Couldn't find class named \"%@\" for extension-point \"%@\".", extensionPointClassName, name);
             }
         }
         extensionPoint.name = name;
@@ -306,7 +306,7 @@ static BOOL isInitializing = NO;
     
     if ([fails count]) {
         for (NSString *fail in fails) {
-            AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"%@", fail);
+            AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"%@", fail);
         }
     }
 }
@@ -334,10 +334,10 @@ static BOOL isInitializing = NO;
                 if (convertedValue) {
                     [properties setObject:convertedValue forKey:name];
                 } else {
-                    AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Failed to convert value \"%@\" to \"%@\".", value, attribute.type);
+                    AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Failed to convert value \"%@\" to \"%@\".", value, attribute.type);
                 }
             } else {
-                AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Unknown attribute \"%@\" on: %@", name, node);
+                AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Unknown attribute \"%@\" on: %@", name, node);
             }
         }
     }
@@ -349,7 +349,7 @@ static BOOL isInitializing = NO;
                 NSError *localError = nil;
                 possibleDefault = AJRValueForString(attribute.rawDefaultValue, attribute.type, bundle, &localError);
                 if (possibleDefault == nil) {
-                    AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Failed to create attribute of type \"%@\" from rawValue \"%@\".", attribute.type, attribute.rawDefaultValue);
+                    AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Failed to create attribute of type \"%@\" from rawValue \"%@\".", attribute.type, attribute.rawDefaultValue);
                 }
             } else {
                 possibleDefault = [attribute defaultValue];
@@ -357,7 +357,7 @@ static BOOL isInitializing = NO;
             if (possibleDefault) {
                 [properties setObject:possibleDefault forKey:[attribute name]];
             } else {
-                AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Missing required attribute \"%@\" in: %@", [attribute name], node);
+                AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Missing required attribute \"%@\" in: %@", [attribute name], node);
             }
         }
     }
@@ -377,13 +377,13 @@ static BOOL isInitializing = NO;
                 [properties setObject:subproperties forKey:[element key]];
             }
         } else {
-            AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Unknown element \"%@\" on: %@", name, node);
+            AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Unknown element \"%@\" on: %@", name, node);
         }
     }
     // Verify we have all required elements
     for (AJRPlugInElement *element in [[schema elements] objectEnumerator]) {
         if ([element required] && [properties objectForKey:[element key]] == nil) {
-            AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Missing required element \"%@\" in: %@", [element name], node);
+            AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Missing required element \"%@\" in: %@", [element name], node);
         }
     }
     
@@ -405,12 +405,12 @@ static BOOL isInitializing = NO;
         extensionClass = [[extensionPoint attributeForName:@"class"] defaultValue];
     }
     if (value && extensionClass == Nil) {
-        AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"Unable to find class \"%@\" specified by extension: %@", value, node);
+        AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"Unable to find class \"%@\" specified by extension: %@", value, node);
     }
 
     extensionName = [[node attributeForName:@"name"] stringValue];
     if (extensionName == nil && extensionClass == nil) {
-        AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelWarning, @"All extensions must define a name or a class, this node didn't: %@", node);
+        AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelWarning, @"All extensions must define a name or a class, this node didn't: %@", node);
     }
 
     properties = [self _dictionaryFromNode:node schema:extensionPoint skipNameAndClass:YES sourceBundle:bundle];
@@ -451,13 +451,13 @@ static BOOL isInitializing = NO;
 
 - (void)_scanBundles:(NSArray *)bundles {
     for (NSBundle *bundle in bundles) {
-        //AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelDebug@"%@: %@", bundle, [bundle URLsForResourcesWithExtension:@"ajrplugindata" subdirectory:@""]);
+        //AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelDebug@"%@: %@", bundle, [bundle URLsForResourcesWithExtension:@"ajrplugindata" subdirectory:@""]);
         for (NSURL *url in [bundle URLsForResourcesWithExtension:@"ajrplugindata" subdirectory:@""]) {
             if (![_scannedBundleURLs containsObject:url]) {
                 NSError *error = nil;
                 NSXMLDocument *document;
                 
-                AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelDebug, @"Adding plugins: %@", [url lastPathComponent]);
+                AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelDebug, @"Adding plugins: %@", [url lastPathComponent]);
 
                 // Do this early, because scanning an unloaded bundle can cause it to load, which means we'd rescan, and we want to avoid scanning twice.
                 [_scannedBundleURLs addObject:url];
@@ -466,7 +466,7 @@ static BOOL isInitializing = NO;
                 if (document) {
                     [self _scanNodes:[document nodesForXPath:@"plugindata" error:NULL] sourceBundle:bundle];
                 } else {
-                    AJRLog(AJRPlugInManagerLoggingDomain, AJRLogLevelError, @"Unable to load plug-in data: %@: %@", url, [error localizedDescription]);
+                    AJRLog(AJRLoggingDomainPlugInManager, AJRLogLevelError, @"Unable to load plug-in data: %@: %@", url, [error localizedDescription]);
                 }
             }
         }

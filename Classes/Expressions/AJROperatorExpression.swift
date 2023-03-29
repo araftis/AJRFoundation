@@ -52,9 +52,9 @@ public class AJROperatorExpression : AJRExpression {
     }
 
     @objc
-    open override func isEqual(to other: Any?) -> Bool {
+    open override func isEqual(_ other: Any?) -> Bool {
         if let other = other as? AJROperatorExpression {
-            return (super.isEqual(to: other)
+            return (super.isEqual(other)
                 && AJRAnyEquals(self.operator, other.operator))
         }
         return false

@@ -106,25 +106,17 @@ open class AJRFunction : NSObject, AJREquatable, AJREvaluation {
         throw AJRFunctionError.unimplementedAbstract("Abstract method \(type(of:self)).\(#function) should be implemented")
     }
 
-    // MARK: - Equality
+    // MARK: - AJREquatable
 
-    public func equal(toFunction other: AJRFunction) -> Bool {
-        return AJRAnyEquals(name, other.name)
-    }
-
-    public override func isEqual(_ object: Any?) -> Bool {
-        return isEqual(to: object)
-    }
-
-    public override func isEqual(to other: Any?) -> Bool {
+    public override func isEqual(_ other: Any?) -> Bool {
         if let other = other as? AJRFunction {
-            return equal(toFunction: other)
+            return AJRAnyEquals(name, other.name)
         }
         return false
     }
 
     public static func == (lhs: AJRFunction, rhs: AJRFunction) -> Bool {
-        return lhs.isEqual(to: rhs)
+        return lhs.isEqual(rhs)
     }
 
     // MARK: - Copying
