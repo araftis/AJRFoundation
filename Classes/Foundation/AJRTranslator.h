@@ -38,11 +38,11 @@ extern NSString * const AJRTanslatorDidChangeLanguageNotification;
 
 @interface AJRTranslator : NSObject
 
-+ (instancetype)translatorForClass:(Class)class;
++ (instancetype)translatorForClass:(Class)aClass;
 + (instancetype)translatorForObject:(id)object;
 
-- (instancetype)initForClass:(Class)class;
-- (instancetype)initForClass:(Class)class stringTableNames:(NSArray<NSString *> *)stringTableNames;
+- (instancetype)initForClass:(Class)aClass;
+- (instancetype)initForClass:(Class)aClass stringTableNames:(NSArray<NSString *> *)stringTableNames;
 
 - (id)valueForKey:(NSString *)key;
 - (id)valueForKey:(NSString *)key defaultValue:(nullable NSString *)defaultValue;

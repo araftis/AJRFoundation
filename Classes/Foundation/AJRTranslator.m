@@ -144,8 +144,10 @@ static NSMutableDictionary *_stringTables = nil;
         _stringTableNames = [stringTableNames mutableCopy];
         _bundles = [NSMutableSet set];
         [_bundles addObject:[NSBundle bundleForClass:class]];
-        // I'm not 100% sure about this, but right now, this makes menus translate correctly.
+        // We add this, because we need to make sure to check the main bundle for things like menu string.
         [_bundles addObject:[NSBundle mainBundle]];
+        // We add this to make sure to get to the shared strings file.
+        [_bundles addObject:AJRFoundationBundle()];
         _cache = [[NSMutableDictionary alloc] init];
     }
     return self;

@@ -193,7 +193,7 @@ open class AJRExpression: NSObject, AJREquatable, NSCoding, AJREvaluation, AJRXM
 //    }
 
     public var propertyListValue : Any {
-        return ["type": NSStringFromClass(Self.self), "protected": protected];
+        return ["type": NSStringFromClass(Self.self), "protected": protected] as [String : Any]
     }
 
     // MARK: - NSCoding

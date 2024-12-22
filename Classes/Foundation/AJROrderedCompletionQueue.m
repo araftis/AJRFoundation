@@ -33,6 +33,8 @@
 
 #import "AJRLogging.h"
 
+AJRLoggingDomain AJROrderedCompletionQueueDomain = @"AJROrderedCompletionQueueDomain";
+
 @implementation AJROrderedCompletionQueue {
     AJRLimitedResourceCreationBlock _limitedResourceCreationBlock;
     NSMutableArray *_limitedResources;
@@ -82,11 +84,11 @@
 
         if (limitedResource == nil) {
             NSError *localError = nil;
-            id limitedResource = _limitedResourceCreationBlock(&localError);
+            limitedResource = _limitedResourceCreationBlock(&localError);
             if (limitedResource) {
                 [_limitedResources addObject:limitedResource];
             } else {
-                NSLog(@"error creating resource: %@", [localError localizedDescription]);
+                AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelError, @"error creating resource: %@", [localError localizedDescription]);
                 abort();
             }
         }
@@ -98,7 +100,7 @@
                 results = voidWork();
             }
         } @catch (NSException *localException) {
-            NSLog(@"Exception while performing work: %@", [localException description]);
+            AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelError, @"Exception while performing work: %@", [localException description]);
         }
 
         completionBlock(results);
@@ -116,8 +118,8 @@
             
             [self->_semaphore lock];
             
-            //NSLog(@"queued %@work block %ld", resourceWork ? @"limited resource " : @"", (long)localWorkIndex);
-            
+            AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelDebug, @"(%ld) Queued %@work block", (long)localWorkIndex, resourceWork ? @"limited resource " : @"");
+
             // First, get a limited resource, assuming the block we were passed was a limited resource block.
             if (resourceWork) {
                 // We need a limited resource
@@ -137,18 +139,21 @@
                             // Attempt to create the resource.
                             NSError *localError;
                             limitedResource = self->_limitedResourceCreationBlock(&localError);
-                            //NSLog(@"Created resource: %@", limitedResource);
-                            if (!limitedResource) {
+                            if (limitedResource != nil) {
+                                AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelDebug, @"(%ld) Created resource: %@", (long)localWorkIndex, limitedResource);
+                            } else {
                                 // Just abort on error for now. We should do something nicer here.
-                                AJRLogError(@"error creating resource: %@", [localError localizedDescription]);
+                                AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelError, @"(%ld) Couldn't create resource: %@", (long)localWorkIndex, [localError localizedDescription]);
                                 abort();
                             }
                         } else {
                             // We've created the maximum number of resources we can create, so we have to wait for one to become available.
+                            AJRPrintf(@"*** Waiting ***\n");
                             [self->_semaphore wait];
                         }
                     } else {
-                        // We have some, so take the last object. We could take anyone, but the last one is the least expensive to remove, so take it.
+                        // We have some, so take the last object. We could take any, but the last one is the least expensive to remove, so take it.
+                        AJRPrintf(@"*** Taking a Resource  ***\n");
                         limitedResource = [self->_limitedResources lastObject];
                         [self->_limitedResources removeLastObject];
                         // We got a resource, so release the lock
@@ -176,13 +181,14 @@
                     results = voidWork();
                 }
             } @catch (NSException *localException) {
-                NSLog(@"Exception while performing work: %@", [localException description]);
+                AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelError, @"(%ld) Exception while performing work: %@", (long)localWorkIndex, [localException description]);
             }
             
             // Our job is complete, so we can give back the limit resource we're using.
             [self->_semaphore lock];
             // We done with the limited resource, so give it back immediately, assuming we have one. This will allow other threads to unblock the quickest.
             if (limitedResource) {
+                AJRPrintf(@"*** Giving back ***\n");
                 // Give back the limit resource, assuming we created one.
                 [self->_limitedResources addObject:limitedResource];
                 // Signal anyone who's waiting for a limited resource.
@@ -190,7 +196,7 @@
             }
             
             // And put our completion block information into the dictionary tracking the completion blocks, now that we're done.
-            //NSLog(@"%ld: %@", (long)localWorkIndex, results);
+            AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelDebug, @"(%ld) completionBlock: %@, results: %@", (long)localWorkIndex, completionBlock, results);
             if (results) {
                 [self->_completionBlocks setObject:@{@"block":completionBlock, @"results":results} forKey:@(localWorkIndex)];
             } else {
@@ -204,14 +210,15 @@
                 
                 // We're going to loop until _nextCompletionWorkIndex doesn't produce a completion block. Effectively, we'll drain as many completion blocks as possible.
                 while ((dictionary = [self->_completionBlocks objectForKey:@(self->_nextCompletionWorkIndex)]) != nil) {
-                    AJRWorkCompletionBlock completionBlockToExecute = [dictionary objectForKey:@"block"];
                     //NSUInteger capturedValue = _nextCompletionWorkIndex;
                     dispatch_async(self->_completionQueue, ^{
+                        AJRWorkCompletionBlock completionBlockToExecute = dictionary[@"block"];
+                        id results = dictionary[@"results"];
                         @try {
-                            //NSLog(@"completing work block %ld: %@", (long)capturedValue, [dictionary objectForKey:@"results"]);
-                            completionBlockToExecute([dictionary objectForKey:@"results"]);
+                            AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelDebug, @"(%ld) completing work: completionBlock: %@, results: %@", (long)localWorkIndex, completionBlockToExecute, results);
+                            completionBlockToExecute(results);
                         } @catch (NSException *exception) {
-                            NSLog(@"Exception while calling completion block for limited resource: %@", [exception description]);
+                            AJRLog(AJROrderedCompletionQueueDomain, AJRLogLevelError, @"(%ld) Exception while calling completion block for limited resource: %@", (long)localWorkIndex, [exception description]);
                         }
                     });
                     [self->_completionBlocks removeObjectForKey:@(self->_nextCompletionWorkIndex)];

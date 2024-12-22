@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable id)valueForProperty:(NSString *)property onExtensionForClass:(Class)extensionClass;
 - (nullable id)valueForProperty:(NSString *)property onExtension:(NSString *)extensionNameOrClassName;
 
-- (nullable AJRPlugInExtension *)extensionForClass:(Class)class;
+- (nullable AJRPlugInExtension *)extensionForClass:(Class)aClass;
 - (nullable AJRPlugInExtension *)extensionForClassName:(NSString *)className;
 - (nullable AJRPlugInExtension *)extensionForName:(NSString *)name;
 

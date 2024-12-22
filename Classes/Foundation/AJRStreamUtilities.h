@@ -162,7 +162,7 @@ extern BOOL AJREncodingIs8Bit(NSStringEncoding encoding);
 
 #pragma mark - Read Function Primitives
 
-extern void AJRAddReaderConveniencesToReader(Class class);
+extern void AJRAddReaderConveniencesToReader(Class aClass);
 
 extern BOOL AJRReadCharacter(id <AJRByteReader> reader, uint32_t *character, size_t *bytesRead, NSError *_Nullable *_Nullable error);
 extern NSString * _Nullable AJRReadLine(NSObject<AJRByteReader> *reader, NSError *_Nullable *_Nullable error);
@@ -183,7 +183,7 @@ extern BOOL AJRReadUInteger(id <AJRByteReader> reader, NSUInteger *value, AJREnd
 
 #pragma mark - Write Function Primitives
 
-extern void AJRAddWriterConveniencesToWriter(Class class);
+extern void AJRAddWriterConveniencesToWriter(Class aClass);
 
 extern BOOL AJRWriteCharacter(id <AJRByteWriter> writer, uint32_t character, size_t *bytesWritten, NSError *_Nullable *_Nullable error);
 
@@ -227,7 +227,7 @@ extern BOOL AJRWriteCString(id <AJRByteWriter> writer, const char * _Nullable st
 
 #pragma mark - AJRByteStreamMethods Support
 
-extern void AJRAddByteStreamConveniencesToClass(Class class);
+extern void AJRAddByteStreamConveniencesToClass(Class aClass);
 
 extern void AJRByteStreamSetEndianess(id <AJRByteStreamMethods> stream, AJREndianness endianness);
 extern AJREndianness AJRByteStreamGetEndianness(id <AJRByteStreamMethods> stream);

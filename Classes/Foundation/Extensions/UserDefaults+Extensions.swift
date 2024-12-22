@@ -518,13 +518,13 @@ public class AJRUserDefaultsKey<T:AJRUserDefaultProvider> {
     }
     
     /** Checks to see if the key named `name` has already been creating, and if it has, the key is returned. Otherwise, the key is cached and then returned. This is necessary, beacuse Swift doesn't allow classes qualified with types to contain static members, so we have to "cache" the values of the keys to prevent creating multiple copies. */
-    public static func key<T>(named name: String, defaultValue: T? = nil) -> AJRUserDefaultsKey<T> {
-        var key : AJRUserDefaultsKey<T>?
+    public static func key<K>(named name: String, defaultValue: K? = nil) -> AJRUserDefaultsKey<K> {
+        var key : AJRUserDefaultsKey<K>?
         
         userDefaultKeyLock.lock()
-        key = userDefaultKeys[name] as? AJRUserDefaultsKey<T>
+        key = userDefaultKeys[name] as? AJRUserDefaultsKey<K>
         if key == nil {
-            key = AJRUserDefaultsKey<T>(named: name, defaultValue: defaultValue)
+            key = AJRUserDefaultsKey<K>(named: name, defaultValue: defaultValue)
             userDefaultKeys[name] = key
         }
         userDefaultKeyLock.unlock()

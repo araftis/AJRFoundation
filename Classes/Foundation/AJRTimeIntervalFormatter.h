@@ -33,6 +33,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSTimeInterval AJRTimeIntervalFromString(NSString *value);
+extern NSString *AJRStringFromTimeInterval(NSTimeInterval value, NSInteger precision);
+
 @interface AJRTimeIntervalFormatter : NSNumberFormatter
 
 - (instancetype)initWithPrecision:(NSInteger)precision;

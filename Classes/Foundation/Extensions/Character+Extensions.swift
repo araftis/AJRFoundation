@@ -39,5 +39,4 @@ extension Character : AJREquatable {
         }
         return false
     }
-
 }

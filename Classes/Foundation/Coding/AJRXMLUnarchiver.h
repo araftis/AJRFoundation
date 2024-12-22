@@ -53,14 +53,14 @@ extern const AJRLoggingDomain AJRLoggingDomainXMLDecoding;
 
  Some classes may actually want to map multiple names to themselves, and they can do this by calling this method. This is probably a rare-ish thing to do, but here when needed. Note that we coding, the instantiate class can get the name of the element in its `+[NSObject instantiateWithXMLCoding:]` method by calling `-[NSXMLCoder decodingName]`.
 
- @param class The class to be registered.
+ @param aClass The class to be registered.
  @param name The name of the element in the XML stream.
  */
-+ (void)registerClass:(Class)class forName:(NSString *)name;
++ (void)registerClass:(Class)aClass forName:(NSString *)name;
 
-+ (nullable id)unarchivedObjectWithStream:(NSInputStream *)stream topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
-+ (nullable id)unarchivedObjectWithData:(NSData *)data topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
-+ (nullable id)unarchivedObjectWithURL:(NSURL *)url topLevelClass:(nullable Class)class error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
++ (nullable id)unarchivedObjectWithStream:(NSInputStream *)stream topLevelClass:(nullable Class)aClass error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
++ (nullable id)unarchivedObjectWithData:(NSData *)data topLevelClass:(nullable Class)aClass error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
++ (nullable id)unarchivedObjectWithURL:(NSURL *)url topLevelClass:(nullable Class)aClass error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(unarchivedObject(with:topLevelClass:));
 + (nullable id)unarchivedObjectWithStream:(NSInputStream *)stream error:(NSError * _Nullable * _Nullable)error;
 + (nullable id)unarchivedObjectWithData:(NSData *)data error:(NSError * _Nullable * _Nullable)error;
 + (nullable id)unarchivedObjectWithURL:(NSURL *)url error:(NSError * _Nullable * _Nullable)error;

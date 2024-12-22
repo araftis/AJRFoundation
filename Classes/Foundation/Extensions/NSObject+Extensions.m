@@ -39,6 +39,16 @@
 #import <AJRFoundation/AJRFoundation.h>
 #import <AJRFoundation/AJRFoundation-Swift.h>
 
+@interface _AJRDelayToken : NSObject <AJRInvalidation>
+
+@property (nonatomic,strong) void (^block)(void);
+@property (nonatomic,weak) id receiver;
+
+- (id)initWithBlock:(void (^)(void))block forReceiver:(id)receiver;
+- (void)invalidate;
+
+@end
+
 @interface _AJRDebugKeyContainer : NSObject
 
 @property (nonatomic,strong) NSMutableArray<NSArray<NSString *> *> *stackTraces;
@@ -372,6 +382,38 @@ void AJRDebugKVOChangeDuringChange(_AJRDebugContainer *container, NSString *key)
     if (decrement) {
         [self ajr_decrementCounterForKey:key];
     }
+}
+
+#pragma mark - Delayed Performance
+
+- (void)_ajr_delayedActionWithToken:(_AJRDelayToken *)token {
+    token.block();
+}
+
+- (id <AJRInvalidation>)performAfterDelay:(NSTimeInterval)delay block:(void (^)(void))block {
+    _AJRDelayToken *token = [[_AJRDelayToken alloc] initWithBlock:block forReceiver:self];
+
+    [self performSelector:@selector(_ajr_delayedActionWithToken:) withObject:token afterDelay:delay];
+
+    return token;
+}
+
+@end
+
+@implementation _AJRDelayToken
+
+- (id)initWithBlock:(void (^)(void))block forReceiver:(id)receiver {
+    if ((self = [super init])) {
+        _block = block;
+        _receiver = receiver;
+    }
+    return self;
+}
+
+- (void)invalidate {
+    [NSObject cancelPreviousPerformRequestsWithTarget:_receiver selector:@selector(_ajr_delayedActionWithToken:) object:self];
+    _block = nil;
+    _receiver = nil;
 }
 
 @end

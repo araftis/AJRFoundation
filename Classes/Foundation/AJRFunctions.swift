@@ -115,3 +115,35 @@ infix operator ^^
 public func ^^ (_ lhs: Bool, _ rhs: Bool) -> Bool {
     return (lhs && !rhs) || (!lhs && rhs)
 }
+
+@MainActor
+public func AJRPerformOnMainThread(synchronous: Bool, block: @Sendable @escaping () -> Void) {
+    if Thread.isMainThread {
+        block()
+    } else {
+        if synchronous {
+            DispatchQueue.main.sync(execute: block)
+        } else {
+            DispatchQueue.main.async(execute: block)
+        }
+    }
+}
+
+@MainActor
+public func AJRPerformAsyncOnMainThread(_ block: @Sendable @escaping () -> Void) {
+    AJRPerformOnMainThread(synchronous: false, block: block)
+}
+
+@MainActor
+public func AJRPerformSyncOnMainThread(_ block: @Sendable @escaping () -> Void) {
+    AJRPerformOnMainThread(synchronous: true, block: block)
+}
+
+@MainActor
+public func AJRPerformAfterDelay(delay: TimeInterval, block: @Sendable @escaping () -> Void) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+        block()
+    }
+}
+
+

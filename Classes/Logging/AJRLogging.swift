@@ -38,52 +38,106 @@ public struct AJRLog {
             AJRSimpleLog(domain, level, message())
         }
     }
-    
+
+    public static func `in`(domain: AJRLoggingDomain?, level: AJRLogLevel = .info, format: String, _ arguments: CVarArg...) -> Void {
+        if AJRLogShouldOutputForDomain(domain, level) {
+            AJRSimpleLog(domain, level, String(format: format, arguments: arguments))
+        }
+    }
+
     public static func emergency(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
         if AJRLogShouldOutputForDomain(domain, .emergency) {
             AJRSimpleLog(domain, .emergency, message())
         }
     }
     
+    public static func emergency(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), format: String, _ arguments: CVarArg...) -> Void {
+        if AJRLogShouldOutputForDomain(domain, .emergency) {
+            AJRSimpleLog(domain, .emergency, String(format: format, arguments: arguments))
+        }
+    }
+
     public static func alert(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
         if AJRLogShouldOutputForDomain(domain, .alert) {
             AJRSimpleLog(domain, .alert, message())
         }
     }
     
+    public static func alert(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), format: String, _ arguments: CVarArg...) -> Void {
+        if AJRLogShouldOutputForDomain(domain, .alert) {
+            AJRSimpleLog(domain, .alert, String(format: format, arguments: arguments))
+        }
+    }
+
     public static func critical(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
         if AJRLogShouldOutputForDomain(domain, .critical) {
             AJRSimpleLog(domain, .critical, message())
         }
     }
     
+    public static func critical(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), format: String, _ arguments: CVarArg...) -> Void {
+        if AJRLogShouldOutputForDomain(domain, .critical) {
+            AJRSimpleLog(domain, .critical, String(format: format, arguments: arguments))
+        }
+    }
+
     public static func error(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
         if AJRLogShouldOutputForDomain(domain, .error) {
             AJRSimpleLog(domain, .error, message())
         }
     }
     
-    public static func warning(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
+    public static func error(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), format: String, _ arguments: CVarArg...) -> Void {
         if AJRLogShouldOutputForDomain(domain, .error) {
+            AJRSimpleLog(domain, .error, String(format: format, arguments: arguments))
+        }
+    }
+
+    public static func warning(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
+        if AJRLogShouldOutputForDomain(domain, .warning) {
             AJRSimpleLog(domain, .warning, message())
         }
     }
-    
+
+    public static func warning(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), format: String, _ arguments: CVarArg...) -> Void {
+        if AJRLogShouldOutputForDomain(domain, .warning) {
+            AJRSimpleLog(domain, .warning, String(format: format, arguments: arguments))
+        }
+    }
+
     public static func notice(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
         if AJRLogShouldOutputForDomain(domain, .notice) {
             AJRSimpleLog(domain, .notice, message())
         }
     }
     
+    public static func notice(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), format: String, _ arguments: CVarArg...) -> Void {
+        if AJRLogShouldOutputForDomain(domain, .notice) {
+            AJRSimpleLog(domain, .notice, String(format: format, arguments: arguments))
+        }
+    }
+
     public static func info(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
         if AJRLogShouldOutputForDomain(domain, .info) {
             AJRSimpleLog(domain, .info, message())
         }
     }
     
+    public static func info(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), format: String, _ arguments: CVarArg...) -> Void {
+        if AJRLogShouldOutputForDomain(domain, .info) {
+            AJRSimpleLog(domain, .info, String(format: format, arguments: arguments))
+        }
+    }
+
     public static func debug(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), _ message:@autoclosure () -> String) -> Void {
         if AJRLogShouldOutputForDomain(domain, .debug) {
             AJRSimpleLog(domain, .debug, message())
+        }
+    }
+
+    public static func debug(in domain:AJRLoggingDomain=AJRLoggingDomain(#function), format: String, _ arguments: CVarArg...) -> Void {
+        if AJRLogShouldOutputForDomain(domain, .debug) {
+            AJRSimpleLog(domain, .debug, String(format: format, arguments: arguments))
         }
     }
 

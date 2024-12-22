@@ -36,7 +36,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSFileManager (Extensions)
 
 - (NSString *)temporaryFilename;
-- (NSString *)temporaryFilenameForTemplate:(NSString *)template;
+- (NSString *)temporaryFilenameForTemplate:(NSString *)aTemplate;
+
+/** HERE **/
+- (BOOL)enumerateFilesMatchingPattern:(NSString *)pattern
+                           usingBlock:(void (^)(NSString *filename, BOOL *stop))block
+                                error:(NSError * _Nullable * _Nullable)error NS_SWIFT_NAME(_enumerateFiles(matchingPattern:using:));
+
+@property (nonatomic,readonly) NSURL *currentDirectoryURL;
 
 @end
 

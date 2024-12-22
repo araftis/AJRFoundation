@@ -197,5 +197,16 @@ public extension Data {
         }
     }
 
+    /**
+     Returns the possible string encoding of the data, or `nil` if a string encoding cannot be found.
+
+     Based on the answer in https://stackoverflow.com/questions/59832706/how-to-detect-encoding-in-data-based-on-a-string
+     */
+    var stringEncoding: String.Encoding? {
+        var nsString: NSString?
+        guard case let rawValue = NSString.stringEncoding(for: self, encodingOptions: nil, convertedString: &nsString, usedLossyConversion: nil), rawValue != 0 else { return nil }
+        return .init(rawValue: rawValue)
+    }
+
 }
 

@@ -122,11 +122,11 @@ extern NSString *AJRVariableNameFromClassName(NSString *className);
 /**
  Get's `class`'s name and calls `AJRVariableNameFromClassName()`. Note that this will strip off the Swift module name from the class.
 
- @param class The class who's name is to be converted to a variable name.α
+ @param aClass The class who's name is to be converted to a variable name.α
 
  @return The name of the class, suitable for using as a variable name.
  */
-extern NSString *AJRVariableNameFromClass(Class class);
+extern NSString *AJRVariableNameFromClass(Class aClass);
 
 #pragma mark - Dates
 
@@ -458,8 +458,8 @@ extern void AJRForceAutorelease(id object);
 
 /*!
  @abstract Returns the object's retain count.
- @discussion This method returns the object's retain count and is here mostly for the purposes of debugging and unit testing. This code is likely unreliable in production situation, since the compile controls the retain count, and you can't control whether or not the compiler writers decide to add or remove extra retain/releases on the objects being passed around.
- 
+ @discussion This method returns the object's retain count and is here mostly for the purposes of debugging and unit testing. This code is likely unreliable in production situation, since the compiler controls the retain count, and you can't control whether or not the compiler writers decide to add or remove extra retain/releases on the objects being passed around.
+
  For example, you'd never want to do something like:
  
  <code>
@@ -473,6 +473,14 @@ extern void AJRForceAutorelease(id object);
  @param object The object on which to retreive the retain count.
  */
 extern NSInteger AJRGetRetainCount(id object);
+
+/**
+ Forces a retain on `reference` while `block` is run to make surethat `reference` isn't released while running. This can happen sometimes when you're running something in the UI where you call an UI asynchronous method, like `runModel...` where the block that's passed into the method needs to reference `self`, but self can be released while the UI is doing its thing.
+
+ @param reference The object to strongly retain.
+ @param block The block to run.
+ */
+extern void AJRRunWithStrongReference(id reference, void (^block)(void));
 
 NS_ASSUME_NONNULL_END
 

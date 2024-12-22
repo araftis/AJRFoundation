@@ -59,6 +59,13 @@ public extension StringProtocol {
         return self.startIndex ..< self.endIndex
     }
 
+    func range(from range: NSRange) -> Range<String.Index> {
+        let firstIndex = startIndex
+        let startIndex = index(firstIndex, offsetBy: range.location)
+        let endIndex = index(startIndex, offsetBy: range.length)
+        return startIndex ..< endIndex
+    }
+
     /// Checks if the receiver has the same prefix as `prefix` ignoring case.
     ///
     /// - parameter prefix The prefix to compare against.
@@ -153,11 +160,16 @@ public extension String {
         return self[self.index(self.startIndex, offsetBy: range.location) ... self.index(self.startIndex, offsetBy: range.location + range.length - 1)]
     }
     
-    func byWrapping(to width: Int, prefix: String, lineSeparator: String = "\n", splitURLs: Bool = true) -> String {
-        return (self as NSString).byWrapping(to: width, prefix: prefix, lineSeparator: lineSeparator, splitURLs: splitURLs)
+    func byWrapping(to width: Int, firstLinePrefix: String? = nil, prefix: String, lineSeparator: String = "\n", splitURLs: Bool = true) -> String {
+        return (self as NSString).byWrapping(to: width, firstLinePrefix: firstLinePrefix, prefix: prefix, lineSeparator: lineSeparator, splitURLs: splitURLs)
     }
 
     internal static let spaces = "                                                                                                                                                                                                                                                                                                            "
+
+    init(padding: Int) {
+        assert(padding < 300, "Padding must be less than \(String.spaces.count).")
+        self.init(String.spaces.prefix(padding))
+    }
 
     init(indent: Int, width: Int = 4) {
         // This let's us optimize the creation, if the indent is less than 300.

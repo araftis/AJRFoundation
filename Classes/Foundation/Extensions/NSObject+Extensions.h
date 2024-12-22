@@ -74,6 +74,10 @@ typedef void (^AJRObserverBlock)(id _Nullable object, NSString * _Nullable keyPa
 
 - (BOOL)ajr_shouldLogObservances;
 
+#pragma mark - Delayed Performance
+
+- (id <AJRInvalidation>)performAfterDelay:(NSTimeInterval)delay block:(void (^)(void))block;
+
 @end
 
 @interface NSObject (AJRFoundationExtensionsMRR)

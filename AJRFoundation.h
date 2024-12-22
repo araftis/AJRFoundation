@@ -49,7 +49,7 @@
 #import <AJRFoundation/AJRHost.h>
 #import <AJRFoundation/AJRHTTPProxy.h>
 #import <AJRFoundation/AJRLogging.h>
-#import <AJRFoundation/AJRMain.h>
+//#import <AJRFoundation/AJRMain.h>
 #import <AJRFoundation/AJRMemoryHandle.h>
 #import <AJRFoundation/AJRMethodEnumerator.h>
 #import <AJRFoundation/AJRMutableCaseInsensitiveDictionary.h>
@@ -126,7 +126,7 @@
 #if defined(AJRFoundation_MacOSX)
 #    import <AJRFoundation/AJRHTTPProxy.h>
 #    import <AJRFoundation/AJRPlugInManager.h>
-#    import <AJRFoundation/AJRServer.h>
+//#    import <AJRFoundation/AJRServer.h>
 #    import <AJRFoundation/NSXMLElement+Extensions.h>
 #    import <AJRFoundation/NSXMLNode+Extensions.h>
 #endif

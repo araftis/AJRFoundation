@@ -92,10 +92,10 @@
     _stringValue = [first stringByAppendingString:second];
 }
 
-+ (id)createWithPropertyListValue:(nonnull NSDictionary *)value error:(NSError * _Nullable __autoreleasing * _Nullable)error {
++ (id)createWithPropertyListValue:(nonnull NSDictionary *)value error:(id _Nullable __autoreleasing * _Nullable)error {
     if (value[@"string"]) {
         if ([value[@"string"] isEqualToString:@"Three"]) {
-            *error = [NSError errorWithDomain:NSInvalidArgumentException message:@"We don't like 'Three'. He's shifty."];
+            *error = [NSClassFromString(@"NSError") errorWithDomain:NSInvalidArgumentException message:@"We don't like 'Three'. He's shifty."];
             return nil;
         }
         return [[[self class] alloc] initWithStringValue:value[@"string"]];

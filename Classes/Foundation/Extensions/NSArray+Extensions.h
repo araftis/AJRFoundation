@@ -68,7 +68,7 @@ extern const NSComparator AJRSimpleCompare;
 
 - (NSArray*)arraySplitIntoBatchedArrayWithItemsPerBatch:(NSUInteger)numberOfItemsInBatch;
 
-+ (id)createFromPropertyList:(id)propertyList class:(Class)class error:(NSError **)error;
++ (id)createFromPropertyList:(id)propertyList class:(Class)aClass error:(NSError **)error;
 - (id)propertyListValue;
 
 #pragma mark - Filtering and Mapping

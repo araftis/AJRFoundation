@@ -58,6 +58,7 @@ public extension DateComponents {
         case .yearForWeekOfYear: return yearForWeekOfYear as? T
         case .calendar: return calendar as? T
         case .timeZone: return timeZone as? T
+        case .isLeapMonth: return isLeapMonth as? T
         @unknown default:
             fatalError()
         }

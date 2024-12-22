@@ -32,6 +32,7 @@
 #import "NSScanner+Extensions.h"
 
 #import "AJRFunctions.h"
+#import "AJRLogging.h"
 
 // These are used by the date scanning stuff.
 typedef struct __ajr_date_spellings {
@@ -65,6 +66,152 @@ static _ajrDateSpellings dateSpellings[] = {
 };
 
 @implementation NSScanner (AJRExtensions)
+
+- (BOOL)scanTagInto:(NSString * _Nullable * _Nullable)string
+     attributesInto:(NSDictionary * _Nullable * _Nullable)attributes
+               type:(AJRTagType * _Nullable)tagType {
+    NSString *foundTag = nil;
+    static NSCharacterSet *terminalSet = nil, *terminalSetWS = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        terminalSet = [NSCharacterSet characterSetWithCharactersInString:@"=>//"];
+        NSMutableCharacterSet *temp = [NSCharacterSet.whitespaceAndNewlineCharacterSet mutableCopy];
+        [temp formUnionWithCharacterSet:terminalSet];
+        terminalSetWS = temp;
+    });
+    NSMutableDictionary *parsedAttributes = [NSMutableDictionary dictionary];
+    AJRTagType type = AJRTagTypeOpen;
+
+    NSString *substring = nil;
+    if ([self scanString:@"<" intoString:NULL]) {
+        // We actually did start a tag.
+        if ([self scanUpToCharactersFromSet:terminalSetWS intoString:&substring]) {
+            // We found a tag, so scan it.
+            if ([substring isEqualToString:@"/"]) {
+                return NO;
+            } else if ([substring hasPrefix:@"/"]) {
+                foundTag = [substring substringFromIndex:1];
+                type = AJRTagTypeClose;
+            } else {
+                foundTag = substring;
+                type = AJRTagTypeOpen;
+            }
+        } else if ([self scanString:@"/" intoString:NULL]) {
+            // We're a terminal tag.
+            if ([self scanUpToCharactersFromSet:terminalSet intoString:&substring]) {
+                foundTag = substring;
+                type = AJRTagTypeClose;
+            } else {
+                // We're apparently an invalid tag.
+                return NO;
+            }
+        }
+        while (YES) {
+            [self scanUpToCharactersFromSet:terminalSet intoString:&substring];
+            if ([self scanString:@"=" intoString:NULL]) {
+                // We found an attribute name
+                NSString *attributeName = substring;
+                if ([self scanQuotedStringUsingQuote:@"\"" into:&substring]) {
+                    // We scanned the value of the tag.
+                    parsedAttributes[attributeName] = substring;
+                } else if ([self scanUpToCharactersFromSet:terminalSetWS intoString:&substring]) {
+                    // Scan the value, assuming it's not quoted, but make sure we don't scan the closing tag.
+                    parsedAttributes[attributeName] = substring;
+                }
+            } else if ([self scanString:@">" intoString:NULL]) {
+                // We terminated the tag, so we're done.
+                break;
+            } else if ([self scanString:@"/>" intoString:NULL]) {
+                // We terminated the tag, so we're done.
+                type = AJRTagTypeOpenAndClose;
+                break;
+            }
+        }
+    }
+    if (foundTag != nil) {
+        AJRSetOutParameter(string, foundTag);
+        AJRSetOutParameter(attributes, parsedAttributes);
+        AJRSetOutParameter(tagType, type);
+        return YES;
+    }
+    return NO;
+}
+
+
+- (NSString *)scanQuotedStringUsingQuote:(NSString *)quote {
+    NSString *found = nil;
+    if ([self scanQuotedStringUsingQuote:quote into:&found]) {
+        return found;
+    }
+    return nil;
+}
+
+- (BOOL)scanQuotedStringUsingQuote:(NSString *)quote into:(NSString * _Nullable * _Nullable)string {
+    __block NSMutableString *build = nil;
+    NSString *substring = nil;
+    NSCharacterSet *skipSet = self.charactersToBeSkipped;
+    NSCharacterSet *terminalSet = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithFormat:@"\\%@", quote]];
+    NSCharacterSet *specials = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithFormat:@"%@tnre", quote]];
+
+    void (^appender)(NSString *) = ^(NSString *string) {
+        if (build == nil) {
+            build = [NSMutableString string];
+        }
+        [build appendString:string];
+    };
+
+    // We'll have (maybe) ignored whitespace up to the point, but now that we're in the quoted string, we don't want to ignore it, as all characters within the quotes are relevant, whether we're being permissive or not.
+    self.charactersToBeSkipped = nil;
+    // Make sure we have a quote. We might not.
+    if ([self scanString:quote intoString:NULL]) {
+        while (![self isAtEnd]) {
+            // Check and see if we can scan another quote.
+            if ([self scanUpToCharactersFromSet:terminalSet intoString:&substring]) {
+                // We did have a second quote, so append it to the output and try to scan another fragment.
+                appender(substring);
+                if ([self scanString:quote intoString:NULL]) {
+                    // This means we're done.
+                    break;
+                } else if ([self scanString:@"\\" intoString:NULL]) {
+                    // This means we have a "special character", which for now can only be the quote character. I may add more later.
+                    if ([self scanCharactersFromSet:specials intoString:&substring]) {
+                        // We have a special character
+                        if ([substring isEqualToString:quote]) {
+                            appender(substring);
+                        } else if ([substring isEqualToString:@"n"]) {
+                            appender(@"\n");
+                        } else if ([substring isEqualToString:@"r"]) {
+                            appender(@"\r");
+                        } else if ([substring isEqualToString:@"t"]) {
+                            appender(@"\t");
+                        } else if ([substring isEqualToString:@"e"]) {
+                            appender(@"\e");
+                        }
+                    } else {
+                        // We don't understand the special, so just move along.
+                        AJRLogWarning(@"Unknown special character when scanning quoted string.");
+                    }
+                }
+            }
+        }
+    }
+    self.charactersToBeSkipped = skipSet;
+
+    if (build != nil) {
+        AJRSetOutParameter(string, build);
+        return YES;
+    }
+
+    return NO;
+}
+
+- (nullable NSString *)scanStringDelimitedBy:(NSString *)delimiter {
+    NSString *found = nil;
+    if ([self scanStringDelimitedBy:delimiter into:&found]) {
+        return found;
+    }
+    return nil;
+}
 
 - (BOOL)scanStringDelimitedBy:(NSString *)delimiter into:(NSString * _Nullable * _Nullable)string {
     NSCharacterSet *skippedSave = [self charactersToBeSkipped];

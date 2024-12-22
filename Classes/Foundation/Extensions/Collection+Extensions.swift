@@ -30,6 +30,7 @@
  */
 
 import Foundation
+import OrderedCollections
 
 public enum AJRCollectionSemantic : Int {
     case unknown
@@ -623,6 +624,24 @@ extension OrderedSet : AJRCollection {
 }
 
 extension OrderedDictionary : AJRCollection {
+
+    public func index(after i: Int) -> Int {
+        return i + 1
+    }
+
+    public subscript(position: Int) -> (key: Key, value: Value) {
+        get {
+            return elements[position]
+        }
+    }
+
+    public var startIndex: Int {
+        return elements.startIndex
+    }
+
+    public var endIndex: Int {
+        elements.endIndex
+    }
 
     public var semantic : AJRCollectionSemantic {
         return .keyValueOrdered

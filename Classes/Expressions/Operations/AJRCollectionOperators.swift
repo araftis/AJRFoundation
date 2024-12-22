@@ -69,7 +69,7 @@ open class AJRIntersectOperator : AJROperator, AJRCollectionOperator {
            let right = right {
             return left.intersect(right)
         }
-        return []
+        return [Any]()
     }
 
 }

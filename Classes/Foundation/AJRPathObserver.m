@@ -74,7 +74,6 @@ NSString *AJRStringFromFSEventStreamEvent(FSEventStreamEventFlags flags) {
 
 @interface AJRPathObserver ()
 
-- (void)startOnNewThread;
 - (void)start;
 
 @end
@@ -83,8 +82,8 @@ NSString *AJRStringFromFSEventStreamEvent(FSEventStreamEventFlags flags) {
 {
     dispatch_semaphore_t _runSemaphore;
     id <NSLocking> _runLock;
+    dispatch_queue_t _eventQueue;
     CFRunLoopRef _eventRunLoop;
-    NSThread *_eventThread;
     id <NSLocking> _eventStreamLock;
     FSEventStreamRef _eventStream;
     id <NSLocking> _pathsLock;
@@ -228,7 +227,7 @@ static void _fileSystemEventHandler(ConstFSEventStreamRef streamRef,
     [_runLock lock];
     @try {
         // Only start if we're already running.
-        if (_eventThread) {
+        if (_eventQueue) {
             [_eventStreamLock lock];
             [_pathsLock lock];
             @try {
@@ -249,7 +248,8 @@ static void _fileSystemEventHandler(ConstFSEventStreamRef streamRef,
                                                        kFSEventStreamEventIdSinceNow,
                                                        0.25,
                                                        kFSEventStreamCreateFlagWatchRoot | kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagIgnoreSelf | kFSEventStreamCreateFlagFileEvents);
-                    FSEventStreamScheduleWithRunLoop(_eventStream, _eventRunLoop, kCFRunLoopCommonModes);
+                    FSEventStreamSetDispatchQueue(_eventStream, _eventQueue);
+                    //FSEventStreamScheduleWithRunLoop(_eventStream, _eventRunLoop, kCFRunLoopCommonModes);
                     FSEventStreamStart(_eventStream);
                 }
             } @finally {
@@ -267,7 +267,8 @@ static void _fileSystemEventHandler(ConstFSEventStreamRef streamRef,
     @try {
         if (_eventStream) {
             FSEventStreamStop(_eventStream);
-            FSEventStreamUnscheduleFromRunLoop(_eventStream, _eventRunLoop, kCFRunLoopCommonModes);
+            //FSEventStreamUnscheduleFromRunLoop(_eventStream, _eventRunLoop, kCFRunLoopCommonModes);
+            // This call also unschedules us from the queue.
             FSEventStreamInvalidate(_eventStream);
             FSEventStreamRelease(_eventStream);
             _eventStream = NULL;
@@ -296,9 +297,8 @@ static void _fileSystemEventHandler(ConstFSEventStreamRef streamRef,
         [_runLock lock];
         @try {
             if (_eventRunLoop) {
-                CFRunLoopStop(_eventRunLoop	);
+                CFRunLoopStop(_eventRunLoop);
                 _eventRunLoop = NULL;
-                _eventThread = nil;
             }
         } @finally {
             [_runLock unlock];
@@ -312,34 +312,11 @@ static void _fileSystemEventHandler(ConstFSEventStreamRef streamRef,
     // We don't do anything here, yet. This mostly just keeps the run loop alive when we're not actually observing any file system events.
 }
 
-- (void)startOnNewThread {
-    @autoreleasepool {
-        // This is protected by the lock in start. I'll hold that lock until we signal it we're about to start our runloop.
-        _eventRunLoop = (CFRunLoopRef)CFRetain(CFRunLoopGetCurrent());
-        _eventThread = [NSThread currentThread];
-        [_eventThread setName:@"AJRPathObservingThread"];
-        // Signal that we've initialized our instance variables and we're now ready to run.
-        dispatch_semaphore_signal(_runSemaphore);
-        // Schedule something into the run loop to make it run.
-        [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(heartBeat) userInfo:nil repeats:YES];
-        // And start the run loop.
-        CFRunLoopRun(); // This will probably never return, unless someone calls CFRunLoopStop().
-        [_runLock lock];
-        @try {
-            [self stopEventStream];
-            _eventThread = nil;
-            _eventRunLoop = NULL;
-        } @finally {
-            [_runLock unlock];
-        }
-    }
-}
-
 - (void)stop {
     [_runLock lock];
     @try {
         [self terminateEventThread];
-        _eventThread = nil;
+        _eventQueue = nil;
         _eventRunLoop = NULL;
     } @finally {
         [_runLock unlock];
@@ -349,8 +326,27 @@ static void _fileSystemEventHandler(ConstFSEventStreamRef streamRef,
 - (void)start {
     [_runLock lock];
     @try {
-        NSAssert(_eventThread == nil, @"You cannot start a path observer while it's already running.");
-        [NSThread detachNewThreadSelector:@selector(startOnNewThread) toTarget:self withObject:nil];
+        NSAssert(_eventQueue == nil, @"You cannot start a path observer while it's already running.");
+        _eventQueue = dispatch_queue_create("AJRPathObserver", DISPATCH_QUEUE_CONCURRENT);
+        dispatch_async(_eventQueue, ^{
+            @autoreleasepool {
+                // This is protected by the lock in start. It'll hold that lock until we signal it we're about to start our runloop.
+                self->_eventRunLoop = (CFRunLoopRef)CFRetain(CFRunLoopGetCurrent());
+                // Signal that we've initialized our instance variables and we're now ready to run.
+                dispatch_semaphore_signal(self->_runSemaphore);
+                // Schedule something into the run loop to make it run.
+                [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(heartBeat) userInfo:nil repeats:YES];
+                // And start the run loop.
+                CFRunLoopRun(); // This will probably never return, unless someone calls CFRunLoopStop().
+                [self->_runLock lock];
+                @try {
+                    [self stopEventStream];
+                    self->_eventRunLoop = NULL;
+                } @finally {
+                    [self->_runLock unlock];
+                }
+            }
+        });
         // Wait for our thread to let us know it's up-and-running.
         dispatch_semaphore_wait(_runSemaphore, DISPATCH_TIME_FOREVER);
         // So that we can now start the event stream.

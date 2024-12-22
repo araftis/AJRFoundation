@@ -78,6 +78,7 @@ BOOL AJREncodingIs8Bit(NSStringEncoding encoding) {
 }
 
 #pragma mark - Method Utilities
+
 // Basically fronts ends class_addMethod, but warns on debug builds when a method already exists on the class.
 BOOL _AJRAddMethod(Class cls, SEL name, id block, const char *types) {
     BOOL result = class_addMethod(cls, name, imp_implementationWithBlock(block), types);

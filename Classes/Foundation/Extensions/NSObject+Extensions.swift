@@ -82,6 +82,11 @@ private class AJRObjectObserver : NSObject, AJRInvalidation {
 
 }
 
+// TODO: This should be AnyObject, not Object, since structs don't produce nice addresses. Alternately, we could use reflection to determine if the receiver is an object, and only get the address when appropriate.
+public func AJRDescriptionPrefix(for object: Any) -> String {
+    return "\(type(of: object)): 0x\(String(unsafeBitCast(object, to:Int.self), radix:16))"
+}
+
 @objc
 public extension NSObject {
     

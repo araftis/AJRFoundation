@@ -39,9 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)methodEnumeratorWithClass:(Class)enumeratedClass;
 
-@property (nonatomic,readonly) Class enumeratedClass;
-@property (nonatomic,readonly) Class currentClass; // If we're enumerating superclasses, this is the class currently being enumerated.
-@property (nonatomic,assign) BOOL enumerateSuperclasses;
+@property (nonatomic,readonly) Class enumeratedClass; /// The class being enumerated.
+@property (nonatomic,readonly) Class currentClass; /// If we're enumerating superclasses, this is the class currently being enumerated. Initially, this will be identical to `enumeratedClass`.
+@property (nonatomic,assign) BOOL enumerateSuperclasses; /// `NO` by default.
 
 - (nullable id)nextObject;
 - (nullable Method)nextMethod;

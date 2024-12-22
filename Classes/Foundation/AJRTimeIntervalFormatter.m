@@ -33,6 +33,38 @@
 
 #import <AJRFoundation/AJRFoundation.h>
 
+#define SECONDS_IN_MINUTE 60.0
+#define SECONDS_IN_HOUR (60.0 * 60.0)
+#define SECONDS_IN_DAY (24.0 * 60.0 * 60.0)
+
+NSTimeInterval AJRTimeIntervalFromString(NSString *string) {
+    NSArray *parts = [string componentsSeparatedByString:@":"];
+    NSInteger count = parts.count;
+    NSTimeInterval time = 0.0;
+
+    if (count > 0) {
+        NSInteger days = 0, hours = 0, minutes = 0;
+        double seconds = 0.0;
+        seconds = [parts[count - 1] doubleValue];
+        if (count > 1) {
+            minutes = [parts[count - 2] integerValue];
+        }
+        if (count > 2) {
+            hours = [parts[count - 3] integerValue];
+        }
+        if (count > 3) {
+            days = [parts[count - 4] integerValue];
+        }
+        time = ((double)days * SECONDS_IN_DAY) + ((double)hours * SECONDS_IN_HOUR) + ((double)minutes * SECONDS_IN_MINUTE) + seconds;
+    }
+
+    return time;
+}
+
+extern NSString *AJRStringFromTimeInterval(NSTimeInterval value, NSInteger precision) {
+    return AJRFormat(@"%.*T", precision, value);
+}
+
 @implementation AJRTimeIntervalFormatter
 
 - (id)init {
@@ -57,16 +89,12 @@
     return self;
 }
 
-- (NSString *)stringForObjectValue:(id)anObject {
-	if (anObject != nil) {
-		return AJRFormat(@"%.*T", _precision, [anObject doubleValue]);
+- (NSString *)stringForObjectValue:(id)object {
+	if (object != nil) {
+		return AJRStringFromTimeInterval([object doubleValue], _precision);
 	}
 	return @"";
 }
-
-#define SECONDS_IN_MINUTE 60.0
-#define SECONDS_IN_HOUR (60.0 * 60.0)
-#define SECONDS_IN_DAY (24.0 * 60.0 * 60.0)
 
 - (BOOL)getObjectValue:(out id *)obj forString:(NSString *)string range:(inout NSRange *)rangep error:(out NSError **)error {
 	NSArray *parts = [string componentsSeparatedByString:@":"];

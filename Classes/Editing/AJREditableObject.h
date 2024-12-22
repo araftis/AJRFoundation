@@ -69,11 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)resumeObservation;
 
 /*!
- Synchronizes `friend` with the receiver's tracking and observation states. This is mostly useful when a friend is changed, as the new friend will get the current state of the receiver. You shouldn't normally need to call this method, as it'll generally be called for you.
+ Synchronizes `aFriend` with the receiver's tracking and observation states. This is mostly useful when a friend is changed, as the new friend will get the current state of the receiver. You shouldn't normally need to call this method, as it'll generally be called for you.
  
- @param friend The object to sync to our state.
+ @param aFriend The object to sync to our state.
  */
-- (void)synchronizeObservationStateWithFriend:(AJREditableObject *)friend;
+- (void)synchronizeObservationStateWithFriend:(AJREditableObject *)aFriend;
 
 /*!
  Subclasses can override this method to provide a set of properties that should not be tracked.

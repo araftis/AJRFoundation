@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OrderedCollections
 
 public enum AJRLexerError : Error {
     case noRegisteredActions
@@ -139,7 +140,7 @@ open class AJRLexer: NSObject {
             }
             if foundError == nil {
                 if let matchIndex = matchIndex, let matchRange = matchRange {
-                    let key = actions[matchIndex].key
+                    let key = actions.elements[matchIndex].key
                     let callback = actions[key]
                     let substring = string[matchRange]
                     //print("found: \(substring), matched by: \(key)")

@@ -186,6 +186,13 @@ typedef void (^AJRActivityObserver)(AJRActivityAction action, AJRActivity *activ
  */
 @property (nonatomic,copy) NSDictionary *userInfo;
 
+/*!
+ Removes the activity from the active activities.
+
+ This is simply a convenience for `[AJRActivity removeFromActivites:self]`.
+ */
+- (void)removeFromActivities;
+
 @end
 
 /*!

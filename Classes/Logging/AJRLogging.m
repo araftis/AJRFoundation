@@ -235,43 +235,43 @@ AJRLogLevel AJRLogGetLogLevel(NSString *domain) {
     return [level integerValue];
 }
 
-NSInteger AJRLogGetDefaultCount() {
+NSInteger AJRLogGetDefaultCount(void) {
     return _defaultCount;
 }
 
-NSInteger AJRLogGetEmergencyCount() {
+NSInteger AJRLogGetEmergencyCount(void) {
     return _emergencyCount;
 }
 
-NSInteger AJRLogGetAlertCount() {
+NSInteger AJRLogGetAlertCount(void) {
     return _alertCount;
 }
 
-NSInteger AJRLogGetCriticalCount() {
+NSInteger AJRLogGetCriticalCount(void) {
     return _criticalCount;
 }
 
-NSInteger AJRLogGetErrorCount() {
+NSInteger AJRLogGetErrorCount(void) {
     return _errorCount;
 }
 
-NSInteger AJRLogGetWarningCount() {
+NSInteger AJRLogGetWarningCount(void) {
     return _warningCount;
 }
 
-NSInteger AJRLogGetNoticeCount() {
+NSInteger AJRLogGetNoticeCount(void) {
     return _noticeCount;
 }
 
-NSInteger AJRLogGetInfoCount() {
+NSInteger AJRLogGetInfoCount(void) {
     return _infoCount;
 }
 
-NSInteger AJRLogGetDebugCount() {
+NSInteger AJRLogGetDebugCount(void) {
     return _debugCount;
 }
 
-void AJRLogResetCounts() {
+void AJRLogResetCounts(void) {
     _defaultCount = 0;
     _emergencyCount = 0;
     _alertCount = 0;

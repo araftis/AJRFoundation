@@ -40,8 +40,20 @@ typedef NS_ENUM(NSInteger, AJRDateSegmentStringType) {
    AJRDateSegmentStringTypeDayOfWeek,
 };
 
+typedef NS_ENUM(NSInteger, AJRTagType) {
+	AJRTagTypeOpen,
+	AJRTagTypeClose,
+	AJRTagTypeOpenAndClose,
+};
+
 @interface NSScanner (AJRExtensions)
 
+- (BOOL)scanTagInto:(NSString * _Nullable * _Nullable)string attributesInto:(NSDictionary * _Nullable * _Nullable)attributes type:(AJRTagType * _Nullable)tagType;
+
+- (nullable NSString *)scanQuotedStringUsingQuote:(NSString *)quote;
+- (BOOL)scanQuotedStringUsingQuote:(NSString *)quote into:(NSString * _Nullable * _Nullable)string;
+
+- (nullable NSString *)scanStringDelimitedBy:(NSString *)delimiter;
 - (BOOL)scanStringDelimitedBy:(NSString *)delimiter into:(NSString * _Nullable * _Nullable)string;
 - (BOOL)scanCommaDelimitedString:(NSString * _Nullable * _Nullable)string;
 

@@ -994,3 +994,9 @@ void AJRRunAfterDelay(NSTimeInterval delay, void (^block)(void)) {
         block();
     });
 }
+
+void AJRRunWithStrongReference(id reference, void (^block)(void)) {
+    AJRForceRetain(reference);
+    block();
+    AJRForceRelease(reference);
+}

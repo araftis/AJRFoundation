@@ -32,7 +32,7 @@
 #import <Foundation/Foundation.h>
 #import <AJRFoundation/AJRFunctions.h>
 #import <AJRFoundation/AJRLogging.h>
-#import <AJRFoundation/AJRServerProtocols.h>
+//#import <AJRFoundation/AJRServerProtocols.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -152,7 +152,7 @@ typedef NSInteger (^AJRArgumentProcessorBlock)(id target, NSArray<NSString *> *a
  * NXSteams and the Foundation Kit. NeXT's routines should be called for other I/O
  * processing.
  */
-@interface AJRMain : NSObject <AJRMainRemoteProtocol>
+@interface AJRMain : NSObject /*<AJRMainRemoteProtocol>*/
 
 #pragma mark - Help
 

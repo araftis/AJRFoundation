@@ -56,51 +56,51 @@ typedef NS_ENUM(uint8_t, AJRUnicodeAction) {
 typedef NSInteger (*AJRReadFunction)(id, SEL, void *, NSInteger);
 typedef NSInteger (*AJRWriteFunction)(id, SEL, const void *, NSInteger);
 
-static mode_t AJRGetUMask(void) {
-	// Yeah! brain dead API. We have to call umask twice to get the value we want. Once to get the value, but said call requires us to change the value, and then once to restore the value. Obviously, this isn't thread safe, but generally probably OK, especially since we use NSFileManager to create files rather than open(), etc...
-	mode_t current = umask(0);
-	umask(current);
-	return current;
+mode_t AJRGetUMask(void) {
+    // Yeah! brain dead API. We have to call umask twice to get the value we want. Once to get the value, but said call requires us to change the value, and then once to restore the value. Obviously, this isn't thread safe, but generally probably OK, especially since we use NSFileManager to create files rather than open(), etc...
+    mode_t current = umask(0);
+    umask(current);
+    return current;
 }
 
 @implementation NSFileHandle (AJRExtensions)
 
 + (id)fileHandleWithPath:(NSString *)path mode:(NSInteger)mode create:(BOOL)createFlag permissions:(mode_t)permissions error:(out NSError **)error {
     NSFileHandle *temp = nil;
-	NSError *localError = nil;
-    
+    NSError *localError = nil;
+
     if (createFlag) {
         if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-			mode_t mask = AJRGetUMask();
-			if (![[NSFileManager defaultManager] createFileAtPath:path contents:[NSData data]
-													   attributes:@{NSFilePosixPermissions:@(permissions & ~mask)}]) {
-				localError = [NSError errorWithDomain:NSPOSIXErrorDomain errorNumber:errno];
+            mode_t mask = AJRGetUMask();
+            if (![[NSFileManager defaultManager] createFileAtPath:path contents:[NSData data]
+                                                       attributes:@{NSFilePosixPermissions:@(permissions & ~mask)}]) {
+                localError = [NSError errorWithDomain:NSPOSIXErrorDomain errorNumber:errno];
             }
         }
     }
-    
-	if (localError == nil) {
-		if ((mode & O_ACCMODE) == O_RDONLY) {
-			temp = [NSFileHandle fileHandleForReadingAtPath:path];
-		} else if ((mode & O_ACCMODE) == O_WRONLY) {
-			temp = [NSFileHandle fileHandleForWritingAtPath:path];
-			[temp truncateFileAtOffset:0];
-		} else if ((mode & O_ACCMODE) == O_RDWR) {
-			temp = [NSFileHandle fileHandleForUpdatingAtPath:path];
-			if (temp != nil) {
-				if (![temp ajr_seekToEndReturningOffset:NULL error:&localError]) {
-					[temp closeFile];
-					temp = nil;
-				}
-			}
-		}
-		// If temp is nil at this point, we had a file creation error, so create an NSError to return to the caller.
-		if (temp == nil && localError == nil) {
-			localError = [NSError errorWithDomain:NSPOSIXErrorDomain errorNumber:errno];
-		}
-	}
-    
-	return AJRAssertOrPropagateError(temp, error, localError);
+
+    if (localError == nil) {
+        if ((mode & O_ACCMODE) == O_RDONLY) {
+            temp = [NSFileHandle fileHandleForReadingAtPath:path];
+        } else if ((mode & O_ACCMODE) == O_WRONLY) {
+            temp = [NSFileHandle fileHandleForWritingAtPath:path];
+            [temp truncateFileAtOffset:0];
+        } else if ((mode & O_ACCMODE) == O_RDWR) {
+            temp = [NSFileHandle fileHandleForUpdatingAtPath:path];
+            if (temp != nil) {
+                if (![temp ajr_seekToEndReturningOffset:NULL error:&localError]) {
+                    [temp closeFile];
+                    temp = nil;
+                }
+            }
+        }
+        // If temp is nil at this point, we had a file creation error, so create an NSError to return to the caller.
+        if (temp == nil && localError == nil) {
+            localError = [NSError errorWithDomain:NSPOSIXErrorDomain errorNumber:errno];
+        }
+    }
+
+    return AJRAssertOrPropagateError(temp, error, localError);
 }
 
 + (id)fileHandleForWritingAtPath:(NSString *)path createIfNecessary:(BOOL)flag withPermissions:(mode_t)permissions  error:(out NSError **)error {
@@ -108,7 +108,7 @@ static mode_t AJRGetUMask(void) {
 }
 
 + (id)fileHandleForUpdatingAtPath:(NSString *)path createIfNecessary:(BOOL)flag withPermissions:(mode_t)permissions error:(out NSError **)error {
-	return [self fileHandleWithPath:path mode:O_RDWR create:flag permissions:permissions error:error];
+    return [self fileHandleWithPath:path mode:O_RDWR create:flag permissions:permissions error:error];
 }
 
 // These methods were removed in favor of the above, because these, at least at one point in time, were causing memory leaks. This may no longer be an issue, but the above works fine, so I haven't tested the method below to see if they still cause a memory leak.

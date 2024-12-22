@@ -73,4 +73,49 @@
     XCTAssert([scanner scanDateSegment:&value segmentType:&type] && value == 1971 && type == AJRDateSegmentStringTypeNumeric);
 }
 
+- (void)testTagScanning {
+    NSString *string = @"This is <i>a test</i> of scanning.";
+    NSScanner *scanner = [NSScanner scannerWithString:string];
+    NSString *substring;
+    NSDictionary *attributes = nil;
+    AJRTagType type;
+
+    XCTAssert([scanner scanUpToString:@"<" intoString:&substring]);
+    XCTAssert([substring isEqualToString:@"This is "]);
+    AJRPrintf(@"found: %@\n", substring);
+    XCTAssert([scanner scanTagInto:&substring attributesInto:&attributes type:&type]);
+    XCTAssert([substring isEqualToString:@"i"]);
+    XCTAssert(type == AJRTagTypeOpen);
+    XCTAssert([attributes isEqualToDictionary:@{}]);
+    XCTAssert([scanner scanUpToString:@"<" intoString:&substring]);
+    XCTAssert([substring isEqualToString:@"a test"]);
+    XCTAssert([scanner scanTagInto:&substring attributesInto:&attributes type:&type]);
+    XCTAssert([substring isEqualToString:@"i"]);
+    XCTAssert(type == AJRTagTypeClose);
+    XCTAssert([attributes isEqualToDictionary:@{}]);
+
+    string = @"This is <font name=\"myFont\" size=1>a test</font> of scanning.";
+    scanner = [NSScanner scannerWithString:string];
+    XCTAssert([scanner scanUpToString:@"<" intoString:&substring]);
+    XCTAssert([scanner scanTagInto:&substring attributesInto:&attributes type:&type]);
+    XCTAssert([substring isEqualToString:@"font"]);
+    XCTAssert(type == AJRTagTypeOpen);
+    XCTAssert([attributes count] == 2);
+    XCTAssert([attributes[@"name"] isEqualToString:@"myFont"]);
+    XCTAssert([attributes[@"size"] isEqualToString:@"1"]);
+    XCTAssert([scanner scanUpToString:@"<" intoString:&substring]);
+    XCTAssert([scanner scanTagInto:&substring attributesInto:&attributes type:&type]);
+    XCTAssert([substring isEqualToString:@"font"]);
+    XCTAssert(type == AJRTagTypeClose);
+    XCTAssert([attributes count] == 0);
+
+    string = @"This is <br/> of scanning.";
+    scanner = [NSScanner scannerWithString:string];
+    XCTAssert([scanner scanUpToString:@"<" intoString:&substring]);
+    XCTAssert([scanner scanTagInto:&substring attributesInto:&attributes type:&type]);
+    XCTAssert([substring isEqualToString:@"br"]);
+    XCTAssert(type == AJRTagTypeOpenAndClose);
+    XCTAssert([attributes count] == 0);
+}
+
 @end

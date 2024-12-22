@@ -31,7 +31,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import <AJRFoundation/AJRFoundationPrivate.h>
+#import <AJRFoundation/AJRFoundation_Private.h>
 
 @interface AJRXMLCollectionPlaceholderTests : XCTestCase
 

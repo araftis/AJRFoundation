@@ -264,36 +264,45 @@
 }
 
 - (NSString*)stringByWrappingToWidth:(NSInteger)width withLineSeparator:(NSString *)separator {
-    return [self stringByWrappingToWidth:width prefix:@"" lineSeparator:separator splitURLs:YES];
+    return [self stringByWrappingToWidth:width firstLinePrefix:nil prefix:@"" lineSeparator:separator splitURLs:YES];
 }
 
 - (NSString*)stringByWrappingToWidth:(NSInteger)width withLineSeparator:(NSString *)separator splitURLs:(BOOL)flag {
-    return [self stringByWrappingToWidth:width prefix:@"" lineSeparator:separator splitURLs:flag];
+    return [self stringByWrappingToWidth:width firstLinePrefix:nil prefix:@"" lineSeparator:separator splitURLs:flag];
 }
 
 - (NSString*)stringByWrappingToWidth:(NSInteger)width prefix:(NSString *)prefix lineSeparator:(NSString *)separator splitURLs:(BOOL)flag {
+    return [self stringByWrappingToWidth:width firstLinePrefix:nil prefix:prefix lineSeparator:separator splitURLs:flag];
+}
+
+- (NSString*)stringByWrappingToWidth:(NSInteger)width firstLinePrefix:(NSString *)firstLinePrefixIn prefix:(NSString *)prefix lineSeparator:(NSString *)separator splitURLs:(BOOL)flag {
     NSMutableArray *lines = [[self componentsSeparatedByString:separator] mutableCopy];
     NSMutableString *newString = [NSMutableString string];
     NSInteger i;
     NSInteger count = [lines count];
+    NSString *firstLinePrefix = firstLinePrefixIn == nil ? prefix : firstLinePrefixIn;
 
     for (i = 0; i < count; i++) {
         NSString *line = [lines objectAtIndex:i];
+        BOOL first = YES;
 
         if ([line length] == 0 && i + 1 < count) {
-            [newString appendString:prefix];
+            [newString appendString:first ? firstLinePrefix : prefix];
+            first = NO;
             [newString appendString:separator];
         }
         while ([line length] > width) {
             NSInteger splitPoint = [self splitPointForLine:line width:width splitURLs:flag];
 
-            [newString appendString:prefix];
+            [newString appendString:first ? firstLinePrefix : prefix];
+            first = NO;
             [newString appendString:[[line substringToIndex:splitPoint] stringByDeletingTrailingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
             line = [[line substringFromIndex:splitPoint] stringByDeletingLeadingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             [newString appendString:separator];
         }
         if ([line length]) {
-            [newString appendString:prefix];
+            [newString appendString:first ? firstLinePrefix : prefix];
+            first = NO;
             [newString appendString:line];
             if (i + 1 < count) {
                 [newString appendString:separator];

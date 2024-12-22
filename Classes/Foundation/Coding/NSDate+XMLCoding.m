@@ -35,7 +35,7 @@
 #import "AJRXMLCoder.h"
 #import "NSError+Extensions.h"
 
-static NSISO8601DateFormatter *AJRXMLDateFormatter() {
+static NSISO8601DateFormatter *AJRXMLDateFormatter(void) {
     static NSISO8601DateFormatter *dateFormatter = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

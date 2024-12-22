@@ -114,13 +114,14 @@ NS_ASSUME_NONNULL_BEGIN
  Note that `width` doesn't include the length of `prefix` or `separator`, so if you pass characters other than newline in those, you'll need adjust your width accordingly.
  
  @param width The maximum width of a line of the string.
+ @param firstLinePrefix A string to prepend to the first line. If `nil`, then use `prefix`.
  @param prefix A string to prepend to each line, including the first.
  @param separator The string used to separate lines. Note that while this method is intended to divide strings into multiple lines, you can actually split strings by any predefined max width with any given separator, which may or may not contain a newline.
  @param flag If YES, URL's may be split, otherwise the algorithm attempts recognize URL's and it will not split them. Note that if a URL is greater than width, you might get back a line wider than width if you pass is YES.
  
  @return The string potentially split over multiple lines.
  */
-- (NSString *)stringByWrappingToWidth:(NSInteger)width prefix:(NSString *)prefix lineSeparator:(NSString *)separator splitURLs:(BOOL)flag NS_SWIFT_NAME(byWrapping(to:prefix:lineSeparator:splitURLs:));
+- (NSString *)stringByWrappingToWidth:(NSInteger)width firstLinePrefix:(nullable NSString *)firstLinePrefix prefix:(nullable NSString *)prefix lineSeparator:(NSString *)separator splitURLs:(BOOL)flag NS_SWIFT_NAME(byWrapping(to:firstLinePrefix:prefix:lineSeparator:splitURLs:));
 
 /*!
  @abstract Wraps a string to a desired width.

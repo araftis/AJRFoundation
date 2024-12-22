@@ -29,6 +29,7 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <Foundation/Foundation.h>
 #import <AJRFoundation/AJRFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN

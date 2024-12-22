@@ -55,7 +55,7 @@ extern void AJRRegisterPluinTransformer(NSString *type, AJRPlugInValueTransforme
                     attributes:(NSDictionary<NSString *, AJRPlugInAttribute *> *)attributes
                       elements:(NSDictionary<NSString *, AJRPlugInElement *> *)elements;
 
-- (nullable AJRPlugInExtensionPoint *)extensionPointForClass:(Class)class;
+- (nullable AJRPlugInExtensionPoint *)extensionPointForClass:(Class)aClass;
 - (nullable AJRPlugInExtensionPoint *)extensionPointForName:(NSString *)name;
 
 @end

@@ -183,7 +183,7 @@ class UserDefaults_ExtensionsTests: XCTestCase {
         UserDefaults.standard.set(["https://www.duckduckgo.com", "https://www.askjeeves.com/"], forKey: "arrayOfURLsDefault")
         XCTAssert(UserDefaults[.arrayOfURLsDefault] == [URL(string: "https://www.duckduckgo.com")!, URL(string: "https://www.askjeeves.com/")!])
         // Now try with an invalid URL thrown into the mix.
-        UserDefaults.standard.set(["https://www.duckduckgo.com", "https://www.ask jeeves.com/", 10], forKey: "arrayOfURLsDefault")
+        UserDefaults.standard.set(["https://www.duckduckgo.com", "https://www.ask jeeves.com/", 10] as [Any], forKey: "arrayOfURLsDefault")
         XCTAssert(UserDefaults[.arrayOfURLsDefault] == [URL(string: "https://www.duckduckgo.com")!])
         
         // Try to create some URLs with scoped security.

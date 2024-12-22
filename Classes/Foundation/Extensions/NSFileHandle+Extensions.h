@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 #define AJR_WRITE_ERROR ((size_t)(-1))
 #define AJR_ICONV_ERROR ((iconv_t)(-1))
 
+extern mode_t AJRGetUMask(void);
+
 /*!
  Declares that NSFileHandle will implement the various read convenience methods. This will be added to NSFileHandle via AJRAddReaderConveniencesToReader().
  */

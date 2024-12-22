@@ -29,7 +29,7 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
+#import <AJRFoundation/AJRFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,14 +38,16 @@ typedef NS_ENUM(NSInteger, AJRQueueState) {
     AJRQueueStatePaused,
 };
 
+extern AJRLoggingDomain AJROrderedCompletionQueueDomain;
+
 /*! Defines a block that creates a limited resource. This will be called a limited number of times to create a resource to share across multiple threads. */
-typedef id _Nonnull (^AJRLimitedResourceCreationBlock)(NSError **error);
+typedef id _Nullable (^AJRLimitedResourceCreationBlock)(NSError **error);
 /*! Defines a block that will be called with a limited resource. The resource is generally created via a AJRLimitedResourceCreationBlock. */
-typedef id _Nonnull (^AJRLimitedResourceWorkBlock)(id limitedResource);
+typedef id _Nullable (^AJRLimitedResourceWorkBlock)(id limitedResource);
 /*! Defines a block that executes without need to access a limited resource. */
-typedef id _Nonnull (^AJRWorkBlock)(void);
+typedef id _Nullable (^AJRWorkBlock)(void);
 /*! A block that's called when a job completes. The completion blocks will be called in order of originally submittal. */
-typedef void (^AJRWorkCompletionBlock)(id results);
+typedef void (^AJRWorkCompletionBlock)(id _Nullable results);
 
 @interface AJROrderedCompletionQueue : NSObject
 

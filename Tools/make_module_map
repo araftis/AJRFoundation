@@ -1,0 +1,55 @@
+#!/bin/csh -f
+
+set names = ( $cwd:t )
+
+set testing = YES
+
+foreach name ( $names )
+    set moduleMap = module.modulemap
+    set output = /dev/tty
+
+    echo -n "Creating $moduleMap..."
+        rm -f $output
+        touch $output
+        
+        echo "/* $moduleMap */" >> $output
+        echo "module $name {" >> $output
+        echo "" >> $output
+        echo "    umbrella header "'"'"${name}.h"'"'"" >> $output
+        echo "" >> $output
+    
+        find Classes -name "*[^P].h" -print | awk -F/ '{printf("%s\n", $NF);}' | sort | awk '{printf("    header \"%s\"\n", $1);}' >> $output
+    
+        echo "" >> $output
+        echo "    export *" >> $output
+        echo "    module * {" >> $output
+        echo "        export *" >> $output
+        echo "    }" >> $output
+        echo "" >> $output
+        echo "}" >> $output
+    echo "done."
+
+    set moduleMap = module.private.modulemap
+    if ( $testing == "YES" ) then
+        set output = /dev/tty
+    else
+        set output = $moduleMap
+    endif
+
+    echo -n "Creating $moduleMap..."
+        rm -f $output
+        touch $output
+        
+        echo "/* $moduleMap */" >> $output
+        echo "module ${name}_Private {" >> $output
+        echo "" >> $output
+        echo "    umbrella header "'"'"${name}.h"'"'"" >> $output
+        echo "" >> $output
+    
+        find Classes -name "*[P].h" -print | awk -F/ '{printf("%s\n", $NF);}' | sort | awk '{printf("    header \"%s\"\n", $1);}' >> $output
+    
+        echo "" >> $output
+        echo "}" >> $output
+    echo "done."
+end
+

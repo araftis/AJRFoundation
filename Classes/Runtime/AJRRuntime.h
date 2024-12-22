@@ -52,7 +52,7 @@ extern NSString *AJRStringFromProtocol(Protocol *protocol);
 /*! Useful when debugging, but basically this generates a \@interface for the supplied class. Note that the interface may or may not be valid, depending on the types used, so only take the results as a close approximation. For example, the type information on block and function pointers doesn't exist, so any method or property using a block or function pointer will have incomplete types. */
 extern NSString *AJRClassInterfaceFromClass(Class classToDump);
 
-extern NSString *AJRStringFromClassSansModule(Class class);
+extern NSString *AJRStringFromClassSansModule(Class aClass);
 
 @interface NSObject (SwiftToObjCExceptionHandling)
 
@@ -70,9 +70,9 @@ extern const char *AJRPrimitiveMethodSignatureWithTypes(const char *encodedType,
 
 extern _Nullable IMP AJRRegisterInstanceMethodWithSelector(Class aClass, SEL oldSelector, SEL newSelector);
 /*! Returns the implementation of a class's instance method. This will return implementations on superclasses. */
-extern _Nullable IMP AJRGetMethodImplementation(Class class, SEL selector);
+extern _Nullable IMP AJRGetMethodImplementation(Class aClass, SEL selector);
 /*! Returns the IMP of a method, if and only if instances of the class implement that method. This will return NULL if the implementation is on a superclass. Note this method can be slow, as it must do a linear search through the class' methods. */
-extern _Nullable IMP AJRGetMethodImplementationExcludingSuperclass(Class class, SEL selector);
+extern _Nullable IMP AJRGetMethodImplementationExcludingSuperclass(Class aClass, SEL selector);
 extern _Nullable IMP AJRReplaceMethodImplementation(Class aClass, SEL oldSelector, IMP newImp);
 extern _Nullable IMP AJRReplaceMethodImplementationWithSelector(Class aClass, SEL oldSelector, SEL newSelector);
 
@@ -82,12 +82,12 @@ extern void AJRSwizzleClassMethods(Class originalClass, SEL originalSelector, Cl
 /*!
  This function is similar to [instance isKindOfClass:Class], except that it works on class objets on both sides and it avoids loading and initializing either of the classes pased in. This can be useful when you want to avoid side effects like have a Class' +initialize getting called.
  
- @param class The class to evaluate.
+ @param aClass The class to evaluate.
  @param baseClass The class to determine is class matches.
  
  @result YES if class is a subclass of baseClass, NO otherwise.
  */
-extern BOOL AJRIsKindOfClass(Class class, Class baseClass);
+extern BOOL AJRIsKindOfClass(Class aClass, Class baseClass);
 
 /*!
  Does much the same as NSClassFromString, but if the class can't be found by it's className, it tries a second time by prepending the module name derived from bundle.

@@ -617,6 +617,30 @@ extension Double : AJRValueForUntypedDoubleComparison, AJRValueForUntypedCompari
     
 }
 
+extension StringProtocol {
+
+    public func isEqual(_ other: Any?) -> Bool {
+        var result = false
+        if let other = other as? (any StringProtocol) {
+            result = self == other
+        }
+        return result
+    }
+
+}
+
+extension Substring : AJREquatable {
+
+    public func isEqual(_ other: Any?) -> Bool {
+        var result = false
+        if let other = other as? (any StringProtocol) {
+            result = self == other
+        }
+        return result
+    }
+
+}
+
 extension String : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJRValueForUntypedDoubleComparison {
 
     public func signedValueForComparison() throws -> Int64 {
@@ -632,6 +656,14 @@ extension String : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJ
         throw AJRNumericError.cannotRepresentValue
     }
     
+    public func isEqual(_ other: Any?) -> Bool {
+        var result = false
+        if let other = other as? (any StringProtocol) {
+            result = self == other
+        }
+        return result
+    }
+
     public func unsignedValueForComparison() throws -> UInt64 {
         var result : UInt64? = nil
         if let number = (self as NSString).numberValue {
@@ -656,14 +688,6 @@ extension String : AJREquatable, AJRComparable, AJRValueForUntypedComparison, AJ
     public var isFloatingPoint: Bool {
         // NOTE: Just because this method says yes, it doesn't mean we have a floating point. This is say more that we don't have an integer.
         return self.contains(".") || self.contains("e")
-    }
-    
-    public func isEqual(_ other: Any?) -> Bool {
-        var result = false
-        if let other = other as? String {
-            result = self == other
-        }
-        return result
     }
     
     public func compare(to other: Any) -> AJRComparisonResult {

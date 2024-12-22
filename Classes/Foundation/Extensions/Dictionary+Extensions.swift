@@ -53,3 +53,12 @@ public extension Dictionary {
     }
     
 }
+
+public extension Dictionary where Value: Equatable {
+
+    // Based on code from: https://stackoverflow.com/questions/27218669/swift-dictionary-get-key-for-value
+    func allKeys(forValue value: Value) -> [Key] {
+        return self.filter { $1 == value }.map { $0.0 }
+    }
+
+}

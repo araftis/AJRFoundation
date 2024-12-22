@@ -31,7 +31,11 @@
 
 #import "NSFileManager+Extensions.h"
 
+#import "NSError+Extensions.h"
 #import "AJRFormat.h"
+#import "AJRLogging.h"
+
+#import <glob.h>
 
 @implementation NSFileManager (Extensions)
 
@@ -54,6 +58,34 @@
     }
     
     return fileName;
+}
+
+- (BOOL)enumerateFilesMatchingPattern:(NSString *)pattern usingBlock:(void (^)(NSString *filename, BOOL *stop))block error:(NSError **)error {
+    glob_t globber;
+    __block NSError *localError = nil;
+    int (^errorHandler)(const char *path, int errorNumber) = ^(const char *path, int errorNumber){
+        localError = [NSError errorWithDomain:@"NSFileManagerErrorDomain" code:errorNumber format:@"An error occured while expanding pattern \"%@\": %s.", pattern, strerror(errorNumber)];
+        return 0;
+    };
+
+    glob_b([pattern UTF8String], 0, errorHandler, &globber);
+    for (int y = 0; y < globber.gl_pathc; y++) {
+        BOOL stop = NO;
+        block([NSString stringWithUTF8String:globber.gl_pathv[y]], &stop);
+        if (localError != nil || stop) {
+            break;
+        }
+    }
+    globfree(&globber);
+    if (localError != nil) {
+        AJRSetOutParameter(error, localError);
+        return NO;
+    }
+    return YES;
+}
+
+- (NSURL *)currentDirectoryURL {
+    return [NSURL fileURLWithPath:NSFileManager.defaultManager.currentDirectoryPath];
 }
 
 @end
