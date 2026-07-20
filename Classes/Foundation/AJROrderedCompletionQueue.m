@@ -52,6 +52,7 @@ AJRLoggingDomain AJROrderedCompletionQueueDomain = @"AJROrderedCompletionQueueDo
 - (id)initWithLimitedResourceCreationBlock:(AJRLimitedResourceCreationBlock)creationBlock {
     if ((self = [super init])) {
         _dispatchQueue = dispatch_queue_create("AJRLimitResourceQueue", DISPATCH_QUEUE_CONCURRENT);
+        dispatch_set_target_queue(_dispatchQueue, dispatch_get_global_queue(QOS_CLASS_UTILITY, 0));
         _semaphore = [[NSCondition alloc] init];
         _limitedResourceCreationBlock = creationBlock;
         _limitedResources = [NSMutableArray array];
@@ -148,12 +149,12 @@ AJRLoggingDomain AJROrderedCompletionQueueDomain = @"AJROrderedCompletionQueueDo
                             }
                         } else {
                             // We've created the maximum number of resources we can create, so we have to wait for one to become available.
-                            AJRPrintf(@"*** Waiting ***\n");
+                            //AJRPrintf(@"*** Waiting ***\n");
                             [self->_semaphore wait];
                         }
                     } else {
                         // We have some, so take the last object. We could take any, but the last one is the least expensive to remove, so take it.
-                        AJRPrintf(@"*** Taking a Resource  ***\n");
+                        //AJRPrintf(@"*** Taking a Resource  ***\n");
                         limitedResource = [self->_limitedResources lastObject];
                         [self->_limitedResources removeLastObject];
                         // We got a resource, so release the lock
@@ -188,7 +189,7 @@ AJRLoggingDomain AJROrderedCompletionQueueDomain = @"AJROrderedCompletionQueueDo
             [self->_semaphore lock];
             // We done with the limited resource, so give it back immediately, assuming we have one. This will allow other threads to unblock the quickest.
             if (limitedResource) {
-                AJRPrintf(@"*** Giving back ***\n");
+                //AJRPrintf(@"*** Giving back ***\n");
                 // Give back the limit resource, assuming we created one.
                 [self->_limitedResources addObject:limitedResource];
                 // Signal anyone who's waiting for a limited resource.

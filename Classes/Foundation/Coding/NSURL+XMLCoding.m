@@ -1,5 +1,5 @@
 /*
- URL+Extensions.swift
+ NSURL+XMLCoding.m
  AJRFoundation
 
  Copyright © 2023, AJ Raftis and AJRFoundation authors
@@ -29,45 +29,45 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Foundation
-import UniformTypeIdentifiers
+#import "NSString+XMLCoding.h"
 
-public extension URL {
+#import "AJRXMLArchiver.h"
+#import "AJRXMLCoder.h"
 
-    init!(parsableString string: String) {
-        if let nsURL = NSURL(parsableString: string) {
-            self.init(string: nsURL.absoluteString!)
-        } else {
-            return nil
-        }
-    }
+@interface AJRXMLURLPlaceholder : NSObject <AJRXMLDecoding>
+@property (nonatomic,strong) NSURL *value;
+@end
 
-    // I'm going with [String:String] until it's proven I need to go with AnyHashable:Any.
-    var queryDictionary: [String:String]? {
-        return (self as NSURL).queryDictionary
-    }
+@implementation AJRXMLURLPlaceholder
 
-    func appendingQueryValue(_ value: String, key: String) -> URL {
-        return (self as NSURL).appendingQueryValue(value, forKey: key)
-    }
-
-    var pathUTI : String? {
-        return (self as NSURL).pathUTI
-    }
-
-    var pathType : UTType? {
-        return UTType(filenameExtension: pathExtension)
-    }
-
-    func finderCompare(to other: URL) -> ComparisonResult {
-        let lhsIsDirectory = (try? resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-        let rhsIsDirectory = (try? other.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-
-        if lhsIsDirectory != rhsIsDirectory {
-            return lhsIsDirectory ? .orderedAscending : .orderedDescending
-        }
-
-        return lastPathComponent.localizedStandardCompare(other.lastPathComponent)
-    }
-
+- (void)decodeWithXMLCoder:(AJRXMLCoder *)coder {
+    [coder decodeTextUsingSetter:^(NSString *value) {
+        self->_value = [NSURL URLWithString:value];
+    }];
 }
+
+- (id)finalizeXMLDecodingWithError:(NSError * _Nullable * _Nullable)error {
+    return _value;
+}
+
+@end
+
+@implementation NSURL (XMLCoding)
+
++ (NSString *)ajr_nameForXMLArchiving {
+    return @"url";
+}
+
++ (Class)ajr_classForXMLArchiving {
+    return [NSURL class];
+}
+
++ (id)instantiateWithXMLCoder:(AJRXMLCoder *)coder {
+    return [[AJRXMLURLPlaceholder alloc] init];
+}
+
+- (void)encodeWithXMLCoder:(AJRXMLCoder *)coder {
+    [coder encodeText:self.description];
+}
+
+@end

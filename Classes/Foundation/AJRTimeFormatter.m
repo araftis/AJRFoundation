@@ -77,4 +77,8 @@
     [super encodeWithCoder:coder];
 }
 
++ (NSString *)format:(id)object {
+    return [[[AJRTimeFormatter alloc] init] stringForObjectValue:object];
+}
+
 @end

@@ -722,7 +722,7 @@ static NSMutableDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
     } forKey:key];
 }
 
-- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
+- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url, BOOL isAccessingSecurityScope))setter {
     [[_stack lastObject] setSetter:^BOOL(id rawValue, NSError **error) {
         // Maybe we have a bookmark...
         NSData *data = AJRObjectIfKindOfClass(rawValue, NSData);
@@ -735,9 +735,10 @@ static NSMutableDictionary<NSString *, Class> *_xmlNamesToClasses = nil;
 #endif
             NSURL *url = [NSURL URLByResolvingBookmarkData:data options:options relativeToURL:nil bookmarkDataIsStale:NULL error:&localError];
             if (url != nil) {
+                BOOL isAccessing = [url startAccessingSecurityScopedResource];
                 return [self callBlock:^{
                     if (setter != NULL) {
-                        setter(url);
+                        setter(url, isAccessing);
                     }
                 } catchingExceptionUsingError:error];
             }

@@ -80,6 +80,12 @@
 		FA0587D5192FEB57002913B6 /* NSOutputStream+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0587D3192FEB57002913B6 /* NSOutputStream+Extensions.m */; };
 		FA0587E3193037A3002913B6 /* AJRXMLCoder.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0587E1193037A3002913B6 /* AJRXMLCoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA0587E4193037A3002913B6 /* AJRXMLCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0587E2193037A3002913B6 /* AJRXMLCoder.m */; };
+		FA05F8A32FFDDD12006F0051 /* NSURL+XMLCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FA05F8A22FFDDD12006F0051 /* NSURL+XMLCoding.h */; };
+		FA05F8A42FFDDD12006F0051 /* NSURL+XMLCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FA05F8A22FFDDD12006F0051 /* NSURL+XMLCoding.h */; };
+		FA05F8A62FFDDD63006F0051 /* NSURL+XMLCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FA05F8A52FFDDD63006F0051 /* NSURL+XMLCoding.m */; };
+		FA05F8A72FFDDD63006F0051 /* NSURL+XMLCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FA05F8A52FFDDD63006F0051 /* NSURL+XMLCoding.m */; };
+		FA05F8C32FFF1DED006F0051 /* NSObject+AJRUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA05F8C22FFF1DED006F0051 /* NSObject+AJRUserInfo.swift */; };
+		FA05F8C42FFF1DED006F0051 /* NSObject+AJRUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA05F8C22FFF1DED006F0051 /* NSObject+AJRUserInfo.swift */; };
 		FA06EA990EA9BC4D009DE0F8 /* NSFileManager+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA06EA970EA9BC4D009DE0F8 /* NSFileManager+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA06EA9A0EA9BC4D009DE0F8 /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA06EA980EA9BC4D009DE0F8 /* NSFileManager+Extensions.m */; };
 		FA07709C2ACA6DA4009B4327 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA07C8EA221278840077A0B5 /* ArrayTests.swift */; };
@@ -472,8 +478,8 @@
 		FA3DF3330F16678700C0E2C2 /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3DF3310F16678700C0E2C2 /* NSURL+Extensions.m */; };
 		FA3EA2382AA9478400668FE0 /* AJRVariableTypeArray.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA3EA2362AA9478400668FE0 /* AJRVariableTypeArray.strings */; };
 		FA3EA2392AA9478400668FE0 /* AJRVariableTypeArray.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA3EA2362AA9478400668FE0 /* AJRVariableTypeArray.strings */; };
-		FA42F79D20CF75A4001AF25E /* AJRFoundation_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FA42F79C20CF75A4001AF25E /* AJRFoundation_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FA42F79E20CF75A4001AF25E /* AJRFoundation_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FA42F79C20CF75A4001AF25E /* AJRFoundation_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FA42F79D20CF75A4001AF25E /* AJRFoundationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = FA42F79C20CF75A4001AF25E /* AJRFoundationPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FA42F79E20CF75A4001AF25E /* AJRFoundationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = FA42F79C20CF75A4001AF25E /* AJRFoundationPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FA471ED0195C986A009A6455 /* NSInputStream+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA471ECE195C986A009A6455 /* NSInputStream+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA471ED1195C986A009A6455 /* NSInputStream+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA471ECF195C986A009A6455 /* NSInputStream+Extensions.m */; };
 		FA4AEBCF20AA805900875127 /* NSCharacterSet+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = FA4AEBCD20AA805900875127 /* NSCharacterSet+Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -975,6 +981,9 @@
 		FA0587D7192FEF93002913B6 /* AJRXMLStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRXMLStreamTest.m; sourceTree = "<group>"; };
 		FA0587E1193037A3002913B6 /* AJRXMLCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJRXMLCoder.h; sourceTree = "<group>"; };
 		FA0587E2193037A3002913B6 /* AJRXMLCoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJRXMLCoder.m; sourceTree = "<group>"; };
+		FA05F8A22FFDDD12006F0051 /* NSURL+XMLCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURL+XMLCoding.h"; sourceTree = "<group>"; };
+		FA05F8A52FFDDD63006F0051 /* NSURL+XMLCoding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURL+XMLCoding.m"; sourceTree = "<group>"; };
+		FA05F8C22FFF1DED006F0051 /* NSObject+AJRUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+AJRUserInfo.swift"; sourceTree = "<group>"; };
 		FA06EA970EA9BC4D009DE0F8 /* NSFileManager+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Extensions.h"; sourceTree = "<group>"; usesTabs = 0; };
 		FA06EA980EA9BC4D009DE0F8 /* NSFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA0771352ACCEED6009B4327 /* NSScanner+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScanner+Extensions.swift"; sourceTree = "<group>"; };
@@ -1116,7 +1125,7 @@
 		FA3DF3310F16678700C0E2C2 /* NSURL+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Extensions.m"; sourceTree = "<group>"; usesTabs = 0; };
 		FA3EA2372AA9478400668FE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AJRVariableTypeArray.strings; sourceTree = "<group>"; };
 		FA3EA23A2AA9478E00668FE0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AJRVariableTypeArray.strings; sourceTree = "<group>"; };
-		FA42F79C20CF75A4001AF25E /* AJRFoundation_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRFoundation_Private.h; sourceTree = "<group>"; };
+		FA42F79C20CF75A4001AF25E /* AJRFoundationPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRFoundationPrivate.h; sourceTree = "<group>"; };
 		FA471ECE195C986A009A6455 /* NSInputStream+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInputStream+Extensions.h"; sourceTree = "<group>"; };
 		FA471ECF195C986A009A6455 /* NSInputStream+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInputStream+Extensions.m"; sourceTree = "<group>"; };
 		FA4AEBCD20AA805900875127 /* NSCharacterSet+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+Extensions.h"; sourceTree = "<group>"; };
@@ -1241,6 +1250,7 @@
 		FA7742F52357D6F20041824C /* AJRStreamUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AJRStreamUtilities.h; sourceTree = "<group>"; };
 		FA7742F62357D6F20041824C /* AJRStreamUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRStreamUtilities.m; sourceTree = "<group>"; };
 		FA7742FB2357EE7A0041824C /* NSInputStream+ExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSInputStream+ExtensionsTests.m"; sourceTree = "<group>"; };
+		FA844AD62FE9F98600E6071E /* AJRFoundation.private.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = AJRFoundation.private.modulemap; sourceTree = "<group>"; };
 		FA85C23420B62C8D00A5EE38 /* AJRFunctionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AJRFunctionsTests.m; sourceTree = "<group>"; };
 		FA8884AE26014C5A00DFE50B /* BinaryInteger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BinaryInteger+Extensions.swift"; sourceTree = "<group>"; };
 		FA8884B726014C9400DFE50B /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
@@ -1496,7 +1506,8 @@
 				FA2876D3260D73B600F5BBE8 /* LICENSE.md */,
 				FA2876D4260D73B700F5BBE8 /* README.md */,
 				FA4FDDC70E8BFA5100F05C19 /* AJRFoundation.h */,
-				FA42F79C20CF75A4001AF25E /* AJRFoundation_Private.h */,
+				FA42F79C20CF75A4001AF25E /* AJRFoundationPrivate.h */,
+				FA844AD62FE9F98600E6071E /* AJRFoundation.private.modulemap */,
 				32DBCF5E0370ADEE00C91783 /* AJRFoundation_Prefix.pch */,
 				FA2AC6F419661A340052EB20 /* AJRFoundationOS.h */,
 				FAC9A99A0EC24B220095F826 /* AJRFoundation.hdoc */,
@@ -1635,6 +1646,8 @@
 				FAA75F7323385FF200523F91 /* NSNumber+XMLCoding.m */,
 				FAA75F6D23384BFB00523F91 /* NSString+XMLCoding.h */,
 				FAA75F6E23384BFB00523F91 /* NSString+XMLCoding.m */,
+				FA05F8A22FFDDD12006F0051 /* NSURL+XMLCoding.h */,
+				FA05F8A52FFDDD63006F0051 /* NSURL+XMLCoding.m */,
 			);
 			path = Coding;
 			sourceTree = "<group>";
@@ -2161,6 +2174,7 @@
 				FA4FD4480E8BEBBF00F05C19 /* NSNumber+Extensions.m */,
 				FAEEBB9B0EEEF19C0070D9DC /* NSObject+AJRUserInfo.h */,
 				FAEEBB9C0EEEF19C0070D9DC /* NSObject+AJRUserInfo.m */,
+				FA05F8C22FFF1DED006F0051 /* NSObject+AJRUserInfo.swift */,
 				FA2AC6F719661FCE0052EB20 /* NSObject+Extensions_MRR.m */,
 				FAA37F150E9D2826004AEECF /* NSObject+Extensions.h */,
 				FAA37F160E9D2826004AEECF /* NSObject+Extensions.m */,
@@ -2306,6 +2320,7 @@
 				FA4FD59C0E8BEBBF00F05C19 /* NSString+Extensions.h in Headers */,
 				FA4FDDC80E8BFA5100F05C19 /* AJRFoundation.h in Headers */,
 				FA206FE7195252D50065A290 /* AJRXMLCoding.h in Headers */,
+				FA05F8A32FFDDD12006F0051 /* NSURL+XMLCoding.h in Headers */,
 				FA5FAA142368CEBC0027F178 /* NSSet+ExtensionsP.h in Headers */,
 				FAA37F170E9D2826004AEECF /* NSObject+Extensions.h in Headers */,
 				FAA37F350E9D2946004AEECF /* AJRGate.h in Headers */,
@@ -2358,7 +2373,7 @@
 				FAA75F6F23384BFB00523F91 /* NSString+XMLCoding.h in Headers */,
 				FAF5065E22E82DBE000799FB /* AJRDebug.h in Headers */,
 				FA0F560625E477DD00DD0F3D /* AJREditingContext.h in Headers */,
-				FA42F79D20CF75A4001AF25E /* AJRFoundation_Private.h in Headers */,
+				FA42F79D20CF75A4001AF25E /* AJRFoundationPrivate.h in Headers */,
 				FA206FEA195253210065A290 /* AJRXMLArchiver.h in Headers */,
 				FA8F1EB520C6075400D62576 /* AJRFileOutputStream.h in Headers */,
 				FAD0920620CF1A75004320F5 /* AJRProtocolEnumerator.h in Headers */,
@@ -2406,7 +2421,7 @@
 				FAD091F320CE42AE004320F5 /* AJRPropertyEnumerator.h in Headers */,
 				FA29F70A263120A8002B953A /* NSUnit+Extensions.h in Headers */,
 				FAD0920720CF1A75004320F5 /* AJRProtocolEnumerator.h in Headers */,
-				FA42F79E20CF75A4001AF25E /* AJRFoundation_Private.h in Headers */,
+				FA42F79E20CF75A4001AF25E /* AJRFoundationPrivate.h in Headers */,
 				FA904BB020CCE26200DB89F2 /* AJRMutableOrderedDictionary.h in Headers */,
 				FA53F00320B27457003C99D8 /* AJROrderedCompletionQueue.h in Headers */,
 				FA5EFBD120DF7BCB006C48B0 /* AJRPlugInAttribute.h in Headers */,
@@ -2417,6 +2432,7 @@
 				FAA75F7523385FF200523F91 /* NSNumber+XMLCoding.h in Headers */,
 				FA2AC69E196616380052EB20 /* AJRCaseInsensitiveString.h in Headers */,
 				FA5EFBD520DF7BCB006C48B0 /* AJRPlugInExtensionPoint.h in Headers */,
+				FA05F8A42FFDDD12006F0051 /* NSURL+XMLCoding.h in Headers */,
 				FA2AC69F196616380052EB20 /* AJRClassEnumerator.h in Headers */,
 				FA2AC6A0196616390052EB20 /* AJRConversions.h in Headers */,
 				FA2AC6A1196616390052EB20 /* AJRDelegateProxy.h in Headers */,
@@ -2589,7 +2605,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					8DC2EF4F0486A6940098B216 = {
 						LastSwiftMigration = 1020;
@@ -2767,6 +2783,7 @@
 				FA8B8FF52900FA4600650F23 /* AJRVariableTypeCollections.swift in Sources */,
 				FADDA11D229BB6DB00257007 /* XMLDTDAttributeDeclarationNode.swift in Sources */,
 				FA311C3428ED101C006BE0FB /* AJRUnaryOperator.swift in Sources */,
+				FA05F8A62FFDDD63006F0051 /* NSURL+XMLCoding.m in Sources */,
 				FA5FAA1A2368D0550027F178 /* AJRXMLCollectionPlaceholder.m in Sources */,
 				FA8B8FC928F8E3AE00650F23 /* AJREvaluation.swift in Sources */,
 				FA58625019268CAC001F041A /* AJRXMLBuilder.swift in Sources */,
@@ -2891,6 +2908,7 @@
 				FABC2E2229FDD1180013ED6A /* AJRCommandLineArgument.swift in Sources */,
 				FA0220B62AD7A1B400E3FC12 /* AJRActivity.swift in Sources */,
 				FA311C3128ED1001006BE0FB /* AJROperator.swift in Sources */,
+				FA05F8C42FFF1DED006F0051 /* NSObject+AJRUserInfo.swift in Sources */,
 				FA311C6D28ED2A4A006BE0FB /* AJRTrigonometryFunctions.swift in Sources */,
 				FA471ED1195C986A009A6455 /* NSInputStream+Extensions.m in Sources */,
 				FA8B8FF22900F8C000650F23 /* AJRVariableTypeString.swift in Sources */,
@@ -2977,6 +2995,7 @@
 				217160802900DBB3001F2D4C /* AJRVariableTypeInteger.swift in Sources */,
 				FADDA130229BB6DB00257007 /* XMLNamedNode.swift in Sources */,
 				217160772900CF2E001F2D4C /* AJRVariableType.swift in Sources */,
+				FA05F8A72FFDDD63006F0051 /* NSURL+XMLCoding.m in Sources */,
 				FA59A992228CD77D007FFB4F /* AJRTimeIntervalFormatter.m in Sources */,
 				FA0F560925E477DD00DD0F3D /* AJREditingContext.m in Sources */,
 				FA6FFE9C2202CE070083357D /* Dispatch+Extensions.swift in Sources */,
@@ -3107,6 +3126,7 @@
 				FA2AC63F196615F20052EB20 /* NSCoder+Extensions.m in Sources */,
 				FACEC47C22DD8DB9008AA6DB /* AJREquatable.swift in Sources */,
 				FA5EFBD220DF7BCB006C48B0 /* AJRPlugInAttribute.m in Sources */,
+				FA05F8C32FFF1DED006F0051 /* NSObject+AJRUserInfo.swift in Sources */,
 				FA23D1F72B0DB41200C54B9B /* NSError+Extensions.m in Sources */,
 				FAD0921520CF2DE2004320F5 /* AJRProtocolPropertyEnumerator.m in Sources */,
 				FA5FAA3323695AB80027F178 /* NSURLQueryItem+Extensions.m in Sources */,
@@ -3452,6 +3472,7 @@
 					"@loader_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "c99 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ajr.framework.${PRODUCT_NAME:rfc1034identifier}";
@@ -3492,6 +3513,7 @@
 					"@loader_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "c99 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ajr.framework.${PRODUCT_NAME:rfc1034identifier}";
@@ -3545,9 +3567,11 @@
 				HEADER_SEARCH_PATHS = "$(SDK_DIR)/usr/include/libxml2";
 				INSTALL_PATH = "@rpath";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MODULEMAP_PRIVATE_FILE = AJRFoundation.private.modulemap;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DAJR_DEBUG";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -3592,7 +3616,9 @@
 				HEADER_SEARCH_PATHS = "$(SDK_DIR)/usr/include/libxml2";
 				INSTALL_PATH = "@rpath";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MODULEMAP_PRIVATE_FILE = AJRFoundation.private.modulemap;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 			};
@@ -3716,7 +3742,6 @@
 		FA53B78317A2D87F0009D370 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -3769,7 +3794,6 @@
 		FA53B78417A2D87F0009D370 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -3918,6 +3942,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = YES;
+				MODULEMAP_PRIVATE_FILE = AJRFoundation.private.modulemap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -3928,6 +3953,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = YES;
+				MODULEMAP_PRIVATE_FILE = AJRFoundation.private.modulemap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

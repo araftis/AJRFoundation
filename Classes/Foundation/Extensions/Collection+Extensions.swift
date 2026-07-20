@@ -623,6 +623,7 @@ extension OrderedSet : AJRCollection {
 
 }
 
+extension OrderedDictionary: @retroactive Collection {}
 extension OrderedDictionary : AJRCollection {
 
     public func index(after i: Int) -> Int {

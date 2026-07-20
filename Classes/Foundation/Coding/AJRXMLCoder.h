@@ -119,7 +119,7 @@ typedef BOOL (^AJRXMLUnarchiverGenericSetter)(id _Nullable rawValue, NSError * _
 - (void)decodeGroupForKey:(NSString *)key usingBlock:(void (^)(void))block setter:(nullable void (^)(void))setter;
 - (void)decodeTextUsingSetter:(void (^)(NSString *))setter;
 - (void)decodeURLForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter;
-- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter;
+- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url, BOOL isAccessingSecurityScope))setter;
 - (void)decodeVariableTypeForKey:(NSString *)key setter:(nullable void (^)(AJRVariableType * _Nullable))setter;
 
 /// The name of the element being decoding. Not normaly needed, but some advanced usages might want access to this.

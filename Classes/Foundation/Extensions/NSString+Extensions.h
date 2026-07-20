@@ -507,7 +507,8 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Returns a NSString created from the non-null terminated c-string of the given length and with the given encoding. */
 + (id)stringWithCString:(const char *)cString length:(NSUInteger)length encoding:(NSStringEncoding)encoding;
 
-@property (nonatomic,readonly) NSString *md5Hash API_DEPRECATED("This function is cryptographically broken and should not be used in security contexts. Clients should migrate to SHA256 (or stronger).", macos(10.4, 10.15), ios(2.0, 13.0));
+@property (nullable,nonatomic,readonly) NSString *insecureMD5Hash;
+@property (nonatomic,readonly) NSString *md5Hash API_DEPRECATED("This function is cryptographically broken and should not be used in security contexts. Clients should migrate to SHA256 (or stronger). If not being used for cryptography, you could consider using insecureMD5Hash.", macos(10.4, 10.15), ios(2.0, 13.0));
 
 #pragma mark - UTF32 Character Handling
 

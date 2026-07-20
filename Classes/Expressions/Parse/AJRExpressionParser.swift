@@ -86,7 +86,7 @@ public class AJRExpressionParser : NSObject {
         self.argumentIndex = 0
     }
 
-    @objc (initWithFormat:arguments:error:)
+    @objc(initWithFormat:arguments:error:)
     public convenience init(format: String, _ arguments: [Any]) throws {
         try self.init(string: format)
         self.arguments = arguments

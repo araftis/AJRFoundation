@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @result The value of the obejct for the given key, or nil if no class object is set.
  */
-+ (nullable id)classObjectForKey:(NSString *)key;
++ (nullable id)classObjectForKey:(NSString *)key NS_SWIFT_NAME(_classObject(forKey:));
 
 /*!
  Sets the class object identified by key. Note that a class object is similar to class variables  as found in other object oriented languages, except that it does not need to be defined prior to
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param object The object to assign. Pass in nil to clear the associated object.
  @param key The key identifying object.
  */
-+ (void)setClassObject:(nullable id)object forKey:(NSString *)key;
++ (void)setClassObject:(nullable id)object forKey:(NSString *)key NS_SWIFT_NAME(_setClassObject(_:forKey:));
 
 /*!
 Clears all associated class objects from the receiver. After making this call, but before calling setClassObject:forKey:, any call to classObjectForKey: will return nil.
@@ -73,7 +73,7 @@ Clears all associated class objects from the receiver. After making this call, b
  
  @result The value of the object for the given key, or nil if no instance object is set.
  */
-- (nullable id)instanceObjectForKey:(NSString *)key;
+- (nullable id)instanceObjectForKey:(NSString *)key NS_SWIFT_NAME(_instanceObject(forKey:));
 
 /*!
  Sets an instance object for the given key. An instance object is any arbitrary object you'd like  to have tag along with another object. The object should respect retain/release. If object is nil,  the object is removed from the receiver.
@@ -81,7 +81,7 @@ Clears all associated class objects from the receiver. After making this call, b
  @param object The object to assign. Pass in nil to clear the associated object.
  @param key A unique identifier for the object.
  */
-- (void)setInstanceObject:(nullable id)object forKey:(NSString *)key;
+- (void)setInstanceObject:(nullable id)object forKey:(NSString *)key NS_SWIFT_NAME(_setInstanceObject(_:forKey:));
 
 /*!
  Clears all instances objects from the receiver. After making this call, but before calling  setInstanceObject:forKey:, any call to instanceObjectForKey: will return nil.

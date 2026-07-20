@@ -31,7 +31,7 @@
 
 import Foundation
 
-extension NSNull : Comparable {
+extension NSNull : @retroactive Comparable {
     
     public static func < (lhs: NSNull, rhs: NSNull) -> Bool {
         return false

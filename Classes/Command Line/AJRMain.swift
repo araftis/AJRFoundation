@@ -199,7 +199,8 @@ open class AJRMain: NSObject {
             nextArgument = nextArgumentWithName(argument.suffix(argument.count - 2))
             // Note that we consumed an argument
             consumed = 1
-        } else if argument.hasPrefix("-") {
+        // We special case "-", because this is often used to indicate stdin or stdout, so we'll just ignore it here, which will cause it to fall through below.
+        } else if argument.hasPrefix("-") && argument != "-" {
             nextArgument = nextArgumentWithShortName(argument[argument.index(argument.startIndex, offsetBy: 1) ..< argument.endIndex])
             // Note that we consumed an argument.
             consumed = 1
@@ -274,7 +275,7 @@ open class AJRMain: NSObject {
     /**
      This is a primary override points, and you should override this method to do your work. When this method is called, you main class will be instantiated, and the arguments processed.
      */
-    open func run() -> Void {
+    open func run() throws -> Void {
     }
 
     /**
@@ -305,15 +306,19 @@ open class AJRMain: NSObject {
         willRun()
 
         // Launch a thread and call run.
-        weak var weakSelf = self
-        DispatchQueue.global(qos: priority).async {
-            weakSelf?.run()
-            // TODO: Not entirely thread safe, as this could result in calling the semaphore more than once, since it could also still be signalled from another child thread. We should add something like a
-            if let self = weakSelf,
-               let semaphore = self.semaphore,
-               semaphore.count > 0 {
-                // NOTE: None of this code may run, since terminate may be called from another thread.
-                weakSelf?.terminate(exitCode: 0)
+        DispatchQueue.global(qos: priority).async { [weak self] in
+            guard let self else { return }
+            do {
+                try self.run()
+                // TODO: Not entirely thread safe, as this could result in calling the semaphore more than once, since it could also still be signalled from another child thread. We should add something like a
+                if let semaphore = self.semaphore,
+                   semaphore.count > 0 {
+                    // NOTE: None of this code may run, since terminate may be called from another thread.
+                    self.terminate(exitCode: 0)
+                }
+            } catch {
+                print(.stderr, "Error while running: \(error.localizedDescription)", flush: true)
+                self.terminate(exitCode: 1)
             }
         }
 

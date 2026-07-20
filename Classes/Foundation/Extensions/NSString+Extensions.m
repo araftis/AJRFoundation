@@ -1119,6 +1119,10 @@ static inline BOOL _AJRIsHexStringCharacter(unichar character) {
 
     return [NSString stringWithCString:output encoding:NSASCIIStringEncoding];
 }
+
+- (NSString *)insecureMD5Hash {
+    return self.md5Hash;
+}
 #pragma clang diagnostic pop
 
 #pragma mark - UTF32 Character Handling

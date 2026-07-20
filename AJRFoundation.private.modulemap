@@ -1,0 +1,13 @@
+//
+//  AJRFoundation.private.modulemap
+//  AJRFoundation
+//
+//  Created by AJ Raftis on 6/22/26.
+//
+
+framework module AJRFoundation {
+    explicit module Private {
+        header "AJRFoundationPrivate.h"
+        export *
+    }
+}

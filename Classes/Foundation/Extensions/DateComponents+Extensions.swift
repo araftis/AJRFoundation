@@ -59,6 +59,10 @@ public extension DateComponents {
         case .calendar: return calendar as? T
         case .timeZone: return timeZone as? T
         case .isLeapMonth: return isLeapMonth as? T
+        case .isRepeatedDay:
+            fallthrough
+        case .dayOfYear:
+            fallthrough
         @unknown default:
             fatalError()
         }

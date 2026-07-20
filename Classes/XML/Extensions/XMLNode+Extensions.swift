@@ -81,7 +81,7 @@ extension XMLNode : XMLDebug {
     
 }
 
-extension XMLNode.Kind : CustomStringConvertible {
+extension XMLNode.Kind : @retroactive CustomStringConvertible {
 
     public static var allCases : [XMLNode.Kind] {
         return [

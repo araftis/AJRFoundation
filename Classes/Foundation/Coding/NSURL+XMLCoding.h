@@ -1,5 +1,5 @@
 /*
- URL+Extensions.swift
+ NSURL+XMLCoding.h
  AJRFoundation
 
  Copyright © 2023, AJ Raftis and AJRFoundation authors
@@ -29,45 +29,12 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Foundation
-import UniformTypeIdentifiers
+#import <Foundation/Foundation.h>
 
-public extension URL {
+NS_ASSUME_NONNULL_BEGIN
 
-    init!(parsableString string: String) {
-        if let nsURL = NSURL(parsableString: string) {
-            self.init(string: nsURL.absoluteString!)
-        } else {
-            return nil
-        }
-    }
+@interface NSURL (XMLCoding)
 
-    // I'm going with [String:String] until it's proven I need to go with AnyHashable:Any.
-    var queryDictionary: [String:String]? {
-        return (self as NSURL).queryDictionary
-    }
+@end
 
-    func appendingQueryValue(_ value: String, key: String) -> URL {
-        return (self as NSURL).appendingQueryValue(value, forKey: key)
-    }
-
-    var pathUTI : String? {
-        return (self as NSURL).pathUTI
-    }
-
-    var pathType : UTType? {
-        return UTType(filenameExtension: pathExtension)
-    }
-
-    func finderCompare(to other: URL) -> ComparisonResult {
-        let lhsIsDirectory = (try? resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-        let rhsIsDirectory = (try? other.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-
-        if lhsIsDirectory != rhsIsDirectory {
-            return lhsIsDirectory ? .orderedAscending : .orderedDescending
-        }
-
-        return lastPathComponent.localizedStandardCompare(other.lastPathComponent)
-    }
-
-}
+NS_ASSUME_NONNULL_END

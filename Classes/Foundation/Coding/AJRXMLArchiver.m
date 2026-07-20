@@ -131,6 +131,13 @@ typedef void (^AJRXMLObjectEncoder)(void);
     return success;
 }
 
++ (BOOL)archiveRootObject:(id <AJRXMLCoding>)rootObject forKey:(nullable NSString *)key toURL:(NSURL *)url error:(NSError **)error {
+    if ([url isFileURL]) {
+        return [self archiveRootObject:rootObject forKey:key toFile:url.path error:error];
+    }
+    return NO;
+}
+
 + (BOOL)archiveRootObject:(id)rootObject forKey:(NSString *)key toOutputStream:(NSOutputStream *)outputStream error:(NSError **)error {
     AJRXMLArchiver *archiver = [AJRXMLArchiver archiverWithOutputStream:outputStream];
     BOOL success = YES;
@@ -162,6 +169,13 @@ typedef void (^AJRXMLObjectEncoder)(void);
 
 + (BOOL)archiveRootObject:(id)rootObject toFile:(NSString *)path error:(NSError **)error {
     return [self archiveRootObject:rootObject forKey:nil toFile:path error:error];
+}
+
++ (BOOL)archiveRootObject:(id <AJRXMLCoding>)rootObject toURL:(NSURL *)url error:(NSError **)error {
+    if ([url isFileURL]) {
+        return [self archiveRootObject:rootObject forKey:nil toFile:url.path error:error];
+    }
+    return NO;
 }
 
 + (BOOL)archiveRootObject:(id)rootObject toOutputStream:(NSOutputStream *)outputStream error:(NSError **)error {
@@ -455,11 +469,12 @@ typedef void (^AJRXMLObjectEncoder)(void);
 #else
     NSURLBookmarkCreationOptions options = NSURLBookmarkCreationWithSecurityScope;
 #endif
-    NSData *data = [url bookmarkDataWithOptions:options includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
+    NSError *localError = nil;
+    NSData *data = [url bookmarkDataWithOptions:options includingResourceValuesForKeys:nil relativeToURL:nil error:&localError];
     if (data) {
         [self _encodeObject:data forKey:key forceReference:NO];
     } else {
-        AJRLog(AJRXMLCodingLogDomain, AJRLogLevelError, @"Failed to encode URL as bookmark. This will likely result in an incomplete archive: %@", url);
+        AJRLog(AJRXMLCodingLogDomain, AJRLogLevelError, @"Failed to encode URL as bookmark. This will likely result in an incomplete archive: %@: %@", url, localError.localizedDescription);
     }
 }
 

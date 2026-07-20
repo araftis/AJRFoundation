@@ -262,7 +262,7 @@ NSString * const AJRXMLCodingLogDomain = @"AJRXMLCodingLogDomain";
 - (void)decodeURLForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
 }
 
-- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url))setter {
+- (void)decodeURLBookmarkForKey:(NSString *)key setter:(nullable void (^)(NSURL *url, BOOL isAccessingSecurityScope))setter {
 }
 
 - (void)decodeVariableTypeForKey:(NSString *)key setter:(nullable void (^)(AJRVariableType * _Nullable))setter {

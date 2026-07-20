@@ -31,7 +31,7 @@
 
 import Foundation
 
-extension NSArray : Collection {
+extension NSArray : @retroactive Collection {
     
     public func index(after i: Int) -> Int {
         return i + 1

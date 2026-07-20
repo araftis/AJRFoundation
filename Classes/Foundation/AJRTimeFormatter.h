@@ -33,4 +33,6 @@
 
 @interface AJRTimeFormatter : NSFormatter <NSCoding>
 
++ (nonnull NSString *)format:(id _Nonnull)object;
+
 @end
