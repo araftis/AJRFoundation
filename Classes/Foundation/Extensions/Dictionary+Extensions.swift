@@ -31,6 +31,28 @@
 
 import Foundation
 
+public struct AJRTypedKey<Value>: Hashable, Sendable {
+    public let rawValue: String
+
+    public init(_ rawValue: String) {
+        self.rawValue = rawValue
+    }
+}
+
+public extension Dictionary where Key == String, Value == Any {
+
+    subscript<T>(key: AJRTypedKey<T>) -> T? {
+        get {
+            self[key.rawValue] as? T
+        }
+        set {
+            self[key.rawValue] = newValue
+
+        }
+    }
+
+}
+
 public extension Dictionary {
     
 //    func value(forKeyPath keyPath:String) -> Any? {

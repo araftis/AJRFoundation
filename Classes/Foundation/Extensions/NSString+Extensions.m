@@ -385,6 +385,12 @@
     return new;
 }
 
+- (NSString *)stringByEscapingXML {
+    NSMutableString *new = [self mutableCopy];
+    [new replaceXMLSpecialCharactersWithEntityNames];
+    return new;
+}
+
 - (NSString *)htmlString {
     NSRange range;
     NSMutableString *work;

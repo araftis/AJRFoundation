@@ -255,6 +255,13 @@ static NSString *longString = @"Lorem ipsum dolor sit amet, consectetur adipisci
     XCTAssert([[@"This is a string with < and > and & in it." stringByEscapingHTML] isEqualToString:@"This is a string with &lt; and &gt; and &amp; in it."]);
 }
 
+- (void)testEscapingXML {
+    NSString *original = @"Tom & \"Jerry\" <tag attr='value'>\tFirst\nSecond\rThird &amp; 😀";
+    NSString *expected = @"Tom &amp; &quot;Jerry&quot; &lt;tag attr=&apos;value&apos;&lt;&#x9;First&#xA;Second&#xD;Third &amp;amp; 😀";
+    NSString *escaped = [original stringByEscapingXML];
+    XCTAssertEqualObjects(escaped, expected);
+}
+
 - (void)testWordAtIndex {
     NSString *input = @"Now is the time for all good men to come to the aid of their country.";
     

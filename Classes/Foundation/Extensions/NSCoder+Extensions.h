@@ -41,5 +41,6 @@
 - (NSInteger)decodeIntegerForKey:(NSString *)key defaultValue:(NSInteger)value;
 - (float)decodeFloatForKey:(NSString *)key defaultValue:(float)value;
 - (double)decodeDoubleForKey:(NSString *)key defaultValue:(double)value;
+- (CGFloat)decodeCGFloatForKey:(NSString *)key defaultValue:(CGFloat)value;
 
 @end

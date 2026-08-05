@@ -251,6 +251,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)stringByEscapingHTML;
 
 /*!
+ @abstract Escapes any special HTML characters in the reciever.
+ @discussion Scans the string and replaces any special XML characters with XML escape sequences. The returned string will display correctly, with its original characters, in an XML document. Note that this is quite similar to the HTML method, but includes a few extra characters needed by XML, such as white space and quotes.
+ */
+- (NSString *)stringByEscapingXML;
+
+/*!
  @abstract Primitive string to HTML conversion.
  @discussion Simply returns the string with newlines replaced by &lt;BR&gt;. This is useful if you want to include a string in html while preserving newlines within the string. This will also replace special HTML characters, '&lt;', '&gt', and '&amp;' with their HTML character entities.
  */

@@ -127,34 +127,22 @@ typedef void (^AJRXMLStreamInitialAttributesBlock)(void);
 #pragma mark - Elements
 
 - (void)_outputCStringAttribute:(const char *)key withCStringValue:(const char *)value {
-    [_outputStream writeString:@" " error:NULL];
-    [_outputStream writeString:[NSString stringWithCString:key encoding:NSASCIIStringEncoding] error:NULL];
-    [_outputStream writeString:@"=\"" error:NULL];
-    [_outputStream writeString:[NSString stringWithCString:value encoding:NSASCIIStringEncoding] error:NULL];
-    [_outputStream writeString:@"\"" error:NULL];
+    [self _outputAttribute:[NSString stringWithUTF8String:key] withValue:[NSString stringWithUTF8String:value]];
 }
 
 - (void)_outputCStringAttribute:(const char *)key withValue:(NSString *)value {
-    [_outputStream writeString:@" " error:NULL];
-    [_outputStream writeString:[NSString stringWithCString:key encoding:NSASCIIStringEncoding] error:NULL];
-    [_outputStream writeString:@"=\"" error:NULL];
-    [_outputStream writeString:value error:NULL];
-    [_outputStream writeString:@"\"" error:NULL];
+    [self _outputAttribute:[NSString stringWithUTF8String:key] withValue:value];
 }
 
 - (void)_outputAttribute:(NSString *)key withCStringValue:(const char *)value {
-    [_outputStream writeString:@" " error:NULL];
-    [_outputStream writeString:key];
-    [_outputStream writeString:@"=\"" error:NULL];
-    [_outputStream writeString:[NSString stringWithCString:value encoding:NSASCIIStringEncoding] error:NULL];
-    [_outputStream writeString:@"\"" error:NULL];
+    [self _outputAttribute:key withValue:[NSString stringWithUTF8String:value]];
 }
 
 - (void)_outputAttribute:(NSString *)key withValue:(NSString *)value {
     [_outputStream writeString:@" " error:NULL];
     [_outputStream writeString:key];
     [_outputStream writeString:@"=\"" error:NULL];
-    [_outputStream writeString:value];
+    [_outputStream writeString:[value stringByEscapingXML]];
     [_outputStream writeString:@"\"" error:NULL];
 }
 

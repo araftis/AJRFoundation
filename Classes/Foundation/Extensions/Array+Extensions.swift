@@ -47,16 +47,14 @@ public extension Array where Element : Equatable {
         }
     }
 
-    /**
-     Removes all the elements contained in `indexes`. If your objects are also Hashable, there's a more efficient version of this method.
-
-     - parameter indexes: The indexes of objects to remove.
-     */
-
-    mutating func remove(at indexes: IndexSet) -> Void {
-        for index : Int in indexes.reversed() {
-            remove(at: index)
+    func indexes(of other: Element) -> IndexSet {
+        var indexes = IndexSet()
+        for (index, element) in self.enumerated() {
+            if element == other {
+                indexes.insert(index)
+            }
         }
+        return indexes
     }
     
 }
@@ -120,7 +118,19 @@ public extension Array {
         }
         return found
     }
-    
+
+    /**
+     Removes all the elements contained in `indexes`. If your objects are also Hashable, there's a more efficient version of this method.
+
+     - parameter indexes: The indexes of objects to remove.
+     */
+
+    mutating func remove(allIn indexes: IndexSet) -> Void {
+        for index : Int in indexes.reversed() {
+            remove(at: index)
+        }
+    }
+
 }
 
 public extension Array where Element : AnyObject {
@@ -152,6 +162,25 @@ public extension Array where Element : AnyObject {
         var indexes = IndexSet()
         for object in other {
             if let index = index(ofObjectIdenticalTo: object) {
+                indexes.insert(index)
+            }
+        }
+        return indexes
+    }
+
+    /**
+     For  object `other`, it finds the indexes of the corresponding object in the receiver. If no indexes is found, nothing is inserted into the return value. As such, this method cannot be reliably used to determine if the object in in the receiver, as you'll know how many objects were not found, but not which ones they were. Still, this can be useful if you're not worried about know exactly which objects were missing.
+
+     Note that this is effective O(n), because we always enumerate all objects in the array, since an object may appear in the array more than once.
+
+     - parameter other: The object who's indexes you want to know.
+
+     - returns: An IndexSet containing the indexes of the input `other`.
+     */
+    func indexes(ofObjectIdenticalTo other: Element) -> IndexSet {
+        var indexes = IndexSet()
+        for (index, element) in self.enumerated() {
+            if element === other {
                 indexes.insert(index)
             }
         }

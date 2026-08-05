@@ -69,10 +69,17 @@
 }
 
 - (double)decodeDoubleForKey:(NSString *)key defaultValue:(double)value {
-	if ([self containsValueForKey:key]) {
-		return [self decodeDoubleForKey:key];
+	@try {
+		if ([self containsValueForKey:key]) {
+			return [self decodeDoubleForKey:key];
+		}
 	}
+	@catch (NSException *exception) { }
 	return value;
+}
+
+- (CGFloat)decodeCGFloatForKey:(NSString *)key defaultValue:(CGFloat)defaultValue {
+	return [self decodeDoubleForKey:key defaultValue:defaultValue];
 }
 
 @end

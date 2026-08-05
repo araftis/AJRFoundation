@@ -126,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,readonly) NSData *data;
 - (NSData *)availableData;
-/*! Returns the file's mutable data, if the data is writeable, otherwise returns nil. */
+/*! Returns the file's mutable data, if the data is writable, otherwise returns nil. */
 @property (nonatomic,readonly,nullable) NSMutableData *mutableData;
 @property (nonatomic,readonly) BOOL canWrite;
 

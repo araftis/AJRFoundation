@@ -34,5 +34,6 @@
 @interface NSMutableString (AJRExtensions)
 
 - (void)replaceHTMLSpecialCharactersWithEntityNames;
+- (void)replaceXMLSpecialCharactersWithEntityNames;
 
 @end

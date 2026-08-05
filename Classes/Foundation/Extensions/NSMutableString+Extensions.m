@@ -33,20 +33,15 @@
 
 @implementation NSMutableString (AJRExtensions)
 
-- (void)replaceHTMLSpecialCharactersWithEntityNames {
-    static NSCharacterSet *set = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		set = [NSCharacterSet characterSetWithCharactersInString:@"<>&"];
-	});
+- (void)ajr_escapeCharactersInSet:(NSCharacterSet *)set {
     NSRange range;
-    NSRange searchRange;    
-    
+    NSRange searchRange;
+
     range = [self rangeOfCharacterFromSet:set];
     while (range.location != NSNotFound) {
         unichar character = [self characterAtIndex:range.location];
         NSString *replacementString = nil;
-        
+
         switch (character) {
             case '<':
                 replacementString = @"&lt;";
@@ -57,6 +52,21 @@
             case '&':
                 replacementString = @"&amp;";
                 break;
+            case '"':
+                replacementString = @"&quot;";
+                break;
+            case '\'':
+                replacementString = @"&apos;";
+                break;
+            case '\t':
+                replacementString = @"&#x9;";
+                break;
+            case '\n':
+                replacementString = @"&#xA;";
+                break;
+            case '\r':
+                replacementString = @"&#xD;";
+                break;
         }
         if (replacementString) {
             [self replaceCharactersInRange:range withString:replacementString];
@@ -65,6 +75,24 @@
             range = [self rangeOfCharacterFromSet:set options:0 range:searchRange];
         }
     }
+}
+
+- (void)replaceHTMLSpecialCharactersWithEntityNames {
+    static NSCharacterSet *set = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		set = [NSCharacterSet characterSetWithCharactersInString:@"<>&"];
+	});
+    [self ajr_escapeCharactersInSet:set];
+}
+
+- (void)replaceXMLSpecialCharactersWithEntityNames {
+    static NSCharacterSet *set = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        set = [NSCharacterSet characterSetWithCharactersInString:@"<>&\"\'\t\n\r"];
+    });
+    [self ajr_escapeCharactersInSet:set];
 }
 
 @end
